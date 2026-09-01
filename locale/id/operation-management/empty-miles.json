@@ -1,0 +1,153 @@
+{
+  "title": "Empty Miles",
+  "breadcrumb": [
+    "Operation Management",
+    "Empty Miles",
+    {
+      "add": "Add Empty Miles"
+    }
+  ],
+  "filters": ["Branch", "Shipment Type", "Unit Type"],
+  "summary": {
+    "fields": [
+      "Total Empty Miles",
+      "Waiting for Approval",
+      "Expenses Process",
+      "On Journey",
+      "Done"
+    ]
+  },
+  "table": {
+    "title": "Empty Miles",
+    "options": [
+      "EM Code",
+      "License Plate",
+      "Classification",
+      "Origin",
+      "Destination"
+    ],
+    "button": {
+      "config": "Columns",
+      "add": "Add Empty Miles"
+    },
+    "column": {
+      "A": "Status",
+      "B": "Created Date",
+      "C": "Created By",
+      "D": "EM Code",
+      "E": "Branch",
+      "F": "Journey Date",
+      "G": "Unit Type",
+      "H": "Qty Driver",
+      "I": "License Plate",
+      "J": "Driver VK/VD 1",
+      "K": "Drive ID 1",
+      "L": "Driver 1",
+      "M": "Driver Phone 1",
+      "N": "Driver VK/VD 2",
+      "O": "Drive ID 2",
+      "P": "Driver 2",
+      "Q": "Driver Phone 2",
+      "R": "Origin",
+      "S": "Destination",
+      "T": "Classification",
+      "U": "Reason",
+      "V": "Fuel Cost",
+      "W": "Toll & Parking",
+      "X": "Incentive KM",
+      "Y": "Incentive Daily",
+      "AA": "Harbor Crossing",
+      "BB": "Expenses Amount",
+      "CC": "Expedition Card"
+    }
+  },
+  "form": {
+    "title": {
+      "create": "Empty Miles"
+    },
+    "input": {
+      "message": "This field is required",
+      "branch": {
+        "label": "Branch Order"
+      },
+      "journeyDate": {
+        "label": "Journey Date"
+      },
+      "origin": {
+        "label": "Origin"
+      },
+      "destination": {
+        "label": "Destination"
+      },
+      "jmpCode": {
+        "label": "JMP Code"
+      },
+      "reason": {
+        "label": "Reason"
+      },
+      "classification": {
+        "label": "Classification"
+      },
+      "licensePlate": {
+        "label": "License Plate"
+      },
+      "unitType": {
+        "label": "Unit Type"
+      },
+      "soNumber": {
+        "label": "SO Number"
+      },
+      "shipmentType": {
+        "label": "Shipment Type"
+      },
+      "qtyDriver": {
+        "label": "Qty Driver"
+      },
+      "driver1": {
+        "label": "Driver 1"
+      },
+      "driver2": {
+        "label": "Driver 2"
+      },
+      "driverVKVD1": {
+        "label": "Driver VK/VD 1"
+      },
+      "driverID1": {
+        "label": "Driver VK/VD 1"
+      },
+      "driverVKVD2": {
+        "label": "Driver VK/VD 2"
+      },
+      "driverID2": {
+        "label": "Driver ID 2"
+      },
+      "driverPhone1": {
+        "label": "Driver Phone 1"
+      },
+      "driverPhone2": {
+        "label": "Driver Phone 2"
+      },
+      "fuelCost": {
+        "label": "Fuel Cost"
+      },
+      "tollParking": {
+        "label": "Toll & Parking"
+      },
+      "incentiveKM": {
+        "label": "Incentive KM"
+      },
+      "incentiveDaily": {
+        "label": "Incentive Daily"
+      },
+      "harborCrossing": {
+        "label": "Harbor Crossing"
+      },
+      "expensesAmount": {
+        "label": "Expenses Amount"
+      },
+      "expeditionCard": {
+        "label": "Expedition Card"
+      }
+    }
+  }
+}

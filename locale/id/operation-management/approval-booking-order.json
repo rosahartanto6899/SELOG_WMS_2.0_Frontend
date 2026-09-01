@@ -1,0 +1,187 @@
+{
+  "title": "Operation Management",
+  "breadcrumb": [
+    "Operation Management",
+    "Booking Order Confirmation",
+    {
+      "detail": "Detail Booking Order Confirmation"
+    }
+  ],
+  "filter": {
+    "branch": "Branch",
+    "shipmentType": "Shipment Type"
+  },
+  "table": {
+    "title": "Booking Order List",
+    "card": {
+      "totalOrder": "Total Order",
+      "orderConfirmed": "Order Confirmed",
+      "orderRejected": "Order Rejected",
+      "orderRequested": "Order Requested",
+      "orderCancelled": "Order Cancelled"
+    },
+    "column": {
+      "createdAt": "Created Date",
+      "createdBy": "Created By",
+      "bookingCode": "Booking Code",
+      "shipmentType": "Shipment Type",
+      "pickupDate": "Pickup Date",
+      "customerName": "Customer Name",
+      "branchName": "Branch",
+      "unitType": "Unit Type",
+      "origin": "Origin",
+      "destination": "Destination",
+      "qtyUnit": "Qty Unit",
+      "fulfill": "Fulfill",
+      "unfill": "Unfill",
+      "confirmedAt": "Confirmation Date",
+      "confirmedBy": "Confirmed By",
+      "confirmationStatus": "Confirmation Status",
+      "notes": "Notes",
+      "action": "Action"
+    },
+
+    "button": {
+      "detail": { "tooltip": "Detail" }
+    },
+
+    "options": ["Booking Code", "Customer Name", "Confirmation Status"],
+    "search": {
+      "placeholder": "Search",
+      "confirmationStatusPlaceholder": "Select status"
+    }
+  },
+  "form": {
+    "input": {
+      "bookingNo": {
+        "label": "Booking No",
+        "placeholder": "Input booking no"
+      },
+      "bookingCode": {
+        "label": "Booking Code",
+        "placeholder": "Input booking code"
+      },
+      "shipmentNo": {
+        "label": "Shipment No",
+        "placeholder": "Input shipment no"
+      },
+      "salesName": {
+        "label": "Sales Name",
+        "placeholder": "Select sales name"
+      },
+      "salesDealing": {
+        "label": "Sales Dealing",
+        "placeholder": "Select sales dealing"
+      },
+      "salesServicing": {
+        "label": "Sales Servicing",
+        "placeholder": "Select sales servicing"
+      },
+      "branchOrder": {
+        "label": "Branch Order",
+        "placeholder": "Select branch order"
+      },
+      "pickUpDate": {
+        "label": "Pick Up Date",
+        "placeholder": "Select pick up date"
+      },
+      "customerName": {
+        "label": "Customer Name",
+        "placeholder": "Select customer name"
+      },
+      "serviceType": {
+        "label": "Service Type",
+        "placeholder": "Select service type"
+      },
+      "shipmentType": {
+        "label": "Shipment Type",
+        "placeholder": "Select shipment type"
+      },
+      "unitType": {
+        "label": "Unit Type",
+        "placeholder": "Select unit type"
+      },
+      "additionalRequest": {
+        "label": "Additional Request",
+        "placeholder": "Select additional request"
+      },
+      "origin": {
+        "label": "Origin",
+        "placeholder": "Input origin"
+      },
+      "destination": {
+        "label": "Destination",
+        "placeholder": "Input destination"
+      },
+      "note": {
+        "label": "Note",
+        "placeholder": "Add note..."
+      },
+      "shipmentDetails": {
+        "title": "Order",
+        "typeUnit": {
+          "label": "Type Unit",
+          "placeholder": "Select type unit"
+        },
+        "licensePlate": {
+          "label": "License Plate",
+          "placeholder": "Select license plate"
+        },
+        "driver": {
+          "label": "Driver {{value}}",
+          "placeholder": "Select driver"
+        },
+        "customerRouteId": {
+          "label": "Route",
+          "placeholder": "Select route"
+        },
+        "origin": {
+          "label": "Origin",
+          "placeholder": "Input origin"
+        },
+        "destination": {
+          "label": "Destination",
+          "placeholder": "Input Destination"
+        },
+        "eta": {
+          "label": "ETA",
+          "placeholder": "Estimated time arrived"
+        },
+        "pickupHour": {
+          "label": "Pick Up Hour",
+          "placeholder": "Select pick up hour"
+        },
+        "qtyUnit": {
+          "label": "Qty Unit",
+          "placeholder": "Input qty unit"
+        },
+        "qtyDriver": {
+          "label": "Qty Driver",
+          "placeholder": "Input qty driver"
+        },
+        "revenue": {
+          "label": "Revenue",
+          "placeholder": "Input revenue"
+        },
+        "notes": {
+          "label": "Notes",
+          "placeholder": "Input notes"
+        }
+      },
+      "message": "This field is required",
+      "messageVehicleNotFound": "Vehicle Type is not found",
+      "minimumOrder": "At least 1 order is required",
+      "maximumQtyDriver": "The value cannot exceed 2",
+      "maximumQtyUnit": "The value cannot exceed 100",
+      "minimumQty": "Value must be at least 1",
+      "messagePickupDate": "Shipment Status: {{value}} cannot be empty.",
+      "messageAdditionalInformation": "Shipment Status on {{pickupDate}}"
+    }
+  },
+  "modal": {
+    "updateFulfill": {
+      "title": "Booking Order Fulfillment",
+      "message": "Booking order {{value}} has been successfully updated."
+    }
+  }
+}

@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tutorial: Membuat Modul Customer Management — SELOG WMS Frontend</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #161a23;
+    --surface2: #1d2230;
+    --border: #2a3042;
+    --text: #e2e6f0;
+    --muted: #9aa3b5;
+    --accent: #5b9dff;
+    --accent2: #7ee0b0;
+    --warn: #ffc46b;
+    --code-bg: #0b0d13;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg); color: var(--text);
+    line-height: 1.65; padding: 0 0 80px;
+  }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 0 24px; }
+
+  header {
+    background: linear-gradient(135deg, #16213a 0%, #0f1117 70%);
+    border-bottom: 1px solid var(--border);
+    padding: 48px 0 36px; margin-bottom: 40px;
+  }
+  header h1 { font-size: 28px; margin-bottom: 8px; }
+  header p { color: var(--muted); font-size: 15px; }
+  .pill {
+    display: inline-block; margin-top: 14px; padding: 3px 12px;
+    border: 1px solid var(--accent); border-radius: 999px;
+    color: var(--accent); font-size: 12.5px; font-weight: 600;
+  }
+
+  nav.toc {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 18px 22px; margin-bottom: 40px;
+  }
+  nav.toc strong { display: block; margin-bottom: 8px; font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+  nav.toc ol { padding-left: 20px; columns: 2; column-gap: 40px; }
+  nav.toc li { margin: 4px 0; font-size: 14px; }
+  nav.toc a { color: var(--accent); text-decoration: none; }
+  nav.toc a:hover { text-decoration: underline; }
+
+  section { margin-bottom: 56px; }
+  h2 {
+    font-size: 21px; margin-bottom: 14px; padding-bottom: 10px;
+    border-bottom: 1px solid var(--border); scroll-margin-top: 24px;
+  }
+  h2 .num {
+    color: var(--accent); font-family: ui-monospace, monospace; margin-right: 10px;
+  }
+  h3 { font-size: 16px; margin: 22px 0 8px; color: var(--accent2); }
+  p { margin-bottom: 12px; font-size: 15px; }
+  ul, ol { padding-left: 24px; margin-bottom: 12px; font-size: 15px; }
+  li { margin-bottom: 6px; }
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    background: var(--surface2); padding: 2px 6px; border-radius: 5px;
+    font-size: 13px; color: var(--warn);
+  }
+
+  pre {
+    background: var(--code-bg); border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px 18px; overflow-x: auto;
+    margin: 12px 0 18px; font-size: 13px; line-height: 1.55;
+  }
+  pre code { background: none; padding: 0; color: #c8d2e8; font-size: 13px; }
+  .path {
+    display: block; font-size: 12px; color: var(--accent2);
+    font-family: ui-monospace, monospace; margin: 14px 0 -8px;
+  }
+  .c { color: #6b7488; }          /* comment */
+  .k { color: #c792ea; }          /* keyword */
+  .s { color: #a5d6a7; }          /* string */
+  .f { color: #82aaff; }          /* function/name */
+  .t { color: #ffcb6b; }          /* type */
+
+  .note {
+    border-left: 3px solid var(--accent); background: var(--surface);
+    padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 14px 0;
+    font-size: 14px; color: var(--muted);
+  }
+  .note.warn { border-color: var(--warn); }
+  .note b { color: var(--text); }
+
+  .flow {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 18px 22px; margin: 16px 0;
+    font-family: ui-monospace, monospace; font-size: 13.5px;
+    color: var(--muted); overflow-x: auto; white-space: nowrap;
+  }
+  .flow b { color: var(--accent); }
+  .flow i { color: var(--accent2); font-style: normal; }
+
+  table { width: 100%; border-collapse: collapse; margin: 12px 0 18px; font-size: 14px; }
+  th, td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; }
+  th { background: var(--surface2); color: var(--muted); font-weight: 600; }
+  td code { white-space: nowrap; }
+
+  .checklist li { list-style: none; position: relative; padding-left: 26px; }
+  .checklist li::before { content: "✅"; position: absolute; left: 0; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <h1>Tutorial: Membuat Modul Customer Management</h1>
+    <p>Panduan step-by-step berdasarkan commit <code>dc13e9a</code> di repo <code>SELOG_WMS_Frontend</code> — CRUD Customer lengkap: list, tambah, edit, detail, hapus.</p>
+    <span class="pill">Next.js Pages Router · Redux Toolkit · redux-saga · Ant Design · i18next</span>
+  </div>
+</header>
+
+<div class="wrap">
+
+<nav class="toc">
+  <strong>Daftar Isi</strong>
+  <ol>
+    <li><a href="#overview">Pahami Alur Data Dulu</a></li>
+    <li><a href="#struktur">Struktur File yang Akan Dibuat</a></li>
+    <li><a href="#step1">Step 1 — Types</a></li>
+    <li><a href="#step2">Step 2 — API Layer</a></li>
+    <li><a href="#step3">Step 3 — Redux State (initial state)</a></li>
+    <li><a href="#step4">Step 4 — Redux Slice (actions + reducers)</a></li>
+    <li><a href="#step5">Step 5 — Redux Saga (side effects)</a></li>
+    <li><a href="#step6">Step 6 — Registrasi ke Redux</a></li>
+    <li><a href="#step7">Step 7 — Locale (ID &amp; EN)</a></li>
+    <li><a href="#step8">Step 8 — Route Constant</a></li>
+    <li><a href="#step9">Step 9 — Komponen Form</a></li>
+    <li><a href="#step10">Step 10 — Komponen Table</a></li>
+    <li><a href="#step11">Step 11 — Halaman List</a></li>
+    <li><a href="#step12">Step 12 — Halaman Add</a></li>
+    <li><a href="#step13">Step 13 — Halaman Edit</a></li>
+    <li><a href="#step14">Step 14 — Halaman Detail</a></li>
+    <li><a href="#step15">Step 15 — Verifikasi &amp; Commit</a></li>
+  </ol>
+</nav>
+
+<!-- ============================================================ -->
+<section id="overview">
+  <h2><span class="num">0</span>Pahami Alur Data Dulu</h2>
+  <p>Sebelum ngetik kode, pahami arsitektur project ini. Semua modul CRUD di SELOG WMS mengikuti satu pola yang sama:</p>
+
+  <div class="flow">
+    🖥️ <b>Page</b> (React)
+      → <i>dispatch</i> → 📤 <b>Action</b> (<code>getCustomersFetch</code>)
+      → ⚙️ <b>Saga</b> (intercept, panggil API)
+      → 🌐 <b>API Layer</b> (axios ke backend)
+      → ⬅️ hasil → Saga <i>put</i> → 📥 <b>Reducer</b> (<code>getCustomersSuccess</code>)
+      → 💾 <b>State</b> berubah → 🖥️ <b>Page</b> re-render
+  </div>
+
+  <p>Tiga istilah kunci yang harus nempel di kepala:</p>
+  <ul>
+    <li><code>xxxFetch</code> — action yang di-dispatch page, ditangkap saga. Reducer-nya cuma set <code>isLoading = true</code>.</li>
+    <li><code>xxxSuccess</code> — action yang di-dispatch <b>saga</b> setelah API sukses. Reducer-nya simpan data ke state.</li>
+    <li><code>xxxFailure</code> — sama, tapi untuk error. Simpan <code>state.error</code>.</li>
+  </ul>
+  <div class="note"><b>Kunci:</b> Saga TIDAK PERNAH menyimpan data langsung. Saga hanya memanggil API lalu mem-dispatch action Success/Failure. Yang ubah state selalu reducer.</div>
+</section>
+
+<!-- ============================================================ -->
+<section id="struktur">
+  <h2><span class="num">◆</span>Struktur File yang Akan Dibuat</h2>
+  <p>Urutan pengerjaan di bawah sengaja <b>dari bawah ke atas</b>: types → API → redux → locale → komponen → halaman. Begini paling enak karena tiap file berikutnya tinggal import yang sudah ada.</p>
+
+<table>
+  <tr><th>File</th><th>Fungsi</th></tr>
+  <tr><td><code>types/wms-customer.type.ts</code></td><td>Definisi TypeScript: bentuk data customer & state</td></tr>
+  <tr><td><code>libraries/api/wms-customer/index.ts</code></td><td>5 fungsi panggil API: list, detail, create, update, delete</td></tr>
+  <tr><td><code>redux/states/wms-customer.state.ts</code></td><td>Initial state redux</td></tr>
+  <tr><td><code>redux/slices/wms-customer.slice.ts</code></td><td>Actions + reducers</td></tr>
+  <tr><td><code>redux/sagas/wms-customer.saga.ts</code></td><td>Side effects: panggil API, routing, dispatch result</td></tr>
+  <tr><td><code>redux/slices/index.ts</code>, <code>redux/sagas/index.ts</code>, <code>redux/index.ts</code></td><td>Registrasi (di-edit, bukan file baru)</td></tr>
+  <tr><td><code>locale/id/customer-management.json</code> + <code>locale/en/...</code></td><td>Teks dua bahasa</td></tr>
+  <tr><td><code>locale/id/index.tsx</code> + <code>locale/en/index.tsx</code></td><td>Registrasi locale (di-edit)</td></tr>
+  <tr><td><code>utils/constants/routes.ts</code></td><td>Constant URL <code>CUSTOMERS</code> (di-edit)</td></tr>
+  <tr><td><code>components/pages/user-management/customers/customer-form.tsx</code></td><td>Form tambah/edit/detail (dipakai 3 halaman)</td></tr>
+  <tr><td><code>components/pages/user-management/customers/customer-table.tsx</code></td><td>Tabel list + search + pagination + modal hapus</td></tr>
+  <tr><td><code>pages/user-management/customers/index.tsx</code></td><td>Halaman list</td></tr>
+  <tr><td><code>pages/user-management/customers/add/index.tsx</code></td><td>Halaman tambah</td></tr>
+  <tr><td><code>pages/user-management/customers/edit/[id].tsx</code></td><td>Halaman edit</td></tr>
+  <tr><td><code>pages/user-management/customers/detail/[id].tsx</code></td><td>Halaman detail (read-only)</td></tr>
+</table>
+
+  <div class="note"><b>Kenapa form dipisah ke components?</b> Karena add, edit, dan detail pakai form yang sama persis — bedanya cuma: add (kosong), edit (terisi + tombol simpan), detail (terisi + disabled). Satu komponen, prop <code>isDetail</code> yang membedakan.</div>
+</section>
+
+<!-- ============================================================ -->
+<section id="step1">
+  <h2><span class="num">1</span>Types — Definisikan Bentuk Data</h2>
+  <p>Mulai dari types karena semua file lain butuh tipe ini. Kita butuh 3 interface: data mentah customer, bentuk response API list, dan bentuk state redux.</p>
+
+  <span class="path">types/wms-customer.type.ts</span>
+<pre><code><span class="k">import</span> { BaseType, PaginationType } <span class="k">from</span> <span class="s">"@sera-types/base.type"</span>;
+
+<span class="c">/** Data satu customer, field backend apa adanya. Semua optional (+ createdAt/By, updatedAt/By dst). */</span>
+<span class="k">export interface</span> <span class="t">WmsCustomer</span> {
+  no?: <span class="t">number</span>;      <span class="c">// nomor urut tampilan (dihitung di reducer, bukan dari backend)</span>
+  id?: <span class="t">string</span>;
+  code?: <span class="t">string</span>;
+  name?: <span class="t">string</span>;
+  address?: <span class="t">string</span>;
+  phone?: <span class="t">string</span>;
+  createdAt?: <span class="t">string</span>;
+  createdBy?: <span class="t">string</span>;
+  updatedAt?: <span class="t">string</span>;
+  updatedBy?: <span class="t">string</span>;
+}
+
+<span class="c">/** Bentuk response GET /customers (list dengan pagination). */</span>
+<span class="k">export interface</span> <span class="t">GetWmsCustomersResponse</span> <span class="k">extends</span> <span class="t">BaseType</span> {
+  status?: <span class="t">boolean</span>;
+  message?: <span class="t">string</span>;
+  data?: WmsCustomer[];
+  code?: <span class="t">string</span>;
+  pagination?: PaginationType;  <span class="c">// page, limit, totalData, totalPage</span>
+}
+
+<span class="c">/** Bentuk slice state redux kita. */</span>
+<span class="k">export interface</span> <span class="t">WmsCustomerState</span> {
+  data?: WmsCustomer[];
+  isLoading?: <span class="t">boolean</span>;
+  error?: <span class="t">Error</span> | <span class="t">string</span> | <span class="t">null</span>;
+  options?: BaseType;                          <span class="c">// page, limit, search, dst utk tabel</span>
+  customerDetail: { data: WmsCustomer };       <span class="c">// utk halaman edit/detail</span>
+  createCustomer: { data: GetWmsCustomersResponse[] };
+  updateCustomer: { data: GetWmsCustomersResponse[] };
+  postCreateCustomer: { code: <span class="t">string</span>; name: <span class="t">string</span> };  <span class="c">// payload notifikasi sukses</span>
+  postUpdateCustomer: { id: <span class="t">string</span>; name: <span class="t">string</span> };
+  postDeleteCustomer: { id: <span class="t">string</span>; name: <span class="t">string</span> };
+}</code></pre>
+
+  <div class="note"><b>Tip:</b> kalau bingung bentuk response API, lihat response asli dari Postman/Network tab browser, lalu tulis interfacenya dari situ. Jangan menebak.</div>
+</section>
+
+<!-- ============================================================ -->
+<section id="step2">
+  <h2><span class="num">2</span>API Layer — 5 Fungsi HTTP</h2>
+  <p>Satu file, satu factory function, return object berisi semua fungsi API. Tidak ada logic lain di sini — hanya mapping endpoint.</p>
+
+  <span class="path">libraries/api/wms-customer/index.ts</span>
+<pre><code><span class="k">import</span> apiUrl <span class="k">from</span> <span class="s">"@sera-libraries/common/api-url"</span>;
+<span class="k">import</span> { httpService } <span class="k">from</span> <span class="s">"@sera-libraries/http-service"</span>;
+
+<span class="k">const</span> <span class="f">WmsCustomerApi</span> = () => {
+  <span class="c">// LIST + pagination + search + sort</span>
+  <span class="k">async function</span> <span class="f">retrieveCustomers</span>(payload: {
+    page?: <span class="t">number</span>; limit?: <span class="t">number</span>;
+    search?: <span class="t">string</span> | <span class="t">null</span>; searchBy?: <span class="t">string</span> | <span class="t">null</span>;
+    order?: <span class="t">string</span> | <span class="t">null</span>; sort?: <span class="t">string</span> | <span class="t">null</span>;
+  }) {
+    <span class="k">return</span> httpService.<span class="f">get</span>(<span class="s">`${apiUrl.user}/customers`</span>, { params: payload }).<span class="f">then</span>((resp) =&gt; resp);
+  }
+
+  <span class="k">async function</span> <span class="f">retrieveCustomerDetail</span>(payload: { id: <span class="t">string</span> }) {
+    <span class="k">return</span> httpService.<span class="f">get</span>(<span class="s">`${apiUrl.user}/customers/${payload.id}`</span>).<span class="f">then</span>((resp) =&gt; resp);
+  }
+
+  <span class="k">async function</span> <span class="f">createCustomer</span>(payload: { code?: <span class="t">string</span>; name?: <span class="t">string</span>; address?: <span class="t">string</span>; phone?: <span class="t">string</span> }) {
+    <span class="k">return</span> httpService.<span class="f">post</span>(<span class="s">`${apiUrl.user}/customers`</span>, payload).<span class="f">then</span>((resp) =&gt; resp);
+  }
+
+  <span class="k">async function</span> <span class="f">updateCustomer</span>(payload: {
+    id: <span class="t">string</span>;
+    items?: { code?: <span class="t">string</span>; name?: <span class="t">string</span>; address?: <span class="t">string</span>; phone?: <span class="t">string</span> };
+  }) {
+    <span class="k">return</span> httpService.<span class="f">put</span>(<span class="s">`${apiUrl.user}/customers/${payload.id}`</span>, payload.items).<span class="f">then</span>((resp) =&gt; resp);
+  }
+
+  <span class="k">async function</span> <span class="f">deleteCustomer</span>(id: <span class="t">string</span>) {
+    <span class="k">return</span> httpService.<span class="f">del</span>(<span class="s">`${apiUrl.user}/customers/${id}`</span>).<span class="f">then</span>((resp) =&gt; resp);
+  }
+
+  <span class="k">return</span> { retrieveCustomers, retrieveCustomerDetail, createCustomer, updateCustomer, deleteCustomer };
+};
+
+<span class="k">export default</span> WmsCustomerApi;</code></pre>
+
+  <div class="note"><b>Catatan:</b> di project ini delete pakai <code>httpService.del</code> (bukan <code>delete</code>, karena reserved word). Endpoint customer ada di service <code>apiUrl.user</code> — sesuaikan dengan service backend kamu.</div>
+</section>
+
+<!-- ============================================================ -->
+<section id="step3">
+  <h2><span class="num">3</span>Redux State — Initial State</h2>
+  <p>File kecil yang mendefinisikan "wajah awal" state. Bentuknya harus persis sama dengan interface <code>WmsCustomerState</code> di Step 1.</p>
+
+  <span class="path">redux/states/wms-customer.state.ts</span>
+<pre><code><span class="k">import</span> { WmsCustomerState } <span class="k">from</span> <span class="s">"@sera-types/wms-customer.type"</span>;
+
+<span class="k">const</span> initialState: WmsCustomerState = {
+  data: [],                 <span class="c">// list customer</span>
+  isLoading: <span class="t">false</span>,
+  error: <span class="t">null</span>,
+  options: {                <span class="c">// default utk tabel list</span>
+    page: <span class="t">1</span>, limit: <span class="t">10</span>, totalData: <span class="t">0</span>, totalPage: <span class="t">0</span>,
+    order: <span class="t">null</span>, sort: <span class="t">null</span>, searchBy: <span class="t">null</span>, search: <span class="t">null</span>,
+  },
+  customerDetail: { data: {} },
+  createCustomer: { data: [] },
+  updateCustomer: { data: [] },
+  postCreateCustomer: { code: <span class="s">""</span>, name: <span class="s">""</span> },
+  postUpdateCustomer: { id: <span class="s">""</span>, name: <span class="s">""</span> },
+  postDeleteCustomer: { id: <span class="s">""</span>, name: <span class="s">""</span> },
+};
+
+<span class="k">export default</span> initialState;</code></pre>
+</section>
+
+<!-- ============================================================ -->
+<section id="step4">
+  <h2><span class="num">4</span>Redux Slice — Actions + Reducers</h2>
+  <p>Ini jantungnya. <code>createSlice</code> dari Redux Toolkit otomatis bikin action creators dari nama-nama reducer. Pola untuk tiap operasi selalu tiga-tiga: <code>Fetch → Success → Failure</code>.</p>
+
+  <span class="path">redux/slices/wms-customer.slice.ts</span>
+<pre><code><span class="c">/* eslint-disable no-param-reassign */</span>  <span class="c">// wajib! immer mutation butuh ini</span>
+<span class="k">import</span> { createSlice, PayloadAction } <span class="k">from</span> <span class="s">"@reduxjs/toolkit"</span>;
+<span class="k">import</span> { BaseType, PaginationType } <span class="k">from</span> <span class="s">"@sera-types/base.type"</span>;
+<span class="k">import</span> { GetWmsCustomersResponse, WmsCustomer } <span class="k">from</span> <span class="s">"@sera-types/wms-customer.type"</span>;
+<span class="k">import</span> initialState <span class="k">from</span> <span class="s">"../states/wms-customer.state"</span>;
+
+<span class="k">export const</span> wmsCustomerState = <span class="f">createSlice</span>({
+  name: <span class="s">"wmsCustomers"</span>,   <span class="c">// nama ini jadi key state di store (Step 6)</span>
+  initialState,
+  reducers: {
+    <span class="c">// ===== LIST =====</span>
+    getCustomersFetch: (state, _action: PayloadAction&lt;BaseType&gt;) =&gt; {
+      state.error = <span class="t">null</span>;
+      state.isLoading = <span class="t">true</span>;      <span class="c">// cuma set loading, data diambil saga</span>
+    },
+    getCustomersSuccess: (state, action: PayloadAction&lt;GetWmsCustomersResponse&gt;) =&gt; {
+      <span class="k">const</span> { data, pagination } = action.payload;
+      <span class="k">const</span> { page, limit, totalData, totalPage } = pagination <span class="k">as</span> PaginationType;
+      state.options = { ...state.options, page, limit, totalData, totalPage };
+      <span class="k">if</span> (data) {
+        <span class="c">// hitung nomor urut tampilan: (page-1)*limit + index + 1</span>
+        state.data = data.<span class="f">map</span>((c: WmsCustomer, index: <span class="t">number</span>) =&gt; {
+          <span class="k">const</span> no = (page - <span class="t">1</span>) * limit + index + <span class="t">1</span>;
+          <span class="k">return</span> { ...c, no };
+        });
+      }
+      state.isLoading = <span class="t">false</span>;
+    },
+    getCustomersFailure: (state, action) =&gt; {
+      state.isLoading = <span class="t">false</span>;
+      state.error = { ...action.payload };
+    },
+
+    <span class="c">// ===== DETAIL =====</span>
+    getCustomerDetailFetch: (state, _action) =&gt; { state.isLoading = <span class="t">true</span>; state.error = <span class="t">null</span>; },
+    getCustomerDetailSuccess: (state, action) =&gt; {
+      <span class="k">const</span> { data } = action.payload;
+      state.customerDetail.data = { ...state.customerDetail.data, ...data };
+      state.isLoading = <span class="t">false</span>;
+    },
+    getCustomerDetailFailure: (state, action) =&gt; { state.isLoading = <span class="t">false</span>; state.error = { ...action.payload }; },
+
+    <span class="c">// ===== CREATE =====</span>
+    createCustomerFetch: (state, _action) =&gt; { state.isLoading = <span class="t">true</span>; state.error = <span class="t">null</span>; },
+    createCustomerSuccess: (state, action) =&gt; {
+      <span class="k">const</span> { data } = action.payload;
+      state.createCustomer.data = data ?? [];
+      state.postCreateCustomer = { code: data?.code, name: data?.name };  <span class="c">// utk notifikasi</span>
+      state.isLoading = <span class="t">false</span>;
+    },
+    createCustomerFailure: (state, action) =&gt; { state.isLoading = <span class="t">false</span>; state.error = { ...action.payload }; },
+    postCreateCustomerClear: (state) =&gt; { state.postCreateCustomer = initialState.postCreateCustomer; },
+
+    <span class="c">// ===== UPDATE =====</span>
+    updateCustomerFetch: (state, _action) =&gt; { state.isLoading = <span class="t">true</span>; state.error = <span class="t">null</span>; },
+    updateCustomerSuccess: (state, action) =&gt; { <span class="c">/* pola sama dengan create */</span> },
+    updateCustomerFailure: (state, action) =&gt; { <span class="c">/* pola standar */</span> },
+    postUpdateCustomerClear: (state) =&gt; { state.postUpdateCustomer = initialState.postUpdateCustomer; },
+
+    <span class="c">// ===== DELETE =====</span>
+    deleteCustomerFetch: (state, _action) =&gt; { state.isLoading = <span class="t">true</span>; state.error = <span class="t">null</span>; },
+    deleteCustomerSuccess: (state, _action) =&gt; { state.isLoading = <span class="t">false</span>; },
+    deleteCustomerFailure: (state, action) =&gt; { state.isLoading = <span class="t">false</span>; state.error = { ...action.payload }; },
+    postDeleteCustomerNotification: (state, action) =&gt; {  <span class="c">// dipakai table utk nama yang dihapus</span>
+      state.postDeleteCustomer = { id: action.payload.id, name: action.payload.name };
+    },
+    postDeleteCustomerClear: (state) =&gt; { state.postDeleteCustomer = initialState.postDeleteCustomer; },
+  },
+});
+
+<span class="c">// action creators + reducer di-export dua-duanya</span>
+<span class="k">export const</span> { actions: wmsCustomerActions, reducer: wmsCustomerReducers } = wmsCustomerState;
+<span class="k">export default</span> wmsCustomerReducers;</code></pre>
+
+  <div class="note warn"><b>Penting — error commit kemarin:</b> reducer yang tidak pakai <code>action</code> HARUS dinamai <code>_action</code> (dengan garis bawah). ESLint rule <code>no-unused-vars</code> project ini hanya mengizinkan unused arg yang diawali <code>_</code>. Lupa ini = pre-commit hook gagal.</div>
+</section>
+
+<!-- ============================================================ -->
+<section id="step5">
+  <h2><span class="num">5</span>Redux Saga — Side Effects</h2>
+  <p>Saga bertugas: (1) menangkap action <code>...Fetch</code>, (2) memanggil API, (3) dispatch Success/Failure, (4) kadang routing setelah sukses. Satu saga worker per operasi, lalu satu saga watcher yang mendaftarkan semuanya.</p>
+
+  <span class="path">redux/sagas/wms-customer.saga.ts</span>
+<pre><code><span class="k">import</span> { PayloadAction } <span class="k">from</span> <span class="s">"@reduxjs/toolkit"</span>;
+<span class="k">import</span> WmsCustomerApi <span class="k">from</span> <span class="s">"@sera-libraries/api/wms-customer"</span>;
+<span class="k">import</span> { wmsCustomerActions } <span class="k">from</span> <span class="s">"@sera-redux/slices/wms-customer.slice"</span>;
+<span class="k">import</span> { AxiosResponse } <span class="k">from</span> <span class="s">"axios"</span>;
+<span class="k">import</span> Router <span class="k">from</span> <span class="s">"next/router"</span>;
+<span class="k">import</span> { all, call, put, takeEvery } <span class="k">from</span> <span class="s">"redux-saga/effects"</span>;
+
+<span class="c">// ===== WORKER: LIST =====</span>
+<span class="k">function*</span> <span class="f">getCustomers</span>(params: PayloadAction&lt;BaseType&gt;): Generator&lt;unknown, void, AxiosResponse&gt; {
+  <span class="k">try</span> {
+    <span class="k">const</span> result = <span class="k">yield</span> <span class="f">call</span>(WmsCustomerApi().retrieveCustomers, { ...params.payload });
+    <span class="k">if</span> (result?.status === <span class="t">200</span>)
+      <span class="k">yield</span> <span class="f">put</span>(wmsCustomerActions.getCustomersSuccess(result.data));
+  } <span class="k">catch</span> (error: <span class="t">any</span>) {
+    <span class="k">yield</span> <span class="f">put</span>(wmsCustomerActions.getCustomersFailure({
+      status: error.status, statusText: error.statusText, statusCode: error.data,
+    }));
+  }
+}
+
+<span class="c">// ===== WORKER: CREATE — perhatikan Router.push setelah sukses =====</span>
+<span class="k">function*</span> <span class="f">createCustomer</span>(params: PayloadAction&lt;<span class="t">any</span>&gt;): Generator&lt;unknown, void, AxiosResponse&gt; {
+  <span class="k">try</span> {
+    <span class="k">const</span> result = <span class="k">yield</span> <span class="f">call</span>(WmsCustomerApi().createCustomer, { ...params.payload });
+    <span class="k">if</span> (result?.status === <span class="t">201</span> || result?.status === <span class="t">200</span>) {
+      <span class="k">yield</span> <span class="f">put</span>(wmsCustomerActions.createCustomerSuccess({ data: params.payload }));
+      Router.<span class="f">push</span>(<span class="s">"/user-management/customers"</span>);   <span class="c">// balik ke list setelah sukses</span>
+    }
+  } <span class="k">catch</span> (error: <span class="t">any</span>) {
+    <span class="k">yield</span> <span class="f">put</span>(wmsCustomerActions.createCustomerFailure({
+      status: error.status, statusText: error.statusText, statusCode: error.data,
+    }));
+  }
+}
+
+<span class="c">// ===== WORKER: UPDATE &amp; DELETE &amp; DETAIL — pola identik, tinggal ganti fungsi API =====</span>
+
+<span class="c">// ===== WATCHER: daftarkan semua worker =====</span>
+<span class="k">function*</span> <span class="f">WmsCustomerSaga</span>() {
+  <span class="k">yield</span> <span class="f">all</span>([
+    <span class="f">takeEvery</span>(wmsCustomerActions.getCustomersFetch.type, getCustomers),
+    <span class="f">takeEvery</span>(wmsCustomerActions.getCustomerDetailFetch.type, getCustomerDetail),
+    <span class="f">takeEvery</span>(wmsCustomerActions.createCustomerFetch.type, createCustomer),
+    <span class="f">takeEvery</span>(wmsCustomerActions.updateCustomerFetch.type, updateCustomer),
+    <span class="f">takeEvery</span>(wmsCustomerActions.deleteCustomerFetch.type, deleteCustomer),
+  ]);
+}
+
+<span class="k">export default</span> WmsCustomerSaga;</code></pre>
+
+  <h3>Kamus istilah saga</h3>
+  <table>
+    <tr><th>Effect</th><th>Artinya</th></tr>
+    <tr><td><code>takeEvery</code></td><td>"setiap kali action ini muncul, jalankan worker ini"</td></tr>
+    <tr><td><code>call(fn, arg)</code></td><td>panggil fungsi (API) secara non-blocking</td></tr>
+    <tr><td><code>put(action)</code></td><td>dispatch action baru (seperti <code>dispatch()</code> biasa)</td></tr>
+    <tr><td><code>all([...])</code></td><td>jalankan beberapa effect paralel</td></tr>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<section id="step6">
+  <h2><span class="num">6</span>Registrasi ke Redux — 3 File Di-edit</h2>
+  <p>Slice dan saga tidak akan jalan kalau tidak didaftarkan. Ada 3 tempat:</p>
+
+  <span class="path">redux/slices/index.ts — tambah reducer ke store</span>
+<pre><code><span class="k">import</span> wmsCustomersReducer <span class="k">from</span> <span class="s">"./wms-customer.slice"</span>;
+
+<span class="k">const</span> reducers = <span class="f">combineReducers</span>({
+  <span class="c">// ...reducers lain...</span>
+  wmsCustomers: wmsCustomersReducer,   <span class="c">// ← key ini dipakai di mapStateToProps</span>
+});</code></pre>
+
+  <span class="path">redux/sagas/index.ts — tambah saga watcher</span>
+<pre><code><span class="k">import</span> wmsCustomerSaga <span class="k">from</span> <span class="s">"./wms-customer.saga"</span>;
+
+<span class="k">export default function*</span> <span class="f">rootSaga</span>() {
+  <span class="k">yield</span> <span class="f">all</span>([
+    <span class="c">// ...saga lain...</span>
+    <span class="f">wmsCustomerSaga</span>(),
+  ]);
+}</code></pre>
+
+  <span class="path">redux/index.ts — re-export agar bisa di-import dari "@sera-redux"</span>
+<pre><code><span class="k">export</span> * <span class="k">from</span> <span class="s">"./sagas/wms-customer.saga"</span>;
+<span class="k">export</span> * <span class="k">from</span> <span class="s">"./slices/wms-customer.slice"</span>;</code></pre>
+
+  <div class="note"><b>Uji cepat:</b> setelah 3 edit ini, buka halaman mana pun, buka Redux DevTools. Kalau ketik <code>customers/getCustomersFetch</code> di tab Dispatch dan tidak error berarti wiring benar.</div>
+</section>
+
+<!-- ============================================================ -->
+<section id="step7">
+  <h2><span class="num">7</span>Locale — Teks Dua Bahasa</h2>
+  <p>Semua teks UI tidak ditulis langsung di komponen, tapi lewat <code>t("key")</code> react-i18next. Buat file JSON untuk ID dan EN — <b>struktur key-nya harus identik</b>.</p>
+
+  <span class="path">locale/id/customer-management.json</span>
+<pre><code>{
+  <span class="s">"title"</span>: <span class="s">"Customer"</span>,
+  <span class="s">"action"</span>: <span class="s">"Aksi"</span>,
+  <span class="s">"notification"</span>: {
+    <span class="s">"addFailed"</span>: <span class="s">"Gagal menambah customer"</span>
+  },
+  <span class="s">"form"</span>: {
+    <span class="s">"title"</span>: <span class="s">"Customer"</span>,
+    <span class="s">"message"</span>: { <span class="s">"default"</span>: <span class="s">"Mohon isi kolom ini"</span> },
+    <span class="s">"code"</span>:    { <span class="s">"label"</span>: <span class="s">"Kode"</span>,    <span class="s">"placeholder"</span>: <span class="s">"Kode customer"</span> },
+    <span class="s">"name"</span>:    { <span class="s">"label"</span>: <span class="s">"Nama"</span>,    <span class="s">"placeholder"</span>: <span class="s">"Nama customer"</span> },
+    <span class="s">"address"</span>: { <span class="s">"label"</span>: <span class="s">"Alamat"</span>,   <span class="s">"placeholder"</span>: <span class="s">"Alamat"</span> },
+    <span class="s">"phone"</span>:   { <span class="s">"label"</span>: <span class="s">"Telepon"</span>,  <span class="s">"placeholder"</span>: <span class="s">"Telepon"</span> },
+    <span class="s">"button"</span>:  { <span class="s">"cancel"</span>: <span class="s">"Batal"</span>, <span class="s">"save"</span>: <span class="s">"Simpan"</span> }
+  },
+  <span class="s">"breadcrumb"</span>: [ { <span class="s">"title"</span>: <span class="s">"User Management"</span> }, { <span class="s">"title"</span>: <span class="s">"Customer"</span> } ],
+  <span class="s">"table"</span>: {
+    <span class="s">"searchPlaceholder"</span>: <span class="s">"Cari"</span>,
+    <span class="s">"columns"</span>: {
+      <span class="s">"no"</span>: <span class="s">"No"</span>, <span class="s">"code"</span>: <span class="s">"Kode"</span>, <span class="s">"name"</span>: <span class="s">"Nama"</span>,
+      <span class="s">"address"</span>: <span class="s">"Alamat"</span>, <span class="s">"phone"</span>: <span class="s">"Telepon"</span>,
+      <span class="s">"createdAt"</span>: <span class="s">"Dibuat"</span>, <span class="s">"actions"</span>: <span class="s">"Aksi"</span>
+    }
+  }
+}</code></pre>
+
+  <span class="path">locale/en/index.tsx dan locale/id/index.tsx — registrasi (2 file di-edit)</span>
+<pre><code><span class="k">import</span> customerManagement <span class="k">from</span> <span class="s">"./customer-management.json"</span>;
+
+<span class="c">// lalu masukkan ke object resources:</span>
+<span class="k">const</span> resources = {
+  en: { translation: { <span class="c">/* ... */</span> customerManagement } },
+  id: { translation: { <span class="c">/* ... */</span> customerManagement } },
+};</code></pre>
+
+  <div class="note"><b>Cara pakai di komponen:</b> <code>const { t } = useTranslation(undefined, { keyPrefix: "customerManagement" });</code> lalu panggil <code>t("form.code.label")</code>. keyPrefix biar tidak nulis prefix panjang berkali-kali.</div>
+</section>
+
+<!-- ============================================================ -->
+<section id="step8">
+  <h2><span class="num">8</span>Route Constant</h2>
+  <p>Jangan pernah hardcode URL di komponen. Tambahkan ke file constants:</p>
+
+  <span class="path">utils/constants/routes.ts</span>
+<pre><code>USER_MANAGEMENT: {
+  <span class="c">// ...lainnya...</span>
+  CUSTOMERS: <span class="s">"/user-management/customers"</span>,
+  WAREHOUSES: <span class="s">"/user-management/warehouses"</span>,
+},</code></pre>
+</section>
+
+<!-- ============================================================ -->
+<section id="step9">
+  <h2><span class="num">9</span>Komponen Form — Dipakai Add / Edit / Detail</h2>
+  <p>Form menerima <code>form</code> (instance Ant Design), <code>loading</code>, <code>onSubmit</code>, dan <code>isDetail</code>. Yang membedakan add vs edit vs detail bukan formnya — tapi halaman pembungkusnya (Step 12–14). Inilah kenapa form tidak memegang state sendiri.</p>
+
+  <span class="path">components/pages/user-management/customers/customer-form.tsx</span>
+<pre><code><span class="k">import</span> Button <span class="k">from</span> <span class="s">"@sera-components/button"</span>;
+<span class="k">import</span> FormActions <span class="k">from</span> <span class="s">"@sera-components/hocs/form-actions"</span>;
+<span class="k">import</span> Input <span class="k">from</span> <span class="s">"@sera-components/input"</span>;
+<span class="k">import</span> Utils <span class="k">from</span> <span class="s">"@sera-utils/utils"</span>;
+<span class="k">import</span> { Card, Col, Form, FormInstance, Row } <span class="k">from</span> <span class="s">"antd"</span>;
+<span class="k">import</span> { useRouter } <span class="k">from</span> <span class="s">"next/router"</span>;
+<span class="k">import</span> { useTranslation } <span class="k">from</span> <span class="s">"react-i18next"</span>;
+
+<span class="k">interface</span> <span class="t">ActionFormProps</span> {
+  form: FormInstance;
+  loading: <span class="t">boolean</span>;
+  onSubmit: () =&gt; <span class="t">void</span>;
+  isDetail?: <span class="t">boolean</span>;   <span class="c">// true = semua input disabled + tombol disembunyikan</span>
+}
+
+<span class="k">const</span> <span class="f">ActionForm</span> = ({ form, loading, onSubmit, isDetail }: ActionFormProps) =&gt; {
+  <span class="k">const</span> router = <span class="f">useRouter</span>();
+  <span class="k">const</span> { t } = <span class="f">useTranslation</span>(<span class="t">undefined</span>, { keyPrefix: <span class="s">"customerManagement.form"</span> });
+  <span class="k">const</span> requiredMessage = <span class="f">t</span>(<span class="s">"message.default"</span>);
+
+  <span class="k">return</span> (
+    &lt;<span class="t">Form</span> form={form} layout=<span class="s">"vertical"</span> disabled={loading} autoComplete=<span class="s">"off"</span>&gt;
+      &lt;<span class="t">Card</span> title={<span class="f">t</span>(<span class="s">"title"</span>)}&gt;
+        &lt;<span class="t">Row</span> gutter={16}&gt;
+          &lt;<span class="t">Col</span> xs={24} sm={24} md={12}&gt;
+            &lt;<span class="t">Form.Item</span> label={<span class="f">t</span>(<span class="s">"code.label"</span>)} name=<span class="s">"code"</span>
+              rules={[{ required: <span class="t">true</span>, message: requiredMessage }]}&gt;
+              &lt;<span class="t">Input</span> id=<span class="s">"code"</span> placeholder={<span class="f">t</span>(<span class="s">"code.placeholder"</span>)} disabled={isDetail} maxLength={50} /&gt;
+            &lt;/<span class="t">Form.Item</span>&gt;
+          &lt;/<span class="t">Col</span>&gt;
+          <span class="c">// ...name, address, phone — pola sama. name juga required.</span>
+        &lt;/<span class="t">Row</span>&gt;
+      &lt;/<span class="t">Card</span>&gt;
+
+      <span class="c">// tombol hanya muncul kalau BUKAN halaman detail</span>
+      {!isDetail &amp;&amp; (
+        &lt;<span class="t">FormActions</span>&gt;
+          &lt;<span class="t">Row</span> justify=<span class="s">"end"</span> gutter={[8, 8]}&gt;
+            &lt;<span class="t">Col</span>&gt;
+              &lt;<span class="t">Button</span> id=<span class="s">"cancel"</span> onClick={() =&gt; <span class="f">Utils</span>().<span class="f">onGoBack</span>(router, <span class="s">"/user-management/customers"</span>)}&gt;
+                {<span class="f">t</span>(<span class="s">"button.cancel"</span>)}
+              &lt;/<span class="t">Button</span>&gt;
+            &lt;/<span class="t">Col</span>&gt;
+            &lt;<span class="t">Col</span>&gt;
+              &lt;<span class="t">Button</span> id=<span class="s">"save"</span> type=<span class="s">"primary"</span> loading={loading} onClick={onSubmit}&gt;
+                {<span class="f">t</span>(<span class="s">"button.save"</span>)}
+              &lt;/<span class="t">Button</span>&gt;
+            &lt;/<span class="t">Col</span>&gt;
+          &lt;/<span class="t">Row</span>&gt;
+        &lt;/<span class="t">FormActions</span>&gt;
+      )}
+    &lt;/<span class="t">Form</span>&gt;
+  );
+};
+
+<span class="k">export default</span> ActionForm;</code></pre>
+</section>
+
+<!-- ============================================================ -->
+<section id="step10">
+  <h2><span class="num">10</span>Komponen Table — List + Search + Pagination + Hapus</h2>
+  <p>Tabel menerima props dari halaman list: <code>dataSource</code>, <code>options</code>, <code>loading</code>, <code>onFetch</code>, <code>onDelete</code>. Tanggung jawabnya: render kolom, tombol aksi (edit/detail/hapus dengan cek permission), search box, dan modal konfirmasi hapus.</p>
+
+  <span class="path">components/pages/user-management/customers/customer-table.tsx — kerangka inti</span>
+<pre><code><span class="c">// ...imports Button, Modal, Input, Select, Table, icons, antd, dll...</span>
+
+<span class="k">const</span> <span class="f">CustomerTable</span> = ({ dataSource, options, loading, onFetch, onDelete }: Props) =&gt; {
+  <span class="k">const</span> { t } = <span class="f">useTranslation</span>(<span class="t">undefined</span>, { keyPrefix: <span class="s">"customerManagement"</span> });
+  <span class="k">const</span> baseLink = ROUTES.USER_MANAGEMENT.CUSTOMERS;
+  <span class="k">const</span> [searchByOption, setSearchByOption] = <span class="f">useState</span>(<span class="s">"name"</span>);
+  <span class="k">const</span> [listOptions, setListOptions] = <span class="f">useState</span>&lt;BaseType&gt;({
+    page: <span class="t">1</span>, limit: <span class="t">10</span>, search: <span class="t">null</span>, searchBy: <span class="s">"name"</span>, order: <span class="t">null</span>, sort: <span class="t">null</span>,
+  });
+  <span class="k">const</span> [showDeleteConfirm, setShowDeleteConfirm] = <span class="f">useState</span>(<span class="t">false</span>);
+  <span class="k">const</span> [selected, setSelected] = <span class="f">useState</span>&lt;{ id: <span class="t">string</span>; name: <span class="t">string</span> }&gt;({ id: <span class="s">""</span>, name: <span class="s">""</span> });
+
+  <span class="c">// setiap listOptions berubah (pindah halaman / search) → fetch ulang</span>
+  <span class="f">useEffect</span>(() =&gt; { <span class="f">onFetch</span>(listOptions); }, [listOptions]);
+
+  <span class="k">const</span> <span class="f">showDeleteModal</span> = (obj: { id: <span class="t">string</span>; name: <span class="t">string</span> }) =&gt; {
+    setShowDeleteConfirm(<span class="t">true</span>); <span class="f">setSelected</span>(obj);
+  };
+
+  <span class="k">const</span> COLUMNS = [
+    { title: <span class="f">t</span>(<span class="s">"table.columns.no"</span>), dataIndex: <span class="s">"no"</span> },
+    { title: <span class="f">t</span>(<span class="s">"table.columns.code"</span>), dataIndex: <span class="s">"code"</span> },
+    { title: <span class="f">t</span>(<span class="s">"table.columns.name"</span>), dataIndex: <span class="s">"name"</span> },
+    <span class="c">// ...address, phone, createdAt</span>
+    {
+      title: <span class="f">t</span>(<span class="s">"table.columns.actions"</span>),
+      render: (_: unknown, record: WmsCustomer) =&gt; (
+        &lt;&gt;
+          <span class="c">// tiap tombol dicek permission dulu lewat useCheckPermission</span>
+          {useCheckPermission(...edit) &amp;&amp; &lt;<span class="t">Link</span> href={`${baseLink}/edit/${record.id}`}&gt;✏️&lt;/<span class="t">Link</span>&gt;}
+          {useCheckPermission(...delete) &amp;&amp;
+            &lt;<span class="t">Button</span> onClick={() =&gt; <span class="f">showDeleteModal</span>({ id: record.id!, name: record.name! })}&gt;🗑️&lt;/<span class="t">Button</span>&gt;}
+        &lt;/&gt;
+      ),
+    },
+  ];
+
+  <span class="k">return</span> (
+    &lt;&gt;
+      &lt;<span class="t">Table</span>
+        columns={COLUMNS}
+        dataSource={dataSource}
+        loading={loading}
+        pagination={{ ...options, onChange: (page) =&gt; <span class="f">setListOptions</span>((p) =&gt; ({ ...p, page })) }}
+        <span class="c">// search bar + dropdown "cari berdasarkan" di prop search</span>
+      /&gt;
+
+      <span class="c">// modal konfirmasi hapus</span>
+      &lt;<span class="t">Modal</span>
+        open={showDeleteConfirm}
+        onCancel={() =&gt; <span class="f">setShowDeleteConfirm</span>(<span class="t">false</span>)}
+        onOk={() =&gt; { <span class="f">onDelete</span>({ id: selected.id }); <span class="f">setShowDeleteConfirm</span>(<span class="t">false</span>); }}
+      &gt;
+        {<span class="f">t</span>(<span class="s">"confirmDelete"</span>)} {selected.name}?
+      &lt;/<span class="t">Modal</span>&gt;
+    &lt;/&gt;
+  );
+};</code></pre>
+
+  <div class="note"><b>Penjelasan pola <code>listOptions</code>:</b> state lokal ini adalah "sumber kebenaran" untuk query tabel (halaman berapa, cari apa, sort apa). Setiap berubah → <code>useEffect</code> fetch ulang. Sederhana dan selalu sinkron.</div>
+</section>
+
+<!-- ============================================================ -->
+<section id="step11">
+  <h2><span class="num">11</span>Halaman List</h2>
+  <p>Halaman di Next.js Pages Router = satu file di folder <code>pages/</code>, path URL mengikuti struktur folder. Halaman list bertugas: connect redux → ambil <code>customers</code> dari state → oper ke <code>CustomerTable</code>.</p>
+
+  <span class="path">pages/user-management/customers/index.tsx</span>
+<pre><code><span class="k">import</span> PageLayout <span class="k">from</span> <span class="s">"@sera-components/layout/page-layout"</span>;
+<span class="k">import</span> CustomerTable <span class="k">from</span> <span class="s">"@sera-components/pages/user-management/customers/customer-table"</span>;
+<span class="k">import</span> { RootState, wmsCustomerActions } <span class="k">from</span> <span class="s">"@sera-redux"</span>;
+<span class="k">import</span> { useTranslation } <span class="k">from</span> <span class="s">"react-i18next"</span>;
+<span class="k">import</span> { connect } <span class="k">from</span> <span class="s">"react-redux"</span>;
+
+<span class="k">const</span> <span class="f">CustomersPage</span> = ({ customers, loading, getCustomers }: <span class="t">any</span>) =&gt; {
+  <span class="k">const</span> { t } = <span class="f">useTranslation</span>(<span class="t">undefined</span>, { keyPrefix: <span class="s">"customerManagement"</span> });
+
+  <span class="k">return</span> (
+    &lt;<span class="t">PageLayout</span>
+      title={<span class="f">t</span>(<span class="s">"title"</span>)}
+      breadcrumb={[{ title: <span class="f">t</span>(<span class="s">"breadcrumb.0.title"</span>) }, { title: <span class="f">t</span>(<span class="s">"breadcrumb.1.title"</span>) }]}
+      content={
+        &lt;<span class="t">CustomerTable</span>
+          dataSource={customers.data}
+          options={customers.options}
+          loading={loading[wmsCustomerActions.getCustomersFetch.type]}
+          onFetch={getCustomers}
+          onDelete={wmsCustomerActions.deleteCustomerFetch}
+        /&gt;
+      }
+    /&gt;
+  );
+};
+
+<span class="c">// ===== redux wiring =====</span>
+<span class="k">const</span> mapStateToProps = (state: RootState) =&gt; ({
+  customers: state.wmsCustomers,   <span class="c">// ← harus sama dengan key di Step 6!</span>
+  loading: state.loading,
+});
+<span class="k">const</span> mapDispatchToProps = {
+  getCustomers: wmsCustomerActions.getCustomersFetch,   <span class="c">// ← dispatch ini = trigger saga</span>
+};
+
+<span class="k">export default</span> <span class="f">connect</span>(mapStateToProps, mapDispatchToProps)(CustomersPage);</code></pre>
+
+  <div class="note"><b>URL jadi:</b> <code>/user-management/customers</code> karena path file <code>pages/user-management/customers/index.tsx</code>. Tidak perlu setting router manual.</div>
+</section>
+
+<!-- ============================================================ -->
+<section id="step12">
+  <h2><span class="num">12</span>Halaman Add</h2>
+  <p>Form kosong + validasi + dispatch <code>createCustomerFetch</code>. Setelah saga sukses, saga sendiri yang Router.push balik ke list — halaman add tidak perlu tahu hasilnya, cukup tampilkan error kalau gagal.</p>
+
+  <span class="path">pages/user-management/customers/add/index.tsx</span>
+<pre><code><span class="k">import</span> { LayoutUserManagement } <span class="k">from</span> <span class="s">"@sera-components/pages/user-management"</span>;
+<span class="k">import</span> MessageHandler <span class="k">from</span> <span class="s">"@sera-libraries/message-handler"</span>;
+<span class="k">import</span> { RootState, wmsCustomerActions } <span class="k">from</span> <span class="s">"@sera-redux"</span>;
+<span class="k">import</span> { LoadingState } <span class="k">from</span> <span class="s">"@sera-types/loading.type"</span>;
+<span class="k">import</span> { WmsCustomerState } <span class="k">from</span> <span class="s">"@sera-types/wms-customer.type"</span>;
+<span class="k">import</span> { Form } <span class="k">from</span> <span class="s">"antd"</span>;
+<span class="k">import</span> { useEffect } <span class="k">from</span> <span class="s">"react"</span>;
+<span class="k">import</span> { useTranslation } <span class="k">from</span> <span class="s">"react-i18next"</span>;
+<span class="k">import</span> { connect } <span class="k">from</span> <span class="s">"react-redux"</span>;
+<span class="k">import</span> CustomerForm <span class="k">from</span> <span class="s">"../../../../components/pages/user-management/customers/customer-form"</span>;
+
+<span class="k">const</span> <span class="f">CustomerAdd</span> = ({ loading, createCustomer, customers }: {...}) =&gt; {
+  <span class="k">const</span> [form] = <span class="t">Form</span>.<span class="f">useForm</span>();   <span class="c">// instance form antd, dioper ke CustomerForm</span>
+  <span class="k">const</span> { t } = <span class="f">useTranslation</span>(<span class="t">undefined</span>, { keyPrefix: <span class="s">"customerManagement"</span> });
+
+  <span class="k">const</span> <span class="f">handleSubmit</span> = () =&gt; {
+    form
+      .<span class="f">validateFields</span>()              <span class="c">// jalankan rules required dll</span>
+      .<span class="f">then</span>((values) =&gt; { <span class="f">createCustomer</span>(values); })   <span class="c">// dispatch createCustomerFetch</span>
+      .<span class="f">catch</span>(() =&gt; <span class="t">undefined</span>);        <span class="c">// error validasi sudah ditampilkan antd</span>
+  };
+
+  <span class="c">// kalau saga gagal, state.customers.error terisi → tampilkan notifikasi</span>
+  <span class="f">useEffect</span>(() =&gt; {
+    <span class="k">if</span> ((customers.error <span class="k">as</span> <span class="t">any</span>)?.data?.errors) {
+      <span class="f">MessageHandler</span>().<span class="f">error</span>(<span class="f">t</span>(<span class="s">"notification.addFailed"</span>));
+    }
+  }, [customers.error]);
+
+  <span class="k">return</span> (
+    &lt;<span class="t">LayoutUserManagement</span> titlePage={<span class="f">t</span>(<span class="s">"form.title"</span>)} locationUrlList={...}&gt;
+      &lt;<span class="t">CustomerForm</span> form={form} loading={!!loading.isLoading} onSubmit={handleSubmit} /&gt;
+    &lt;/<span class="t">LayoutUserManagement</span>&gt;
+  );
+};
+
+<span class="k">const</span> mapStateToProps = (state: RootState) =&gt; ({ customers: state.wmsCustomers, loading: state.loading });
+<span class="k">const</span> mapDispatchToProps = { createCustomer: wmsCustomerActions.createCustomerFetch };
+<span class="k">export default</span> <span class="f">connect</span>(mapStateToProps, mapDispatchToProps)(CustomerAdd);</code></pre>
+</section>
+
+<!-- ============================================================ -->
+<section id="step13">
+  <h2><span class="num">13</span>Halaman Edit</h2>
+  <p>Dua perbedaan dari add: (1) ambil <code>id</code> dari URL lewat <code>useRouter().query</code>, (2) fetch detail dulu lalu isi form dengan <code>form.setFieldsValue</code>.</p>
+
+  <span class="path">pages/user-management/customers/edit/[id].tsx</span>
+<pre><code><span class="k">const</span> <span class="f">CustomerEdit</span> = ({ loading, updateCustomer, getCustomerDetail, customers }: {...}) =&gt; {
+  <span class="k">const</span> router = <span class="f">useRouter</span>();
+  <span class="k">const</span> { id } = router.query;        <span class="c">// ← dari URL /edit/[id]</span>
+  <span class="k">const</span> [form] = <span class="t">Form</span>.<span class="f">useForm</span>();
+
+  <span class="c">// 1) begitu id tersedia → fetch detail customer</span>
+  <span class="f">useEffect</span>(() =&gt; {
+    <span class="k">if</span> (id) <span class="f">getCustomerDetail</span>({ id: id <span class="k">as</span> <span class="t">string</span> });
+  }, [id]);
+
+  <span class="c">// 2) begitu detail masuk ke state → isi form</span>
+  <span class="f">useEffect</span>(() =&gt; {
+    <span class="k">const</span> d = customers.customerDetail.data;
+    <span class="k">if</span> (d?.id) {
+      form.<span class="f">setFieldsValue</span>({ code: d.code, name: d.name, address: d.address, phone: d.phone });
+    }
+  }, [customers.customerDetail.data]);
+
+  <span class="k">const</span> <span class="f">handleSubmit</span> = () =&gt; {
+    form.<span class="f">validateFields</span>().<span class="f">then</span>((values) =&gt; {
+      <span class="f">updateCustomer</span>({ id: id <span class="k">as</span> <span class="t">string</span>, items: values });  <span class="c">// ← payload beda dari create</span>
+    });
+  };
+
+  <span class="c">// render-nya sama dengan add: CustomerForm + onSubmit</span>
+};
+
+<span class="k">const</span> mapDispatchToProps = {
+  updateCustomer: wmsCustomerActions.updateCustomerFetch,
+  getCustomerDetail: wmsCustomerActions.getCustomerDetailFetch,
+};</code></pre>
+
+  <div class="note"><b>Dua useEffect = dua tahap reaksi:</b> yang pertama bereaksi terhadap <code>id</code> (URL), yang kedua bereaksi terhadap <code>customerDetail.data</code> (state redux). Ini pola standar halaman edit di project ini.</div>
+</section>
+
+<!-- ============================================================ -->
+<section id="step14">
+  <h2><span class="num">14</span>Halaman Detail</h2>
+  <p>Copy halaman edit, hapus <code>handleSubmit</code> dan <code>updateCustomer</code>, lalu oper <code>isDetail</code> ke form. Selesai — form otomatis disabled semua dan tombolnya hilang (lihat Step 9).</p>
+
+<pre><code>&lt;<span class="t">CustomerForm</span> form={form} loading={!!loading.isLoading} <span class="f">isDetail</span> /&gt;
+<span class="c">// onSubmit tidak perlu — tidak ada tombol</span></code></pre>
+</section>
+
+<!-- ============================================================ -->
+<section id="step15">
+  <h2><span class="num">15</span>Verifikasi &amp; Commit</h2>
+
+  <h3>Checklist sebelum commit</h3>
+  <ul class="checklist">
+    <li><code>npx tsc --noEmit</code> — tidak ada error TypeScript</li>
+    <li><code>npx eslint --quiet &lt;folder baru&gt;</code> — tidak ada error lint (pre-commit hook menjalankan ini otomatis)</li>
+    <li>Reducer yang tak pakai <code>action</code> sudah jadi <code>_action</code> / <code>_params</code></li>
+    <li>Key <code>mapStateToProps</code> sama dengan nama reducer di <code>redux/slices/index.ts</code></li>
+    <li>Struktur key JSON locale ID dan EN identik</li>
+    <li>Semua teks UI lewat <code>t()</code>, tidak ada teks hardcode</li>
+  </ul>
+
+  <h3>Alur uji manual (happy path)</h3>
+  <ol>
+    <li>Buka <code>/user-management/customers</code> → tabel terisi data</li>
+    <li>Klik pencarian, ketik nama → hasil terfilter, pagination bekerja</li>
+    <li>Klik tombol tambah → isi form → simpan → balik ke list, data baru muncul</li>
+    <li>Klik ikon edit → form terisi data lama → ubah → simpan → balik ke list</li>
+    <li>Klik ikon hapus → modal konfirmasi muncul → OK → data hilang dari list</li>
+    <li>Ganti bahasa ID ⇄ EN → semua teks ikut berubah</li>
+  </ol>
+
+  <h3>Debugging kalau macet</h3>
+  <table>
+    <tr><th>Gejala</th><th>Kemungkinan penyebab</th></tr>
+    <tr><td>Tombol klik, tidak ada request keluar</td><td>Saga belum diregistrasi di <code>redux/sagas/index.ts</code></td></tr>
+    <tr><td>Request keluar, tabel tidak update</td><td>Reducer belum diregistrasi / key di <code>mapStateToProps</code> salah</td></tr>
+    <tr><td>Notifikasi error tidak muncul</td><td>Bentuk <code>state.error</code> tidak cocok dengan yang dicek di <code>useEffect</code></td></tr>
+    <tr><td>Form edit kosong</td><td>Reducer <code>getCustomerDetailSuccess</code> menulis ke state yang salah, atau <code>setFieldsValue</code> tidak berjalan</td></tr>
+    <tr><td>Pre-commit hook gagal</td><td>Jalankan <code>npx eslint --fix</code> di file terkait; cek unused vars (<code>_action</code>!)</td></tr>
+  </table>
+
+  <div class="note"><b>Langkah terakhir:</b> <code>git add -A &amp;&amp; git commit -m "feat: add customer management module" &amp;&amp; git push</code>. Kalau hook pre-commit komplain, perbaiki errornya — jangan <code>--no-verify</code>, hook-nya jaga kualitas kode kita semua. 😉</div>
+</section>
+
+<footer style="text-align:center; color:var(--muted); font-size:13px; margin-top:60px;">
+  Dibuat dari kode nyata commit <code style="color:var(--accent)">dc13e9a</code> · SELOG WMS Frontend · 2026
+</footer>
+
+</div>
+</body>
+</html>

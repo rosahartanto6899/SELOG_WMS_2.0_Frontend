@@ -1,0 +1,36 @@
+.sera-page {
+  height: 100%;
+  width: 100%;
+
+  &__header {
+    height: 10.2rem;
+
+    // padding: 1.6rem 2.4rem;
+    padding: 0;
+
+    &.tab {
+      background: linear-gradient(
+        89.95deg,
+        #fff 0.03%,
+        rgb(255 255 255 / 0%) 56.93%
+      );
+      height: 15.8rem;
+    }
+  }
+
+  &__content {
+    padding-bottom: 100px;
+  }
+
+  .height-auto {
+    height: auto !important;
+  }
+
+  .card-container-with-menu {
+    border-radius: 0 0 0.8rem 0.8rem;
+  }
+
+  .card-container {
+    border-radius: 0.8rem;
+  }
+}

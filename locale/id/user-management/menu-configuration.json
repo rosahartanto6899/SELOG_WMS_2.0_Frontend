@@ -1,0 +1,89 @@
+{
+  "title": "Manajemen Menu",
+  "breadcrumb": [
+    { "title": "Manajemen Pengguna" },
+    { "title": "Manajemen Menu" }
+  ],
+  "table": {
+    "title": "Daftar Menu",
+    "columns": {
+      "icon": "Ikon",
+      "name": "Nama Menu",
+      "menuLink": "Tautan Menu",
+      "parent": "Induk",
+      "createdAt": "Dibuat Pada",
+      "updatedAt": "Diperbarui Pada",
+      "actions": "Aksi"
+    },
+    "options": ["Nama Menu", "Tautan Menu"],
+    "button": {
+      "add": { "label": "Tambah Menu Baru" },
+      "update": { "tooltip": "Edit" },
+      "delete": { "tooltip": "Hapus" }
+    },
+    "searchPlaceholder": "Cari di Tabel"
+  },
+  "modal": {
+    "delete": {
+      "title": "Hapus Menu",
+      "text": {
+        "ok": "Ya, Hapus",
+        "confirm": "Apakah Anda yakin ingin menghapus menu"
+      }
+    }
+  },
+
+  "add": {
+    "title": "Tambah Menu Baru",
+    "alert": "Harap lengkapi formulir sebelum menekan Simpan"
+  },
+  "edit": {
+    "title": "Edit Menu",
+    "alert": "Harap lengkapi formulir sebelum menekan Simpan"
+  },
+
+  "form": {
+    "title": {
+      "add": "Tambah Menu",
+      "edit": "Ubah Menu"
+    },
+
+    "name": {
+      "label": "Nama Menu",
+      "placeholder": "Silakan masukkan nama menu",
+      "required": "Kolom ini wajib diisi"
+    },
+    "configuration": {
+      "label": "Induk",
+      "placeholder": "Silakan Pilih Induk"
+    },
+    "icon": {
+      "label": "Ikon Menu",
+      "placeholder": "Silakan masukkan ikon menu"
+    },
+    "link": {
+      "label": "Tautan Menu",
+      "placeholder": "Silakan masukkan tautan menu",
+      "required": "Kolom ini wajib diisi"
+    },
+    "order": {
+      "label": "Urutan Menu",
+      "placeholder": "Silakan masukkan urutan menu"
+    },
+    "tab": {
+      "true": "Menu Tab",
+      "false": "Menu Samping"
+    },
+
+    "button": {
+      "cancel": "Batal",
+      "save": "Simpan"
+    }
+  },
+
+  "message": {
+    "add": "telah berhasil ditambahkan!",
+    "edit": "telah berhasil diedit!",
+    "delete": "telah berhasil dihapus!"
+  }
+}

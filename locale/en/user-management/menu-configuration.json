@@ -1,0 +1,88 @@
+{
+  "title": "Menu Management",
+  "breadcrumb": [
+    { "title": "User Management" },
+    { "title": "Menu Management" }
+  ],
+  "table": {
+    "title": "List of Menu",
+    "columns": {
+      "icon": "Icon",
+      "name": "Menu Name",
+      "menuLink": "Menu Link",
+      "parent": "Parent",
+      "createdAt": "Created At",
+      "updatedAt": "Updated At",
+      "actions": "Action"
+    },
+    "options": ["Menu Name", "Menu Link"],
+    "button": {
+      "add": { "label": "Add New Menu" },
+      "update": { "tooltip": "Edit" },
+      "delete": { "tooltip": "Delete" }
+    },
+    "searchPlaceholder": "Search in table"
+  },
+  "modal": {
+    "delete": {
+      "title": "Delete Menu",
+      "text": {
+        "ok": "Yes, Delete",
+        "confirm": "Are you sure you want to delete menu"
+      }
+    }
+  },
+
+  "add": {
+    "title": "Add New Menu",
+    "alert": "Please complete the form before clicking Save"
+  },
+  "edit": {
+    "title": "Edit Menu",
+    "alert": "Please complete the form before clicking Save"
+  },
+
+  "form": {
+    "title": {
+      "add": "Add Menu",
+      "edit": "Edit Menu"
+    },
+    "name": {
+      "label": "Menu Name",
+      "placeholder": "Please enter the name of the menu",
+      "required": "This field is required"
+    },
+    "configuration": {
+      "label": "Parent",
+      "placeholder": "Please Select Parent"
+    },
+    "icon": {
+      "label": "Menu Icon",
+      "placeholder": "Please enter the icon of the menu"
+    },
+    "link": {
+      "label": "Menu Link",
+      "placeholder": "Please enter the link of the menu",
+      "required": "This field is required"
+    },
+    "order": {
+      "label": "Menu Order",
+      "placeholder": "Please enter the order of the menu"
+    },
+    "tab": {
+      "true": "Tab Menu",
+      "false": "Side Menu"
+    },
+
+    "button": {
+      "cancel": "Cancel",
+      "save": "Save"
+    }
+  },
+
+  "message": {
+    "add": "have been successfully added!",
+    "edit": "have been successfully edited!",
+    "delete": "has been successfully removed!"
+  }
+}

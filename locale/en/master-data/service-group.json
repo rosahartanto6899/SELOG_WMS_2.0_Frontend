@@ -1,0 +1,77 @@
+{
+  "title": "Service Group",
+  "breadcrumb": [
+    "Master Data",
+    "Service Group",
+    { "add": "Add New Service Group", "edit": "Edit Service Group" }
+  ],
+
+  "table": {
+    "title": "List of Service Group",
+
+    "column": {
+      "name": "Name",
+      "branchName": "Branch Name",
+      "actions": "Action"
+    },
+
+    "button": {
+      "add": "Add New Service Group",
+      "update": { "tooltip": "Update" },
+      "delete": { "tooltip": "Delete" }
+    },
+
+    "options": ["Service Group Name", "Branch Name"],
+    "search": { "placeholder": "Search" }
+  },
+
+  "form": {
+    "title": {
+      "add": "Add New Service Group",
+      "edit": "Edit Service Group"
+    },
+
+    "input": {
+      "name": {
+        "label": "Service Group Name",
+        "placeholder": "Input Service Group Name"
+      },
+      "branch": {
+        "label": "Branch",
+        "placeholder": "Select Branch"
+      },
+
+      "message": "Kolom ini harus diisi"
+    },
+
+    "button": {
+      "cancel": "Cancel",
+      "save": "Save"
+    }
+  },
+
+  "modal": {
+    "delete": {
+      "title": "Delete Service Group",
+      "subtitle": "Are you sure you want to delete service group",
+      "ok": "Yes, Delete",
+      "cancel": "Cancel"
+    }
+  },
+
+  "toast": {
+    "create": {
+      "prevText": "Service group",
+      "postText": "have been successfully added!"
+    },
+    "update": {
+      "prevText": "Service group",
+      "postText": "have been successfully edited!"
+    },
+    "delete": {
+      "postText": "has been successfully removed!"
+    }
+  },
+
+  "message": "Please complete the form before clicking Save"
+}

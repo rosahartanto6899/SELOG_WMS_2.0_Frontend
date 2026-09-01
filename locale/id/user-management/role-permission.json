@@ -1,0 +1,120 @@
+{
+  "title": "Izin Peran",
+  "breadcrumb": [{ "title": "Manajemen Pengguna" }, { "title": "Izin Peran" }],
+  "tabs": [
+    { "title": "Pengguna" },
+    { "title": "Peran" },
+    { "title": "Izin Peran" }
+  ],
+  "table": {
+    "title": "Daftar Menu Peran",
+    "header": [
+      { "title": "No." },
+      { "title": "Menu" },
+      { "title": "Grup Armada" },
+      { "title": "Peran" },
+      { "title": "Baca" },
+      { "title": "Buat" },
+      { "title": "Perbarui" },
+      { "title": "Hapus" },
+      { "title": "Ekspor" },
+      { "title": "Dibuat Pada" },
+      { "title": "Diperbarui Pada" },
+      { "title": "Aksi" }
+    ]
+  },
+  "searchBar": {
+    "placeholder": "Cari",
+    "dropdownOption": {
+      "title": "Menu",
+      "placeholder": "Cari Berdasarkan"
+    }
+  },
+  "button": {
+    "title": "Tambah Izin Peran Baru"
+  },
+  "tooltip": {
+    "edit": "Edit",
+    "delete": "Hapus"
+  },
+  "modal": {
+    "delete": {
+      "title": "Hapus Izin Peran",
+      "body": "Apakah Anda yakin ingin menghapus menu peran",
+      "action": {
+        "yes": { "title": "Ya, Hapus" }
+      }
+    }
+  },
+  "add": {
+    "breadcrumb": [
+      { "title": "Manajemen Pengguna" },
+      { "title": "Izin Peran" },
+      { "title": "Tambah Izin Peran Baru" }
+    ],
+    "title": "Tambah Izin Peran Baru",
+    "cardTitle": "Izin Peran",
+    "form": {
+      "required": {
+        "message": "Kolom ini wajib diisi"
+      },
+      "nonNullable": {
+        "message": "Harap lengkapi formulir sebelum menekan Simpan"
+      },
+      "menu": {
+        "title": "Menu",
+        "placeholder": "Pilih Menu"
+      },
+      "role": {
+        "title": "Peran",
+        "placeholder": "Pilih Peran"
+      },
+      "action": {
+        "title": "Aksi",
+        "options": ["Baca", "Buat", "Perbarui", "Hapus", "Ekspor"]
+      },
+      "button": {
+        "save": "Simpan",
+        "cancel": "Batal"
+      }
+    }
+  },
+  "edit": {
+    "title": "Edit Izin Peran",
+    "breadcrumb": [
+      { "title": "Manajemen Pengguna" },
+      { "title": "Izin Peran" },
+      { "title": "Edit Izin Peran" }
+    ],
+    "cardTitle": "Izin Peran",
+    "form": {
+      "required": {
+        "message": "Kolom ini wajib diisi"
+      },
+      "nonNullable": {
+        "message": "Harap lengkapi formulir sebelum menekan Simpan"
+      },
+      "menu": {
+        "title": "Menu",
+        "placeholder": "Pilih Menu"
+      },
+      "role": {
+        "title": "Peran",
+        "placeholder": "Pilih Peran"
+      },
+      "action": {
+        "title": "Aksi",
+        "options": ["Baca", "Buat", "Perbarui", "Hapus", "Ekspor"]
+      },
+      "button": {
+        "save": "Simpan",
+        "cancel": "Batal"
+      }
+    }
+  },
+  "notification": {
+    "add": "telah berhasil ditambahkan!",
+    "edit": "telah berhasil diedit!",
+    "delete": "telah berhasil dihapus!"
+  }
+}

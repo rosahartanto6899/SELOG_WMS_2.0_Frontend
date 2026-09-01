@@ -1,0 +1,23 @@
+{
+  "title": "Log Pengguna",
+  "breadcrumb": [
+    { "title": "Manajemen Pengguna" },
+    { "title": "Log Pengguna" }
+  ],
+  "table": {
+    "title": "Daftar Log Pengguna",
+    "header": [
+      { "title": "No." },
+      { "title": "Nama" },
+      { "title": "Email" },
+      { "title": "Terakhir Aktif" },
+      { "title": "Fitur" },
+      { "title": "Aktifitas" },
+      { "title": "Channel" }
+    ]
+  },
+  "searchBox": {
+    "placeholder": "Cari di Tabel",
+    "dropdownOptions": ["Nama", "Email", "Fitur", "Aktifitas", "Channel"]
+  }
+}

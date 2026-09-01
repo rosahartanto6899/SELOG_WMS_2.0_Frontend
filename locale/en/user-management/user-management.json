@@ -1,0 +1,142 @@
+{
+  "title": "Users",
+  "breadcrumb": [
+    "User Management",
+    "Users",
+    {
+      "add": "Add New User",
+      "edit": "Edit User",
+      "detail": "Detail User"
+    }
+  ],
+  "table": {
+    "title": "List of Users",
+    "columns": {
+      "name": "Name",
+      "nrp": "NRP",
+      "email": "Email",
+      "role": "Role",
+      "userCategory": "User Category",
+      "status": "Status",
+      "createdAt": "Created At",
+      "updatedAt": "Updated At",
+      "actions": "Action",
+      "button": {
+        "add": {
+          "label": "Add New User"
+        },
+        "update": {
+          "tooltip": "Edit"
+        },
+        "detail": {
+          "tooltip": "Detail"
+        },
+        "delete": {
+          "tooltip": "Delete"
+        },
+        "send": {
+          "tooltip": "Re-send Email Activation"
+        }
+      }
+    },
+    "options": ["Name", "Email", "User Category"],
+    "search": {
+      "default": {
+        "placeholder": "Search Data By"
+      },
+      "internal": {
+        "placeholder": "Search in table"
+      },
+      "notInternal": {
+        "placeholder": "Select User Category"
+      }
+    }
+  },
+  "modal": {
+    "delete": {
+      "title": "Delete User",
+      "text": {
+        "ok": "Yes, Delete",
+        "confirm": "Are you sure you want to delete user"
+      }
+    },
+    "resend": {
+      "title": "Re-send Email Activation",
+      "text": {
+        "ok": "Yes, Send",
+        "confirm": "Are you sure you want to Re-send email activation to user"
+      }
+    }
+  },
+  "form": {
+    "title": "User Information",
+    "message": {
+      "default": "This field is required"
+    },
+    "nonNullable": {
+      "message": "Please complete the form before clicking Save"
+    },
+    "categories": {
+      "label": "Categories",
+      "options": ["User Internal", "User External"]
+    },
+    "userName": {
+      "label": "User Name",
+      "placeholder": "Please enter Name"
+    },
+    "nrp": {
+      "label": "NRP",
+      "placeholder": "Please enter NRP"
+    },
+    "email": {
+      "label": "Email",
+      "placeholder": "Please enter Email",
+      "message": "Please input valid email format"
+    },
+    "phoneNumber": {
+      "label": "Phone Number",
+      "placeholder": "Please enter Phone Number",
+      "messages": [
+        "Phone Number must be more than equals 10 characters",
+        "Phone Number must be less than equals 15 characters",
+        "Please input valid phone number format (ex: 628212345678)"
+      ]
+    },
+    "roleBranch": "Customer & Role Access",
+    "role": {
+      "messages": {
+        "unique": "Role must be unique"
+      },
+      "label": "Role",
+      "placeholder": "Please choose Role"
+    },
+    "warehouse": {
+      "label": "Warehouse",
+      "placeholder": "Please enter Warehouse",
+      "selectAll": "Select All",
+      "unselectAll": "Unselect All"
+    },
+    "status": {
+      "active": "Status Active",
+      "nonActive": "Status Non Active"
+    },
+    "button": {
+      "addRole": "Add Role",
+      "cancel": "Cancel",
+      "save": "Save",
+      "addCustomer": "Add Customer"
+    },
+    "customer": {
+      "label": "Customer",
+      "placeholder": "Please select Customer",
+      "messages": {
+        "unique": "Customer already selected"
+      }
+    }
+  },
+  "message": {
+    "add": "have been successfully added!",
+    "edit": "have been successfully edited!",
+    "delete": "has been successfully removed!"
+  }
+}

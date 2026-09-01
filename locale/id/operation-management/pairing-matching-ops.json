@@ -1,0 +1,286 @@
+{
+  "title": "Pairing Matching Confirmation",
+  "breadcrumb": ["Operation Management", "Pairing Matching Confirmation"],
+  "filters": ["Branch", "Area", "Unit Type", "Shipment Type"],
+  "summary": {
+    "fields": [
+      "Total Shipment",
+      "Shipment Need to Confirm",
+      "Shipment Repaired",
+      "Shipment Assigned",
+      "Shipment Cancelled"
+    ]
+  },
+  "maps": {
+    "title": "Detail Order",
+    "filters": ["Unit Capacity Status"],
+    "field": {
+      "bookingNo": "Booking Code",
+      "shipmentNo": "Shipment No",
+      "customer": "Customer Name",
+      "status": "Status",
+      "branchName": "Branch",
+      "shipmentType": "Shipment Type",
+      "origin": "Origin",
+      "destination": "Destination",
+      "pickupDate": "Pickup Date",
+      "revenue": "Revenue",
+      "unitType": "Unit Type",
+      "licensePlate": "License Plate",
+      "driverId1": "Driver Name 1",
+      "phoneNumber1": "Mobile Phone 1",
+      "driverId2": "Driver Name 2",
+      "phoneNumber2": "Mobile Phone 2"
+    }
+  },
+  "table": {
+    "demands": {
+      "title": "Demands",
+      "button": {
+        "config": "Columns",
+        "confirm": "Confirm",
+        "cancel": "Cancel"
+      },
+      "alert": {
+        "title": "Pairing Matching Confirmation",
+        "titleConfirm": "Are You Sure to Confirm?",
+        "desc": "Are you sure you want to proceed?",
+        "okBtn": "Confirm"
+      },
+      "column": {
+        "A": "Priority",
+        "B": "Status",
+        "C": "Created Date",
+        "D": "Created By",
+        "E": "Shipment No",
+        "F": "Booking Code",
+        "G": "Shipment Type",
+        "H": "Customer",
+        "I": "Branch Order",
+        "J": "Unit Type",
+        "K": "Qty Driver",
+        "L": "Origin",
+        "M": "Destination",
+        "N": "Pickup Date",
+        "O": "Est. Unloading",
+        "P": "License Plate",
+        "Q": "Driver VK/VD 1",
+        "R": "Driver ID 1",
+        "S": "Driver 1",
+        "T": "Phone Driver 1",
+        "U": "Driver VK/VD 2",
+        "V": "Driver ID 2",
+        "W": "Driver 2",
+        "X": "Phone Driver 2",
+        "Y": "Revenue",
+        "AA": "Expenses",
+        "BB": "Route Code",
+        "Z": "Action",
+        "button": {
+          "repair": {
+            "tooltip": "Repaired"
+          },
+          "confirm": {
+            "tooltip": "Confirm"
+          },
+          "detail": {
+            "tooltip": "View History"
+          }
+        }
+      },
+      "options": [
+        "Shipment Type",
+        "Status",
+        "Booking Code",
+        "Shipment No",
+        "Customer",
+        "Pickup Date",
+        "Origin",
+        "Destination",
+        "Priority"
+      ],
+      "placeholder": {
+        "default": "Search",
+        "A": "Search",
+        "B": "Search",
+        "C": "Search",
+        "D": "Search",
+        "E": "Search",
+        "F": "Search",
+        "G": "Search",
+        "H": "Search",
+        "I": "Search"
+      },
+      "toast": {
+        "confirm": "Confirm Success",
+        "repair": "Repair has been sent"
+      },
+      "confirm": {
+        "title": "Are you sure to confirm?",
+        "desc": [
+          {
+            "title": "Order Information",
+            "items": [
+              "Shipment Number",
+              "Customer Name",
+              "Pick Up Date",
+              "Origin",
+              "Destination"
+            ]
+          },
+          {
+            "title": "Capacity",
+            "items": ["License Plate", "Unit Type", "Driver 1", "Driver 2"]
+          },
+          {
+            "title": "Others",
+            "items": ["Revenue", "Cost", "Ratio Expenses", "JMP"]
+          }
+        ]
+      }
+    },
+    "units": {
+      "title": "Unit Capacity Unpaired",
+      "column": {
+        "status": "Status",
+        "licensePlate": "License Plate",
+        "unitType": "Unit Type",
+        "unitYear": "Year",
+        "lastLocation": "Last Location",
+        "isAllotment": "Note",
+        "isAllotment_value": ["No", "Yes"]
+      },
+      "options": ["License Plate", "Status"],
+      "placeholder": {
+        "default": "Search",
+        "licensePlate": "Search",
+        "status": "Search"
+      }
+    },
+    "drivers": {
+      "title": "Drivers Capacity Unpaired",
+      "column": {
+        "capacityStatus": "Status",
+        "vkvd": "VK/VD",
+        "driverName": "Driver Name",
+        "employeeStatus": "Employee Status",
+        "fatigueStatus": "Fatigue Level",
+        "lastLocation": "Last Location",
+        "allotment": "Note",
+        "allotment_value": ["No", "Yes"],
+        "tier": "Tier Driver"
+      },
+      "options": ["VK/VD", "Driver Name", "Employee Status", "Tier"],
+      "placeholder": {
+        "default": "Search",
+        "vkvd": "Search",
+        "driverName": "Search",
+        "employeeStatus": "Search",
+        "tier": "Search"
+      }
+    },
+    "paired": {
+      "title": "Capacity Paired",
+      "button": {
+        "config": "Columns"
+      },
+      "column": {
+        "A": "Confirmation Status",
+        "B": "Shipment No",
+        "C": "Booking Code",
+        "D": "Customer Name",
+        "E": "Branch Order",
+        "F": "Unit Type",
+        "G": "Origin",
+        "H": "Destination",
+        "I": "Pickup Date",
+        "J": "License Plate",
+        "K": "Driver 1",
+        "L": "Phone Driver 1",
+        "M": "Driver 2",
+        "N": "Phone Driver 2",
+        "Z": "Action",
+        "button": {
+          "history": {
+            "tooltip": "View History"
+          },
+          "confirm": {
+            "tooltip": "Need to Confirm"
+          }
+        }
+      },
+      "alert": {
+        "title": "Confirm Capacity Paired",
+        "desc": "You are about to confirm capacity paired. Are you sure you want to proceed?",
+        "okBtn": "Confirm"
+      }
+    },
+    "history": {
+      "title": "Pairing Matching History",
+      "column": {
+        "A": "Shipment No",
+        "B": "Activity Detail",
+        "C": "Activity Date",
+        "D": "Activity By"
+      }
+    }
+  },
+  "form": {
+    "title": "Pairing Matching",
+    "input": {
+      "A": {
+        "label": "Shipment No",
+        "placeholder": "Select Shipment No"
+      },
+      "B": {
+        "label": "Driver 1",
+        "placeholder": "Select Driver 1"
+      },
+      "C": {
+        "label": "License Plate",
+        "placeholder": "Select License Plate"
+      },
+      "D": {
+        "label": "Driver 2",
+        "placeholder": "Select Driver 2"
+      }
+    },
+    "button": {
+      "submit": "Paired"
+    },
+    "alert": {
+      "title": "Confirm Pairing Matching",
+      "desc": "You are about to record pairing matching. Are you sure you want to proceed?",
+      "okBtn": "Confirn"
+    },
+    "message": {
+      "required": "This field is required"
+    }
+  },
+  "confirmation": {
+    "form": {
+      "title": "Are you sure you want to propose Repaired?",
+      "input": {
+        "B": {
+          "label": "Note"
+        }
+      },
+      "button": {
+        "submit": "Submit"
+      },
+      "message": {
+        "required": "This field is required"
+      }
+    }
+  },
+  "toast": {
+    "pairing": "Pairing matching have been successfully paired!",
+    "confirm": "Pairing matching have been successfully confirmed!",
+    "repaired": "Pairing matching have been successfully repaired!"
+  },
+  "alert": {
+    "title": "Are you sure you want to change filter?",
+    "desc": "Your selected data will be removed",
+    "okBtn": "Confirm"
+  }
+}

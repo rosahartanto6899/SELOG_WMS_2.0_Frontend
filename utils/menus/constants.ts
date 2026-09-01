@@ -1,0 +1,6 @@
+export const MAX_CICO_POOL_SHOWN = 2;
+export const CONTRACT_FORMAT_DATE = "D MMM YYYY";
+export const BIRTH_DATE_FORMAT_DATE = "D-MMM-YYYY";
+export const MARITAL_DATE_FORMAT_DATE = "D-MMM-YYYY";
+export const EDUCATION_FORMAT_YEAR = "YYYY";
+export const BIRTH_DATE_TABLE_FORMAT_DATE = "D MMM YYYY";

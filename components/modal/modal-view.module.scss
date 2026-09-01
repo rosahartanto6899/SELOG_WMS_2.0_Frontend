@@ -1,0 +1,21 @@
+@use "@sera-assets/sass/mixins" as *;
+@import "@sera-assets/sass/variables";
+
+.sera-modal-view {
+  :global {
+    .ant-modal-content {
+      .ant-modal-header {
+        background: linear-gradient(
+          269.91deg,
+          $primary-main -1.27%,
+          $primary-subtle 100%
+        );
+        padding: 8px;
+
+        .ant-modal-title {
+          color: $text-light;
+        }
+      }
+    }
+  }
+}

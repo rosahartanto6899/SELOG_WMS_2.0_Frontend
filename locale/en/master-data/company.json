@@ -1,0 +1,79 @@
+{
+  "title": "Company",
+  "breadcrumb": ["Master Data", "Company"],
+  "button": {
+    "update": {
+      "tooltip": "Update"
+    },
+    "delete": {
+      "tooltip": "Delete"
+    }
+  },
+  "table": {
+    "title": "List of Company",
+    "column": {
+      "name": "Name",
+      "code": "Code",
+      "actions": "Action"
+    },
+    "options": ["Code", "Name"],
+    "button": {
+      "add": "Add New Company",
+      "update": {
+        "toolTip": "Update"
+      },
+      "delete": {
+        "toolTip": "Delete"
+      }
+    },
+    "pagination": {
+      "items": "items",
+      "page": "page"
+    },
+    "search": { "placeholder": "Search" }
+  },
+  "modal": {
+    "delete": {
+      "title": "Delete Company",
+      "subtitle": "Are you sure you want to delete Company",
+      "ok": "Yes, Delete",
+      "cancelText": "Cancel"
+    }
+  },
+  "toast": {
+    "create": {
+      "prevText": "Company",
+      "postText": "have been successfully added!"
+    },
+    "update": {
+      "prevText": "Company",
+      "postText": "have been successfully edited!"
+    },
+    "delete": {
+      "postText": "has been successfully removed!"
+    }
+  },
+  "add": {
+    "breadcrumb": ["Master Data", "Master Company", "Add New Company"],
+    "title": "Add Company",
+    "message": "Please complete the form before clicking Save"
+  },
+  "edit": {
+    "breadcrumb": ["Master Data", "Company", "Edit Data"],
+    "title": "Edit Company",
+    "message": "Please complete the form before clicking Save"
+  },
+  "form": {
+    "title": { "add": "Add New Company", "edit": "Edit Company" },
+    "input": {
+      "message": "This field is required",
+
+      "name": { "label": "Name", "placeholder": "Input Company Name" },
+      "code": { "label": "Code", "placeholder": "Input Company Code" }
+    },
+    "button": {
+      "cancel": "Cancel",
+      "save": "Save"
+    }
+  }
+}

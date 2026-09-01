@@ -1,0 +1,22 @@
+// Notification Drawer
+.sera-drawer-notification {
+  :global {
+    .ant-drawer-content {
+      border-radius: 1.6rem 0 0 1.6rem;
+
+      .ant-drawer-wrapper-body {
+        .ant-drawer-header {
+          padding: 2.4rem;
+
+          .ant-drawer-header-title {
+            flex-direction: row-reverse;
+          }
+        }
+
+        .ant-drawer-body {
+          padding: 0;
+        }
+      }
+    }
+  }
+}

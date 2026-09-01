@@ -1,0 +1,78 @@
+{
+  "title": "Warehouse",
+  "action": "Action",
+  "detail": "Detail",
+  "edit": "Edit",
+  "delete": "Delete",
+  "confirmDelete": "Are you sure to delete",
+  "form": {
+    "title": "Warehouse",
+    "message": {
+      "default": "Please fill this field"
+    },
+    "customer": {
+      "label": "Customer",
+      "placeholder": "Select customer"
+    },
+    "code": {
+      "label": "Code",
+      "placeholder": "Warehouse code"
+    },
+    "name": {
+      "label": "Name",
+      "placeholder": "Warehouse name"
+    },
+    "address": {
+      "label": "Address",
+      "placeholder": "Address"
+    },
+    "phone": {
+      "label": "Phone",
+      "placeholder": "Phone"
+    },
+    "button": {
+      "cancel": "Cancel",
+      "save": "Save"
+    }
+  },
+  "breadcrumb": [
+    {
+      "title": "User Management"
+    },
+    {
+      "title": "Warehouse"
+    }
+  ],
+  "table": {
+    "title": "Warehouse",
+    "searchPlaceholder": "Search",
+    "columns": {
+      "no": "No",
+      "code": "Code",
+      "name": "Name",
+      "customer": "Customer",
+      "address": "Address",
+      "phone": "Phone",
+      "createdAt": "Created At",
+      "actions": "Actions"
+    },
+    "button": {
+      "add": {
+        "label": "Add New"
+      },
+      "update": {
+        "tooltip": "Edit"
+      },
+      "delete": {
+        "tooltip": "Delete"
+      }
+    }
+  },
+  "modal": {
+    "delete": {
+      "title": "Delete Confirmation",
+      "okText": "Delete",
+      "cancelText": "Cancel"
+    }
+  }
+}

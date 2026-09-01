@@ -1,0 +1,111 @@
+{
+  "error": {
+    "error404": {
+      "title": "Maaf, Halaman Tidak Ditemukan",
+      "subtitle": "Halaman yang Anda cari tidak tersedia!",
+      "backToHomeButton": "Kembali ke Beranda"
+    },
+    "underMaintenance": {
+      "title": "Dalam Perbaikan",
+      "subtitle": "Situs ini sedang dalam perbaikan untuk memberikan pengalaman terbaik bagi Anda. Terima kasih atas kesabaran Anda!"
+    },
+    "handleWait": {
+      "title": "Mohon Tunggu",
+      "subtitle": "Kami siap menyajikan halaman ini, mohon tunggu beberapa menit dan klik tombol refresh di bawah.",
+      "refreshButton": "Refresh"
+    },
+    "cardContainer": {
+      "message": "Proses ini memerlukan waktu yang terlalu lama untuk dimuat. Silakan segarkan dan coba lagi dalam beberapa menit.",
+      "button": "Klik untuk mencoba lagi."
+    },
+    "unauthorized": {
+      "message": "Sesi anda telah berakhir. Silahkan login kembali"
+    }
+  },
+  "empty": {
+    "message": "Pencarian Anda tidak mengembalikan hasil apa pun."
+  },
+  "hoc": {
+    "restricted": {
+      "title": "Akses Terbatas",
+      "subtitle": "Maaf, Anda tidak memiliki akses ke fitur ini."
+    }
+  },
+  "header": {
+    "menu": {
+      "witchRole": "Switch Role",
+      "logout": "Logout",
+      "witchCustomer": "Ganti Customer"
+    }
+  },
+  "notification": {
+    "bar": {
+      "header": {
+        "title": "Notifikasi",
+        "buttons": [
+          {
+            "label": "Semua"
+          },
+          {
+            "label": "Anomali"
+          },
+          {
+            "label": "Peristiwa Kritis"
+          },
+          {
+            "label": "Pelanggaran"
+          }
+        ],
+        "input": {
+          "placeholder": "Cari notifikasi"
+        }
+      },
+      "body": {
+        "button": "Lihat Semua",
+        "divider": "Selesai",
+        "data": {
+          "empty": "Tidak ada catatan.",
+          "description": "diperlukan untuk penyelidikan."
+        }
+      }
+    },
+    "list": {
+      "title": "Notifikasi",
+      "data": {
+        "empty": "Anda tidak memiliki notifikasi.",
+        "description": "diperlukan untuk penyelidikan.",
+        "button": "Lihat Semua Pemberitahuan Peringatan"
+      }
+    }
+  },
+  "pageTitle": {
+    "dashboard": "Dasbor",
+    "login": "Masuk",
+    "activation": "Aktivasi Akun",
+    "recoverPassword": "Pulihkan Kata Sandi"
+  },
+  "loading": "Memuat",
+  "table": {
+    "item": "item",
+    "items": "item",
+    "tooltip": {
+      "save": "Tekan Enter untuk menyimpan perubahan.",
+      "edit": "Klik untuk mengedit baris."
+    }
+  },
+  "footer": {
+    "help": "Bantuan & Dukungan",
+    "tnc": "Terms & Conditions"
+  },
+  "recovery": {
+    "success": "Email reset password telah dikirim ke alamat email terdaftar Anda."
+  },
+  "uploadDnd": {
+    "desc": "Click or drag file to this area to upload"
+  },
+  "commons": {
+    "days": "Days",
+    "months": "Months",
+    "years": "Years"
+  }
+}

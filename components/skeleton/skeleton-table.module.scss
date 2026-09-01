@@ -1,0 +1,88 @@
+@use "@sera-assets/sass/mixins" as *;
+@import "@sera-assets/sass/variables";
+
+.sera-skeleton-table {
+  :global {
+    .ant-skeleton-element .ant-skeleton-button {
+      height: 1.6rem !important;
+      vertical-align: middle;
+    }
+
+    .ant-table-thead
+      > tr
+      > th
+      > .ant-skeleton.ant-skeleton-active
+      .ant-skeleton-button::after {
+      background: linear-gradient(
+        90deg,
+        hsl(209deg 86% 70% / 20%) 25%,
+        hsl(209deg 86% 70.6% / 24%) 37%,
+        hsl(209deg 86% 88% / 20%) 63%
+      ) !important;
+    }
+
+    .ant-table-thead
+      > tr
+      > th
+      > .ant-skeleton.ant-skeleton-active
+      .ant-skeleton-button {
+      background: $primary-subtle;
+    }
+
+    // Table
+    .ant-table-container table > thead > tr:first-child th:first-child {
+      border-radius: $padding-base 0 0 $padding-base;
+      text-align: center;
+    }
+
+    .ant-table-thead > tr > th,
+    .ant-table-thead > tr > th:hover {
+      background: $primary-subtle;
+      color: $primary-main;
+      height: 4rem;
+    }
+
+    .ant-table-container table > thead > tr:first-child th:last-child {
+      border-radius: 0 $padding-base $padding-base 0;
+      text-align: center;
+    }
+
+    .ant-table-tbody > tr > td {
+      height: 4rem;
+    }
+
+    .ant-table-footer,
+    .ant-table-tbody > tr > td.ant-table-column-sort,
+    .ant-table-tbody > tr > td.ant-table-column-sort:hover {
+      background: $primary-main;
+    }
+
+    .ant-table-tbody
+      > tr.ant-table-row-selected
+      > td:not(.ant-table-column-sort),
+    .ant-table-tbody
+      > tr.ant-table-row-selected
+      > td:not(.ant-table-column-sort):hover,
+    .ant-table-tbody > tr.ant-table-row:hover > td:not(.ant-table-column-sort),
+    .ant-table-tbody
+      > tr
+      > td.ant-table-cell-row-hover:not(.ant-table-column-sort),
+    .ant-table-tbody > tr > td.ant-table-row-hover {
+      background: none !important;
+    }
+
+    .ant-table-thead > tr > th,
+    .ant-table-tbody > tr > td,
+    .ant-table tfoot > tr > td,
+    .ant-table tfoot > tr > th {
+      padding: 0 1.6rem !important;
+    }
+
+    .ant-table-tbody > tr > td:first-child,
+    .ant-table-thead > tr > th:first-child,
+    .ant-table tfoot > tr > td:first-child,
+    .ant-table tfoot > tr > th:first-child {
+      padding: 0 0.8rem 0 0;
+    }
+  }
+}

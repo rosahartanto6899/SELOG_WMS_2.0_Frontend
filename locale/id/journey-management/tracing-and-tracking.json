@@ -1,0 +1,66 @@
+{
+  "title": "Tracing & Tracking",
+  "breadcrumb": [
+    "Journey",
+    "Tracing & Tracking",
+    {
+      "detail": "Detail Unit"
+    }
+  ],
+  "filters": ["Branch", "Shipment Type"],
+  "summary": {
+    "fields": ["Shipment on Duty", "Unloading", "On Journey", "Loading"]
+  },
+  "table": {
+    "title": "Tracing & Tracking List",
+    "column": {
+      "A": "Status",
+      "B": "Shipment Number",
+      "C": "Shipment Type",
+      "D": "Customer Name",
+      "E": "Unit Type",
+      "F": "Origin",
+      "G": "Destination",
+      "H": "License Plate",
+      "I": "Driver 1",
+      "J": "Driver 2",
+      "K": "Last Position",
+      "L": "Last Update",
+      "Z": "Action",
+      "button": {
+        "detail": {
+          "tooltip": "Detail"
+        }
+      }
+    },
+    "button": {
+      "config": "Columns"
+    }
+  },
+  "detail": {
+    "title": "Tracing & Tracking",
+    "searchResult": {
+      "title": "Searching Result",
+      "sub": ["Shipment Information", "Unit & Driver Information"],
+      "shipment": [
+        "Status",
+        "Shipment Number",
+        "Customer",
+        "Service Type",
+        "Branch Order",
+        "Last Update"
+      ],
+      "unitDriver": [
+        "License Plate",
+        "Unit Type",
+        "Driver 1",
+        "Phone Number",
+        "Driver 2",
+        "Phone Number"
+      ]
+    },
+    "activityLog": {
+      "title": "Activity Log"
+    }
+  }
+}

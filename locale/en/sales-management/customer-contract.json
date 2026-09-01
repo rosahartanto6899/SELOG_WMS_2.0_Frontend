@@ -1,0 +1,110 @@
+{
+  "title": "Sales Management",
+  "breadcrumb": [
+    "Sales Management",
+    "Customer Contract",
+    {
+      "detail": "Detail Customer Contract"
+    }
+  ],
+  "table": {
+    "contract": {
+      "title": "Customer Contract",
+      "column": {
+        "cmd": "CMD ID",
+        "customerName": "Customer Name",
+        "contractNo": "Contract No",
+        "startDate": "Start Date",
+        "endDate": "End Date",
+        "createdDate": "Created Date",
+        "createdBy": "Created By",
+        "quotationSalesDocument": "Quotation Sales Document",
+        "quotationValidFromDate": "Quotation Valid From Date",
+        "quotationValidToDate": "Quotation Valid To Date",
+        "quotationCreatedDate": "Quotation Created Date",
+        "quotationCreatedBy": "Quotation Created By",
+        "actions": "Action"
+      },
+      "options": ["CMD ID", "Customer Name", "Contract No"],
+      "search": {
+        "placeholder": "Search"
+      },
+      "button": {
+        "read": {
+          "tooltip": "View Detail"
+        }
+      }
+    },
+    "material": {
+      "title": "List Material",
+      "column": {
+        "materialCode": "Material Code",
+        "materialName": "Material Name",
+        "vehicleTypeName": "Vehicle Type",
+        "shipmentType": "Shipment Type",
+        "salesOffice": "Sales Office"
+      }
+    }
+  },
+  "form": {
+    "title": {
+      "detail": "Detail Customer Contract"
+    },
+    "input": {
+      "cmdId": {
+        "label": "CMD ID",
+        "placeholder": "Input CMD ID"
+      },
+      "contractNo": {
+        "label": "Contract No",
+        "placeholder": "Input Contract No"
+      },
+      "createdBy": {
+        "label": "Created By",
+        "placeholder": "Input Created By"
+      },
+      "createdDate": {
+        "label": "Created Date",
+        "placeholder": "Input Created Date"
+      },
+      "customerName": {
+        "label": "Customer Name",
+        "placeholder": "Input Customer Name"
+      },
+      "endDate": {
+        "label": "End Date",
+        "placeholder": "Input End Date"
+      },
+      "quotationCreatedOn": {
+        "label": "Quotation Created Date",
+        "placeholder": "Input Quotation Created Date"
+      },
+      "quotationCreatedBy": {
+        "label": "Quotation Created By",
+        "placeholder": "Input Quotation Created By"
+      },
+      "quotationSalesDocument": {
+        "label": "Quotation Sales Document",
+        "placeholder": "Input Quotation Sales Document"
+      },
+      "quotationValidFromDate": {
+        "label": "Quotation Valid Form Date",
+        "placeholder": "Input Quotation Valid Form Date"
+      },
+      "quotationValidToDate": {
+        "label": "Quotation Valid To Date",
+        "placeholder": "Input Quotation Valid To Date"
+      },
+      "startDate": {
+        "label": "Start Date",
+        "placeholder": "Input Start Date"
+      }
+    }
+  },
+  "toast": {
+    "update": {
+      "prevText": "Customer Route",
+      "postText": "have been successfully edited!"
+    }
+  }
+}

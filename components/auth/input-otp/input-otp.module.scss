@@ -1,0 +1,88 @@
+.ant-otp {
+  background-color: blue;
+}
+
+.otp-body-container {
+  margin-bottom: 3.2rem;
+}
+
+.otp-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 4px;
+  text-align: center;
+}
+
+.otp-subtitle {
+  display: block;
+  font-size: 15px;
+  font-weight: lighter;
+  text-align: center;
+}
+
+.otp-input-container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  p {
+    color: #ee1c28;
+    font-size: 12px;
+    font-weight: lighter;
+    margin: 0;
+    opacity: 0;
+    padding: 0;
+    position: absolute;
+    top: 12rem;
+    transition: all 200ms ease-in-out;
+
+    &[data-error="true"] {
+      opacity: 1;
+      top: 9rem;
+    }
+  }
+}
+
+.otp-footer-container {
+  font-size: 12px;
+  font-weight: lighter;
+  margin-top: 1rem;
+  text-align: center;
+
+  .resend-code {
+    height: 0;
+    opacity: 0;
+    overflow: hidden;
+    position: relative;
+    transition: all 200ms ease-in-out;
+
+    &[data-show="true"] {
+      height: 2rem;
+      opacity: 1;
+    }
+  }
+
+  .resend-code-btn {
+    background: none;
+    border: none;
+    color: #1677ff;
+    cursor: pointer;
+    font-size: inherit;
+    margin: 0;
+    padding: 0;
+    text-decoration: underline;
+
+    &[data-disable="true"] {
+      color: gray;
+    }
+  }
+
+  span {
+    color: #1677ff;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: lighter;
+    text-decoration: underline;
+  }
+}

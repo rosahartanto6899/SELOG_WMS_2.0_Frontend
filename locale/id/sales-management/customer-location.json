@@ -1,0 +1,126 @@
+{
+  "title": "Sales Management",
+  "breadcrumb": [
+    "Sales Management",
+    "Customer Location",
+    {
+      "add": "Add Customer Location",
+      "read": "Detail Customer Location",
+      "edit": "Edit Customer Location"
+    }
+  ],
+  "table": {
+    "title": "Customer Location List",
+    "column": {
+      "name": "Location Name",
+      "address": "Address",
+      "district": "District",
+      "city": "City",
+      "province": "Province",
+      "area": "Area",
+      "coordinate": "Coordinate",
+      "customer": "Customer Name",
+      "operationDays": "Operation Days & Hours",
+      "actions": "Action"
+    },
+    "button": {
+      "add": "Add New Customer Location",
+      "read": {
+        "tooltip": "Detail"
+      },
+      "update": {
+        "tooltip": "Update"
+      },
+      "delete": {
+        "tooltip": "Delete"
+      }
+    },
+    "options": [
+      "Location Name"
+    ],
+    "search": {
+      "placeholder": "Search"
+    }
+  },
+  "form": {
+    "title": {
+      "add": "Add New Customer Location",
+      "read": "Detail Customer Location",
+      "edit": "Edit Customer Location"
+    },
+    "input": {
+      "name": {
+        "label": "Location Name",
+        "placeholder": "Input Location Name"
+      },
+      "province": {
+        "label": "Province",
+        "placeholder": "Select Province"
+      },
+      "city": {
+        "label": "City",
+        "placeholder": "Select City"
+      },
+      "district": {
+        "label": "District",
+        "placeholder": "Select District"
+      },
+      "area": {
+        "label": "Area",
+        "placeholder": "Input Area"
+      },
+      "address": {
+        "label": "Address",
+        "placeholder": "Input Location Address"
+      },
+      "coordinate": {
+        "label": "Coordinate",
+        "placeholder": "Input Coordinate",
+        "formatValidation": "Format: latitude,longitude (e.g., -6.2088,106.8456)"
+      },
+      "customerId": {
+        "label": "Customer Name",
+        "placeholder": "Select Customer Name"
+      },
+      "operationDays": {
+        "title": "Operation Days & Hours",
+        "openedHour": {
+          "label": "Opened Hour",
+          "validation": "Opened hour must be smaller than closed hour"
+        },
+        "closedHour": {
+          "label": "Closed Hour",
+          "validation": "Closed hour must be greater than opened hour"
+        }
+      },
+      "message": "This field is required",
+      "alphabetOnly": "Only alphabet and space allowed"
+    },
+    "button": {
+      "cancel": "Cancel",
+      "save": "Save"
+    }
+  },
+  "modal": {
+    "delete": {
+      "title": "Delete Customer Location",
+      "subtitle": "Are you sure you want to delete customer location",
+      "ok": "Yes, Delete",
+      "cancel": "Cancel"
+    }
+  },
+  "toast": {
+    "create": {
+      "prevText": "Customer Location",
+      "postText": "have been successfully added!"
+    },
+    "update": {
+      "prevText": "Customer Location",
+      "postText": "have been successfully edited!"
+    },
+    "delete": {
+      "postText": "has been successfully removed!"
+    }
+  },
+  "message": "Please complete the form before clicking Save"
+}

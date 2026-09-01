@@ -1,0 +1,30 @@
+@use "@sera-assets/sass/mixins" as *;
+@import "@sera-assets/sass/variables";
+
+.truncate {
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.text-primary {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.text-secondary {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.typography-link {
+  color: $primary-main;
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+.typography-default {
+  color: rgb(0 0 0 / 85%);
+}

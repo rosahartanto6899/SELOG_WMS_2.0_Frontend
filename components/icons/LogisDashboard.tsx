@@ -1,0 +1,31 @@
+import { SVGProps } from "react";
+
+interface SVGRProps {
+  title?: string;
+  titleId?: string;
+}
+const SvgLogisDashboard = ({
+  title,
+  titleId,
+  ...props
+}: SVGProps<SVGSVGElement> & SVGRProps) => (
+  <svg
+    width="1.25em"
+    height="1.25em"
+    viewBox="0 0 24 20"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className="'logis-icon'"
+    aria-labelledby={titleId}
+    {...props}
+  >
+    {title ? <title id={titleId}>{title}</title> : null}
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M8.24 1.84718C8.47489 1.7067 8.75706 1.7067 8.99195 1.84718L16.6685 6.43832C16.9276 6.5933 17.0894 6.89511 17.0894 7.22358V12.8054C17.0894 13.1339 16.9276 13.4357 16.6685 13.5907L8.99195 18.1818C8.75706 18.3223 8.47489 18.3223 8.24 18.1818L0.563477 13.5907C0.304348 13.4357 0.142578 13.1339 0.142578 12.8054V7.22358C0.142578 6.89511 0.304346 6.5933 0.563476 6.43832L8.24 1.84718ZM1.74901 7.07612L8.08473 3.28688L8.08473 7.30389L5.08613 9.32145L1.74901 7.07612ZM1.20508 8.09622V11.9328L4.0561 10.0145L1.20508 8.09622ZM5.08613 10.7075L1.74901 12.9529L8.08473 16.7421V12.7251L5.08613 10.7075ZM9.14723 16.7421L15.4829 12.9529L12.1458 10.7075L9.14723 12.7251V16.7421ZM13.1759 10.0145L16.0269 11.9328V8.09622L13.1759 10.0145ZM15.4829 7.07612L12.1458 9.32145L9.14723 7.30389V3.28688L15.4829 7.07612ZM11.1158 10.0145L8.61598 11.6964L6.11617 10.0145L8.61598 8.33253L11.1158 10.0145Z"
+      fill="currentColor"
+    />
+  </svg>
+);
+export default SvgLogisDashboard;

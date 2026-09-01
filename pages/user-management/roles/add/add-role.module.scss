@@ -1,0 +1,65 @@
+.overide-table-container {
+  :global {
+    .ant-row {
+      display: block;
+    }
+  }
+}
+
+.custom-input {
+  :global {
+    .ant-input-suffix {
+      bottom: -24px;
+      position: absolute;
+      right: 0;
+    }
+  }
+}
+
+.custom-validation-msg {
+  :global {
+    .ant-form-item-explain {
+      &-connected {
+        background: #fff1f0;
+        border: 1px solid #ffccc7;
+        border-radius: 2px;
+        padding: 10px 16px;
+        position: absolute;
+        top: -50px;
+      }
+
+      &-error {
+        color: black;
+      }
+    }
+  }
+}
+
+// stylelint-disable selector-class-pattern
+.btn-wrapper__role {
+  align-items: center;
+  background: white;
+  bottom: 0;
+  display: flex;
+  height: 72px;
+  justify-content: right;
+  padding: 16px 40px;
+  position: fixed;
+  right: 0;
+  width: 100%;
+
+  :global {
+    .ant-form-item {
+      margin-bottom: 0;
+
+      .ant-btn-custom {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+.ant-card-base-custom {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
+}

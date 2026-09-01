@@ -1,0 +1,192 @@
+{
+  "title": "Sales Management",
+  "breadcrumb": [
+    "Sales Management",
+    "Customer Route",
+    {
+      "add": "Add Customer Route",
+      "read": "Detail Customer Route",
+      "edit": "Edit Customer Route"
+    }
+  ],
+  "summary": {
+    "field": {
+      "totalCustomer": "Total Customer",
+      "totalRouteRegistered": "Total Route Registered"
+    }
+  },
+  "table": {
+    "title": "Customer Route",
+    "filter": {
+      "category": "Category",
+      "industry": "Industry",
+      "status": "Status"
+    },
+    "column": {
+      "routeCode": "Route Code",
+      "cmdCode": "CMD ID",
+      "customerName": "Customer Name",
+      "contractNo": "Contract No",
+      "vehicleTypeName": "Unit Type",
+      "origin": "Origin",
+      "areaOrigin": "Area Origin",
+      "detailOrigin": "Detail Origin",
+      "destination": "Destination",
+      "areaDestination": "Area Destination",
+      "detailDestination": "Detail Destination",
+      "revenuePerShipment": "Revenue",
+      "cost": "Cost",
+      "actions": "Action"
+    },
+    "button": {
+      "config": "Columns",
+      "add": "Add New Route",
+      "detail": {
+        "tooltip": "Detail"
+      },
+      "update": {
+        "tooltip": "Update"
+      },
+      "delete": {
+        "tooltip": "Delete"
+      }
+    },
+    "options": ["Route Code", "CMD ID", "Customer Name"],
+    "search": {
+      "placeholder": "Search"
+    }
+  },
+  "form": {
+    "title": {
+      "create": "Add Customer Route",
+      "read": "Detail Customer Route",
+      "edit": "Edit Customer Route"
+    },
+    "input": {
+      "customerId": {
+        "label": "Customer Name",
+        "placeholder": "Select Customer Name"
+      },
+      "vehicleTypeId": {
+        "label": "Unit Type",
+        "placeholder": "Select Unit Type"
+      },
+      "contractNo": {
+        "label": "Contract No",
+        "placeholder": "Select Contract No"
+      },
+      "quotationFile": {
+        "label": "Quotation File"
+      },
+      "routes": {
+        "label": "Route",
+        "routeCode": {
+          "label": "Route Code",
+          "placeholder": "Code (auto-generated)"
+        },
+        "revenue": {
+          "label": "Revenue",
+          "placeholder": "Input Revenue"
+        },
+        "cost": {
+          "label": "Cost (Avg)",
+          "placeholder": "Input Cost (Avg)"
+        },
+        "leadTime": {
+          "label": "Lead Time"
+        },
+        "leadTimeValue": {
+          "label": "Lead Time",
+          "placeholder": "Input Lead Time"
+        },
+        "qtyDriver": {
+          "label": "Qty Driver",
+          "placeholder": "Input Qty Driver"
+        },
+        "tollUsage": {
+          "label": "Toll Usage",
+          "placeholder": "Select Toll Usage"
+        },
+        "detail": {
+          "label": "Detail",
+          "routeActivityType": {
+            "label": "Type (Origin/Destination)",
+            "placeholder": "Select Type"
+          },
+          "customerLocationId": {
+            "label": "Location",
+            "placeholder": "Select Location"
+          },
+          "address": {
+            "label": "Address",
+            "placeholder": "Input Address"
+          },
+          "province": {
+            "label": "Province",
+            "placeholder": "Input Province"
+          },
+          "city": {
+            "label": "City",
+            "placeholder": "Input City"
+          },
+          "district": {
+            "label": "District",
+            "placeholder": "Input District"
+          }
+        }
+      },
+      "revenue": {
+        "label": "Revenue",
+        "placeholder": "Input Revenue"
+      },
+      "leadtimeType": {
+        "label": "Lead Time Unit",
+        "placeholder": "Select Lead Time Unit"
+      },
+      "leadtimeValue": {
+        "label": "Lead Time Value",
+        "placeholder": "Input Lead Time Value"
+      },
+      "message": "This field is required",
+      "detailOrder": {
+        "title": "Detail Order",
+        "routeActivityType": {
+          "label": "Type (Origin/Destination)",
+          "placeholder": "Type"
+        },
+        "locationId": {
+          "label": "Area",
+          "placeholder": "Select Area"
+        },
+        "locationDetail": {
+          "label": "Detail Area",
+          "placeholder": "Input Detail Area"
+        },
+        "locationCoordinate": {
+          "label": "Coordinate",
+          "placeholder": "Input Coordinate"
+        }
+      }
+    },
+    "button": {
+      "addRow": "Add Row",
+      "remove": "Remove",
+      "cancel": "Cancel",
+      "save": "Save"
+    }
+  },
+  "modal": {
+    "delete": {
+      "title": "Delete Route",
+      "subtitle": "Are you sure you want to delete route?",
+      "ok": "Yes, Delete",
+      "cancel": "Cancel"
+    }
+  },
+  "toast": {
+    "create": "Customer route has been successfully created!",
+    "update": "Customer route has been successfully edited!",
+    "delete": "Customer route has been successfully removed!"
+  },
+  "message": "Please complete the form before clicking Save"
+}

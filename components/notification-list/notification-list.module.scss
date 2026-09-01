@@ -1,0 +1,25 @@
+@use "@sera-assets/sass/mixins" as *;
+@import "@sera-assets/sass/variables";
+
+.notification-icon {
+  color: $text-light;
+  font-size: 20px;
+}
+
+.container-notification {
+  cursor: pointer;
+}
+
+.notification-list-title {
+  font-size: 13pt;
+  font-weight: bold;
+  padding: 5px;
+  text-align: center;
+}
+
+.footer-popover-notification {
+  background: $primary-subtle;
+  border-top: 1px solid $essentials-dark;
+  color: $essentials-dark;
+  text-align: center;
+}

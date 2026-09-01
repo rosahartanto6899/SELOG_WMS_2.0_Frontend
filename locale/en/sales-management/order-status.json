@@ -1,0 +1,252 @@
+{
+  "title": "Sales Management",
+  "breadcrumb": [
+    "Sales Management",
+    "Shipment Status",
+    {
+      "detail": "Detail Shipment Status"
+    }
+  ],
+  "table": {
+    "title": "Shipment Status List",
+    "titleShipment": "Shipment Status",
+    "card": {
+      "requested": "Requested",
+      "cancelled": "Cancelled",
+      "rejected": "Rejected",
+      "confirmed": "Confirmed",
+      "unassigned": "Unassigned",
+      "assigned": "Assigned",
+      "expenseProcess": "Expense Process",
+      "pairingProcess": "Pairing Process",
+      "shipmentJourney": "Shipment Journey",
+      "administrationProcess": "Administration Process",
+      "shipmentDone": "Shipment Done",
+      "totalShipment": "Total Shipment",
+      "total": "Total",
+      "shipmentOrder": "Shipment Order"
+    },
+    "filter": {
+      "shipmentType": "Shipment Type",
+      "status": "Status"
+    },
+
+    "column": {
+      "createdAt": "Created Date",
+      "shipmentNo": "Shipment Number",
+      "shipmentType": "Shipment Type",
+      "customerName": "Customer Name",
+      "bookingOrderNo": "Booking Number",
+      "branchName": "Branch",
+      "salesDealing": "Sales Dealing",
+      "salesServicing": "Sales Servicing",
+      "unitType": "Unit Type",
+      "origin": "Origin",
+      "detailOrigin": "Detail Origin",
+      "destination": "Destination",
+      "detailDestination": "Detail Destination",
+      "revenue": "Revenue",
+      "status": "Status",
+      "soNumber": "SO Number",
+      "category": "Category",
+      "actions": "Actions"
+    },
+
+    "options": [
+      "Branch",
+      "Shipment Number",
+      "Booking Number",
+      "Origin",
+      "Destination",
+      "Sales Dealing",
+      "Sales Servicing"
+    ],
+    "search": { "placeholder": "Search" },
+    "button": {
+      "detail": {
+        "tooltip": "Detail"
+      },
+      "reschedule": {
+        "tooltip": "Reschedule"
+      },
+      "reroute": {
+        "tooltip": "Re-Route"
+      },
+      "cancel": {
+        "tooltip": "Cancellation"
+      }
+    }
+  },
+  "form": {
+    "title": {
+      "detail": "Detail Shipment",
+      "progress": "Shipment Status Progress"
+    },
+    "input": {
+      "shipmentNo": {
+        "label": "Shipment Number",
+        "placeholder": "Input Shipment Number"
+      },
+      "customerName": {
+        "label": "Customer Name",
+        "placeholder": "Input customer name"
+      }
+    },
+    "noProgress": "No shipment progress available yet.",
+    "message": "This field is required"
+  },
+  "editForm": {
+    "cancel": {
+      "title": "Shipment Cancellation"
+    },
+    "reschedule": {
+      "title": "Shipment Reschedule"
+    },
+    "reroute": {
+      "title": "Shipment Reroute",
+      "modal": {
+        "exceedDate": {
+          "title": "Pickup Date Exceeds Contract Period",
+          "subtitle": "This shipment is not eligible for reroute as the pickup date exceeds the contract end date."
+        }
+      }
+    },
+    "input": {
+      "bookingNo": {
+        "label": "Booking Number",
+        "placeholder": "Input Booking Number"
+      },
+      "shipmentNo": {
+        "label": "Shipment Number",
+        "placeholder": "Input Shipment Number"
+      },
+      "shipmentType": {
+        "label": "Shipment Type",
+        "placeholder": "Input Shipment Type"
+      },
+      "customerName": {
+        "label": "Customer Name",
+        "placeholder": "Input Customer Name"
+      },
+      "branchOrder": {
+        "label": "Branch Order",
+        "placeholder": "Select Branch Order"
+      },
+      "origin": {
+        "label": "Origin",
+        "placeholder": "Input Origin"
+      },
+      "destination": {
+        "label": "Destination",
+        "placeholder": "Input Destination"
+      },
+      "pickupDate": {
+        "label": "Pickup Date",
+        "placeholder": "Input Pickup Date"
+      },
+      "pickUpDate": {
+        "label": "Pickup Date",
+        "placeholder": "Input Pickup Date"
+      },
+      "salesDealing": {
+        "label": "Sales Dealing",
+        "placeholder": "Input Sales Dealing"
+      },
+      "salesServicing": {
+        "label": "Sales Servicing",
+        "placeholder": "Input Sales Servicing"
+      },
+      "additionalRequest": {
+        "label": "Additional Request",
+        "placeholder": "Input Additional Request"
+      },
+      "cancellationReason": {
+        "label": "Cancellation Reason",
+        "placeholder": "Select Cancellation Reason"
+      },
+      "chronology": {
+        "label": "Chronology",
+        "placeholder": "Input Chronology"
+      },
+      "routeCode": {
+        "label": "Route Code",
+        "placeholder": "Input Route Code"
+      },
+      "qtyDriver": {
+        "label": "Qty Driver",
+        "placeholder": "Input Qty Driver"
+      },
+      "eta": {
+        "label": "ETA",
+        "placeholder": "Input ETA"
+      },
+      "notes": {
+        "label": "Notes",
+        "placeholder": "Input Notes"
+      },
+      "licensePlate": {
+        "label": "License Plate",
+        "placeholder": "Input License Plate"
+      },
+      "driver": {
+        "label": "Driver",
+        "placeholder": "Input Driver"
+      },
+      "note": {
+        "label": "Note",
+        "placeholder": "Input Note"
+      },
+      "shipmentNumber": {
+        "label": "Shipment Number",
+        "placeholder": "Input Shipment Number"
+      }
+    },
+    "message": "This field is required",
+    "previousRouteCode": {
+      "title": "Previous Route Code"
+    },
+    "newPickupDate": {
+      "title": "New Pickup Date"
+    },
+    "newRouteCode": {
+      "title": "New Route Code"
+    },
+    "summaryRouteLocation": {
+      "table": {
+        "title": "Summary Route Location",
+        "column": {
+          "type": "Type",
+          "location": "Location",
+          "address": "Address"
+        }
+      }
+    },
+    "modalCancel": {
+      "title": "Are you sure you want to cancel?",
+      "cardTitle": "Order Information"
+    },
+    "button": {
+      "cancel": "Cancel",
+      "save": "Save",
+      "submit": "Submit",
+      "addRow": "Add Row",
+      "remove": "Remove",
+      "import": "Import",
+      "download": "Download Template",
+      "close": "Close",
+      "yes": "Yes"
+    },
+    "cancelSuccess": "The order has been cancelled successfully.",
+    "rerouteSuccess": "The order has been rerouted successfully.",
+    "rescheduleSuccess": "The order has been rescheduled successfully."
+  },
+  "button": {
+    "cancel": "Cancel",
+    "save": "Save",
+    "submit": "Submit",
+    "addRow": "Add Row",
+    "remove": "Remove",
+    "import": "Import",
+    "download": "Download Template"
+  }
+}

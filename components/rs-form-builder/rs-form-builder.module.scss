@@ -1,0 +1,132 @@
+@use "@sera-assets/sass/mixins" as *;
+@import "@sera-assets/sass/variables";
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+
+  .body-wrapper {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    height: 100%;
+    justify-content: center;
+    width: 100%;
+
+    .logo-wrapper {
+      height: 50px;
+      position: relative;
+      width: 150px;
+    }
+
+    .default-form-button {
+      width: 100%;
+    }
+
+    .remove-button {
+      margin-bottom: 1rem;
+    }
+  }
+
+  .footer-wrapper {
+    padding: 3vh 0;
+    text-align: center;
+
+    a {
+      color: inherit;
+      text-decoration: underline;
+    }
+  }
+}
+
+.dynamic-item-container {
+  margin-bottom: 1rem;
+}
+
+.helper-text {
+  color: gray;
+  font-size: 11px;
+  font-style: italic;
+  font-weight: lighter;
+  width: 100%;
+}
+
+.input-date-time-picker {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+
+  // input {
+  //   &:first-child {
+  //     flex: 2;
+  //   }
+
+  //   &:last-child {
+  //     flex: 1;
+  //   }
+  // }
+}
+
+.field-container {
+  width: 100%;
+}
+
+.sub-field-container {
+  width: 100%;
+}
+
+.sub-field-card {
+  border: 1px solid #f3f3f3;
+  border-radius: 8px;
+  transition: all 200ms ease-in;
+
+  &:hover {
+    border: 1px solid $secondary-subtle;
+  }
+}
+
+.sub-field-card-container {
+  width: 100%;
+}
+
+.card-label-container {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.button-delete {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.custom-label-form-item {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: max-content;
+}
+
+.rich-text-disabled {
+  background-color: #f5f5f5;
+  border: 1px solid #3a8ddb;
+  border-radius: 20px;
+  color: rgb(0 0 0 / 25%);
+
+  :global {
+    .ql-container.ql-snow {
+      border: none !important;
+    }
+
+    .ql-editor {
+      padding: 6px 12px;
+    }
+  }
+}

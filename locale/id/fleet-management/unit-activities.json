@@ -1,0 +1,199 @@
+{
+  "title": "Fleet Management",
+  "breadcrumb": [
+    "Fleet Management",
+    "Unit Activities",
+    {
+      "add": "Add Unit Maintenance",
+      "detail": "Detail Unit Maintenance",
+      "edit": "Edit Unit Maintenance"
+    }
+  ],
+  "summary": {
+    "title": "Unit Maintenance",
+    "field": {
+      "total": "Total",
+      "planned": "Planned",
+      "inProgress": "In Progress",
+      "delayed": "Delayed",
+      "finishingUp": "Finishing Up"
+    }
+  },
+  "table": {
+    "maintenanceStatus": {
+      "title": "Maintenance Status",
+      "column": {
+        "category": "Category",
+        "total": "Total"
+      }
+    },
+    "detailMaintenance": {
+      "title": "Detail Maintenance",
+      "column": {
+        "branchName": "Branch",
+        "licensePlate": "License Plate",
+        "unitType": "Unit Type",
+        "description": "Description",
+        "unitYear": "Year",
+        "ageOfUnit": "Aging",
+        "status": "Status",
+        "shipmentType": "Shipment Type",
+        "customerAssignment": "Customer Assignment",
+        "maintenanceType": "Maintenance Type",
+        "maintenanceCategory": "Maintenance Category",
+        "maintenanceDuration": "Maintenance Duration",
+        "maintenanceLevel": "Maintenance Level",
+        "maintenanceStatus": "Maintenance Status",
+        "licenseExpired": "License Expired",
+        "licenseStatus": "License Status",
+        "kirExpired": "KIR Expired",
+        "kirStatus": "KIR Status",
+        "planStartDate": "Plan Maintenance",
+        "actualStartDate": "Actual Maintenance",
+        "estimationActualEndDate": "Est. Maintenance Done",
+        "actions": "Action"
+      },
+      "button": {
+        "config": "Columns",
+        "add": "Add Unit Maintenance",
+        "detail": {
+          "tooltip": "Detail"
+        },
+        "update": {
+          "tooltip": "Update"
+        }
+      },
+      "placeholder": {
+        "licensePlate": "Search",
+        "maintenanceLevel": "Select Level",
+        "maintenanceStatus": "Select Status"
+      },
+      "options": [
+        "License Plate",
+        "Maintenance Level",
+        "Maintenance Status"
+      ]
+    },
+    "forecastUnit": {
+      "title": "Forecast Unit {{ year }}",
+      "column": {
+        "period": {
+          "title": "Period",
+          "forecastUnit": {
+            "title": "Forecast Unit",
+            "estPlanMaintenance": "Est. Plan Maintenance",
+            "estUnitReadiness": "Est. Unit Readiness",
+            "estUnitAvailability": "Est. Unit Availability"
+          }
+        },
+        "current": "Current"
+      }
+    },
+    "filter": {
+      "branch": "Branch",
+      "unitType": "Unit Type"
+    }
+  },
+  "form": {
+    "title": {
+      "add": "Add Unit Maintenance",
+      "detail": "Detail Unit Maintenance",
+      "edit": "Edit Unit Maintenance"
+    },
+    "input": {
+      "activityDateTime": {
+        "label": "Activity Date",
+        "placeholder": "Select Activity Date"
+      },
+      "activityDetail": {
+        "label": "Activity Detail",
+        "placeholder": "Select Activity Detail"
+      },
+      "actualEndDate": {
+        "label": "Actual End Date",
+        "placeholder": "Select Actual End Date"
+      },
+      "actualStartDate": {
+        "label": "Actual Start Date",
+        "placeholder": "Select Actual Start Date"
+      },
+      "ageOfUnit": {
+        "label": "Age Of Unit",
+        "placeholder": "Input Age Of Unit"
+      },
+      "bookingEndDate": {
+        "label": "Booking End Date",
+        "placeholder": "Select Booking End Date"
+      },
+      "bookingStartDate": {
+        "label": "Booking Start Date",
+        "placeholder": "Select Booking Start Date"
+      },
+      "lastLocation": {
+        "label": "Last Location",
+        "tooltip": "Refetch Last Location"
+      },
+      "maintenanceCategory": {
+        "label": "Maintenance Category",
+        "placeholder": "Select Maintenance Category"
+      },
+      "maintenanceDetail": {
+        "label": "Maintenance Detail",
+        "placeholder": "Input Maintenance Detail"
+      },
+      "maintenanceLevel": {
+        "label": "Maintenance Level",
+        "placeholder": "Select Maintenance Level"
+      },
+      "maintenanceLocationId": {
+        "label": "Maintenance Location",
+        "subLabel": "Queue",
+        "labelSuffix": "{{ total }} Units",
+        "placeholder": "Select Maintenance Location"
+      },
+      "maintenanceType": {
+        "label": "Maintenance Type",
+        "placeholder": "Select Maintenance Type"
+      },
+      "note": {
+        "label": "Note",
+        "placeholder": "Input Note"
+      },
+      "planEndDate": {
+        "label": "Plan End Date",
+        "placeholder": "Select Plan End Date"
+      },
+      "planStartDate": {
+        "label": "Plan Start Date",
+        "placeholder": "Select Plan Start Date"
+      },
+      "status": {
+        "label": "Unit Status",
+        "placeholder": "Select Unit Status"
+      },
+      "unitType": {
+        "label": "Unit Type",
+        "placeholder": "Select Unit Type"
+      },
+      "vehicleId": {
+        "label": "License Plate",
+        "placeholder": "Select License Plate"
+      }
+    },
+    "history": {
+      "maintenanceProgress": "Maintenance Progress",
+      "pmCheck": "PM Check History"
+    },
+    "message": {
+      "required": "This field is required",
+      "invalidLength": "Invalid, this field must have a maximum of {{ total }} characters",
+      "invalidDate": "End date cannot be before start date"
+    }
+  },
+  "toast": {
+    "create": "Unit maintenance have been successfully added!",
+    "update": "Unit maintenance have been successfully edited!",
+    "pmCheck": "PM Check have been successfully updated!"
+  },
+  "message": "Please complete the form before clicking Save"
+}

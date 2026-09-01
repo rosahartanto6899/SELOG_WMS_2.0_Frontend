@@ -1,0 +1,52 @@
+.expand-button {
+  width: 100%;
+}
+
+.route-items {
+  align-items: center;
+  background: #fff;
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-start;
+  overflow: hidden;
+  width: 100%;
+}
+
+.route-information-container {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.route-information {
+  align-items: center;
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+
+  > div:first-child {
+    flex: 1;
+    font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+  }
+
+  > div:nth-child(2) {
+    flex: 2;
+    overflow: hidden;
+    text-align: right;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+
+    span {
+      color: #8a8a8a;
+      padding: 0.5rem;
+    }
+  }
+}

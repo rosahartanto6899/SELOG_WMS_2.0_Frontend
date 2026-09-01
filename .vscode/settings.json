@@ -1,0 +1,57 @@
+{
+  // EDITOR
+  "editor.linkedEditing": true,
+  // "window.zoomLevel": 0,
+  "explorer.confirmDelete": false,
+  "editor.snippetSuggestions": "top",
+  "editor.stickyScroll.enabled": false,
+  "terminal.integrated.smoothScrolling": false,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "editor.tabSize": 2,
+  "security.workspace.trust.untrustedFiles": "open",
+  // BRACKET PAIR COLORIZER
+  "editor.guides.bracketPairs": "active",
+  "editor.bracketPairColorization.enabled": true,
+  "bracket-pair-colorizer-2.colors": ["Gold", "Aqua", "LawnGreen"],
+  "bracket-pair-colorizer-2.forceUniqueOpeningColor": true,
+  "bracket-pair-colorizer-2.forceIterationColorCycle": true,
+  "bracket-pair-colorizer-2.colorMode": "Consecutive",
+  "bracket-pair-colorizer-2.activeScopeCSS": [
+    "borderStyle : solid",
+    "borderWidth : 1px",
+    "borderColor : {color}",
+    "opacity: 1"
+  ],
+  "bracket-pair-colorizer-2.showBracketsInGutter": true,
+  "bracket-pair-colorizer-2.showVerticalScopeLine": true,
+  "bracket-pair-colorizer-2.showHorizontalScopeLine": true,
+  "bracket-pair-colorizer-2.scopeLineRelativePosition": true,
+  "bracketPairColorizer.depreciation-notice": false,
+  // INDENT RAINBOW
+  "indentRainbow.colors": [
+    "rgba(255,255,64,0.25)",
+    "rgba(127,255,127,0.25)",
+    "rgba(255,127,255,0.25)",
+    "rgba(79,236,236,0.25)"
+  ],
+  "indentRainbow.errorColor": "rgba(255,0,0,0.5)",
+  "git.autofetch": true,
+  // PRETTIER
+  "prettier.printWidth": 250,
+  "prettier.jsxSingleQuote": true,
+  "prettier.singleQuote": false,
+  "prettier.useTabs": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  // ESLINT
+  "eslint.alwaysShowStatus": true,
+  "html.format.wrapAttributes": "auto",
+  "github.copilot.chat.commitMessageGeneration.instructions": [
+    {
+      "file": ".vscode/instructions/commit-message.md"
+    }
+  ]
+}

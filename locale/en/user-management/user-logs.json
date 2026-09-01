@@ -1,0 +1,20 @@
+{
+  "title": "User Logs",
+  "breadcrumb": [{ "title": "User Management" }, { "title": "User Logs" }],
+  "table": {
+    "title": "List of User Log",
+    "header": [
+      { "title": "No." },
+      { "title": "Name" },
+      { "title": "Email" },
+      { "title": "Last Active" },
+      { "title": "Features" },
+      { "title": "Activity" },
+      { "title": "Channel" }
+    ]
+  },
+  "searchBox": {
+    "placeholder": "Search in table",
+    "dropdownOptions": ["Name", "Email", "Features", "Activity", "Channel"]
+  }
+}

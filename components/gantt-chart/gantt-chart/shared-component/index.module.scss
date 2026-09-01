@@ -1,0 +1,39 @@
+.gantt-container {
+  --color-text: #272a2e;
+  --color-primary-dark: #0195e4;
+  --color-primary-light: #9ddcff;
+  --color-secondary: #4be35a;
+  --color-tertiary: #f7f7f7;
+  --color-orange: #ef5350;
+  --color-outline: #e9eaeb;
+  --border-radius: 5px;
+  --cell-height: 56px;
+  --cell-column-height: 112px;
+
+  :global {
+    .ant-table-tbody > tr:hover > td {
+      background-color: #d6e4ff !important;
+    }
+
+    .ant-table-tbody > tr:hover .timeline-cell {
+      background-color: #d6e4ff;
+    }
+
+    .ant-table-tbody > tr:hover .timeline-cell .ant-col {
+      background-color: #d6e4ff !important;
+    }
+  }
+}
+
+.gantt-container {
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
+
+.gantt-container::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+
+.gant-chart {
+  padding: 0 15px;
+}

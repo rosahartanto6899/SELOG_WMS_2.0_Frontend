@@ -1,0 +1,78 @@
+{
+  "title": "Cabang",
+  "breadcrumb": [
+    "Data Utama",
+    "Cabang",
+    { "add": "Tambah Cabang Baru", "edit": "Edit Cabang" }
+  ],
+
+  "table": {
+    "title": "Daftar Cabang",
+
+    "column": {
+      "name": "Nama Cabang",
+      "code": "Kode Cabang",
+      "actions": "Aksi"
+    },
+
+    "button": {
+      "add": "Tambah Cabang Baru",
+      "update": { "tooltip": "Perbarui" },
+      "delete": { "tooltip": "Hapus" }
+    },
+
+    "options": ["Nama Cabang"],
+    "search": { "placeholder": "Cari" }
+  },
+
+  "form": {
+    "title": {
+      "add": "Tambah Cabang Baru",
+      "edit": "Edit Cabang"
+    },
+
+    "input": {
+      "name": {
+        "label": "Nama Cabang",
+        "placeholder": "Masukkan Nama Cabang"
+      },
+      "code": {
+        "label": "Kode Cabang",
+        "placeholder": "Masukkan Kode Cabang"
+      },
+
+      "message": "Kolom ini harus diisi",
+      "invalidLength": "Invalid, this field must have a maximum of {{ total }} characters"
+    },
+
+    "button": {
+      "cancel": "Batal",
+      "save": "Simpan"
+    }
+  },
+
+  "modal": {
+    "delete": {
+      "title": "Hapus Cabang",
+      "subtitle": "Apakah Anda yakin ingin menghapus cabang",
+      "ok": "Ya, Hapus",
+      "cancel": "Batal"
+    }
+  },
+
+  "toast": {
+    "create": {
+      "prevText": "Cabang",
+      "postText": "telah berhasil ditambahkan!"
+    },
+    "update": {
+      "prevText": "Cabang",
+      "postText": "telah berhasil diedit!"
+    },
+    "delete": {
+      "postText": "telah berhasil dihapus!"
+    }
+  },
+
+  "message": "Mohon lengkapi formulir sebelum klik Simpan"
+}

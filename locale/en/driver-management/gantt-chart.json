@@ -1,0 +1,12 @@
+{
+  "title": "Driver Management",
+  "breadcrumb": [{ "title": "Driver Management" }, { "title": "Gantt Chart" }],
+  "table": {
+    "filter": {
+      "branch": "Branch",
+      "shipmentType": "Shipment Type",
+      "employeeStatus": "Employee Status",
+      "driverStatus": "Driver Status"
+    }
+  }
+}

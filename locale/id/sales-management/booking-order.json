@@ -1,0 +1,102 @@
+{
+  "title": "Sales Management",
+  "breadcrumb": [
+    "Sales Management",
+    "Booking Order",
+    { "add": "Add Booking Order", "edit": "Edit Booking Order" }
+  ],
+  "table": {
+    "title": "Booking Order List",
+    "filter": {
+      "status": "Approval Status"
+    },
+
+    "column": {
+      "created": "Created",
+      "createdBy": "Created By",
+      "orderCode": "Order Code",
+      "salesName": "Sales Name",
+      "pickupDate": "Pickup Date",
+      "customer": "Customer",
+      "unitType": "Unit Type",
+      "origin": "Origin",
+      "destination": "Destination",
+      "fullfillQty": "Fullfill (Qty)",
+      "approvedFullfillment": "Approved Fullfillment",
+      "unfillQty": "Unfill(Qty)",
+      "approvalStatus": "Approval Status",
+      "approvedDate": "Approved Date",
+      "approvedRemarks": "Approved Remarks",
+      "action": "Action"
+    },
+
+    "button": {
+      "add": "Add Order",
+      "update": { "tooltip": "Update" },
+      "delete": { "tooltip": "Delete" }
+    },
+
+    "options": ["Order Code", "Sales Name"],
+    "search": { "placeholder": "Search" }
+  },
+  "form": {
+    "title": {
+      "edit": "Edit Customer"
+    },
+    "input": {
+      "name": {
+        "label": "Customer Name",
+        "placeholder": "Input Customer Name"
+      },
+      "cmd": {
+        "label": "CMD ID",
+        "placeholder": "Input CMD ID"
+      },
+      "province": {
+        "label": "Province",
+        "placeholder": "Select Province"
+      },
+      "category": {
+        "label": "Category",
+        "placeholder": "Select Category"
+      },
+      "street": {
+        "label": "Customer Address",
+        "placeholder": "Input Customer Address"
+      },
+      "city": {
+        "label": "City",
+        "placeholder": "Select City"
+      },
+      "phone": {
+        "label": "Phone",
+        "placeholder": "Input Customer Phone"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "Input Customer Email"
+      },
+      "status": {
+        "label": "Status",
+        "placeholder": "Select Status"
+      },
+      "industry": {
+        "label": "Industry",
+        "placeholder": "Select Industry"
+      },
+
+      "message": "This field is required"
+    },
+
+    "button": {
+      "cancel": "Cancel",
+      "save": "Save"
+    }
+  },
+  "toast": {
+    "update": {
+      "prevText": "Customer",
+      "postText": "have been successfully edited!"
+    }
+  }
+}

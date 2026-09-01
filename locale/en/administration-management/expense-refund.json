@@ -1,0 +1,84 @@
+{
+  "title": "Expense Refund",
+  "breadcrumb": [
+    "Administration",
+    "Expense Refund",
+    {
+      "detail": "Detail Expense Refund"
+    }
+  ],
+  "filters": ["Branch", "Shipment Type"],
+  "summary": {
+    "fields": ["Outstanding Refund", "Outstanding Amount"]
+  },
+  "table": {
+    "title": "Shipment List",
+    "column": {
+      "A": "Expense Status",
+      "B": "Shipment Number",
+      "C": "Booking Number",
+      "D": "Customer Name",
+      "E": "Shipment Type",
+      "F": "Unit Type",
+      "G": "Origin",
+      "H": "Destination",
+      "I": "License Plate",
+      "J": "Driver 1",
+      "K": "Driver 2",
+      "L": "Expense Transferred",
+      "M": "Total Expense",
+      "Z": "Action",
+      "button": {
+        "detail": {
+          "tooltip": "Detail"
+        }
+      }
+    },
+    "button": {
+      "config": "Columns"
+    }
+  },
+  "detail": {
+    "title": "Expense Refund",
+    "shipment": {
+      "driverVKVD": {
+        "label": "Driver VKVD",
+        "placeholder": "Driver VKVD"
+      },
+      "driverName": {
+        "label": "Driver Name",
+        "placeholder": "Driver Name"
+      },
+      "umNumber": {
+        "label": "UM Number",
+        "placeholder": "UM Number"
+      },
+      "refundAmount": {
+        "label": "Refund Amount",
+        "placeholder": "Refund Amount"
+      },
+      "transferredDate": {
+        "label": "Transferred Date",
+        "placeholder": "Transferred Date"
+      },
+      "referenceNumber": {
+        "label": "Reference Number",
+        "placeholder": "Reference Number"
+      },
+      "transferStatus": {
+        "label": "Transfer Status",
+        "placeholder": "Transfer Status"
+      },
+      "note": {
+        "label": "Note",
+        "placeholder": "Note"
+      },
+      "message": {
+        "default": "Please complete the form"
+      },
+      "toast": {
+        "refunded": "Refund process submitted"
+      }
+    }
+  }
+}
