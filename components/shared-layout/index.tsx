@@ -89,12 +89,30 @@ const SharedLayout = (props: SharedLibrariesProps) => {
       if (menu.menuLink && menu.data.isRead) {
         const idMenuLevel1 = `link-menu-${Utils().titleToKebabCase(menu.menuName)}`;
         let menuLink = menu.menuLink;
-        const child = _.orderBy(menu.child, ["order"], ["asc"]);
-        if (menu.child.length) {
+        const child = _.orderBy(menu.child ?? [], ["order"], ["asc"]).filter(
+          (_c: any) => _c?.menuLink && _c?.data?.isRead,
+        );
+        const submenu = child.map((_c: any) => ({
+          label: (
+            <Link
+              id={`link-level2-${Utils().titleToKebabCase(_c.menuName)}`}
+              href={_c.menuLink}
+              passHref
+            >
+              {_c.menuName}
+            </Link>
+          ),
+          key: _c.id,
+          path: pathIsServer(window.location.pathname, "", _c.menuLink),
+          pathname: [_c.menuLink],
+        }));
+        if (child.length) {
           menuLink = child[0].menuLink;
         }
         menuLevel1 = {
-          label: (
+          label: child.length ? (
+            menu.menuName
+          ) : (
             <Link id={`link-level1-${idMenuLevel1}`} href={menuLink} passHref>
               {menu.menuName}
             </Link>
@@ -106,7 +124,9 @@ const SharedLayout = (props: SharedLibrariesProps) => {
             </span>
           ),
           path: pathIsServer(window.location.pathname, "", menuLink),
-          pathname: [menuLink],
+          // parent with submenu is a group, highlight comes from children
+          pathname: child.length ? [] : [menuLink],
+          ...(child.length ? { children: submenu } : {}),
         };
       }
 
