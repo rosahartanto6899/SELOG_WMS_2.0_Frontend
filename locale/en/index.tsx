@@ -1,7 +1,4 @@
 /* eslint-disable import/no-anonymous-default-export */
-import admExpense from "./administration-management/expense.json";
-import expenseRefund from "./administration-management/expense-refund.json";
-import podCollection from "./administration-management/pod-collection.json";
 import additionalExpense from "./approvals/additional-expense.json";
 import shipmentCancellations from "./approvals/shipment-cancellations.json";
 import auth from "./auth.json";
@@ -83,10 +80,7 @@ export default {
     journeySupport,
     vod,
     jmp,
-    admExpense,
     additionalExpense,
-    expenseRefund,
-    podCollection,
     shipmentCancellations,
   },
 };

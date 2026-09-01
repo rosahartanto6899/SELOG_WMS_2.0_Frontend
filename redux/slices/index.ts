@@ -20,8 +20,6 @@ import driverStatusReducer from "./driver-status.slice";
 import driverStockReducer from "./driver-stock.slice";
 import driversReducers from "./drivers.slice";
 import employeeStatusReducer from "./employee-status.slice";
-import expenseMonitoringReducer from "./expense-monitoring.slice";
-import expenseRefundReducer from "./expense-refund.slice";
 import { expensesReducer } from "./expenses.slice";
 import exportLogReducer from "./export-log.slice";
 import jmpReducer from "./jmp.slice";
@@ -36,7 +34,6 @@ import orderStatusReducer from "./order-status.slice";
 import ownershipTypesReducer from "./ownership-types.slice";
 import pairingMatchingReducer from "./pairing-matching.slice";
 import pairingMatchingOpsReducer from "./pairing-matching-ops.slice";
-import podCollectionReducer from "./pod-collection.slice";
 import provinceReducer from "./province.slice";
 import rolesReducer from "./role.slice";
 import rolesMenuReducer from "./role-menu.slice";
@@ -108,9 +105,6 @@ const rootReducer = combineReducers({
   journeySupport: journeySupportReducer,
   journeyHistory: journeyHistoryReducer,
   jmp: jmpReducer,
-  expenseRefund: expenseRefundReducer,
-  podCollection: podCollectionReducer,
-  expenseMonitoring: expenseMonitoringReducer,
   shipmentDetails: shipmentDetailsReducer,
 });
 

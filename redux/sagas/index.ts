@@ -17,8 +17,6 @@ import driverGanttChartSaga from "./driver-gantt-chart.saga";
 import driverPerformanceSaga from "./driver-performance.saga";
 import driverStockSaga from "./driver-stock.saga";
 import driversSaga from "./drivers.saga";
-import expenseMonitoringSaga from "./expense-monitoring.saga";
-import expenseRefundSaga from "./expense-refund.saga";
 import expensesSaga from "./expenses.saga";
 import exportLogSaga from "./export-log.saga";
 import jmpSaga from "./jmp.saga";
@@ -32,7 +30,6 @@ import notificationSaga from "./notification.saga";
 import orderStatusSaga from "./order-status.saga";
 import pairingMatchingSaga from "./pairing-matching.saga";
 import pairingMatchingOpsSaga from "./pairing-matching-ops.saga";
-import podCollectionSaga from "./pod-collection.saga";
 import provinceSaga from "./province.saga";
 import roleSaga from "./role.saga";
 import roleMenuSaga from "./role-menu.saga";
@@ -99,9 +96,6 @@ export default function* rootSaga() {
     journeySupportSaga(),
     journeyHistorySaga(),
     jmpSaga(),
-    expenseRefundSaga(),
-    podCollectionSaga(),
-    expenseMonitoringSaga(),
     shipmentDetailsSaga(),
   ]);
 }

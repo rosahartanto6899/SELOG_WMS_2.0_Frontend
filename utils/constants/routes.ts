@@ -45,11 +45,6 @@ export const ROUTE = {
     VOD: "/journey-management/voice-of-driver",
     JMP: "/journey-management/journey-management-plan",
   },
-  ADMINISTRATION_MANAGEMENT: {
-    EXPENSE: "/administration-management/expense-monitoring",
-    EXPENSE_REFUND: "/administration-management/expense-refund",
-    POD_COLLECTION: "/administration-management/pod-collection",
-  },
   APPROVALS: {
     ADDITIONAL_EXPENSE: "/approvals/additional-expense",
     SHIPMENT_CANCELLATIONS: "/approvals/shipment-cancellation",
