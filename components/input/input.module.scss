@@ -1,0 +1,43 @@
+.container {
+  width: 100%;
+
+  :global {
+    .ant-input,
+    .ant-input-affix-wrapper {
+      border-radius: 20px;
+    }
+
+    .ant-input-suffix {
+      bottom: -24px;
+      position: absolute;
+      right: 0;
+    }
+
+    .ant-input,
+    .ant-input-affix-wrapper,
+    .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+      border-radius: 20px;
+    }
+
+    // Text area Field
+    textarea.ant-input {
+      border-radius: 8px 8px 0;
+    }
+  }
+}
+
+.input-suffix--inner {
+  :global {
+    .ant-input-suffix {
+      bottom: unset;
+      position: unset;
+      right: unset;
+    }
+  }
+}
+
+.no-spinners::-webkit-outer-spin-button,
+.no-spinners::-webkit-inner-spin-button {
+  appearance: none;
+  margin: 0;
+}

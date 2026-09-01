@@ -1,0 +1,357 @@
+@use "@sera-assets/sass/mixins" as *;
+@import "@sera-assets/sass/variables";
+
+.sera-table-wrapper {
+  display: flex;
+  flex-flow: column;
+  gap: 1.6rem;
+  height: 100%;
+
+  @include screen(figma-mobile) {
+    gap: 1rem;
+  }
+
+  &__header {
+    flex: 0 1 auto;
+  }
+
+  &__table,
+  &__loading {
+    flex: 1 1 auto;
+  }
+
+  &__loading {
+    overflow-x: auto;
+  }
+
+  &__header {
+    flex: 0 1 3.2rem;
+  }
+}
+
+.sera-table {
+  :global {
+    .ant-table-thead > tr > th,
+    .ant-table-tbody > tr > td {
+      padding: 0 1.6rem;
+    }
+
+    .ant-table-thead > tr > th:first-child,
+    .ant-table-tbody > tr > td:first-child {
+      padding-left: 2rem !important;
+    }
+
+    .ant-table-thead > tr > th:last-child,
+    .ant-table-tbody > tr > td:last-child {
+      padding-right: 2rem !important;
+    }
+
+    .ant-table-container table > thead > tr:first-child th:first-child {
+      border-radius: $border-radius-base 0 0 $border-radius-base;
+      text-align: center;
+    }
+
+    .border-row-bold > td {
+      border-bottom: 5px solid $essentials-border !important;
+      padding: 0.8rem !important;
+    }
+
+    .ant-table-thead > tr > th,
+    .ant-table-thead > tr > th:hover {
+      background: $table-header-background-color-base;
+      border-radius: 2px;
+      color: $table-header-color-base;
+      font-weight: 500;
+      height: 3.5rem;
+
+      @include screen(figma-mobile) {
+        height: 3.5rem;
+      }
+
+      @include screen(tablet) {
+        height: 4rem;
+      }
+    }
+
+    .ant-table-container table > thead > tr:first-child th:last-child {
+      border-radius: 0 $border-radius-base $border-radius-base 0;
+      text-align: center;
+    }
+
+    .ant-table-tbody > tr > td {
+      height: 3.5rem;
+      @include screen(figma-mobile) {
+        height: 3.5rem;
+      }
+
+      @include screen(tablet) {
+        height: 4rem;
+      }
+    }
+
+    .ant-btn .anticon .anticon-search {
+      color: rgb(0 0 0 / 85%);
+    }
+
+    a.ant-btn-icon-only {
+      height: 100%;
+
+      svg {
+        height: 80%;
+      }
+    }
+
+    .ant-btn-icon-only.ant-btn-sm.ant-btn-dangerous {
+      height: 100%;
+      vertical-align: middle;
+
+      svg {
+        height: 80%;
+      }
+    }
+
+    .ant-table-footer,
+    .ant-table-tbody > tr > td.ant-table-column-sort,
+    .ant-table-tbody > tr > td.ant-table-column-sort:hover {
+      background: $essentials-white;
+    }
+
+    .ant-table-tbody
+      > tr.ant-table-row-selected
+      > td:not(.ant-table-column-sort),
+    .ant-table-tbody
+      > tr.ant-table-row-selected
+      > td:not(.ant-table-column-sort):hover,
+    .ant-table-tbody > tr.ant-table-row:hover > td,
+    .ant-table-tbody > tr.ant-table-row:hover > td:not(.ant-table-column-sort),
+    .ant-table-tbody > tr > td.ant-table-cell-row-hover,
+    .ant-table-tbody > tr > td.ant-table-row-hover {
+      background: $primary-subtle;
+    }
+
+    .ant-table-thead > tr > th,
+    .ant-table-tbody > tr > td,
+    .ant-table tfoot > tr > td,
+    .ant-table tfoot > tr > th {
+      @include screen(figma-mobile) {
+        padding: 0 1rem;
+      }
+
+      @include screen(tablet) {
+        padding: 0 1.6rem;
+      }
+    }
+
+    .ant-table-tbody > tr > td:first-child,
+    .ant-table-thead > tr > th:first-child,
+    .ant-table tfoot > tr > td:first-child,
+    .ant-table tfoot > tr > th:first-child {
+      padding: 0 0.8rem 0 0;
+    }
+
+    .virtual-grid {
+      :global {
+        .virtual-table-cell {
+          &:global(.error) {
+            color: $danger-subtle;
+          }
+        }
+      }
+    }
+
+    .data-safe {
+      background-color: #f6ffed;
+      transition: background-color 0.3s ease;
+
+      &:hover > td {
+        background-color: #f6ffed !important;
+      }
+
+      :global(.ant-table-cell-fix-left),
+      :global(.ant-table-cell-fix-right) {
+        background-color: #f6ffed !important;
+      }
+
+      &:hover :global(.ant-table-cell-fix-left),
+      &:hover :global(.ant-table-cell-fix-right) {
+        background-color: #f6ffed !important;
+      }
+    }
+
+    .data-warning {
+      background-color: #fff0c2;
+      transition: background-color 0.3s ease;
+
+      &:hover > td {
+        background-color: #fff0c2 !important;
+      }
+
+      :global(.ant-table-cell-fix-left),
+      :global(.ant-table-cell-fix-right) {
+        background-color: #fff0c2 !important;
+      }
+
+      &:hover :global(.ant-table-cell-fix-left),
+      &:hover :global(.ant-table-cell-fix-right) {
+        background-color: #fff0c2 !important;
+      }
+    }
+
+    .data-error {
+      background-color: #ffebe6;
+      transition: background-color 0.3s ease;
+
+      &:hover > td {
+        background-color: #ffebe6 !important;
+      }
+
+      :global(.ant-table-cell-fix-left),
+      :global(.ant-table-cell-fix-right) {
+        background-color: #ffebe6 !important;
+      }
+
+      &:hover :global(.ant-table-cell-fix-left),
+      &:hover :global(.ant-table-cell-fix-right) {
+        background-color: #ffebe6 !important;
+      }
+    }
+
+    .data-selected {
+      background-color: #bae0ff;
+      transition: background-color 0.3s ease;
+
+      &:hover > td {
+        background-color: #bae0ff !important;
+      }
+
+      :global(.ant-table-cell-fix-left),
+      :global(.ant-table-cell-fix-right) {
+        background-color: #bae0ff !important;
+      }
+
+      &:hover :global(.ant-table-cell-fix-left),
+      &:hover :global(.ant-table-cell-fix-right) {
+        background-color: #bae0ff !important;
+      }
+    }
+
+    .group-bordered-start-end-head {
+      border-bottom: 1px solid #ffff !important;
+      border-inline-end: 1px solid #ffff !important;
+      border-inline-start: 1px solid #ffff !important;
+    }
+
+    .group-bordered-end-head {
+      border-bottom: 1px solid #ffff !important;
+      border-inline-end: 1px solid #ffff !important;
+    }
+  }
+
+  &:global(.table-secondary) {
+    :global {
+      .ant-table-container table {
+        border-spacing: 0 5px;
+      }
+
+      .ant-table-container table > thead > tr:first-child th:first-child,
+      .ant-table-container table > tbody > tr td:first-child {
+        border-radius: 2px 0 0 2px;
+        text-align: left;
+      }
+
+      .ant-table-container
+        table
+        > thead
+        > tr:first-child
+        th:first-child::before {
+        background: none;
+      }
+
+      .ant-table-container table > thead > tr:first-child th:last-child,
+      .ant-table-container table > tbody > tr td:last-child {
+        border-radius: 0 2px 2px 0;
+      }
+
+      .ant-table-tbody > tr::after {
+        height: 10px;
+      }
+
+      .ant-table-tbody > tr > td,
+      .ant-table-tbody > tr > td:hover {
+        background: $essentials-white;
+        border-bottom: 1px solid $essentials-border;
+        border-top: 1px solid $essentials-border;
+      }
+
+      .ant-table-tbody > tr > td:first-child,
+      .ant-table-tbody > tr > td:first-child:hover {
+        border-left: 1px solid $essentials-border;
+      }
+
+      .ant-table-tbody > tr > td:last-child,
+      .ant-table-tbody > tr > td:last-child:hover {
+        border-right: 1px solid $essentials-border;
+      }
+
+      .ant-table-tbody > tr {
+        &.ant-table-row-level-0 {
+          > td {
+            &:nth-child(1),
+            &:nth-child(2) {
+              display: none;
+            }
+          }
+        }
+
+        &.ant-table-row-level-1 {
+          > td {
+            &:first-child {
+              visibility: hidden;
+            }
+
+            &:nth-child(2) {
+              background: none;
+              border: none;
+              border-right: 1px solid $essentials-border;
+            }
+          }
+        }
+
+        &.ant-table-row-level-2 {
+          > td {
+            &:nth-child(1),
+            &:nth-child(2) {
+              background: none;
+              border: none;
+            }
+          }
+        }
+
+        > td {
+          &.col-icon {
+            border-left: 1px solid $essentials-border;
+            color: $table-header-color-base;
+          }
+        }
+      }
+
+      .ant-table-thead > tr > th:first-child,
+      .ant-table-tbody > tr > td:first-child {
+        padding-left: 20px !important;
+      }
+    }
+  }
+}
+
+.sera-table-wrapper-table {
+  display: block;
+}
+
+.sera-table-wrapper-table-loading {
+  display: none;
+}
+
+.sera-table-wrapper-header-title {
+  font-weight: 600;
+  margin-bottom: 0;
+}

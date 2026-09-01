@@ -1,0 +1,8 @@
+@use "@sera-assets/sass/mixins" as *;
+@import "@sera-assets/sass/variables";
+
+div {
+  &.secondary {
+    color: $essentials-border;
+  }
+}

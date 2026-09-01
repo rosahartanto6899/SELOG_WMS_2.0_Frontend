@@ -1,0 +1,86 @@
+{
+  "title": "Peran",
+  "breadcrumb": [{ "title": "Pengelolaan User" }, { "title": "Peran" }],
+  "tabs": [
+    { "title": "Users" },
+    { "title": "Peran" },
+    { "title": "Izin Peran" }
+  ],
+  "table": {
+    "title": "Daftar Peran",
+    "columns": {
+      "no": "No.",
+      "role": "Peran",
+      "user_number": "Jumlah Pengguna",
+      "createdAt": "Dibuat Pada",
+      "updatedAt": "Diperbarui Pada",
+      "actions": "Aksi"
+    },
+    "options": ["Peran"],
+    "button": {
+      "add": { "label": "Tambah Peran Baru" },
+      "update": { "tooltip": "Edit" },
+      "delete": { "tooltip": "Hapus" }
+    },
+    "pagination": {
+      "items": "item",
+      "page": "halaman"
+    },
+    "searchPlaceholder": "Cari di Tabel"
+  },
+  "modal": {
+    "delete": {
+      "title": "Hapus Peran",
+      "prefixMessage": "Anda yakin ingin menghapus peran",
+      "okText": "Ya, Hapus",
+      "cancelText": "Batal"
+    }
+  },
+  "add": {
+    "breadcrumb": [
+      { "title": "Pengelolaan User" },
+      { "title": "Peran" },
+      { "title": "Tambah Peran Baru" }
+    ],
+    "title": "Tambah Peran Baru",
+    "alert": "Harap lengkapi formulir sebelum menekan Simpan",
+    "card": {
+      "title": "Informasi Peran"
+    },
+    "actionButton": {
+      "saveText": "Simpan",
+      "cancelText": "Batal"
+    }
+  },
+  "edit": {
+    "breadcrumb": [
+      { "title": "Pengelolaan User" },
+      { "title": "Peran" },
+      { "title": "Ubah Peran" }
+    ],
+    "title": "Ubah Peran",
+    "alert": "Harap lengkapi formulir sebelum menekan Simpan",
+    "card": {
+      "title": "Informasi Peran"
+    },
+    "actionButton": {
+      "saveText": "Simpan",
+      "cancelText": "Batal"
+    }
+  },
+  "form": {
+    "role_name": {
+      "name": "Nama Peran",
+      "placeholder": "Harap mengisi nama peran",
+      "helperText": "Field ini harus diisi",
+      "rule": {
+        "invalidMax": "Tidak valid, nama peran maksimal 50 karakter"
+      }
+    }
+  },
+  "notification": {
+    "add": "telah berhasil ditambahkan!",
+    "edit": "telah berhasil diedit!",
+    "delete": "telah berhasil dihapus!"
+  }
+}

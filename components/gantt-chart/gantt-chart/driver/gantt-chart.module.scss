@@ -1,0 +1,33 @@
+.fullscreen-wrapper {
+  background-color: #fff;
+  height: 100%;
+  overflow: auto;
+  padding: 16px;
+
+  &:fullscreen {
+    background-color: #fff;
+    height: 100vh;
+    overflow: auto;
+  }
+}
+
+.gantt-chart-container {
+  :global {
+    .ant-select-selection-search {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+}
+
+.footer-ganchart {
+  padding: 15px 0;
+}
+
+.custom-grup-radio {
+  :global {
+    .ant-radio-button-wrapper {
+      padding: 0 17.5px !important;
+    }
+  }
+}

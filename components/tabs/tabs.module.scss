@@ -1,0 +1,224 @@
+@use "@sera-assets/sass/mixins" as *;
+@import "@sera-assets/sass/variables";
+
+.sera-tabs {
+  filter: drop-shadow(0 0.2rem 0.8rem rgb(0 0 0 / 15%));
+
+  &.card {
+    filter: unset;
+
+    :global {
+      .ant-tabs {
+        &-nav {
+          margin: 0 !important;
+
+          &-list {
+            align-items: flex-end;
+            margin-left: -3rem;
+          }
+
+          &::before {
+            border: none;
+          }
+        }
+
+        &-ink-bar {
+          z-index: 1;
+        }
+
+        &-tab {
+          align-items: flex-end;
+          background: $essentials-background;
+          display: flex;
+          font-size: 1.4rem;
+          font-weight: 400;
+          height: 4rem;
+          justify-content: center;
+          line-height: 2.2rem;
+          margin-left: 5.6rem;
+          margin-top: 5px;
+          position: relative;
+
+          &-btn {
+            color: $essentials-white;
+          }
+
+          &::before {
+            background: $essentials-background;
+            border-radius: 0.8rem 0;
+            content: " ";
+            display: block;
+            height: 100%;
+            left: -2.4rem;
+            position: absolute;
+            top: 0;
+            width: 5rem;
+            z-index: -1;
+          }
+
+          &::after {
+            background: $essentials-background;
+            border-radius: 0 0.8rem 0 0;
+            content: " ";
+            display: block;
+            height: 100%;
+            position: absolute;
+            right: -2.3rem;
+            top: 0;
+            transform: skew(25deg);
+            width: 4rem;
+            z-index: -1;
+          }
+
+          &-active {
+            background: $essentials-white;
+            filter: drop-shadow(1px 0.2rem 0.3rem rgb(0 0 0 / 15%));
+            font-size: 1.6rem;
+            height: 5.6rem;
+            z-index: 1;
+
+            .ant-tabs-tab-btn {
+              color: #1b507a;
+            }
+
+            &::before {
+              background: $essentials-white;
+              display: block;
+            }
+
+            &::after {
+              background: $essentials-white;
+              border-radius: 0 0.8rem 0 0;
+              content: " ";
+              display: block;
+              height: 100%;
+              position: absolute;
+              right: -3rem;
+              top: 0;
+              transform: skew(15deg);
+              width: 4rem;
+              z-index: -1;
+            }
+          }
+        }
+
+        &-content {
+          background: $essentials-white;
+          min-height: 20rem;
+          padding: 1.6rem 0;
+        }
+      }
+    }
+  }
+
+  :global {
+    .ant-tabs {
+      &-nav {
+        margin: 0 !important;
+
+        &-list {
+          align-items: flex-end;
+          margin-left: -3.2rem;
+        }
+      }
+
+      &-ink-bar {
+        z-index: 1;
+      }
+
+      &-tab {
+        align-items: flex-end;
+        background: #ebf5fb;
+        display: flex;
+        font-size: 1.4rem;
+        font-weight: 400;
+        height: 4rem;
+        justify-content: center;
+        line-height: 2.2rem;
+        margin-left: 5.6rem !important;
+        padding: 0.5rem 0;
+        position: relative;
+
+        &:first-child {
+          margin-left: 5.6rem;
+        }
+
+        &-btn {
+          color: $primary-main !important;
+          font-weight: 500;
+        }
+
+        &::before {
+          background: #ebf5fb;
+          border-radius: $border-radius-base 0;
+          content: " ";
+          display: block;
+          height: 100%;
+          left: -2.4rem;
+          position: absolute;
+          top: 0;
+          width: 5rem;
+          z-index: -1;
+        }
+
+        &::after {
+          background: #ebf5fb;
+          border-radius: 0 $border-radius-base 0 0;
+          content: " ";
+          display: block;
+          height: 100%;
+          position: absolute;
+          right: -2.3rem;
+          top: 0;
+          transform: skew(25deg);
+          width: 4rem;
+          z-index: -1;
+        }
+
+        &-active {
+          background: $essentials-background;
+          font-size: 1.6rem;
+          height: 5.6rem;
+          margin-left: 4rem;
+          padding: 1.2rem 0;
+          z-index: 1;
+
+          &::before {
+            background: $essentials-background;
+            content: " ";
+            display: block;
+          }
+
+          &::after {
+            background: $essentials-background;
+            border-radius: 0 $border-radius-base 0 0;
+            content: " ";
+            display: block;
+            height: 100%;
+            position: absolute;
+            right: -2.2rem;
+            top: 0;
+            transform: skew(25deg);
+            width: 4rem;
+            z-index: -1;
+          }
+        }
+      }
+
+      &-content {
+        background: $essentials-background;
+        border-radius: 0 $border-radius-base $border-radius-base;
+        min-height: 20rem;
+        padding: 1.6rem;
+      }
+    }
+  }
+}
+
+.no-padding {
+  :global {
+    .ant-tabs-content {
+      padding: 0;
+    }
+  }
+}

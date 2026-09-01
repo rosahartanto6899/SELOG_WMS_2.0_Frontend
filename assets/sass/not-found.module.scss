@@ -1,0 +1,76 @@
+@use "../sass/mixins" as *;
+@import "../sass/variables";
+
+.not-found {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+
+  .not-found-image {
+    height: 175px;
+    margin-bottom: 1rem;
+    width: 175px;
+
+    @include screen(big-tablet) {
+      height: 200px;
+      width: 200px;
+    }
+
+    @include screen(desktop-large) {
+      height: 275px;
+      width: 275px;
+    }
+
+    img {
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  .not-found-text {
+    text-align: center;
+
+    h1 {
+      color: #1b507a;
+      font-size: 3rem;
+      font-weight: 500;
+      margin-bottom: 0;
+
+      @include screen(big-tablet) {
+        font-size: 3rem;
+      }
+      @include screen(desktop-large) {
+        font-size: 3.5rem;
+      }
+    }
+
+    h2 {
+      color: rgb(0 0 0 / 85%);
+      font-size: 2rem;
+      font-weight: 500;
+      margin-bottom: 2px;
+
+      @include screen(big-tablet) {
+        font-size: 1.75rem;
+      }
+      @include screen(desktop-large) {
+        font-size: 2rem;
+      }
+    }
+
+    p {
+      color: rgb(0 0 0 / 45%);
+      font-size: 1.5rem;
+      font-weight: 400;
+
+      @include screen(big-tablet) {
+        font-size: 1.5rem;
+      }
+      @include screen(desktop-large) {
+        font-size: 2rem;
+      }
+    }
+  }
+}

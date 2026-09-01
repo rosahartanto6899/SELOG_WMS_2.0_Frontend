@@ -1,0 +1,74 @@
+@use "@sera-assets/sass/mixins" as *;
+@import "@sera-assets/sass/variables";
+
+.sera-card-notification {
+  border-radius: 8px;
+  box-shadow: 0 0.2rem 0.8rem rgb(0 0 0 / 15%);
+
+  &.read {
+    border: none;
+    box-shadow: none;
+
+    :global {
+      .notification-title,
+      .notification-timestamp,
+      .notification-description,
+      .ant-avatar.ant-avatar-circle.ant-avatar-icon {
+        color: rgb(0 0 0 / 25%) !important;
+      }
+    }
+  }
+
+  &.new {
+    background-clip: content-box, border-box;
+    background-image:
+      linear-gradient(white, white), linear-gradient(to left, #3a8ddb, #1b507a);
+    background-origin: border-box;
+    border: double 2px transparent;
+  }
+
+  :global {
+    .ant-card {
+      &-meta {
+        &-title {
+          font-weight: 500;
+          line-height: 2.2rem;
+          text-overflow: unset;
+          white-space: unset;
+
+          .notification-timestamp {
+            color: rgb(0 0 0 / 45%);
+            font-size: 12px;
+            font-weight: 400;
+          }
+        }
+
+        &-detail {
+          width: 100%;
+        }
+
+        &-description {
+          font-size: 1.2rem;
+          font-weight: 400;
+          line-height: 2rem;
+        }
+
+        &-avatar {
+          padding-right: 0.8rem;
+
+          .ant-avatar {
+            background: none;
+            border-radius: none;
+            box-shadow: none;
+            color: $primary-main;
+            padding: 0;
+          }
+        }
+      }
+
+      &-body {
+        padding: 1.6rem;
+      }
+    }
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "title": "Role Permission",
+  "breadcrumb": [
+    { "title": "User Management" },
+    { "title": "Role Permissions" }
+  ],
+  "tabs": [
+    { "title": "Users" },
+    { "title": "Roles" },
+    { "title": "Role Permission" }
+  ],
+  "table": {
+    "title": "List of Role Menus",
+    "header": [
+      { "title": "No." },
+      { "title": "Menu" },
+      { "title": "Fleet Group" },
+      { "title": "Role" },
+      { "title": "Read" },
+      { "title": "Create" },
+      { "title": "Update" },
+      { "title": "Delete" },
+      { "title": "Export" },
+      { "title": "Created At" },
+      { "title": "Update At" },
+      { "title": "Action" }
+    ]
+  },
+  "searchBar": {
+    "placeholder": "Search",
+    "dropdownOption": {
+      "title": "Menu",
+      "placeholder": "Search By"
+    }
+  },
+  "button": {
+    "title": "Add New Role Permission"
+  },
+  "tooltip": {
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "modal": {
+    "delete": {
+      "title": "Delete Role Permission",
+      "body": "Are you sure you want to delete role menu",
+      "action": {
+        "yes": { "title": "Yes, Delete" }
+      }
+    }
+  },
+  "add": {
+    "breadcrumb": [
+      { "title": "User Management" },
+      { "title": "Role Permissions" },
+      { "title": "Add New Role Permission" }
+    ],
+    "title": "Add New Role Permission",
+    "cardTitle": "Role Permission",
+    "form": {
+      "required": {
+        "message": "This field is required"
+      },
+      "nonNullable": {
+        "message": "Please complete the form before clicking Save"
+      },
+      "menu": {
+        "title": "Menu",
+        "placeholder": "Select Menu"
+      },
+      "role": {
+        "title": "Role",
+        "placeholder": "Select Role"
+      },
+      "action": {
+        "title": "Action",
+        "options": ["Read", "Create", "Update", "Delete", "Export"]
+      },
+      "button": {
+        "save": "Save",
+        "cancel": "Cancel"
+      }
+    }
+  },
+  "edit": {
+    "title": "Edit Role Permission",
+    "breadcrumb": [
+      { "title": "User Management" },
+      { "title": "Role Permissions" },
+      { "title": "Edit Role Permission" }
+    ],
+    "cardTitle": "Role Permission",
+    "form": {
+      "required": {
+        "message": "This field is required"
+      },
+      "nonNullable": {
+        "message": "Please complete the form before clicking Save"
+      },
+      "menu": {
+        "title": "Menu",
+        "placeholder": "Select Menu"
+      },
+      "role": {
+        "title": "Role",
+        "placeholder": "Select Role"
+      },
+      "action": {
+        "title": "Action",
+        "options": ["Read", "Create", "Update", "Delete", "Export"]
+      },
+      "button": {
+        "save": "Save",
+        "cancel": "Cancel"
+      }
+    }
+  },
+  "notification": {
+    "add": "have been successfully added!",
+    "edit": "have been successfully edited!",
+    "delete": "has been successfully removed!"
+  }
+}

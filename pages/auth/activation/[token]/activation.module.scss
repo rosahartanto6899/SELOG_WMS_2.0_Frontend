@@ -1,0 +1,219 @@
+@use "@sera-assets/sass/mixins" as *;
+@import "@sera-assets/sass/variables";
+
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+
+  .body-wrapper {
+    display: flex;
+    height: 100%;
+    width: 100%;
+
+    .image-wrapper {
+      height: 100%;
+      position: relative;
+      width: 100%;
+
+      .image-overlay {
+        background: linear-gradient(360deg, $primary-main, transparent);
+        inset: 0;
+        position: absolute;
+      }
+    }
+
+    .form-wrapper {
+      background: linear-gradient(360deg, $primary-main, $primary-subtle);
+      flex: 0 0 53.4rem;
+
+      .activation {
+        &-wrapper {
+          align-items: center;
+          display: flex;
+          height: auto;
+          justify-content: center;
+          margin: 0;
+          min-height: 100%;
+          min-width: 100%;
+          padding: 0;
+          position: relative;
+          width: auto;
+        }
+
+        &-container {
+          align-items: center;
+          bottom: 7rem;
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+          justify-content: center;
+          left: 11.2rem;
+          padding: 0 3rem;
+          right: 11.2rem;
+          width: 100%;
+          z-index: 1;
+
+          @include screen(figma-mobile) {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: calc(100vh - $mobile-footer-height);
+          }
+
+          @include screen(big-tablet) {
+            min-height: 500px;
+            padding: 0 2rem;
+          }
+
+          @include screen(big-tablet) {
+            min-height: 500px;
+            padding: 0 8rem;
+          }
+
+          > :first-child {
+            margin: 1rem 0 2rem;
+
+            @include screen(figma-mobile) {
+              margin: 1rem 0 2rem;
+            }
+
+            @include screen(big-tablet) {
+              margin: 0 0 1rem;
+            }
+
+            @include screen(desktop-large) {
+              margin: 0 0 1.5rem;
+            }
+          }
+
+          > :last-child {
+            width: 100%;
+
+            @include screen(figma-mobile) {
+              width: 100%;
+            }
+
+            @include screen(tablet) {
+              width: 60%;
+            }
+
+            @include screen(big-tablet) {
+              width: 100%;
+            }
+
+            @include screen(desktop-large) {
+              margin: 0 0 5rem;
+              width: 100%;
+            }
+          }
+
+          .recover-password-form-button {
+            width: 100%;
+
+            @include screen(figma-mobile) {
+              min-width: 272px;
+            }
+            @include screen(big-tablet) {
+              width: 100%;
+            }
+
+            &-primary {
+              background: #1e9cd9;
+              border: 0.1rem solid #1e9cd9;
+              color: #fff;
+            }
+          }
+
+          :global {
+            .ant-form .ant-form-item-label label {
+              color: #fff;
+            }
+
+            .ant-form-item-control {
+              margin-bottom: 1.3rem;
+            }
+
+            .ant-form-item-control-input {
+              text-align: center;
+
+              a,
+              a:hover {
+                color: #fff;
+                text-decoration: none;
+              }
+            }
+
+            .sera-input.ant-form-item {
+              & .ant-input:not([type="password"]) {
+                border-radius: 2rem;
+              }
+
+              & .ant-input-affix-wrapper {
+                border-radius: 2rem;
+              }
+
+              & .ant-input-affix-wrapper-status-error,
+              .ant-form-item-explain-error {
+                color: #ff4d4f;
+              }
+            }
+          }
+
+          .arrow-left {
+            padding-right: 1.5rem !important;
+          }
+        }
+
+        &-logo {
+          background: url("/images/logo.svg");
+          background-repeat: no-repeat;
+          background-size: contain;
+          height: 20px;
+          margin: 0;
+          padding: 0;
+          width: 88.42px;
+
+          @include screen(big-tablet) {
+            height: 4rem;
+            margin-bottom: 1rem;
+            width: 8rem;
+          }
+
+          @include screen(desktop-large) {
+            height: 4.5rem;
+            margin-bottom: 1rem;
+          }
+        }
+      }
+    }
+  }
+
+  .footer-wrapper {
+    align-items: center;
+    display: flex;
+    flex-shrink: 0;
+    font-size: 14px;
+    justify-content: space-between;
+    padding: 2rem 7rem;
+
+    .footer-logo {
+      height: 30px;
+      position: relative;
+      width: 100px;
+    }
+  }
+}
+
+@media (width <= 720px) {
+  .footer-wrapper {
+    flex-direction: column;
+    padding: 2rem !important;
+  }
+
+  .form-wrapper {
+    flex: 0 0 39.4rem !important;
+  }
+}

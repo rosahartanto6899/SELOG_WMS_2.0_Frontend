@@ -1,0 +1,78 @@
+{
+  "title": "Gudang",
+  "action": "Aksi",
+  "detail": "Detail",
+  "edit": "Ubah",
+  "delete": "Hapus",
+  "confirmDelete": "Yakin hapus",
+  "form": {
+    "title": "Gudang",
+    "message": {
+      "default": "Mohon isi kolom ini"
+    },
+    "customer": {
+      "label": "Customer",
+      "placeholder": "Pilih customer"
+    },
+    "code": {
+      "label": "Kode",
+      "placeholder": "Kode gudang"
+    },
+    "name": {
+      "label": "Nama",
+      "placeholder": "Nama gudang"
+    },
+    "address": {
+      "label": "Alamat",
+      "placeholder": "Alamat"
+    },
+    "phone": {
+      "label": "Telepon",
+      "placeholder": "Telepon"
+    },
+    "button": {
+      "cancel": "Batal",
+      "save": "Simpan"
+    }
+  },
+  "breadcrumb": [
+    {
+      "title": "User Management"
+    },
+    {
+      "title": "Gudang"
+    }
+  ],
+  "table": {
+    "title": "Gudang",
+    "searchPlaceholder": "Cari",
+    "columns": {
+      "no": "No",
+      "code": "Kode",
+      "name": "Nama",
+      "customer": "Customer",
+      "address": "Alamat",
+      "phone": "Telepon",
+      "createdAt": "Dibuat",
+      "actions": "Aksi"
+    },
+    "button": {
+      "add": {
+        "label": "Tambah Baru"
+      },
+      "update": {
+        "tooltip": "Ubah"
+      },
+      "delete": {
+        "tooltip": "Hapus"
+      }
+    }
+  },
+  "modal": {
+    "delete": {
+      "title": "Konfirmasi Hapus",
+      "okText": "Hapus",
+      "cancelText": "Batal"
+    }
+  }
+}

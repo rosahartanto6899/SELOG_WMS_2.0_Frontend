@@ -1,0 +1,142 @@
+{
+  "title": "Pengguna",
+  "breadcrumb": [
+    "Manajemen Pengguna",
+    "Pengguna",
+    {
+      "add": "Tambah Pengguna Baru",
+      "edit": "Edit Pengguna",
+      "detail": "Detail Pengguna"
+    }
+  ],
+  "table": {
+    "title": "Daftar Pengguna",
+    "columns": {
+      "name": "Nama",
+      "nrp": "NRP",
+      "email": "Email",
+      "role": "Peran",
+      "userCategory": "Kategori Pengguna",
+      "status": "Status",
+      "createdAt": "Dibuat Pada",
+      "updatedAt": "Diperbarui Pada",
+      "actions": "Aksi",
+      "button": {
+        "add": {
+          "label": "Tambah Pengguna Baru"
+        },
+        "update": {
+          "tooltip": "Edit"
+        },
+        "detail": {
+          "tooltip": "Detail"
+        },
+        "delete": {
+          "tooltip": "Hapus"
+        },
+        "send": {
+          "tooltip": "Kirim Ulang Aktivasi Email"
+        }
+      }
+    },
+    "options": ["Nama", "Email", "Kategori Pengguna"],
+    "search": {
+      "default": {
+        "placeholder": "Cari Data Berdasarkan"
+      },
+      "internal": {
+        "placeholder": "Cari di tabel"
+      },
+      "notInternal": {
+        "placeholder": "Pilih Kategori Pengguna"
+      }
+    }
+  },
+  "modal": {
+    "delete": {
+      "title": "Hapus Pengguna",
+      "text": {
+        "ok": "Ya, Hapus",
+        "confirm": "Apakah Anda yakin ingin menghapus pengguna"
+      }
+    },
+    "resend": {
+      "title": "Kirim Ulang Aktivasi Email",
+      "text": {
+        "ok": "Ya, Kirim",
+        "confirm": "Apakah Anda yakin ingin mengirim ulang aktivasi email ke pengguna"
+      }
+    }
+  },
+  "form": {
+    "title": "Informasi Pengguna",
+    "message": {
+      "default": "Kolom ini wajib diisi"
+    },
+    "nonNullable": {
+      "message": "Silakan lengkapi formulir sebelum klik Simpan"
+    },
+    "categories": {
+      "label": "Kategori",
+      "options": ["Pengguna Internal", "Pengguna Eksternal"]
+    },
+    "userName": {
+      "label": "Nama Pengguna",
+      "placeholder": "Silakan masukkan Nama"
+    },
+    "nrp": {
+      "label": "NRP",
+      "placeholder": "Please enter NRP"
+    },
+    "email": {
+      "label": "Email",
+      "placeholder": "Silakan masukkan Email",
+      "message": "Silakan masukkan format email yang valid"
+    },
+    "phoneNumber": {
+      "label": "Nomor Telepon",
+      "placeholder": "Silakan masukkan Nomor Telepon",
+      "messages": [
+        "Nomor Telepon harus lebih dari atau sama dengan 10 karakter",
+        "Nomor Telepon harus kurang dari atau sama dengan 15 karakter",
+        "Silakan masukkan format nomor telepon yang valid (contoh: 628123456780)"
+      ]
+    },
+    "roleBranch": "Akses Customer & Peran",
+    "role": {
+      "messages": {
+        "unique": "Peran tidak boleh sama"
+      },
+      "label": "Peran",
+      "placeholder": "Silakan pilih Peran"
+    },
+    "warehouse": {
+      "label": "Gudang",
+      "placeholder": "Silakan masukkan Gudang",
+      "selectAll": "Pilih Semua",
+      "unselectAll": "Batalkan Pilihan Semua"
+    },
+    "status": {
+      "active": "Status Aktif",
+      "nonActive": "Status Non Aktif"
+    },
+    "button": {
+      "addRole": "Tambah Peran",
+      "cancel": "Batal",
+      "save": "Simpan",
+      "addCustomer": "Tambah Customer"
+    },
+    "customer": {
+      "label": "Customer",
+      "placeholder": "Silakan pilih Customer",
+      "messages": {
+        "unique": "Customer sudah dipilih"
+      }
+    }
+  },
+  "message": {
+    "add": "telah berhasil ditambahkan!",
+    "edit": "telah berhasil diedit!",
+    "delete": "telah berhasil dihapus!"
+  }
+}

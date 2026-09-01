@@ -1,0 +1,496 @@
+{
+  "title": "POD Collection",
+  "breadcrumb": [
+    "Administration",
+    "POD Collection",
+    {
+      "detail": "Detail POD Collection"
+    }
+  ],
+  "filters": ["Branch", "Shipment Type"],
+  "summary": {
+    "fields": [
+      "Total Shipment",
+      "POD Loading",
+      "POD Unloading",
+      "POD Delivery",
+      "POD Hardcopy",
+      "POD Checkpoint"
+    ]
+  },
+  "table": {
+    "title": "Shipment List",
+    "column": {
+      "A": "Shipment Number",
+      "B": "POD Activity",
+      "C": "Expense Status",
+      "D": "Booking Number",
+      "E": "Customer Name",
+      "F": "Shipment Type",
+      "G": "Unit Type",
+      "H": "Origin",
+      "I": "Destination",
+      "J": "License Plate",
+      "K": "Driver 1",
+      "L": "Driver 2",
+      "M": "Expense Transferred",
+      "N": "Total Expense",
+      "Z": "Action",
+      "button": {
+        "detail": {
+          "tooltip": "Detail"
+        }
+      }
+    },
+    "button": {
+      "config": "Columns"
+    }
+  },
+  "detail": {
+    "title": "POD Collection",
+    "table": {
+      "column": {
+        "A": "POD Type",
+        "B": "Submitted Date",
+        "C": "Submitted By",
+        "D": "Verified Date",
+        "E": "Verified By",
+        "F": "Attachment",
+        "G": "Status",
+        "Z": "Action",
+        "button": {
+          "update": {
+            "tooltip": "Update"
+          },
+          "verify": {
+            "tooltip": "Approve"
+          },
+          "reject": {
+            "tooltip": "Reject"
+          }
+        }
+      }
+    },
+    "button": {
+      "config": "Columns"
+    },
+    "modalEdit": {
+      "title": {
+        "edit": "Edit POD",
+        "verify": "Verify POD"
+      }
+    },
+    "modalPreview": {
+      "title": {
+        "loading": "Preview Loading",
+        "unloading": "Preview Unloading"
+      }
+    },
+    "modalForm": {
+      "shipmentNumber": "Shipment Number",
+      "customerName": "Customer Name",
+      "submittedDate": "Submitted Date",
+      "submittedBy": "Submitted By",
+      "receiptNumber": "Receipt Number",
+      "receiptDate": "Receipt Date",
+      "counter": "Counter",
+      "amountOfReceipt": "Amount of Receipt",
+      "isBillToCustomer": "Is Bill to Customer?",
+      "picUnloading": "PIC Unloading",
+      "picLoading": "PIC Loading",
+      "isClaim": "Is Claim"
+    },
+    "message": {
+      "approved": "Pod approved",
+      "rejected": "Pod rejected",
+      "edited": "Data has been successfully edited"
+    }
+  },
+  "shipmentDetail": {
+    "form": {
+      "title": {
+        "summaryRouteLocation": "Summary Route Location",
+        "auditTrail": "Audit Trail"
+      },
+      "shipmentDetail": {
+        "shipmentInformation": {
+          "title": "Shipment Information",
+          "shipmentNumber": {
+            "label": "Shipment Number",
+            "placeholder": "Input Shipment Number"
+          },
+          "bookingNumber": {
+            "label": "Booking Number",
+            "placeholder": "Input Booking Number"
+          },
+          "shipmentType": {
+            "label": "Shipment Type",
+            "placeholder": "Input Shipment Type"
+          },
+          "customerName": {
+            "label": "Customer Name",
+            "placeholder": "Input Customer Name"
+          },
+          "branchOrder": {
+            "label": "Branch Order",
+            "placeholder": "Input Branch Order"
+          },
+          "pickupDate": {
+            "label": "Pickup Date",
+            "placeholder": "Select Pickup Date"
+          },
+          "cmd": {
+            "label": "CMD",
+            "placeholder": "Input CMD"
+          },
+          "contractNo": {
+            "label": "Contract No",
+            "placeholder": "Input Contract No"
+          },
+          "salesDealing": {
+            "label": "Sales Dealing",
+            "placeholder": "Input Sales Dealing"
+          },
+          "salesServicing": {
+            "label": "Sales Servicing",
+            "placeholder": "Input Sales Servicing"
+          },
+          "soNumber": {
+            "label": "SO Number",
+            "placeholder": "Input SO Number"
+          },
+          "soCreatedDate": {
+            "label": "SO Created Date",
+            "placeholder": "Select SO Created Date"
+          },
+          "revenue": {
+            "label": "Revenue",
+            "placeholder": "Input Revenue"
+          },
+          "additionalRequest": {
+            "label": "Additional Request",
+            "placeholder": "Select Additional Request"
+          }
+        },
+        "shipmentDetail": {
+          "title": "Shipment Detail",
+          "routeCode": {
+            "label": "Route Code",
+            "placeholder": "Input Route Code"
+          },
+          "jmpCode": {
+            "label": "JMP Code",
+            "placeholder": "Input JMP Code"
+          },
+          "pickUpHour": {
+            "label": "Pick Up Hour",
+            "placeholder": "Select Pick Up Hour"
+          },
+          "eta": {
+            "label": "ETA",
+            "placeholder": "Select ETA"
+          },
+          "tollUsage": {
+            "label": "Toll Usage",
+            "placeholder": "Input Toll Usage"
+          },
+          "note": {
+            "label": "Note",
+            "placeholder": "Input Note"
+          }
+        },
+        "vehicleInformation": {
+          "title": "Vehicle Information",
+          "licensePlate": {
+            "label": "License Plate",
+            "placeholder": "Input License Plate"
+          },
+          "unitType": {
+            "label": "Unit Type",
+            "placeholder": "Input Unit Type"
+          },
+          "shipmentType": {
+            "label": "Shipment Type",
+            "placeholder": "Input Shipment Type"
+          },
+          "customerName": {
+            "label": "Customer Name",
+            "placeholder": "Input Customer Name"
+          },
+          "branch": { "label": "Branch", "placeholder": "Input Branch" },
+          "year": { "label": "Year", "placeholder": "Input Year" },
+          "vin": { "label": "VIN", "placeholder": "Input VIN" },
+          "ownership": {
+            "label": "Ownership",
+            "placeholder": "Input Ownership"
+          },
+          "hasObd": { "label": "Has OBD", "placeholder": "Input Has OBD" },
+          "hasDashcam": {
+            "label": "Has Dashcam",
+            "placeholder": "Input Has Dashcam"
+          },
+          "note": { "label": "Note", "placeholder": "Input Note" }
+        },
+        "driverInformation": {
+          "title": "Driver Information",
+          "driver1": {
+            "title": "Driver 1",
+            "driverName": {
+              "label": "Driver Name",
+              "placeholder": "Input Driver Name"
+            },
+            "employeeStatus": {
+              "label": "Employee Status",
+              "placeholder": "Input Employee Status"
+            },
+            "vkVd": { "label": "VK/VD", "placeholder": "Input VK/VD" },
+            "driverId": {
+              "label": "Driver ID",
+              "placeholder": "Input Driver ID"
+            },
+            "branch": { "label": "Branch", "placeholder": "Input Branch" },
+            "tierDriver": {
+              "label": "Tier Driver",
+              "placeholder": "Input Tier Driver"
+            },
+            "shipmentType": {
+              "label": "Shipment Type",
+              "placeholder": "Input Shipment Type"
+            },
+            "customerName": {
+              "label": "Customer Name",
+              "placeholder": "Input Customer Name"
+            },
+            "mobilePhone": {
+              "label": "Mobile Phone",
+              "placeholder": "Input Mobile Phone"
+            },
+            "note": { "label": "Note", "placeholder": "Input Note" }
+          },
+          "driver2": {
+            "title": "Driver 2",
+            "driverName": {
+              "label": "Driver Name",
+              "placeholder": "Input Driver Name"
+            },
+            "employeeStatus": {
+              "label": "Employee Status",
+              "placeholder": "Input Employee Status"
+            },
+            "vkVd": { "label": "VK/VD", "placeholder": "Input VK/VD" },
+            "driverId": {
+              "label": "Driver ID",
+              "placeholder": "Input Driver ID"
+            },
+            "branch": { "label": "Branch", "placeholder": "Input Branch" },
+            "tierDriver": {
+              "label": "Tier Driver",
+              "placeholder": "Input Tier Driver"
+            },
+            "shipmentType": {
+              "label": "Shipment Type",
+              "placeholder": "Input Shipment Type"
+            },
+            "customerName": {
+              "label": "Customer Name",
+              "placeholder": "Input Customer Name"
+            },
+            "mobilePhone": {
+              "label": "Mobile Phone",
+              "placeholder": "Input Mobile Phone"
+            },
+            "note": { "label": "Note", "placeholder": "Input Note" }
+          }
+        },
+        "distanceAndFuel": {
+          "title": "Distance & Fuel Calculation",
+          "distanceCargo": {
+            "label": "Distance (Cargo)",
+            "placeholder": "Input Distance (Cargo)"
+          },
+          "toleranceCargo": {
+            "label": "Tolerance (Cargo)",
+            "placeholder": "Input Tolerance (Cargo)"
+          },
+          "totalDistanceCargo": {
+            "label": "Total Distance (Cargo)",
+            "placeholder": "Input Total Distance (Cargo)"
+          },
+          "distanceEmpty": {
+            "label": "Distance (Empty)",
+            "placeholder": "Input Distance (Empty)"
+          },
+          "toleranceEmpty": {
+            "label": "Tolerance (Empty)",
+            "placeholder": "Input Tolerance (Empty)"
+          },
+          "totalDistanceEmpty": {
+            "label": "Total Distance (Empty)",
+            "placeholder": "Input Total Distance (Empty)"
+          },
+          "totalDistance": {
+            "label": "Total Distance",
+            "placeholder": "Input Total Distance"
+          },
+          "fuelCargo": {
+            "label": "Fuel (Cargo)",
+            "placeholder": "Input Fuel (Cargo)"
+          },
+          "fuelEmpty": {
+            "label": "Fuel (Empty)",
+            "placeholder": "Input Fuel (Empty)"
+          },
+          "totalFuel": {
+            "label": "Total Fuel",
+            "placeholder": "Input Total Fuel"
+          }
+        },
+        "operationalCosts": {
+          "title": "Operational Costs",
+          "fuel": {
+            "label": "Fuel Fee",
+            "placeholder": "Input Fuel Fee"
+          },
+          "toll": {
+            "label": "Toll Fee",
+            "placeholder": "Input Toll Fee"
+          },
+          "mell": {
+            "label": "Mell Fee",
+            "placeholder": "Input Mell Fee"
+          },
+          "loadingUnloading": {
+            "label": "Loading/Unloading Fee",
+            "placeholder": "Input Loading/Unloading Fee"
+          },
+          "harborCrossing": {
+            "label": "Harbor Crossing Fee",
+            "placeholder": "Input Harbor Crossing Fee"
+          },
+          "workerContributions": {
+            "label": "Worker Contributions Fee",
+            "placeholder": "Input Worker Contributions Fee"
+          },
+          "security": {
+            "label": "Security Fee",
+            "placeholder": "Input Security Fee"
+          },
+          "totalCost": {
+            "label": "Total Cost",
+            "placeholder": "Input Total Cost"
+          }
+        },
+        "incentive": {
+          "title": "Incentive",
+          "incentiveKm": {
+            "label": "Incentive (Km)",
+            "placeholder": "Input Incentive (Km)"
+          },
+          "incentiveDaily": {
+            "label": "Incentive (Daily)",
+            "placeholder": "Input Incentive (Daily)"
+          },
+          "incentiveSio": {
+            "label": "Incentive (SIO)",
+            "placeholder": "Input Incentive (SIO)"
+          },
+          "totalIncentive": {
+            "label": "Total Incentive",
+            "placeholder": "Input Total Incentive"
+          }
+        },
+        "totalExpense": {
+          "title": "Total Expense",
+          "totalExpense": {
+            "label": "Total Expense",
+            "placeholder": "Input Total Expense"
+          },
+          "expenseRatio": {
+            "label": "Expense Ratio",
+            "placeholder": "Input Expense Ratio"
+          }
+        }
+      },
+      "additionalExpense": {
+        "title": "Additional Expense",
+        "fuel": {
+          "label": "Fuel",
+          "placeholder": "Input Fuel"
+        },
+        "toll": {
+          "label": "Toll",
+          "placeholder": "Input Toll"
+        },
+        "mell": {
+          "label": "Mell",
+          "placeholder": "Input Mell"
+        },
+        "loadingUnloading": {
+          "label": "Loading/Unloading",
+          "placeholder": "Input Loading/Unloading"
+        },
+        "harborCrossing": {
+          "label": "Harbor Crossing",
+          "placeholder": "Input Harbor Crossing"
+        },
+        "workerContributions": {
+          "label": "Worker Contributions",
+          "placeholder": "Input Worker Contributions"
+        },
+        "security": {
+          "label": "Security",
+          "placeholder": "Input Security"
+        },
+        "incentiveKm": {
+          "label": "Incentive (Km)",
+          "placeholder": "Input Incentive (Km)"
+        },
+        "incentiveDaily": {
+          "label": "Incentive (Daily)",
+          "placeholder": "Input Incentive (Daily)"
+        },
+        "incentiveSio": {
+          "label": "Incentive (SIO)",
+          "placeholder": "Input Incentive (SIO)"
+        },
+        "note": {
+          "label": "Note",
+          "placeholder": "Input Note"
+        },
+        "isBillToCustomer": {
+          "label": "Is Bill To Customer",
+          "placeholder": "Select Is Bill To Customer"
+        },
+        "approvalNote": {
+          "label": "Approval Note",
+          "placeholder": "Input Approval Note"
+        }
+      },
+      "button": {
+        "cancel": "Cancel",
+        "submit": "Submit",
+        "approve": "Approve",
+        "reject": "Reject"
+      },
+      "modal": {
+        "approve": {
+          "title": "Confirm Approval",
+          "subtitle": "Are you sure you want to approve expense?",
+          "button": {
+            "yes": "Yes, Approve",
+            "no": "No, cancel"
+          }
+        },
+        "reject": {
+          "title": "Confirm Reject",
+          "subtitle": "Please provide the reason for rejection.",
+          "button": {
+            "yes": "Reject",
+            "no": "cancel"
+          }
+        }
+      },
+      "message": "This field is required"
+    }
+  }
+}

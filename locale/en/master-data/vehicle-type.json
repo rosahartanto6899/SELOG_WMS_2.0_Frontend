@@ -1,0 +1,114 @@
+{
+  "title": "Vehicle Type",
+  "breadcrumb": [{ "title": "Master Data" }, { "title": "Vehicle Type" }],
+  "button": {
+    "update": {
+      "tooltip": "Update"
+    },
+    "delete": {
+      "tooltip": "Delete"
+    }
+  },
+  "toast": {
+    "create": {
+      "prevText": "Vehicle Type",
+      "postText": "have been successfully added!"
+    },
+    "update": {
+      "prevText": "Vehicle Type",
+      "postText": "have been successfully edited!"
+    },
+    "delete": {
+      "postText": "has been successfully removed!"
+    }
+  },
+  "table": {
+    "title": "List of Vehicle Types",
+    "column": {
+      "name": "Name",
+      "code": "Code",
+      "group": "Group",
+      "createdAt": "Created At",
+      "updatedAt": "Updated At",
+      "actions": "Action"
+    },
+    "options": ["Name"],
+    "button": {
+      "add": "Add New Vehicle Type",
+      "update": {
+        "toolTip": "Update"
+      },
+      "delete": {
+        "toolTip": "Delete"
+      }
+    },
+    "pagination": {
+      "items": "items",
+      "page": "page"
+    },
+    "search": {
+      "placeholder": "Search",
+      "searchBy": "Search by",
+      "default": {
+        "placeholder": "Search by"
+      }
+    }
+  },
+  "modal": {
+    "delete": {
+      "title": "Delete Vehicle Type",
+      "subtitle": "Are you sure you want to delete vehicle type",
+      "ok": "Yes, Delete",
+      "cancelText": "Cancel"
+    }
+  },
+  "add": {
+    "breadcrumb": [
+      { "title": "Master Data" },
+      { "title": "Vehicle Type" },
+      { "title": "Add New Vehicle Type" }
+    ],
+    "title": "Add Vehicle Type",
+    "message": "Please complete the form before clicking Save"
+  },
+  "edit": {
+    "breadcrumb": [
+      { "title": "Master Data" },
+      { "title": "Vehicle Type" },
+      { "title": "Edit Vehicle Type" }
+    ],
+    "title": "Edit Vehicle Type",
+    "message": "Please complete the form before clicking Save"
+  },
+  "form": {
+    "title": {
+      "add": "Add New Vehicle Type",
+      "edit": "Edit Vehicle Type"
+    },
+    "input": {
+      "message": "This field is required",
+      "code": {
+        "label": "Code",
+        "placeholder": "Enter vehicle type code",
+        "rule": {
+          "invalidMax": "Invalid, vehicle type code must have a maximum of 20 characters"
+        }
+      },
+      "name": {
+        "label": "Name",
+        "placeholder": "Enter vehicle type name",
+        "rule": {
+          "invalidMax": "Invalid, vehicle type name must have a maximum of 50 characters"
+        }
+      },
+      "group": {
+        "label": "Group",
+        "placeholder": "Select vehicle type group"
+      }
+    },
+    "button": {
+      "save": "Save",
+      "cancel": "Cancel"
+    }
+  }
+}

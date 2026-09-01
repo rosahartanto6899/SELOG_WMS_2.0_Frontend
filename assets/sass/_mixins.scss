@@ -1,0 +1,162 @@
+@import "./variables";
+
+/* MEDIA QUERIES */
+@mixin screen($size) {
+  @if $size == desktop {
+    @media (min-width: $desktop) {
+      @content;
+    }
+  } @else if $size == desktop-medium {
+    @media (min-width: $desktop-medium) {
+      @content;
+    }
+  } @else if $size == desktop-large {
+    @media (min-width: $desktop-large) {
+      @content;
+    }
+  } @else if $size == desktop-extralarge {
+    @media (min-width: $desktop-extralarge) {
+      @content;
+    }
+  } @else if $size == desktop-extralarge-more {
+    @media (min-width: $desktop-extralarge-more) {
+      @content;
+    }
+  } @else if $size == big-tablet {
+    @media (min-width: $big-tablet) {
+      @content;
+    }
+  } @else if $size == tablet {
+    @media (min-width: $tablet) and (width <= calc(#{$desktop} - 1px)) {
+      @content;
+    }
+  } @else if $size == figma-mobile {
+    @media (width >= calc(#{$figma-mobile} - 1px)) {
+      @content;
+    }
+  } @else if $size == small-mobile {
+    @media (max-width: $small-mobile) {
+      @content;
+    }
+  } @else {
+    @media (min-width: $size) {
+      @content;
+    }
+  }
+}
+
+/* FLEXBOX */
+@mixin flex {
+  display: box;
+  display: flex;
+  display: -moz-flex;
+  display: flexbox;
+  display: flex;
+}
+
+@mixin inline-flex {
+  display: inline-box;
+  display: inline-flex;
+  display: -moz-inline-flex;
+  display: inline-flexbox;
+  display: inline-flex;
+}
+
+@mixin justify-content($value: flex-start) {
+  @if $value == flex-start {
+    justify-content: flex-start;
+  } @else if $value == flex-end {
+    justify-content: flex-end;
+  } @else if $value == space-between {
+    justify-content: space-between;
+  } @else if $value == space-around {
+    justify-content: space-around;
+  } @else {
+    justify-content: $value;
+  }
+
+  justify-content: $value;
+}
+
+@mixin align-items($value: stretch) {
+  @if $value == flex-start {
+    align-items: flex-start;
+  } @else if $value == flex-end {
+    align-items: flex-end;
+  } @else if $value == center {
+    align-items: center;
+  } @else {
+    align-items: $value;
+  }
+
+  align-items: $value;
+}
+
+@mixin flex-direction($value: row) {
+  @if $value == row {
+    flex-direction: row;
+  } @else if $value == column {
+    flex-direction: column;
+  }
+
+  display: flex;
+  flex-direction: $value;
+}
+
+@mixin flex-position($value: center) {
+  // Position: Bottom Right
+  @if $value == bottom-right {
+    align-items: flex-end;
+    justify-content: flex-end;
+  }
+
+  // Position: Bottom Left
+  @else if $value == bottom-left {
+    align-items: flex-end;
+    justify-content: flex-start;
+  }
+
+  // Position : Bottom Center
+  @else if $value == bottom-center {
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  // Position : Top Right
+  @else if $value == top-right {
+    align-items: flex-start;
+    justify-content: flex-end;
+  }
+
+  // Positon : Top Left
+  @else if $value == top-left {
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  // Position : Top Center
+  @else if $value == top-center {
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  // Position : Start Center
+  @else if $value == start-center {
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  // Position : End Center
+  @else if $value == end-center {
+    align-items: center;
+    justify-content: flex-end;
+  } @else {
+    align-items: $value;
+    justify-content: $value;
+  }
+
+  display: flex;
+  display: box;
+  display: -moz-flex;
+  display: flexbox;
+}

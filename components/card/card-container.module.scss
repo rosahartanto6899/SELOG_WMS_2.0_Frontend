@@ -1,0 +1,55 @@
+@import "../../assets/sass/mixins";
+
+.sera-card-container {
+  background: #fff;
+  border-radius: 0.8rem;
+  box-shadow: 0 0.2rem 0.8rem rgb(0 0 0 / 15%);
+
+  :global {
+    .ant-col-24.ant-form-item-label > label,
+    .ant-col-xl-24.ant-form-item-label > label,
+    .ant-form-vertical .ant-form-item-label > label {
+      color: rgb(0 0 0 / 85%) !important;
+      font-size: 14px !important;
+      font-style: normal !important;
+      font-weight: 400 !important;
+      line-height: 22px !important;
+    }
+
+    .ant-card-head {
+      background: linear-gradient(90deg, #1b507a 0%, #3a8ddb 100%);
+      border-radius: 0.8rem 0.8rem 0 0;
+
+      & .ant-input {
+        align-items: center !important;
+        border: 1px solid #8c8c8c !important;
+        border-radius: 20px !important;
+        color: rgb(0 0 0 / 85%) !important;
+        display: flex !important;
+        font-size: 16px !important;
+        font-style: normal !important;
+        font-weight: 400 !important;
+        height: 32px !important;
+        line-height: 24px !important;
+      }
+
+      & .ant-input-disabled {
+        background: #f5f5f5 !important;
+        border: 1px solid #d9d9d9 !important;
+        border-radius: 20px !important;
+      }
+
+      .ant-card-head-title {
+        color: #fff !important;
+        font-size: 16px !important;
+        font-style: normal !important;
+        font-weight: 500 !important;
+        line-height: 24px !important;
+      }
+
+      .ant-card-extra {
+        padding: 0;
+      }
+    }
+  }
+}

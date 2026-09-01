@@ -1,0 +1,976 @@
+/* stylelint-disable selector-class-pattern */
+
+@import "./mixins";
+@import "function";
+@use "../sass/mixins" as *;
+
+/* ------------------------------------------------------------------
+   Global styles
+--------------------------------------------------------------------- */
+
+html,
+body {
+  height: 100% !important;
+}
+
+html {
+  font-size: 62.5% !important;
+}
+
+body {
+  // font-family: -apple-system, BlinkMacSystemFont, Roboto, sans-serif, apple color emoji;
+  font-family: Roboto, sans-serif !important;
+}
+
+// Page layout
+.sera-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  padding: 0;
+
+  &__header {
+    padding: 2.4rem;
+    width: 100%;
+  }
+
+  &__content {
+    padding: 2.4rem;
+    width: 100%;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Overide antdesign styles
+--------------------------------------------------------------------- */
+
+.ant-layout-sider-children {
+  background: $white;
+  filter: drop-shadow(0 0.2rem 0.8rem rgb(0 0 0 / 15%));
+  position: fixed;
+  width: 20.8rem;
+  z-index: 1000;
+}
+
+.ant-layout-sider-trigger {
+  background: $white;
+
+  .anticon {
+    color: $black;
+  }
+}
+
+// Alert
+.ant-alert {
+  &-success {
+    background-color: $green-100;
+  }
+
+  &-info {
+    background-color: $blue-100;
+  }
+
+  &-warning {
+    background-color: $orange-100;
+  }
+
+  &-danger {
+    background-color: $red-100;
+  }
+}
+
+// Tag
+.ant-tag {
+  font-weight: 400;
+
+  &-success {
+    background: $green-10;
+    border: 1px solid $green-30;
+    color: $green-60;
+  }
+
+  &-info {
+    background: $teal-10;
+    border: 1px solid $teal-30;
+    color: $teal-60;
+  }
+
+  &-warning {
+    background: $orange-10;
+    border: 1px solid $orange-30;
+    color: $orange-60;
+  }
+
+  &-error {
+    background: $red-10;
+    border: 1px solid $red-30;
+    color: $red-60;
+  }
+
+  &-default {
+    background: $gray-09;
+    border: 1px solid $gray-07;
+    color: $gray-04;
+  }
+}
+
+// Message
+// .ant-message {
+//   &-error {
+//     background: $red-10 !important;
+//     border: 1px solid $red-60 !important;
+//   }
+// }
+
+.ant-tag.ant-tag-table {
+  border-radius: 5rem;
+}
+
+// Dropdown
+.ant-dropdown-menu {
+  border-radius: 0.4rem;
+}
+
+// Pagination
+.ant-pagination-item,
+.ant-pagination-item-link {
+  border-color: $border-color-base !important;
+  border-radius: $border-radius-base !important;
+}
+
+.ant-pagination-item-link:hover,
+.ant-pagination-item > a:hover {
+  color: $blue-500 !important;
+}
+
+.ant-pagination-item.ant-pagination-item-active {
+  border-color: $blue-500 !important;
+  border-radius: 0.8rem;
+}
+
+.ant-pagination-item.ant-pagination-item-active > a {
+  color: $blue-500 !important;
+}
+
+.ant-pagination-options > .ant-select > .ant-select-selector {
+  border: 0.1rem solid $gray-500 !important;
+  border-radius: 2rem !important;
+}
+
+.ant-pagination-options-quick-jumper > input {
+  border: 0.1rem solid $gray-500 !important;
+  border-radius: 2rem !important;
+}
+
+.ant-pagination-jump-prev
+  .ant-pagination-item-container
+  .ant-pagination-item-link-icon,
+.ant-pagination-jump-next
+  .ant-pagination-item-container
+  .ant-pagination-item-link-icon {
+  color: $blue-500 !important;
+}
+
+.ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+  background-color: $gray-50;
+}
+
+// Button
+.ant-btn {
+  border-radius: 2rem;
+}
+
+// Icon
+.ant-btn > .sera-icon {
+  line-height: 1;
+  margin-right: 0.3rem;
+  vertical-align: text-top;
+}
+
+// Input search
+.ant-input-search {
+  .ant-input-group {
+    .ant-input-affix-wrapper {
+      width: 113%;
+
+      &:not(:last-child) {
+        border-radius: 20px;
+      }
+    }
+  }
+}
+
+.ant-input-group-addon {
+  &:last-child {
+    border-radius: 20px;
+  }
+}
+
+.ant-input-search > .ant-input-group > .ant-input {
+  border-radius: 2rem 0 0 2rem;
+}
+
+// .ant-input-search .ant-input-group .ant-input-affix-wrapper:not(:last-child) {
+//     border-radius: 2rem 0 0 2rem;
+// }
+
+.ant-input-search
+  > .ant-input-group
+  > .ant-input-group-addon:last-child
+  .ant-input-search-button {
+  border-radius: 0 2rem 2rem 0;
+  padding-bottom: 0;
+  padding-top: 0;
+}
+
+// empty
+.ant-empty {
+  margin: 1.6rem !important;
+}
+
+// Badge count
+.ant-badge-count {
+  box-shadow: 0 0 0 1px transparent;
+}
+
+// sera modal
+.sera-modal-confirm {
+  &-danger {
+    .ant-modal-confirm-confirm .ant-modal-confirm-body > .anticon,
+    .ant-modal-confirm-warning .ant-modal-confirm-body > .anticon {
+      color: theme-color("danger");
+    }
+
+    .ant-modal-confirm
+      .ant-modal-confirm-btns
+      > .ant-btn-primary:not(:disabled) {
+      background: theme-color("danger") !important;
+      border-color: theme-color("danger") !important;
+    }
+
+    .ant-modal-confirm
+      .ant-modal-confirm-btns
+      > .ant-btn-default:hover:not(:disabled) {
+      border-color: theme-color("danger") !important;
+      color: theme-color("danger") !important;
+    }
+
+    .ant-modal-confirm .ant-modal-content {
+      border-radius: $border-radius-base;
+    }
+
+    &
+      > .ant-modal
+      > .ant-modal-content
+      > .ant-modal-body
+      > .ant-modal-confirm-body-wrapper
+      > .ant-modal-confirm-btns {
+      display: flex;
+      flex-direction: row-reverse;
+      gap: 0.8rem;
+    }
+  }
+
+  &-info {
+    .ant-modal-confirm-confirm .ant-modal-confirm-body > .anticon,
+    .ant-modal-confirm-warning .ant-modal-confirm-body > .anticon {
+      color: theme-color("primary");
+    }
+
+    .ant-modal-confirm
+      .ant-modal-confirm-btns
+      > .ant-btn-primary:not(:disabled) {
+      background: theme-color("primary") !important;
+      border-color: theme-color("primary") !important;
+    }
+
+    .ant-modal-confirm
+      .ant-modal-confirm-btns
+      > .ant-btn-default:hover:not(:disabled) {
+      border-color: theme-color("primary") !important;
+      color: theme-color("primary") !important;
+    }
+
+    .ant-modal-confirm .ant-modal-content {
+      border-radius: $border-radius-base;
+    }
+
+    &
+      > .ant-modal
+      > .ant-modal-content
+      > .ant-modal-body
+      > .ant-modal-confirm-body-wrapper
+      > .ant-modal-confirm-btns {
+      display: flex;
+      flex-direction: row-reverse;
+      gap: 0.8rem;
+    }
+  }
+}
+
+// table dropdown
+.ant-table-filter-dropdown {
+  border-radius: 8px !important;
+  filter: drop-shadow(0 0.2rem 0.8rem rgb(0 0 0 / 15%));
+
+  .ant-select.ant-select-auto-complete.ant-select-single.ant-select-customize-input.ant-select-show-search {
+    padding: 8px !important;
+  }
+}
+
+// message
+.sera-message {
+  margin-top: 12rem;
+
+  .ant-message-notice-content {
+    padding: 0;
+  }
+}
+
+// form input
+.ant-form-item-control-input-content > .sera-input.ant-input {
+  border-radius: 2rem;
+}
+
+.ant-form-item-control-input-content > .ant-input-affix-wrapper.sera-input {
+  border-radius: 2rem;
+
+  &.sera-input-counter {
+    .ant-input-suffix {
+      bottom: -2.4rem;
+      position: absolute;
+      right: 0;
+    }
+  }
+}
+
+.ant-input-disabled,
+.ant-input[disabled],
+.ant-picker-input > input[disabled],
+.ant-select-disabled.ant-select:not(.ant-select-customize-input)
+  .ant-select-selector,
+.ant-input-affix-wrapper-disabled {
+  color: rgb(0 0 0 / 60%) !important;
+}
+
+// menu item
+.ant-layout-sider {
+  &-trigger {
+    width: 20.8rem !important;
+  }
+
+  &-collapsed {
+    flex: 0 0 6rem !important;
+    max-width: 6rem !important;
+    min-width: 6rem !important;
+    width: 6rem !important;
+
+    .ant-layout-sider-trigger {
+      width: 6rem !important;
+    }
+  }
+}
+
+.ant-menu {
+  padding: 0.8rem;
+}
+
+.ant-menu-item,
+.ant-menu-submenu-title {
+  padding-left: 1.2rem !important;
+}
+
+svg.ant-menu-item-icon {
+  color: $primary-main;
+}
+
+.ant-menu-submenu.ant-menu-submenu-selected div.ant-menu-submenu-title,
+.ant-menu.ant-menu-root > .ant-menu-item.ant-menu-item-selected {
+  background: linear-gradient(99.67deg, $primary-main 37.65%, $blue-50 100.26%);
+  border-radius: 4rem;
+  color: $white;
+  padding: 0 12px;
+
+  svg.ant-menu-item-icon {
+    color: $white;
+  }
+}
+
+.ant-menu.ant-menu-sub > .ant-menu-item.ant-menu-item-selected {
+  background: $blue-100;
+  border-radius: 0.4rem 0 0 0.4rem;
+  box-shadow: inset -0.3rem 0 0 $primary-main;
+  height: 3.8rem;
+}
+
+.ant-menu-inline .ant-menu-item::after,
+.ant-menu-vertical-left .ant-menu-item::after,
+.ant-menu-vertical-right .ant-menu-item::after,
+.ant-menu-vertical .ant-menu-item::after {
+  border-right: none;
+}
+
+.ant-menu-title {
+  &-primary:not(.ant-dropdown-menu-item-disabled) {
+    color: theme-color("primary");
+  }
+
+  &-danger:not(.ant-dropdown-menu-item-disabled) {
+    color: theme-color("danger");
+  }
+
+  &-info:not(.ant-dropdown-menu-item-disabled) {
+    color: theme-color("info");
+  }
+
+  &-success:not(.ant-dropdown-menu-item-disabled) {
+    color: theme-color("success");
+  }
+
+  &-warning:not(.ant-dropdown-menu-item-disabled) {
+    color: theme-color("warning");
+  }
+}
+
+// ant tree select
+.ant-tree-select-dropdown {
+  // padding: 0.9rem 1.2rem;
+  padding: 0;
+}
+
+.sera-select-tree {
+  .ant-select-selector {
+    border-radius: 2rem !important;
+
+    & .ant-select-selection-item {
+      background: none !important;
+      border: none !important;
+    }
+  }
+
+  &-header {
+    border-bottom: 1px solid rgb(0 0 0 / 6%);
+    display: flex;
+    flex-direction: column;
+    padding: 8px 12px 2px !important;
+  }
+
+  &-item {
+    padding: 2px 12px !important;
+
+    &.no-switcher .ant-select-tree-switcher {
+      display: none;
+    }
+  }
+}
+
+// ant modal
+.ant-modal {
+  &-header {
+    border-radius: $border-radius-base $border-radius-base 0 0;
+  }
+
+  &-content {
+    border-radius: $border-radius-base;
+  }
+}
+
+/* ------------------------------------------------------------------
+    Custom global styles for additional
+--------------------------------------------------------------------- */
+
+.logo {
+  align-items: flex-start;
+  background: $white;
+  border-bottom: 1px solid rgb(0 0 0 / 3%);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
+  display: flex;
+  flex-direction: column;
+  height: 6.3rem;
+  justify-content: center;
+  left: 0;
+  padding: 1.7rem;
+  position: relative;
+  top: 0;
+  width: 100%;
+
+  img {
+    height: auto;
+    width: 100%;
+  }
+}
+
+.layout-container {
+  min-height: 100vh;
+
+  .mobile-navbar-wrapper,
+  .mobile-logo-wrapper {
+    display: none;
+  }
+}
+
+.site-layout .site-layout-background {
+  background: $white;
+  min-height: 360px;
+  padding: 24px;
+}
+
+.site-layout .site-layout-background-header {
+  background: linear-gradient(90deg, #1b507a 0%, #3a8ddb 100%);
+  height: 68px;
+  padding: 0;
+  position: relative;
+}
+
+.site-layout .site-layout-background-header .icon-header {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.site-layout .site-layout-background-header .icon-header img {
+  height: 68px;
+  width: 100%;
+}
+
+.site-content-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden auto;
+  padding: 24px;
+}
+
+[data-theme="dark"] .site-layout .site-layout-background {
+  background: $black;
+}
+
+// Page Header
+.site-page-header {
+  // border: 1px solid rgb(235, 237, 240);
+  margin: 0 0 4.6rem;
+  padding: 0;
+
+  .ant-page-header-heading-sub-title {
+    color: $blue-400;
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 3.2rem;
+  }
+}
+
+// Navbar Layout
+.site-navbar-wrapper {
+  display: inline-flex;
+  float: right;
+  gap: 20px;
+  padding: 0 20px;
+  position: relative;
+  right: 13%;
+
+  .site-navbar-items {
+    .item-avatar {
+      height: 32px;
+      top: -10%;
+      width: 32px;
+    }
+
+    .item-search,
+    .item-notifications,
+    .item-chat {
+      color: $white;
+      font-size: 24px;
+    }
+
+    .item-dropdown {
+      color: $white;
+      font-size: 16px;
+    }
+  }
+}
+
+// Card Components
+.card-sera-default {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
+
+  .ant-card-head-title {
+    align-items: center;
+    color: $white;
+    display: flex;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+  }
+}
+
+// Input Search Field
+.ant-input-search-custom-role {
+  border: 1px solid $gray-500;
+  border-radius: 20px;
+  width: 45%;
+}
+
+// Input Search Header
+.ant-input-search-header {
+  float: right;
+  position: relative;
+  top: -70px;
+  width: 280px;
+}
+
+// Button
+.btn-wrapper {
+  float: right;
+
+  .ant-btn-custom {
+    margin-bottom: 12px;
+    margin-right: 8px;
+
+    &.primary {
+      background: $primary;
+      border: 1px solid $primary;
+      border-radius: 20px;
+      box-shadow: 0 2px 0 rgb(0 0 0 / 4.3%);
+    }
+
+    &.secondary {
+      border: 1px solid #d9d9d9;
+      border-radius: 20px;
+      box-shadow: 0 2px 0 rgb(0 0 0 / 1.6%);
+    }
+
+    &[disabled] {
+      background: $gray-50;
+      border-color: $border-color-base;
+      box-shadow: none;
+
+      // disabled styles state
+      color: $black;
+      text-shadow: none;
+    }
+  }
+}
+
+// Message Notifications
+.custom-class-message {
+  margin-top: 20vh;
+
+  .ant-message-notice-content {
+    background: $green-100;
+    border: 1px solid $green-200;
+    border-radius: 2px;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
+  }
+}
+
+// Table
+// Column
+.table-column-bg {
+  background: $teal !important;
+}
+
+// Row
+.table-row-bg-blue0 {
+  background: $blue-0 !important;
+}
+
+// Table additional
+.mrl-info-table {
+  margin: 0 8px;
+}
+
+// Location - Route
+// location type
+.location-type-card-wrapper {
+  align-items: center;
+  background: $gray-600;
+  display: flex;
+  height: 100%;
+  inset: 0;
+  justify-content: center;
+  opacity: 1;
+  position: fixed;
+  text-align: center;
+  width: 100%;
+  z-index: 9;
+
+  .location-type-card-head-title {
+    border-radius: 8px;
+    box-shadow:
+      0 3px 6px -4px rgb(0 0 0 / 12%),
+      0 6px 16px rgb(0 0 0 / 8%),
+      0 9px 28px 8px rgb(0 0 0 / 5%);
+    color: $black;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+    padding: 15px 25px;
+    text-align: left;
+  }
+
+  .location-type-grid-selection {
+    background: $blue-0;
+    border: 1px solid $blue-20;
+    border-radius: 12px;
+    cursor: pointer;
+    margin: 10px;
+    padding: 40px;
+    width: 31%;
+  }
+}
+
+// Notification Drawer
+.sera-drawer-notification {
+  border-radius: 1.6rem 0 0 1.6rem;
+}
+
+// Carousel
+.sera-carousel-insights {
+  & .slick-next {
+    right: 0;
+  }
+
+  & .slick-prev {
+    left: 0;
+  }
+
+  & .slick-track {
+    margin: 0 0 1rem;
+  }
+
+  & .slick-next.slick-disabled,
+  & .slick-prev.slick-disabled {
+    display: none !important;
+  }
+
+  & .slick-next:not(.slick-disabled),
+  & .slick-prev:not(.slick-disabled) {
+    align-items: center;
+    display: flex !important;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+    position: absolute;
+    top: 1rem;
+    visibility: hidden !important;
+    width: 5.8rem;
+    z-index: 1;
+  }
+
+  &:hover .slick-next:not(.slick-disabled),
+  &:hover .slick-prev:not(.slick-disabled) {
+    visibility: visible !important;
+  }
+
+  & .slick-list .slick-slide:not(.slick-active) {
+    .sera-carousel-insights__container .sera-carousel-insights__overlay {
+      // TODO: temporary remove gradient on slide preview.
+      // already aligned with UI/UX team. will find possible solution on this
+
+      // background: linear-gradient(90.18deg, #F6F8FD 60.12%, rgba(255, 255, 255, 0) 95.89%);
+      z-index: 9;
+    }
+  }
+
+  & .slick-list .slick-slide.slick-active {
+    .sera-carousel-insights__container .sera-carousel-insights__overlay {
+      z-index: -1;
+    }
+  }
+
+  &__container {
+    height: 130px;
+    position: relative;
+    width: 284px;
+  }
+
+  &__overlay {
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 9;
+  }
+}
+
+// Tabs
+.ant-tabs {
+  .table-module_sera-table-wrapper__header__-JhLE {
+    .ant-col h3 {
+      margin-bottom: 0 !important;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------
+    Icon Color
+--------------------------------------------------------------------- */
+.sera-icon {
+  &-primary {
+    color: theme-color("primary");
+  }
+}
+
+/* ------------------------------------------------------------------
+    Text Alignment
+--------------------------------------------------------------------- */
+.text {
+  &-center {
+    text-align: center !important;
+  }
+
+  &-left {
+    text-align: left !important;
+  }
+
+  &-right {
+    text-align: right !important;
+  }
+}
+
+/* ------------------------------------------------------------------
+    Custom Padding and Margin
+--------------------------------------------------------------------- */
+// Padding Top
+.pt-1 {
+  padding-top: 1rem;
+}
+
+.pt-1-5 {
+  padding-top: 1.5rem;
+}
+
+.pt-2 {
+  padding-top: 2rem;
+}
+
+// Padding Bottom
+.pb-1 {
+  padding-bottom: 1rem;
+}
+
+.pb-1-5 {
+  padding-bottom: 1.5rem;
+}
+
+.pb-2 {
+  padding-bottom: 2rem;
+}
+
+// Padding Top and Bottom
+.ptb-1 {
+  padding-bottom: 1rem;
+  padding-top: 1rem;
+}
+
+.ptb-1-5 {
+  padding-bottom: 1.5rem;
+  padding-top: 1.5rem;
+}
+
+.ptb-2 {
+  padding-bottom: 2rem;
+  padding-top: 2rem;
+}
+
+// Margin Top
+.mt-1 {
+  margin-top: 1rem;
+}
+
+.mt-1-5 {
+  margin-top: 1.5rem;
+}
+
+.mt-2 {
+  margin-top: 2rem;
+}
+
+// Margin Bottom
+.mb-1 {
+  margin-bottom: 1rem;
+}
+
+.mb-1-5 {
+  margin-bottom: 1.5rem;
+}
+
+.mb-2 {
+  margin-bottom: 2rem;
+}
+
+// Maring Top and Bottom
+.mtb-1 {
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+
+.mtb-1-5 {
+  margin-bottom: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.mtb-2 {
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+}
+
+// Mobile responsive
+@media (width <= 720px) {
+  .layout-container {
+    // Overide the sider menu and navbar icons for mobile
+    .ant-layout-sider.site-layout-background,
+    .site-navbar-wrapper {
+      display: none;
+    }
+
+    // Navbar mobile
+    .mobile-navbar-wrapper {
+      display: inline-block;
+      position: relative;
+
+      .mobile-navbar-items {
+        color: $white;
+        font-size: 28px;
+        margin: 20px;
+        position: absolute;
+        z-index: 9;
+      }
+    }
+
+    // Logo mobile
+    .mobile-logo-wrapper {
+      display: inline-block;
+      position: absolute;
+
+      .mobile-logo {
+        align-items: flex-start;
+        background: transparent;
+        display: flex;
+        flex-direction: column;
+        height: 6.3rem;
+        justify-content: center;
+        left: 40px;
+        padding: 1.7rem;
+        position: relative;
+        top: 0;
+        width: 100%;
+        z-index: 9;
+
+        img {
+          height: auto;
+          width: 80%;
+        }
+      }
+    }
+  }
+
+  // Overide modal wrapper for mobile
+  .ant-modal-wrap {
+    top: unset;
+  }
+}

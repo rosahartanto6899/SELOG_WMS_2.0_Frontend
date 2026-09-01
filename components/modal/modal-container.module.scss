@@ -1,0 +1,41 @@
+@use "@sera-assets/sass/mixins" as *;
+@import "@sera-assets/sass/variables";
+
+.modal-wrapper {
+  :global {
+    .ant-modal-content {
+      padding: 0;
+
+      .ant-modal-header {
+        // background: linear-gradient(101.72deg, #0f2072 42.55%, #375a4f 60.84%, #89d307 98.92%);
+        background: linear-gradient(
+          101.72deg,
+          #0f2072 42.55%,
+          #5a5237 60.84%,
+          #ff8427 98.92%
+        );
+        margin: 0;
+        padding: 14px 20px;
+
+        .ant-modal-title {
+          color: $text-light;
+          font-size: 18px;
+        }
+      }
+
+      .ant-modal-close-icon {
+        color: $text-light;
+        font-size: 18px;
+      }
+
+      .ant-modal-footer {
+        margin: 0;
+        padding: 14px 20px;
+      }
+    }
+  }
+}
+
+.modal-children {
+  padding: 14px 20px;
+}

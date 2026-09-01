@@ -1,0 +1,49 @@
+@use "@sera-assets/sass/mixins" as *;
+@import "@sera-assets/sass/variables";
+
+.shipment-cancellations-detail-overview-wrapper {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+
+  &__header {
+    flex: 0 1 auto;
+  }
+
+  &__content {
+    flex: 0 1 auto;
+    max-height: 500rem;
+    overflow-x: hidden;
+    padding: 25px;
+  }
+}
+
+.card-title {
+  background: white;
+  font-size: 18px;
+  left: 3rem;
+  margin-bottom: 16;
+  position: absolute;
+  top: -15px;
+  width: max-content;
+}
+
+.card-container {
+  border: 1px solid #3a8ddb61;
+
+  &.prev {
+    border: 1px solid $danger-main;
+  }
+
+  &.new {
+    border: 1px solid $success-main;
+  }
+}
+
+.swap-icon {
+  font-size: 2em;
+
+  > span {
+    transform: rotate(90deg) !important;
+  }
+}

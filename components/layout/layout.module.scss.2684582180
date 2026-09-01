@@ -1,0 +1,17 @@
+.side-bar-menu {
+  overflow: hidden auto;
+  height: 70%;
+
+  :global {
+    .ant-menu-title-content {
+      font-style: normal;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 20px;
+    }
+
+    .ant-menu-sub.ant-menu-inline {
+      background: none;
+    }
+  }
+}

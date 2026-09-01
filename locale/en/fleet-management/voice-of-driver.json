@@ -1,0 +1,101 @@
+{
+  "title": "Fleet Management",
+  "breadcrumb": [
+    "Fleet Management",
+    "Voice of Driver",
+    { "edit": "Edit Voice of Driver", "detail": "Detail Voice of Driver" }
+  ],
+  "table": {
+    "title": "Voice of Driver List",
+
+    "column": {
+      "shipmentNo": "Shipment No",
+      "licensePlate": "License Plate",
+      "driverName": "Driver Name",
+      "customerName": "Customer Name",
+      "position": "Position",
+      "hasOBD": "Has OBD",
+      "statusOBD": "Status OBD",
+      "voiceType": "Voice Type",
+      "voiceDetail": "Voice Detail",
+      "status": "Status",
+      "yes": "Yes",
+      "no": "No",
+      "createdAt": "Created Date",
+      "createdBy": "Created By",
+      "updatedAt": "Updated Date",
+      "updatedBy": "Updated By",
+      "action": "Action"
+    },
+
+    "button": {
+      "update": { "tooltip": "Update" },
+      "detail": { "tooltip": "Detail" }
+    },
+
+    "options": ["License Plate", "Driver Name", "Customer Name", "Status"],
+    "search": { "placeholder": "Search" }
+  },
+  "form": {
+    "title": {
+      "edit": "Edit Voice of Driver",
+      "detail": "Detail Voice of Driver"
+    },
+    "input": {
+      "shipmentNo": {
+        "label": "Shipment No",
+        "placeholder": "Input shipment no"
+      },
+      "licensePlate": {
+        "label": "License Plate",
+        "placeholder": "Input license plate"
+      },
+      "driverName": {
+        "label": "Driver Name",
+        "placeholder": "Input driver name"
+      },
+      "customerName": {
+        "label": "Customer Name",
+        "placeholder": "Input customer name"
+      },
+      "position": {
+        "label": "Position",
+        "placeholder": "Input position"
+      },
+      "hasOBD": {
+        "label": "Has OBD",
+        "placeholder": "Select OBD availability"
+      },
+      "statusOBD": {
+        "label": "Status OBD",
+        "placeholder": "Select OBD status"
+      },
+      "voiceType": {
+        "label": "Voice Type",
+        "placeholder": "Select voice type"
+      },
+      "voiceDetail": {
+        "label": "Voice Detail",
+        "placeholder": "Input voice detail"
+      },
+      "status": {
+        "label": "Status",
+        "placeholder": "Select status"
+      },
+      "message": "This field is required",
+      "updateStatus": {
+        "success": "Status updated",
+        "error": "An error has occured please try again"
+      }
+    },
+    "button": {
+      "cancel": "Cancel",
+      "save": "Save",
+      "submit": "Submit",
+      "addRow": "Add Row",
+      "remove": "Remove",
+      "import": "Import",
+      "download": "Download Template"
+    }
+  }
+}

@@ -1,0 +1,40 @@
+@use "@sera-assets/sass/mixins" as *;
+@import "@sera-assets/sass/variables";
+
+button {
+  &.warning {
+    background-color: $warning-main;
+    border: 2px solid $warning-main;
+    border-radius: 2rem;
+    color: $text-light;
+    outline: 1px solid $warning-main;
+
+    &:hover {
+      background-color: $warning-main;
+      border: 2px solid $warning-main;
+      color: $text-light;
+      opacity: 0.8;
+    }
+  }
+
+  &.primary_outlined {
+    border: 1px solid $primary-main;
+    color: $primary-main;
+    z-index: 2;
+
+    &:hover {
+      background-color: $primary-main;
+      color: $text-light;
+    }
+  }
+
+  &.icon_blue {
+    z-index: 2;
+
+    span {
+      svg {
+        color: $primary-main;
+      }
+    }
+  }
+}

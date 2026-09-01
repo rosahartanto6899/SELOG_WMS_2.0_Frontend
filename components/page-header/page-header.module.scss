@@ -1,0 +1,18 @@
+@use "@sera-assets/sass/mixins" as *;
+@import "@sera-assets/sass/variables";
+
+.breadcrumb-container {
+  margin-bottom: 1rem;
+}
+
+.header-container {
+  margin-bottom: 1rem;
+
+  .header-button-back {
+    color: $primary-main;
+  }
+
+  .header-title {
+    margin: 0;
+  }
+}

@@ -1,0 +1,184 @@
+{
+  "title": "Sales Management",
+  "breadcrumb": [
+    "Sales Management",
+    "Customer Data",
+    {
+      "edit": "Edit Customer",
+      "read": "Detail Customer"
+    }
+  ],
+  "summary": {
+    "field": {
+      "total": "Total Customer",
+      "active": "Active Customer",
+      "blocked": "Suspend Customer"
+    }
+  },
+  "table": {
+    "title": "Customer List",
+    "filter": {
+      "category": "Category",
+      "industry": "Industry",
+      "status": "Status"
+    },
+    "column": {
+      "cmd": "CMD ID",
+      "name": "Customer Name",
+      "street": "Address",
+      "city": "City",
+      "phone": "Phone",
+      "email": "Email",
+      "termOfPayment": "Term of Payment",
+      "industry": "Industry",
+      "category": "Category",
+      "status": "Status",
+      "actions": "Action"
+    },
+    "button": {
+      "config": "Columns",
+      "add": "Add New Customer",
+      "detail": {
+        "tooltip": "Detail"
+      },
+      "update": {
+        "tooltip": "Update"
+      }
+    },
+    "options": [
+      "CMD ID",
+      "Customer Name"
+    ],
+    "search": {
+      "placeholder": "Search"
+    }
+  },
+  "form": {
+    "title": {
+      "read": "Detail Customer",
+      "edit": "Edit Customer"
+    },
+    "input": {
+      "name": {
+        "label": "Customer Name",
+        "placeholder": "Input Customer Name"
+      },
+      "cmd": {
+        "label": "CMD ID",
+        "placeholder": "Input CMD ID"
+      },
+      "province": {
+        "label": "Province",
+        "placeholder": "Select Province"
+      },
+      "street": {
+        "label": "Customer Address",
+        "placeholder": "Input Customer Address"
+      },
+      "city": {
+        "label": "City",
+        "placeholder": "Select City"
+      },
+      "phone": {
+        "label": "Phone",
+        "placeholder": "Input Customer Phone"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "Input Customer Email"
+      },
+      "status": {
+        "label": "Status",
+        "placeholder": "Select Status"
+      },
+      "termOfPayment": {
+        "label": "Term of Payment",
+        "placeholder": "Input Term of Payment"
+      },
+      "industry": {
+        "label": "Industry",
+        "placeholder": "Select Industry"
+      },
+      "additionalRequests": {
+        "label": "Additional Request",
+        "placeholder": "Select Additional Request"
+      },
+      "category": {
+        "label": "Category",
+        "placeholder": "Select Category"
+      },
+      "pod": {
+        "label": "POD Receipt Type",
+        "placeholder": "Select POD Receipt Type"
+      },
+      "message": "This field is required"
+    },
+    "sales": {
+      "table": {
+        "title": "List Sales",
+        "column": {
+          "branch": "Branch",
+          "salesDealing": "Sales Dealing",
+          "salesServicing": "Sales Servicing",
+          "actions": "Actions"
+        },
+        "button": {
+          "add": "Add New Sales",
+          "delete": {
+            "tooltip": "Delete"
+          }
+        }
+      },
+      "form": {
+        "input": {
+          "branchId": {
+            "label": "Branch",
+            "placeholder": "Select Branch"
+          },
+          "salesDealing": {
+            "label": "Sales Dealing",
+            "placeholder": "Select Sales Dealing"
+          },
+          "salesServicing": {
+            "label": "Sales Servicing",
+            "placeholder": "Select Sales Servicing"
+          },
+          "message": {
+            "required": "This field is required",
+            "salesDealingOrsalesServicing": "At least one of sales dealing or sales servicing must be provided"
+          }
+        },
+        "button": {
+          "save": "Save Sales"
+        }
+      }
+    },
+    "contact": {
+      "table": {
+        "title": "List Contact",
+        "column": {
+          "name": "Name",
+          "department": "Department",
+          "phone": "Phone",
+          "mobilePhone": "Mobile Phone",
+          "email": "Email"
+        }
+      }
+    },
+    "button": {
+      "cancel": "Cancel",
+      "save": "Save"
+    },
+    "message": {
+      "required": "This field is required"
+    }
+  },
+  "toast": {
+    "update": "Customer have been successfully edited!",
+    "sales": {
+      "create": "Sales have been successfully created!",
+      "delete": "Sales have been successfully deleted!"
+    }
+  },
+  "message": "Please complete the form before clicking Save"
+}

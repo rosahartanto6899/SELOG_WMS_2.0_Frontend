@@ -1,0 +1,115 @@
+{
+  "title": "Jenis Kendaraan",
+  "breadcrumb": [{ "title": "Master Data" }, { "title": "Jenis Kendaraan" }],
+  "button": {
+    "update": {
+      "tooltip": "Perbarui"
+    },
+    "delete": {
+      "tooltip": "Hapus"
+    }
+  },
+  "toast": {
+    "create": {
+      "prevText": "Jenis Kendaraan",
+      "postText": "telah berhasil ditambahkan!"
+    },
+    "update": {
+      "prevText": "Jenis Kendaraan",
+      "postText": "telah berhasil diubah!"
+    },
+    "delete": {
+      "postText": "telah berhasil dihapus!"
+    }
+  },
+  "table": {
+    "title": "Daftar Jenis Kendaraan",
+    "column": {
+      "name": "Nama",
+      "code": "Kode",
+      "group": "Kelompok",
+      "createdAt": "Dibuat Pada",
+      "updatedAt": "Diperbarui Pada",
+      "actions": "Aksi"
+    },
+    "options": ["Nama"],
+    "button": {
+      "add": "Tambah Jenis Kendaraan Baru",
+      "update": {
+        "toolTip": "Perbarui"
+      },
+      "delete": {
+        "toolTip": "Hapus"
+      }
+    },
+    "pagination": {
+      "items": "item",
+      "page": "hal."
+    },
+    "search": {
+      "placeholder": "Cari",
+      "searchBy": "Cari berdasarkan",
+      "default": {
+        "placeholder": "Cari berdasarkan"
+      }
+    }
+  },
+  "modal": {
+    "delete": {
+      "title": "Hapus Jenis Kendaraan",
+      "subtitle": "Anda yakin ingin menghapus jenis kendaraan",
+      "ok": "Ya, Hapus",
+      "cancelText": "Batal"
+    }
+  },
+  "add": {
+    "breadcrumb": [
+      { "title": "Master Data" },
+      { "title": "Jenis Kendaraan" },
+      { "title": "Tambah Jenis Kendaraan Baru" }
+    ],
+    "title": "Tambah Jenis Kendaraan",
+    "message": "Isi semua form untuk menyimpan data"
+  },
+  "edit": {
+    "breadcrumb": [
+      { "title": "Master Data" },
+      { "title": "Jenis Kendaraan" },
+      { "title": "Ubah Jenis Kendaraan" }
+    ],
+    "title": "Ubah Jenis Kendaraan",
+    "message": "Isi semua form untuk menyimpan data"
+  },
+  "form": {
+    "title": {
+      "add": "Tambah Jenis Kendaraan Baru",
+      "edit": "Ubah Jenis Kendaraan"
+    },
+    "input": {
+      "message": "Field ini belum diisi",
+      "name": {
+        "label": "Nama",
+        "placeholder": "Masukkan nama jenis kendaraan",
+        "rule": {
+          "invalidMax": "Tidak valid, nama jenis kendaraan maksimal 50 karakter"
+        }
+      },
+      "code": {
+        "label": "Kode",
+        "placeholder": "Masukkan kode jenis kendaraan",
+        "rule": {
+          "invalidMax": "Tidak valid, kode jenis kendaraan maksimal 20 karakter"
+        }
+      },
+      "group": {
+        "label": "Kelompok",
+        "placeholder": "Pilih kelompok jenis kendaraan"
+      }
+    },
+
+    "button": {
+      "save": "Simpan",
+      "cancel": "Batal"
+    }
+  }
+}

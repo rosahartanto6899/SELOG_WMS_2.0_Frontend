@@ -1,0 +1,111 @@
+{
+  "error": {
+    "error404": {
+      "title": "Sorry, Page Not Found",
+      "subtitle": "The page you’re looking for not available!",
+      "backToHomeButton": "Back home"
+    },
+    "underMaintenance": {
+      "title": "Under Maintenance",
+      "subtitle": "The site is currently undergoing improvements to provide the best experience for you. Thank you for your patience!"
+    },
+    "handleWait": {
+      "title": "Please be Waiting",
+      "subtitle": "We are ready to serve this page, please wait a few minutes and click the refresh button below.",
+      "refreshButton": "Refresh"
+    },
+    "cardContainer": {
+      "message": "This process is taking way too long to load. Please refresh and try again in a few minutes.",
+      "button": "Click to retry"
+    },
+    "unauthorized": {
+      "message": "Your session has expired. Please log in again."
+    }
+  },
+  "empty": {
+    "message": "Your search did not return any results"
+  },
+  "hoc": {
+    "restricted": {
+      "title": "Restricted Access",
+      "subtitle": "Sorry, you don't have access to this feature."
+    }
+  },
+  "header": {
+    "menu": {
+      "witchRole": "Switch Role",
+      "logout": "Logout",
+      "witchCustomer": "Switch Customer"
+    }
+  },
+  "notification": {
+    "bar": {
+      "header": {
+        "title": "Notifications",
+        "buttons": [
+          {
+            "label": "All"
+          },
+          {
+            "label": "Anomalies"
+          },
+          {
+            "label": "Critical Events"
+          },
+          {
+            "label": "Violations"
+          }
+        ],
+        "input": {
+          "placeholder": "Search for notifications"
+        }
+      },
+      "body": {
+        "button": "View All",
+        "divider": "End",
+        "data": {
+          "empty": "No records.",
+          "description": "need for investigation"
+        }
+      }
+    },
+    "list": {
+      "title": "Notification",
+      "data": {
+        "empty": "You don't have any notification",
+        "description": "need for investigation.",
+        "button": "View All Alert Notification"
+      }
+    }
+  },
+  "pageTitle": {
+    "dashboard": "Dashboard",
+    "login": "Login",
+    "activation": "Account Activation",
+    "recoverPassword": "Recover Password"
+  },
+  "loading": "Loading",
+  "table": {
+    "item": "item",
+    "items": "items",
+    "tooltip": {
+      "save": "Press enter to save changes",
+      "edit": "Click for edit row"
+    }
+  },
+  "footer": {
+    "help": "Help & Support",
+    "tnc": "Terms & Conditions"
+  },
+  "recovery": {
+    "success": "A password reset email has been sent to your registered email address."
+  },
+  "uploadDnd": {
+    "desc": "Click or drag file to this area to upload"
+  },
+  "commons": {
+    "days": "Days",
+    "months": "Months",
+    "years": "Years"
+  }
+}

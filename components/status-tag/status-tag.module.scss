@@ -1,0 +1,31 @@
+.status-tag {
+  font-size: 13px;
+  font-weight: 500 !important;
+  margin: 0;
+  text-transform: uppercase;
+  width: max-content;
+}
+
+.full-width {
+  text-align: center;
+  width: 100%;
+}
+
+.grey-tag {
+  background-color: #f0f0f0 !important;
+  border-color: #b3b3b3 !important;
+  color: #666 !important;
+}
+
+.white-tag {
+  background-color: #fff !important;
+  border-color: #b3b3b3 !important;
+  color: #1a1a1a !important;
+}
+
+.dashed-tag {
+  background-color: #fff !important;
+  border-color: #b3b3b3 !important;
+  border-style: dashed !important;
+  color: #1a1a1a !important;
+}

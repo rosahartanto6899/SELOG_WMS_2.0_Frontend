@@ -1,0 +1,79 @@
+@import "../../assets/sass/mixins";
+
+.sera-input-search {
+  border: unset;
+  border-radius: unset;
+  width: unset;
+
+  :global {
+    .ant-input-group > .ant-input {
+      border-radius: 2rem 0 0 2rem !important;
+    }
+
+    .ant-input-group-addon:last-child {
+      border-radius: 0 2rem 2rem 0 !important;
+    }
+
+    .ant-input-group
+      > .ant-input-group-addon:last-child
+      .ant-input-search-button {
+      border-radius: 0 2rem 2rem 0 !important;
+    }
+
+    .ant-input-group-addon:last-child {
+      background: $essentials-background;
+      border-left: unset;
+      padding: 0;
+
+      &:hover {
+        border: 1px solid var(--ant-primary-5);
+      }
+    }
+
+    button.ant-btn.ant-btn-link.ant-btn-sm {
+      color: rgb(0 0 0 / 85%);
+    }
+
+    .ant-select-single.ant-select-show-arrow .ant-select-selection-item,
+    .ant-select-single.ant-select-show-arrow .ant-select-selection-placeholder {
+      line-height: 1.5 !important;
+    }
+
+    .ant-select-single:not(.ant-select-customize-input)
+      .ant-select-selector
+      .ant-select-selection-search-input,
+    .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+      height: 2.2rem !important;
+    }
+  }
+}
+
+.sera-input-search-option {
+  max-width: 80px;
+  position: absolute;
+  right: 40px;
+  top: 4px;
+  z-index: 1;
+
+  :global {
+    .ant-select-selection-search {
+      background-color: red;
+      display: none;
+      z-index: 999;
+    }
+
+    .ant-select-selector {
+      border-radius: 0 !important;
+    }
+
+    .ant-select-arrow {
+      position: absolute;
+      top: 12px;
+    }
+  }
+}
+
+.sera-autocomplete {
+  position: "relative";
+  width: "300px";
+}

@@ -1,0 +1,150 @@
+{
+  "title": "Voice of Driver",
+  "breadcrumb": [
+    "Journey Management",
+    "Voice of Driver",
+    {
+      "add": "Add New Voice of Driver",
+      "detail": "Detail Voice of Driver",
+      "edit": "Edit Voice of Driver"
+    }
+  ],
+  "filters": ["Branch", "Status", "VOD Type"],
+  "summary": {
+    "fields": ["Total Ticket", "Open", "On Progress", "Closed"]
+  },
+  "table": {
+    "title": "VOD List",
+    "button": {
+      "add": "Add New Voice of Driver",
+      "config": "Columns"
+    },
+    "column": {
+      "status": "Status",
+      "ticketNumber": "Ticket Number",
+      "createdAt": "Created Date",
+      "createdByName": "Created By",
+      "category": "Category",
+      "shipmentNo": "Shipment Number",
+      "referenceNo": "Reference Number",
+      "customerName": "Customer Name",
+      "branchName": "Branch Order",
+      "licensePlate": "License Plate",
+      "employeeName": "Driver Name",
+      "voiceType": "Voice Type",
+      "position": "Position Detail",
+      "note": "Note",
+      "action": "Action",
+      "button": {
+        "detail": {
+          "tooltip": "View Detail"
+        },
+        "update": {
+          "tooltip": "Update"
+        }
+      }
+    },
+    "options": [
+      "Ticket Number",
+      "Category",
+      "Shipment Number",
+      "Reference Number",
+      "License Plate"
+    ],
+    "placeholder": {
+      "default": "Search",
+      "ticketNumber": "Search",
+      "category": "Select",
+      "shipmentNo": "Search",
+      "referenceNo": "Search",
+      "licensePlate": "Search"
+    }
+  },
+  "form": {
+    "title": {
+      "add": "Add New Voice of Driver",
+      "detail": "Detail Voice of Driver",
+      "edit": "Edit Voice of Driver"
+    },
+    "input": {
+      "ticketNumber": {
+        "label": "Ticket Number",
+        "placeholder": "Input Ticket Number"
+      },
+      "createdAt": {
+        "label": "Created Date",
+        "placeholder": "Input Created Date"
+      },
+      "category": {
+        "label": "Category",
+        "placeholder": "Select Category"
+      },
+      "shipmentNo": {
+        "label": "Shipment Number",
+        "placeholder": "Select Shipment Number"
+      },
+      "referenceNo": {
+        "label": "Reference Number",
+        "placeholder": "Select Reference Number"
+      },
+      "customerName": {
+        "label": "Customer Name",
+        "placeholder": "Input Customer Name"
+      },
+      "branchName": {
+        "label": "Branch Order",
+        "placeholder": "Input Branch Order"
+      },
+      "shipmentType": {
+        "label": "Shipment Type",
+        "placeholder": "Input Shipment Type"
+      },
+      "licensePlate": {
+        "label": "License Plate",
+        "placeholder": "Input License Plate"
+      },
+      "driverName": {
+        "label": "Driver Name",
+        "placeholder": "Input Driver Name"
+      },
+      "voiceType": {
+        "label": "Voice Type",
+        "placeholder": "Select Voice Type"
+      },
+      "voiceDetail": {
+        "label": "Voice Detail",
+        "placeholder": "Input Voice Detail"
+      },
+      "position": {
+        "label": "Position Detail",
+        "placeholder": "Input Position Detail"
+      },
+      "dateOfAccident": {
+        "label": "Date of Incident",
+        "placeholder": "Input Date of Incident"
+      },
+      "coordinate": {
+        "label": "Coordinate",
+        "placeholder": "Input Coordinate"
+      },
+      "status": {
+        "label": "Status",
+        "placeholder": "Select Status"
+      },
+      "note": {
+        "label": "Note",
+        "placeholder": "Input Note"
+      }
+    },
+    "message": {
+      "required": "This field is required",
+      "cordinate": "Format must be `latitude, longitude`",
+      "cordinate404": "Location not found"
+    }
+  },
+  "toast": {
+    "create": "Ticket Number {{ ticketNumber }} have been successfully added!",
+    "update": "Ticket Number {{ ticketNumber }} have been successfully edited!"
+  },
+  "message": "Please complete the form before clicking Save"
+}

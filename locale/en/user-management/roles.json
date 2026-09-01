@@ -1,0 +1,86 @@
+{
+  "title": "Roles",
+  "breadcrumb": [{ "title": "User Management" }, { "title": "Roles" }],
+  "tabs": [
+    { "title": "Users" },
+    { "title": "Roles" },
+    { "title": "Role Permission" }
+  ],
+  "table": {
+    "title": "List of Roles",
+    "columns": {
+      "no": "No.",
+      "role": "Role",
+      "user_number": "Number of Users",
+      "createdAt": "Created At",
+      "updatedAt": "Updated At",
+      "actions": "Action"
+    },
+    "options": ["Role"],
+    "button": {
+      "add": { "label": "Add New Role" },
+      "update": { "tooltip": "Edit" },
+      "delete": { "tooltip": "Delete" }
+    },
+    "pagination": {
+      "items": "items",
+      "page": "page"
+    },
+    "searchPlaceholder": "Search in table"
+  },
+  "modal": {
+    "delete": {
+      "title": "Delete Role",
+      "prefixMessage": "Are you sure you want to delete role",
+      "okText": "Yes, Delete",
+      "cancelText": "Cancel"
+    }
+  },
+  "add": {
+    "breadcrumb": [
+      { "title": "User Management" },
+      { "title": "Roles" },
+      { "title": "Add New Role" }
+    ],
+    "title": "Add New Role",
+    "alert": "Please complete the form before clicking Save",
+    "card": {
+      "title": "Role Information"
+    },
+    "actionButton": {
+      "saveText": "Save",
+      "cancelText": "Cancel"
+    }
+  },
+  "edit": {
+    "breadcrumb": [
+      { "title": "User Management" },
+      { "title": "Roles" },
+      { "title": "Edit Role" }
+    ],
+    "title": "Edit Role",
+    "alert": "Please complete the form before clicking Save",
+    "card": {
+      "title": "Role Information"
+    },
+    "actionButton": {
+      "saveText": "Save",
+      "cancelText": "Cancel"
+    }
+  },
+  "form": {
+    "role_name": {
+      "name": "Role Name",
+      "placeholder": "Please enter the name of the Role",
+      "helperText": "This field is required",
+      "rule": {
+        "invalidMax": "Invalid, role name must have a maximum of 50 characters"
+      }
+    }
+  },
+  "notification": {
+    "add": "have been successfully added!",
+    "edit": "have been successfully edited!",
+    "delete": " has been successfully removed!"
+  }
+}

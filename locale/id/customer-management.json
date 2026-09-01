@@ -1,0 +1,80 @@
+{
+  "title": "Customer",
+  "action": "Aksi",
+  "detail": "Detail",
+  "edit": "Ubah",
+  "delete": "Hapus",
+  "confirmDelete": "Yakin hapus",
+  "notification": {
+    "addFailed": "Gagal menambah customer"
+  },
+  "form": {
+    "title": "Customer",
+    "message": {
+      "default": "Mohon isi kolom ini"
+    },
+    "code": {
+      "label": "Kode",
+      "placeholder": "Kode customer"
+    },
+    "name": {
+      "label": "Nama",
+      "placeholder": "Nama customer"
+    },
+    "address": {
+      "label": "Alamat",
+      "placeholder": "Alamat"
+    },
+    "phone": {
+      "label": "Telepon",
+      "placeholder": "Telepon"
+    },
+    "warehouses": {
+      "label": "Daftar Gudang"
+    },
+    "button": {
+      "cancel": "Batal",
+      "save": "Simpan"
+    }
+  },
+  "breadcrumb": [
+    {
+      "title": "User Management"
+    },
+    {
+      "title": "Customer"
+    }
+  ],
+  "table": {
+    "title": "Customer",
+    "searchPlaceholder": "Cari",
+    "columns": {
+      "no": "No",
+      "code": "Kode",
+      "name": "Nama",
+      "customer": "Customer",
+      "address": "Alamat",
+      "phone": "Telepon",
+      "createdAt": "Dibuat",
+      "actions": "Aksi"
+    },
+    "button": {
+      "add": {
+        "label": "Tambah Baru"
+      },
+      "update": {
+        "tooltip": "Ubah"
+      },
+      "delete": {
+        "tooltip": "Hapus"
+      }
+    }
+  },
+  "modal": {
+    "delete": {
+      "title": "Konfirmasi Hapus",
+      "okText": "Hapus",
+      "cancelText": "Batal"
+    }
+  }
+}

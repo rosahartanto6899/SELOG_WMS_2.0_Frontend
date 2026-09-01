@@ -1,0 +1,13 @@
+{
+  "resultTitle": "Reservasi Berhasil Dibuat!",
+  "textRow": [
+    "Total pembayaran Anda adalah",
+    {
+      "payment": "Silakan bayar melalui tautan di bawah ini",
+      "financialCapability": "Silakan lengkapi data kemampuan keuangan Anda melalui link di bawah ini"
+    },
+    "Terima kasih"
+  ],
+  "tooltip": ["Salin ke papan klip", "Faktur telah disalin!"],
+  "defaultTooltip": ["Salin", "Disalin"]
+}
