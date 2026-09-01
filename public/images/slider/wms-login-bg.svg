@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a1526"/>
+      <stop offset="55%" stop-color="#0f2138"/>
+      <stop offset="100%" stop-color="#132a45"/>
+    </linearGradient>
+
+    <radialGradient id="glow" cx="82%" cy="18%" r="55%">
+      <stop offset="0%" stop-color="#3aa0ff" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="#3aa0ff" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="glowAmber" cx="12%" cy="88%" r="45%">
+      <stop offset="0%" stop-color="#ffb545" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="#ffb545" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="vignette" cx="50%" cy="50%" r="75%">
+      <stop offset="55%" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.55"/>
+    </radialGradient>
+
+    <pattern id="dotGrid" width="34" height="34" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.4" fill="#7fb8ff" fill-opacity="0.10"/>
+    </pattern>
+
+    <linearGradient id="rackStroke" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#8fc4ff" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#8fc4ff" stop-opacity="0.08"/>
+    </linearGradient>
+
+    <linearGradient id="boxFill" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffb545" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#e2892a" stop-opacity="0.9"/>
+    </linearGradient>
+  </defs>
+
+  <!-- base -->
+  <rect width="1920" height="1080" fill="url(#bgGrad)"/>
+  <rect width="1920" height="1080" fill="url(#glow)"/>
+  <rect width="1920" height="1080" fill="url(#glowAmber)"/>
+  <rect width="1920" height="1080" fill="url(#dotGrid)"/>
+
+  <!-- floor perspective line -->
+  <g stroke="#8fc4ff" stroke-opacity="0.14" stroke-width="1.5">
+    <line x1="0" y1="760" x2="1920" y2="760"/>
+    <line x1="960" y1="760" x2="0" y2="1080"/>
+    <line x1="960" y1="760" x2="1920" y2="1080"/>
+    <line x1="960" y1="760" x2="300" y2="1080"/>
+    <line x1="960" y1="760" x2="620" y2="1080"/>
+    <line x1="960" y1="760" x2="1300" y2="1080"/>
+    <line x1="960" y1="760" x2="1620" y2="1080"/>
+  </g>
+
+  <!-- warehouse racking, left aisle (receding perspective) -->
+  <g fill="none" stroke="url(#rackStroke)" stroke-width="2">
+    <!-- uprights -->
+    <line x1="90"  y1="120" x2="60"  y2="820"/>
+    <line x1="330" y1="180" x2="360" y2="800"/>
+    <line x1="90"  y1="120" x2="330" y2="180"/>
+    <!-- shelf levels -->
+    <line x1="80"  y1="260" x2="345" y2="310"/>
+    <line x1="72"  y1="400" x2="352" y2="440"/>
+    <line x1="65"  y1="540" x2="357" y2="570"/>
+    <line x1="60"  y1="680" x2="360" y2="700"/>
+  </g>
+
+  <!-- warehouse racking, right aisle -->
+  <g fill="none" stroke="url(#rackStroke)" stroke-width="2">
+    <line x1="1830" y1="100" x2="1865" y2="840"/>
+    <line x1="1570" y1="165" x2="1545" y2="815"/>
+    <line x1="1830" y1="100" x2="1570" y2="165"/>
+    <line x1="1845" y1="245" x2="1555" y2="300"/>
+    <line x1="1855" y1="390" x2="1548" y2="435"/>
+    <line x1="1862" y1="535" x2="1542" y2="565"/>
+    <line x1="1866" y1="680" x2="1540" y2="700"/>
+  </g>
+
+  <!-- boxes on left shelves -->
+  <g opacity="0.85">
+    <rect x="110" y="285" width="46" height="34" rx="3" fill="url(#boxFill)"/>
+    <rect x="175" y="292" width="40" height="30" rx="3" fill="#e2892a" opacity="0.55"/>
+    <rect x="120" y="425" width="52" height="36" rx="3" fill="#e2892a" opacity="0.5"/>
+    <rect x="200" y="432" width="42" height="32" rx="3" fill="url(#boxFill)"/>
+    <rect x="105" y="565" width="48" height="34" rx="3" fill="url(#boxFill)"/>
+    <rect x="190" y="572" width="44" height="30" rx="3" fill="#e2892a" opacity="0.5"/>
+  </g>
+
+  <!-- boxes on right shelves -->
+  <g opacity="0.85">
+    <rect x="1590" y="270" width="46" height="34" rx="3" fill="#e2892a" opacity="0.5"/>
+    <rect x="1660" y="278" width="40" height="30" rx="3" fill="url(#boxFill)"/>
+    <rect x="1580" y="415" width="50" height="36" rx="3" fill="url(#boxFill)"/>
+    <rect x="1660" y="422" width="42" height="30" rx="3" fill="#e2892a" opacity="0.55"/>
+    <rect x="1585" y="560" width="46" height="32" rx="3" fill="#e2892a" opacity="0.5"/>
+    <rect x="1655" y="566" width="44" height="30" rx="3" fill="url(#boxFill)"/>
+  </g>
+
+  <!-- pallet / crate cluster bottom center-left -->
+  <g opacity="0.9">
+    <rect x="430" y="905" width="150" height="18" rx="2" fill="#5c4326" opacity="0.7"/>
+    <rect x="450" y="820" width="60" height="80" rx="4" fill="url(#boxFill)" opacity="0.85"/>
+    <rect x="518" y="845" width="52" height="55" rx="4" fill="#e2892a" opacity="0.6"/>
+  </g>
+
+  <!-- scanning / data accent lines (subtle tech motif) -->
+  <g stroke="#7fd4ff" stroke-opacity="0.35" stroke-width="1.5" stroke-dasharray="2 6">
+    <path d="M 900 240 H 1400" />
+    <path d="M 900 240 V 380" />
+    <path d="M 1400 240 V 380" />
+  </g>
+  <circle cx="900" cy="240" r="4" fill="#7fd4ff" fill-opacity="0.7"/>
+  <circle cx="1400" cy="240" r="4" fill="#7fd4ff" fill-opacity="0.7"/>
+  <circle cx="900" cy="380" r="4" fill="#7fd4ff" fill-opacity="0.7"/>
+
+  <!-- barcode motif, bottom right, decorative -->
+  <g transform="translate(1660,960)" opacity="0.5">
+    <rect x="0"  y="0" width="4"  height="46" fill="#dfeeff"/>
+    <rect x="8"  y="0" width="2"  height="46" fill="#dfeeff"/>
+    <rect x="14" y="0" width="6"  height="46" fill="#dfeeff"/>
+    <rect x="24" y="0" width="2"  height="46" fill="#dfeeff"/>
+    <rect x="30" y="0" width="4"  height="46" fill="#dfeeff"/>
+    <rect x="38" y="0" width="2"  height="46" fill="#dfeeff"/>
+    <rect x="44" y="0" width="8"  height="46" fill="#dfeeff"/>
+    <rect x="56" y="0" width="3"  height="46" fill="#dfeeff"/>
+    <rect x="64" y="0" width="5"  height="46" fill="#dfeeff"/>
+    <rect x="74" y="0" width="2"  height="46" fill="#dfeeff"/>
+  </g>
+
+  <!-- vignette on top to keep center clear for the login card -->
+  <rect width="1920" height="1080" fill="url(#vignette)"/>
+</svg>

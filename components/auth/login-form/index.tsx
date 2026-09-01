@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { WindowsFilled } from "@ant-design/icons";
 import Typography from "@sera-components/typography";
 import logoImage from "@sera-public/images/logo.svg";
 import { API_STATUS_CODE } from "@sera-utils/constants/response-api";
@@ -16,6 +15,15 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import styles from "./login-form.module.scss";
+
+const MicrosoftLogo = () => (
+  <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+    <rect x="0" y="0" width="7" height="7" fill="#F25022" />
+    <rect x="9" y="0" width="7" height="7" fill="#7FBA00" />
+    <rect x="0" y="9" width="7" height="7" fill="#00A4EF" />
+    <rect x="9" y="9" width="7" height="7" fill="#FFB900" />
+  </svg>
+);
 
 const LoginForm = () => {
   const { t } = useTranslation();
@@ -143,7 +151,14 @@ const LoginForm = () => {
       <section className={styles["body-wrapper"]}>
         <Row justify="center">
           <div className={styles["logo-wrapper"]}>
-            <Image src={logoImage} alt="Sera Logo" sizes="85px" fill priority />
+            <Image
+              src={logoImage}
+              alt="Sera Logo"
+              sizes="165px"
+              fill
+              priority
+              style={{ objectFit: "contain" }}
+            />
           </div>
         </Row>
 
@@ -208,14 +223,13 @@ const LoginForm = () => {
                 />
               </Form.Item>
 
-              <Form.Item>
+              <Form.Item style={{ textAlign: "right" }}>
                 <Link
                   id="forgotPassword"
                   href="/auth/recover-password"
                   passHref
-                  style={{ color: "#FFFFFF" }}
                 >
-                  <Typography.Text variant="link">
+                  <Typography.Text variant="link" fontWeight={600}>
                     {t("auth.login.input.forgot")}
                   </Typography.Text>
                 </Link>
@@ -233,8 +247,11 @@ const LoginForm = () => {
                 </Button>
               </Form.Item>
 
-              <Divider style={{ borderColor: "#FFFFFF" }}>
-                <Typography.Text style={{ color: "#FFFFFF" }}>
+              <Divider>
+                <Typography.Text
+                  variant="muted"
+                  className={styles["divider-text"]}
+                >
                   {t("auth.login.input.divider")}
                 </Typography.Text>
               </Divider>
@@ -243,11 +260,10 @@ const LoginForm = () => {
                 <Button
                   id="loginMFA"
                   htmlType="button"
-                  type="primary"
                   onClick={loginWithMFA}
                   loading={loadingSSO}
-                  className={styles["login-form-button"]}
-                  icon={<WindowsFilled />}
+                  className={styles["login-form-button-secondary"]}
+                  icon={<MicrosoftLogo />}
                 >
                   {t("auth.login.input.button.loginMFA.preText")}&nbsp;
                   {t("auth.login.input.button.loginMFA.text")}

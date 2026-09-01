@@ -10,30 +10,42 @@
   .body-wrapper {
     display: flex;
     height: 100%;
-    position: relative;
     width: 100%;
 
     .image-wrapper {
       height: 100%;
-      inset: 0;
-      position: absolute;
+      position: relative;
       width: 100%;
 
       .image-overlay {
-        // background: linear-gradient(360deg, $primary-main, transparent);
+        background: linear-gradient(
+          180deg,
+          rgb(10 21 38 / 10%) 0%,
+          rgb(10 21 38 / 45%) 100%
+        );
         inset: 0;
         position: absolute;
-
-        // background: rgba(0, 0, 0, 0.4);
       }
     }
 
     .form-wrapper {
-      // background: linear-gradient(360deg, $primary-main, $primary-subtle);
-      flex: 0 0 53.4rem;
-      margin: auto;
+      background: $essentials-white;
+      flex: 0 0 40rem;
+      overflow: hidden;
       position: relative;
       z-index: 1;
+
+      &::before {
+        background-image: url("/images/slider/panel-pattern.svg");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        content: "";
+        inset: 0;
+        opacity: 0.4;
+        position: absolute;
+        z-index: 0;
+      }
 
       .navbar-wrapper {
         align-items: center;
@@ -65,35 +77,14 @@
       }
     }
   }
-
-  .footer-wrapper {
-    align-items: center;
-    background: rgb(0 0 0 / 45%) !important;
-    bottom: 0;
-    display: flex;
-    flex-shrink: 0;
-    font-size: 14px;
-    justify-content: space-between;
-    padding: 1rem 7rem;
-    position: absolute;
-    width: 100%;
-    z-index: 2;
-
-    .footer-logo {
-      height: 30px;
-      position: relative;
-      width: 100px;
-    }
-  }
 }
-@media (width <= 720px) {
-  .footer-wrapper {
-    flex-direction: column;
-    padding: 1rem !important;
+
+@media (width <= 992px) {
+  .image-wrapper {
+    display: none;
   }
 
   .form-wrapper {
-    flex: 0 0 90vw !important;
-    max-width: 53.4rem;
+    flex: 1 1 100% !important;
   }
 }

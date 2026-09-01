@@ -1,29 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 // import { GlobalOutlined } from "@ant-design/icons";
 import LoginForm from "@sera-components/auth/login-form";
-import Typography from "@sera-components/typography";
 // import i18next from "@sera-locale/i18n";
-import logoImage from "@sera-public/images/logo-white.svg";
-import {
-  Divider,
-  // Dropdown,
-  Space,
-} from "antd";
-import moment from "moment";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import {
   useEffect,
   // useState
 } from "react";
-import { useTranslation } from "react-i18next";
 
 import styles from "./auth.module.scss";
 
 const Login = () => {
   // const [lang, setLang] = useState<string>(localStorage.getItem("i18nextLng")!);
-  const { t } = useTranslation();
   const router = useRouter();
   const { error } = router.query;
 
@@ -98,11 +87,12 @@ const Login = () => {
       <section className={styles["body-wrapper"]}>
         <div className={styles["image-wrapper"]}>
           <Image
-            src="/images/slider/selog_login.jpg"
+            src="/images/slider/wms-login-bg-v2.svg"
             alt="SELOG"
             fill
             priority
-            style={{ objectFit: "cover", objectPosition: "left" }}
+            unoptimized
+            style={{ objectFit: "cover", objectPosition: "center" }}
           />
           <div className={styles["image-overlay"]} />
         </div>
@@ -126,29 +116,6 @@ const Login = () => {
             </Dropdown>
           </div> */}
           <LoginForm />
-        </div>
-      </section>
-
-      <section className={`${styles["footer-wrapper"]} background-gradient`}>
-        <div className={styles["footer-logo"]}>
-          <Image src={logoImage} alt="SELOG" sizes="85px" fill priority />
-        </div>
-        <div>
-          <Typography.Text variant="light" style={{ textAlign: "center" }}>
-            <span>Copyright © {moment().format("YYYY")} Serasi Autoraya.</span>
-            <span>&nbsp;All Rights Reserved.</span>
-          </Typography.Text>
-          <Divider type="vertical" style={{ background: "white" }} />
-          <Space size="large">
-            <Link
-              id="footer-tnc"
-              href="https://www.selog.astra.co.id/syarat-ketentuan"
-            >
-              <Typography.Text variant="light">
-                {t("global.footer.tnc")}
-              </Typography.Text>
-            </Link>
-          </Space>
         </div>
       </section>
     </main>

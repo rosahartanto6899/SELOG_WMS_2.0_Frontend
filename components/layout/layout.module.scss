@@ -18,7 +18,12 @@ $navbar-height: 68px;
     z-index: 10;
 
     .header-wrapper {
-      background: #3a8ddb;
+      background: linear-gradient(
+        135deg,
+        #08111f 0%,
+        #0e2036 55%,
+        #122a45 100%
+      );
       border-bottom: none;
       flex-shrink: 0;
       height: 68px;
@@ -70,7 +75,12 @@ $navbar-height: 68px;
   }
 
   .header-container {
-    background: #3a8ddb !important;
+    background: linear-gradient(
+      135deg,
+      #08111f 0%,
+      #0e2036 55%,
+      #122a45 100%
+    ) !important;
     border-bottom: none;
     box-shadow:
       0 1px 3px rgb(0 0 0 / 6%),

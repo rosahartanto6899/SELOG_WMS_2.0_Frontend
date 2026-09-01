@@ -262,6 +262,21 @@ html {
   border-radius: 1.2rem;
 }
 
+.ant-btn-primary:not(:disabled) {
+  background: linear-gradient(
+    135deg,
+    #1e3f66 0%,
+    #17324f 50%,
+    #122a45 100%
+  ) !important;
+  border-color: transparent !important;
+}
+
+.ant-btn-primary:not(:disabled):hover,
+.ant-btn-primary:not(:disabled):focus {
+  filter: brightness(1.15);
+}
+
 .ant-btn > .sera-icon {
   line-height: 1;
 
@@ -364,8 +379,13 @@ html {
   .ant-modal-confirm
   .ant-modal-confirm-btns
   > .ant-btn-primary:not(:disabled) {
-  background: #3a8ddb !important;
-  border-color: #3a8ddb !important;
+  background: linear-gradient(
+    135deg,
+    #1e3f66 0%,
+    #17324f 50%,
+    #122a45 100%
+  ) !important;
+  border-color: transparent !important;
 }
 
 .sera-modal-confirm-info
@@ -470,9 +490,9 @@ html {
 
 .ant-menu-submenu.ant-menu-submenu-selected div.ant-menu-submenu-title,
 .ant-menu.ant-menu-root > .ant-menu-item.ant-menu-item-selected {
-  background: linear-gradient(135deg, #3a8ddb 0%, #5baae8 100%);
+  background: linear-gradient(135deg, #1e3f66 0%, #17324f 50%, #122a45 100%);
   border-radius: 1.2rem;
-  box-shadow: 0 2px 8px rgb(58 141 219 / 30%);
+  box-shadow: 0 2px 8px rgb(18 42 69 / 35%);
   color: #fff;
   padding: 0 12px;
 }
@@ -835,8 +855,8 @@ html {
 }
 
 .btn-wrapper .ant-btn-custom.primary {
-  background: #3a8ddb;
-  border: 1px solid #3a8ddb;
+  background: linear-gradient(135deg, #1e3f66 0%, #17324f 50%, #122a45 100%);
+  border: 1px solid transparent;
   border-radius: 20px;
   box-shadow: 0 2px 0 rgb(0 0 0 / 4.3%);
 }
