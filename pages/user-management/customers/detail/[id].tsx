@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { LayoutUserManagement } from "@sera-components/pages/user-management";
-import { RootState, wmsCustomerActions } from "@sera-redux";
-import { WmsCustomerState } from "@sera-types/wms-customer.type";
+import { customerActions, RootState } from "@sera-redux";
+import { CustomerState } from "@sera-types/customer.type";
 import { Descriptions } from "antd";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -12,8 +12,8 @@ const CustomerDetail = ({
   customers,
   getCustomerDetail,
 }: {
-  customers: WmsCustomerState;
-  getCustomerDetail: typeof wmsCustomerActions.getCustomerDetailFetch;
+  customers: CustomerState;
+  getCustomerDetail: typeof customerActions.getCustomerDetailFetch;
 }) => {
   const router = useRouter();
   const { id } = router.query;
@@ -59,10 +59,10 @@ const CustomerDetail = ({
 };
 
 const mapStateToProps = (state: RootState) => ({
-  customers: state.wmsCustomers,
+  customers: state.customers,
 });
 const mapDispatchToProps = {
-  getCustomerDetail: wmsCustomerActions.getCustomerDetailFetch,
+  getCustomerDetail: customerActions.getCustomerDetailFetch,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomerDetail);

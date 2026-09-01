@@ -2,9 +2,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { LayoutUserManagement } from "@sera-components/pages/user-management";
 import MessageHandler from "@sera-libraries/message-handler";
-import { RootState, wmsCustomerActions } from "@sera-redux";
+import { customerActions, RootState } from "@sera-redux";
+import { CustomerState } from "@sera-types/customer.type";
 import { LoadingState } from "@sera-types/loading.type";
-import { WmsCustomerState } from "@sera-types/wms-customer.type";
 import useErrorHandler from "@sera-utils/hooks/useErrorHandler";
 import { Form } from "antd";
 import { useEffect } from "react";
@@ -19,8 +19,8 @@ const CustomerAdd = ({
   customers,
 }: {
   loading: LoadingState;
-  createCustomer: typeof wmsCustomerActions.createCustomerFetch;
-  customers: WmsCustomerState;
+  createCustomer: typeof customerActions.createCustomerFetch;
+  customers: CustomerState;
 }) => {
   const [form] = Form.useForm();
   const { t } = useTranslation(undefined, { keyPrefix: "customerManagement" });
@@ -69,11 +69,11 @@ const CustomerAdd = ({
 };
 
 const mapStateToProps = (state: RootState) => ({
-  customers: state.wmsCustomers,
+  customers: state.customers,
   loading: state.loading,
 });
 const mapDispatchToProps = {
-  createCustomer: wmsCustomerActions.createCustomerFetch,
+  createCustomer: customerActions.createCustomerFetch,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomerAdd);

@@ -1,28 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { PayloadAction } from "@reduxjs/toolkit";
 import CustomerApi from "@sera-libraries/api/customer";
 import { customerActions } from "@sera-redux/slices/customer.slice";
 import { BaseType } from "@sera-types/base.type";
-import {
-  CreateSalesPayload,
-  CustomerContactsPayload,
-  CustomerSalesPayload,
-  CustomerState,
-  customerTypes,
-  DeleteSalesPayload,
-  DetailCustomerPayload,
-  GetAllCustomerDropdownPayload,
-  GetCustomerContactsResponse,
-  GetCustomerDropdownPayload,
-  GetCustomerDropdownResponse,
-  GetCustomerSalesResponse,
-  GetCustomersResponse,
-  GetDetailCustomerResponse,
-  UpdateCustomerPayload,
-} from "@sera-types/customer.type";
+import { CustomerState, GetCustomersResponse } from "@sera-types/customer.type";
 import { AxiosResponse } from "axios";
 import Router from "next/router";
-import { all, call, fork, put, takeEvery } from "redux-saga/effects";
+import { all, call, put, takeEvery } from "redux-saga/effects";
 
 function* getCustomers(
   params: PayloadAction<BaseType>,
@@ -32,325 +15,122 @@ function* getCustomers(
   AxiosResponse<GetCustomersResponse> & CustomerState
 > {
   try {
-    const result = yield call(CustomerApi().getCustomers, {
+    const result = yield call(CustomerApi().retrieveCustomers, {
       ...params.payload,
     });
-
-    if (result?.status === 200) {
-      yield put(customerActions.getCustomersSuccess(result.data));
-    }
+    if (result?.status === 200)
+      yield put(
+        customerActions.getCustomersSuccess(
+          result.data as GetCustomersResponse,
+        ),
+      );
   } catch (error: any) {
-    yield put(customerActions.getCustomersFailure(error));
+    yield put(
+      customerActions.getCustomersFailure({
+        status: error.status,
+        statusText: error.statusText,
+        statusCode: error.data,
+      }),
+    );
   }
 }
 
-function* getCustomersAutoComplete(
-  params: PayloadAction<BaseType>,
-): Generator<
-  unknown,
-  void,
-  AxiosResponse<GetCustomersResponse> & CustomerState
-> {
+function* getCustomerDetail(
+  params: PayloadAction<{ id: string }>,
+): Generator<unknown, void, AxiosResponse> {
   try {
-    const result = yield call(CustomerApi().getCustomers, {
-      ...params.payload,
+    const result = yield call(CustomerApi().retrieveCustomerDetail, {
+      id: params.payload.id,
     });
-
-    if (result?.status === 200) {
-      yield put(customerActions.getCustomersAutoCompleteSuccess(result.data));
-    }
+    if (result?.status === 200)
+      yield put(customerActions.getCustomerDetailSuccess(result.data));
   } catch (error: any) {
-    yield put(customerActions.getCustomersAutoCompleteFailure(error));
+    yield put(
+      customerActions.getCustomerDetailFailure({
+        status: error.status,
+        statusText: error.statusText,
+        statusCode: error.data,
+      }),
+    );
   }
 }
 
-function* getDetailCustomer(
-  params: PayloadAction<DetailCustomerPayload>,
-): Generator<
-  unknown,
-  void,
-  AxiosResponse<GetDetailCustomerResponse> & CustomerState
-> {
+function* createCustomer(
+  params: PayloadAction<any>,
+): Generator<unknown, void, AxiosResponse> {
   try {
-    const result = yield call(CustomerApi().getDetailCustomer, {
+    const result = yield call(CustomerApi().createCustomer, {
       ...params.payload,
     });
-
-    if (result?.status === 200) {
-      yield put(customerActions.getDetailCustomerSuccess(result.data));
+    if (result?.status === 201 || result?.status === 200) {
+      yield put(
+        customerActions.createCustomerSuccess({ data: params.payload }),
+      );
+      Router.push("/user-management/customers");
     }
   } catch (error: any) {
-    yield put(customerActions.getDetailCustomerFailure(error));
+    yield put(
+      customerActions.createCustomerFailure({
+        status: error.status,
+        statusText: error.statusText,
+        statusCode: error.data,
+      }),
+    );
   }
 }
 
 function* updateCustomer(
-  params: PayloadAction<UpdateCustomerPayload>,
-): Generator<unknown, void, AxiosResponse<any> & CustomerState> {
+  params: PayloadAction<any>,
+): Generator<unknown, void, AxiosResponse> {
   try {
-    const result = yield call(CustomerApi().updateCustomer, params?.payload);
-
-    if (result?.status === 200) {
-      yield call(Router.back);
-      yield put(customerActions.updateCustomerSuccess({ ...params.payload }));
-    }
-  } catch (error) {
-    yield put(customerActions.updateCustomerFailure(error));
-  }
-}
-
-function* createSales(
-  params: PayloadAction<CreateSalesPayload>,
-): Generator<unknown, void, AxiosResponse<any> & CustomerState> {
-  try {
-    const result = yield call(CustomerApi().createSales, params?.payload);
-
-    if (result?.status === 201) {
-      yield put(customerActions.createSalesSuccess({ ...params.payload }));
-    }
-  } catch (error) {
-    yield put(customerActions.createSalesFailure(error));
-  }
-}
-
-function* deleteSales(
-  params: PayloadAction<DeleteSalesPayload>,
-): Generator<unknown, void, AxiosResponse<any> & CustomerState> {
-  try {
-    const result = yield call(CustomerApi().deleteSales, params?.payload);
-
-    if (result?.status === 200) {
-      yield put(customerActions.deleteSalesSuccess({ ...params.payload }));
-    }
-  } catch (error) {
-    yield put(customerActions.deleteSalesFailure(error));
-  }
-}
-
-function* getCustomerSales(
-  params: PayloadAction<CustomerSalesPayload>,
-): Generator<
-  unknown,
-  void,
-  AxiosResponse<GetCustomerSalesResponse> & CustomerState
-> {
-  try {
-    const result = yield call(CustomerApi().getCustomerSales, {
+    const result = yield call(CustomerApi().updateCustomer, {
       ...params.payload,
     });
-
     if (result?.status === 200) {
-      yield put(customerActions.getCustomerSalesSuccess(result.data));
-    }
-  } catch (error: any) {
-    yield put(customerActions.getCustomerSalesFailure(error));
-  }
-}
-
-function* getCustomerContacts(
-  params: PayloadAction<CustomerContactsPayload>,
-): Generator<
-  unknown,
-  void,
-  AxiosResponse<GetCustomerContactsResponse> & CustomerState
-> {
-  try {
-    const result = yield call(CustomerApi().getCustomerContacts, {
-      ...params.payload,
-    });
-
-    if (result?.status === 200) {
-      yield put(customerActions.getCustomerContactsSuccess(result.data));
-    }
-  } catch (error: any) {
-    yield put(customerActions.getCustomerContactsFailure(error));
-  }
-}
-
-function* getDropdownCustomers(
-  params: PayloadAction<GetCustomerDropdownPayload>,
-): Generator<
-  unknown,
-  void,
-  AxiosResponse<GetCustomerDropdownResponse> & CustomerState
-> {
-  try {
-    const result = yield call(
-      CustomerApi().retrieveDropdownCustomers,
-      params.payload,
-    );
-
-    if (result?.status === 200)
-      yield put(customerActions.getDropdownCustomersSuccess(result.data));
-  } catch (error: any) {
-    yield put(
-      customerActions.getDropdownCustomersFailure({
-        status: error.status,
-        statusText: error.statusText,
-        statusCode: error.data.code,
-      }),
-    );
-  }
-}
-
-function* getDropdownSales(): Generator<
-  unknown,
-  void,
-  AxiosResponse<any> & CustomerState
-> {
-  try {
-    const result = yield call(CustomerApi().getDropdownSales);
-
-    if (result?.status === 200) {
-      yield put(customerActions.getDropdownSalesSuccess(result.data));
-    }
-  } catch (error) {
-    yield put(customerActions.getDropdownSalesFailure(error));
-  }
-}
-
-function* getDropdownAddReq(): Generator<
-  unknown,
-  void,
-  AxiosResponse<any> & CustomerState
-> {
-  try {
-    const result = yield call(CustomerApi().getDropdownAddReq);
-
-    if (result?.status === 200) {
-      yield put(customerActions.getDropdownAddReqSuccess(result.data));
-    }
-  } catch (error) {
-    yield put(customerActions.getDropdownAddReqFailure(error));
-  }
-}
-
-function* getDropdownPOD(): Generator<
-  unknown,
-  void,
-  AxiosResponse<any> & CustomerState
-> {
-  try {
-    const result = yield call(CustomerApi().getDropdownPOD);
-
-    if (result?.status === 200) {
-      yield put(customerActions.getDropdownPODSuccess(result.data));
-    }
-  } catch (error) {
-    yield put(customerActions.getDropdownPODFailure(error));
-  }
-}
-
-function* getDropdownCustomerIndustries(
-  params: PayloadAction<GetAllCustomerDropdownPayload>,
-): Generator<
-  unknown,
-  void,
-  AxiosResponse<GetCustomerDropdownResponse> & CustomerState
-> {
-  try {
-    const result = yield call(
-      CustomerApi().retrieveDropdownIndustries,
-      params.payload,
-    );
-
-    if (result?.status === 200)
       yield put(
-        customerActions.getDropdownCustomerIndustriesSuccess(result.data),
+        customerActions.updateCustomerSuccess({ data: params.payload }),
       );
+      Router.push("/user-management/customers");
+    }
   } catch (error: any) {
     yield put(
-      customerActions.getDropdownCustomerIndustriesFailure({
+      customerActions.updateCustomerFailure({
         status: error.status,
         statusText: error.statusText,
-        statusCode: error.data.code,
+        statusCode: error.data,
       }),
     );
   }
 }
 
-function* getDropdownCustomerCategories(): Generator<
-  unknown,
-  void,
-  AxiosResponse<GetCustomerDropdownResponse> & CustomerState
-> {
+function* deleteCustomer(
+  params: PayloadAction<{ id: string }>,
+): Generator<unknown, void, AxiosResponse> {
   try {
-    const result = yield call(CustomerApi().retrieveDropdownCustomerCategories);
-
-    if (result?.status === 200)
-      yield put(
-        customerActions.getDropdownCustomerCategoriesSuccess(result.data),
-      );
+    const result = yield call(CustomerApi().deleteCustomer, params.payload.id);
+    if (result?.status === 200) {
+      yield put(customerActions.deleteCustomerSuccess({}));
+      window.location.reload();
+    }
   } catch (error: any) {
     yield put(
-      customerActions.getDropdownCustomerCategoriesFailure({
+      customerActions.deleteCustomerFailure({
         status: error.status,
         statusText: error.statusText,
-        statusCode: error.data.code,
+        statusCode: error.data,
       }),
     );
   }
 }
 
-function* getDropdownCustomerStatuses(): Generator<
-  unknown,
-  void,
-  AxiosResponse<GetCustomerDropdownResponse> & CustomerState
-> {
-  try {
-    const result = yield call(CustomerApi().retrieveDropdownCustomerStatuses);
-
-    if (result?.status === 200)
-      yield put(
-        customerActions.getDropdownCustomerStatusesSuccess(result.data),
-      );
-  } catch (error: any) {
-    yield put(
-      customerActions.getDropdownCustomerStatusesFailure({
-        status: error.status,
-        statusText: error.statusText,
-        statusCode: error.data.code,
-      }),
-    );
-  }
+function* customerSaga() {
+  yield all([
+    takeEvery(customerActions.getCustomersFetch.type, getCustomers),
+    takeEvery(customerActions.getCustomerDetailFetch.type, getCustomerDetail),
+    takeEvery(customerActions.createCustomerFetch.type, createCustomer),
+    takeEvery(customerActions.updateCustomerFetch.type, updateCustomer),
+    takeEvery(customerActions.deleteCustomerFetch.type, deleteCustomer),
+  ]);
 }
 
-function* watchCustomersRequest() {
-  yield takeEvery(customerTypes.GET_CUSTOMERS_FETCH, getCustomers);
-  yield takeEvery(
-    customerTypes.GET_CUSTOMERS_AUTOCOMPLETE_FETCH,
-    getCustomersAutoComplete,
-  );
-  yield takeEvery(customerTypes.GET_DETAIL_CUSTOMER_FETCH, getDetailCustomer);
-  yield takeEvery(customerTypes.UPDATE_CUSTOMER_FETCH, updateCustomer);
-  yield takeEvery(customerTypes.GET_CUSTOMER_SALES_FETCH, getCustomerSales);
-  yield takeEvery(
-    customerTypes.GET_CUSTOMER_CONTACTS_FETCH,
-    getCustomerContacts,
-  );
-  yield takeEvery(customerTypes.CREATE_SALES_FETCH, createSales);
-  yield takeEvery(customerTypes.DELETE_SALES_FETCH, deleteSales);
-  yield takeEvery(
-    customerTypes.GET_DROPDOWN_CUSTOMERS_FETCH,
-    getDropdownCustomers,
-  );
-  yield takeEvery(customerTypes.GET_DROPDOWN_SALES_FETCH, getDropdownSales);
-  yield takeEvery(customerTypes.GET_DROPDOWN_ADD_REQ_FETCH, getDropdownAddReq);
-  yield takeEvery(customerTypes.GET_DROPDOWN_POD_FETCH, getDropdownPOD);
-  yield takeEvery(
-    customerTypes.GET_DROPDOWN_CUSTOMER_INDUSTRIES_FETCH,
-    getDropdownCustomerIndustries,
-  );
-  yield takeEvery(
-    customerTypes.GET_DROPDOWN_CUSTOMER_CATEGORIES_FETCH,
-    getDropdownCustomerCategories,
-  );
-  yield takeEvery(
-    customerTypes.GET_DROPDOWN_CUSTOMER_STATUSES_FETCH,
-    getDropdownCustomerStatuses,
-  );
-}
-
-export default function* customerSaga() {
-  yield all([fork(watchCustomersRequest)]);
-}
+export default customerSaga;

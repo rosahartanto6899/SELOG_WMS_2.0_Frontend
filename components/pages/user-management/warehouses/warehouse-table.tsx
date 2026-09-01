@@ -9,7 +9,7 @@ import Select from "@sera-components/select";
 import Table from "@sera-components/table";
 import { wmsWarehouseActions } from "@sera-redux/slices/wms-warehouse.slice";
 import { BaseType } from "@sera-types/base.type";
-import { WmsWarehouse } from "@sera-types/wms-customer.type";
+import { WmsWarehouse } from "@sera-types/customer.type";
 import FormatUtils from "@sera-utils/format";
 import useCheckPermission from "@sera-utils/hooks/useCheckPermission";
 import { Col, Row } from "antd";

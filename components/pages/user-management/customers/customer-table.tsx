@@ -7,9 +7,9 @@ import Input from "@sera-components/input";
 import Modal from "@sera-components/modal";
 import Select from "@sera-components/select";
 import Table from "@sera-components/table";
-import { wmsCustomerActions } from "@sera-redux/slices/wms-customer.slice";
+import { customerActions } from "@sera-redux/slices/customer.slice";
 import { BaseType } from "@sera-types/base.type";
-import { WmsCustomer } from "@sera-types/wms-customer.type";
+import { Customer } from "@sera-types/customer.type";
 import FormatUtils from "@sera-utils/format";
 import useCheckPermission from "@sera-utils/hooks/useCheckPermission";
 import { Col, Row } from "antd";
@@ -18,11 +18,11 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 interface Props {
-  dataSource?: WmsCustomer[];
+  dataSource?: Customer[];
   options?: any;
   loading: any;
-  onFetch: typeof wmsCustomerActions.getCustomersFetch;
-  onDelete: typeof wmsCustomerActions.deleteCustomerFetch;
+  onFetch: typeof customerActions.getCustomersFetch;
+  onDelete: typeof customerActions.deleteCustomerFetch;
 }
 
 const CustomerTable = (props: Props) => {
@@ -78,7 +78,7 @@ const CustomerTable = (props: Props) => {
       title: t("table.columns.no"),
       key: "no",
       dataIndex: "no",
-      render: (_: unknown, record: WmsCustomer) => (
+      render: (_: unknown, record: Customer) => (
         <Row justify="center">
           <Col>{record.no}</Col>
         </Row>
@@ -120,7 +120,7 @@ const CustomerTable = (props: Props) => {
       key: "createdAt",
       width: 180,
       sorter: true,
-      render: (_: unknown, record: WmsCustomer) =>
+      render: (_: unknown, record: Customer) =>
         FormatUtils().dateTimeTransform(record.createdAt ?? ""),
     },
     {
@@ -128,7 +128,7 @@ const CustomerTable = (props: Props) => {
       key: "operation",
       fixed: "right",
       width: 90,
-      render: (record: WmsCustomer) => (
+      render: (record: Customer) => (
         <Row justify="center" gutter={[8, 0]}>
           {isUpdate ? (
             <Col>
@@ -179,7 +179,7 @@ const CustomerTable = (props: Props) => {
           current={Number(options?.page)}
           pageSize={options?.limit}
           total={options?.totalData ?? 0}
-          rowKey={(row: WmsCustomer) => `${row.no}`}
+          rowKey={(row: Customer) => `${row.no}`}
           loading={loading}
           title={t("table.title")}
           scroll={{ x: 1000 }}

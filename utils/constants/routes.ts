@@ -7,12 +7,8 @@ export const ROUTE = {
     DRIVER_FATIGUE: "/driver-management/driver-fatigue",
   },
   SALES_MANAGEMENT: {
-    CUSTOMER: "/sales-management/customer",
-    CUSTOMER_CONTRACT: "/sales-management/customer-contract",
-    CUSTOMER_ROUTE: "/sales-management/customer-route",
     BOOKING_ORDER: "/sales-management/booking-order",
     SHIPMENT_STATUS: "/sales-management/shipment-status",
-    CUSTOMER_LOCATION: "/sales-management/customer-location",
   },
   OPERATION_MANAGEMENT: {
     UNIT_DRIVER_CAPACITY: "/operation-management/unit-driver-capacity",

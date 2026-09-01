@@ -1,0 +1,46 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "paths": {
+      "@sera-assets/*": ["./assets/*"],
+      "@sera-components/*": ["./components/*"],
+      "@sera-features/*": ["./features/*"],
+      "@sera-libraries/*": ["./libraries/*"],
+      "@sera-locale/*": ["./locale/*"],
+      "@sera-redux": ["./redux"],
+      "@sera-redux/*": ["./redux/*"],
+      "@sera-types/*": ["./types/*"],
+      "@sera-utils/*": ["./utils/*"],
+      "@sera-theme/*": ["./theme/*"],
+      "@sera-public/*": ["./public/*"],
+      "react": ["./node_modules/@types/react"]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/**/*.ts",
+    "**/**/*.tsx",
+    "jest.setup.js"
+  ],
+  "exclude": ["node_modules", "__mocks__"]
+}

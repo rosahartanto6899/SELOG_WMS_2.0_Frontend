@@ -37,7 +37,6 @@ export * from "./sagas/user.saga";
 export * from "./sagas/user-logs.saga";
 export * from "./sagas/vehicle-group.saga";
 export * from "./sagas/vehicle-type.saga";
-export * from "./sagas/wms-customer.saga";
 export * from "./sagas/wms-warehouse.saga";
 
 // slices
@@ -75,7 +74,6 @@ export * from "./slices/user.slice";
 export * from "./slices/user-logs.slice";
 export * from "./slices/vehicle-group.slice";
 export * from "./slices/vehicle-type.slice";
-export * from "./slices/wms-customer.slice";
 export * from "./slices/wms-warehouse.slice";
 
 // states
@@ -85,7 +83,6 @@ export * from "./states/booking-order.state";
 export * from "./states/business-area.state";
 export * from "./states/city.state";
 export * from "./states/company.state";
-export * from "./states/customer.state";
 export * from "./states/customer-contract.state";
 export * from "./states/customer-location.state";
 export * from "./states/customer-route.state";

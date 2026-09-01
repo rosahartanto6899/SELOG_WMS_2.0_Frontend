@@ -8,7 +8,7 @@ import bookingOrderReducer from "./booking-order.slice";
 import businessAreaReducer from "./business-area.slice";
 import cityReducer from "./city.slice";
 import companyReducer from "./company.slice";
-import customerReducer from "./customer.slice";
+import customersReducer from "./customer.slice";
 import customerContractReducer from "./customer-contract.slice";
 import customerLocationReducer from "./customer-location.slice";
 import customerRouteReducer from "./customer-route.slice";
@@ -54,14 +54,12 @@ import userLogReducer from "./user-logs.slice";
 import vehicleGroupReducer from "./vehicle-group.slice";
 import vehicleTypeReducer from "./vehicle-type.slice";
 import vodReducer from "./voice-of-driver.slice";
-import wmsCustomersReducer from "./wms-customer.slice";
 import wmsWarehousesReducer from "./wms-warehouse.slice";
 
 const rootReducer = combineReducers({
   ...baseReducers,
   additionalExpense: additionalExpenseReducer,
   areas: areaReducer,
-  customers: customerReducer,
   customerRoutes: customerRouteReducer,
   customerContracts: customerContractReducer,
   customerLocations: customerLocationReducer,
@@ -70,7 +68,7 @@ const rootReducer = combineReducers({
   menus: menuReducer,
   notification: notificationReducer,
   roles: rolesReducer,
-  wmsCustomers: wmsCustomersReducer,
+  customers: customersReducer,
   wmsWarehouses: wmsWarehousesReducer,
   users: userReducer,
   roleMenus: rolesMenuReducer,

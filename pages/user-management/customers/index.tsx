@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import PageLayout from "@sera-components/layout/page-layout";
 import CustomerTable from "@sera-components/pages/user-management/customers/customer-table";
-import { RootState, wmsCustomerActions } from "@sera-redux";
+import { customerActions, RootState } from "@sera-redux";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 
@@ -19,9 +19,9 @@ const CustomersPage = ({ customers, loading, getCustomers }: any) => {
         <CustomerTable
           dataSource={customers.data}
           options={customers.options}
-          loading={loading[wmsCustomerActions.getCustomersFetch.type]}
+          loading={loading[customerActions.getCustomersFetch.type]}
           onFetch={getCustomers}
-          onDelete={wmsCustomerActions.deleteCustomerFetch}
+          onDelete={customerActions.deleteCustomerFetch}
         />
       }
     />
@@ -29,11 +29,11 @@ const CustomersPage = ({ customers, loading, getCustomers }: any) => {
 };
 
 const mapStateToProps = (state: RootState) => ({
-  customers: state.wmsCustomers,
+  customers: state.customers,
   loading: state.loading,
 });
 const mapDispatchToProps = {
-  getCustomers: wmsCustomerActions.getCustomersFetch,
+  getCustomers: customerActions.getCustomersFetch,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomersPage);

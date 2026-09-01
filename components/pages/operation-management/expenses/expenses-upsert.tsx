@@ -20,7 +20,6 @@ import {
   useAppSelector,
 } from "@sera-redux";
 import { businessAreaTypes } from "@sera-types/business-area.type";
-import { customerTypes } from "@sera-types/customer.type";
 import { customerContractTypes } from "@sera-types/customer-contract.type";
 import { customerRouteTypes } from "@sera-types/customer-route.type";
 import {
@@ -84,9 +83,9 @@ function ExpensesUpsert() {
     (state) => state.customerContracts,
   );
   const loading = useAppSelector((state) => state.loading);
-  const {
-    data: { list: dropdownCustomers },
-  } = useAppSelector((state) => state.customers);
+  const { data: dropdownCustomers } = useAppSelector(
+    (state) => state.customers,
+  );
 
   const onPageChangeListener = (current: number, limit: number) => {
     setPage(current);
@@ -504,7 +503,6 @@ function ExpensesUpsert() {
 
     return () => {
       dispatch(businessAreaActions.getDropdownBusinessAreasClear());
-      dispatch(customerActions.getCustomersClear());
       setDropdownDownload({
         customerId: undefined,
         contractId: undefined,
@@ -541,8 +539,8 @@ function ExpensesUpsert() {
                 placeholder={t("dropdown.customerName.placeholder")}
                 onChange={(value) => handleChangeDropdown(value, "customerId")}
                 value={dropdownDownload.customerId}
-                loading={loading[customerTypes.GET_CUSTOMERS]}
-                disabled={loading[customerTypes.GET_CUSTOMERS]}
+                loading={loading[customerActions.getCustomersFetch.type]}
+                disabled={loading[customerActions.getCustomersFetch.type]}
                 onClear={() => {
                   setDropdownDownload((prev) => ({
                     ...prev,

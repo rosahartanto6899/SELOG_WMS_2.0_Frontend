@@ -16,7 +16,7 @@ import {
   BusinessAreaState,
   businessAreaTypes,
 } from "@sera-types/business-area.type";
-import { CustomerState, customerTypes } from "@sera-types/customer.type";
+import { CustomerState } from "@sera-types/customer.type";
 import { LoadingState } from "@sera-types/loading.type";
 import { StockManagementState } from "@sera-types/stock-management.type";
 import {
@@ -210,7 +210,7 @@ const StockManagementForm = ({
       name: "customerId",
       label: t("input.customerId.label"),
       placeholder: t("input.customerId.placeholder"),
-      options: customers?.data?.list ?? [],
+      options: customers?.data ?? [],
       valueField: "id",
       labelField: "name",
       onSearch(_value) {
@@ -229,7 +229,7 @@ const StockManagementForm = ({
         },
         disabled: (_value) => _value?.shipmentType !== CONST_SHIPMENT_TYPE[1],
       },
-      loading: loadingState[customerTypes.GET_CUSTOMERS],
+      loading: loadingState[customerActions.getCustomersFetch.type],
     },
     {
       id: "branchId",

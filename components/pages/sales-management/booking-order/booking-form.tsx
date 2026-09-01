@@ -14,7 +14,6 @@ import {
   vehicleTypeActions,
 } from "@sera-redux";
 import { bookingOrderTypes } from "@sera-types/booking-order.type";
-import { customerTypes } from "@sera-types/customer.type";
 import { ROUTE } from "@sera-utils/constants/routes";
 import { Form, Row, Space } from "antd";
 import { FormInstance } from "antd/lib";
@@ -110,11 +109,7 @@ const BookingOrderForm: FC<BookingOrderFormProps> = ({
   );
   const loading = useAppSelector((state) => state.loading);
   const businessAreas = useAppSelector((state) => state.businessAreas);
-  const {
-    detailCustomer,
-    customerSales,
-    data: { list: customersData },
-  } = useAppSelector((state) => state.customers);
+  const { data: customersData } = useAppSelector((state) => state.customers);
   const router = useRouter();
 
   const watch = Form.useWatch([], form);
@@ -124,10 +119,8 @@ const BookingOrderForm: FC<BookingOrderFormProps> = ({
   const isEdit = type === "edit";
   const isDetail = type === "detail";
   // const isCreate = type === "create";
-  const { shipmentType, customerName, branchOrder } = (Form.useWatch(
-    [],
-    form,
-  ) || {}) as BOOKING_ORDER_FORM;
+  const { shipmentType, customerName } = (Form.useWatch([], form) ||
+    {}) as BOOKING_ORDER_FORM;
 
   const DISABLE_FORM =
     loading[bookingOrderTypes.UPDATE_BOOKING_ORDER] ||
@@ -145,7 +138,6 @@ const BookingOrderForm: FC<BookingOrderFormProps> = ({
   };
 
   const handleClearDriver = () => {
-    form.resetFields(["salesDealing", "salesServicing"]);
     const isArr = Array.isArray(watch?.shipmentDetails);
 
     if (!isArr) return;
@@ -200,42 +192,6 @@ const BookingOrderForm: FC<BookingOrderFormProps> = ({
     });
   };
 
-  const filterSameVal = (arr: { label: string; value: string }[]) => {
-    if (!arr.length) return [];
-    return arr.filter(
-      (sales, index, arr) =>
-        arr.findIndex((o) => o.value === sales.value) === index,
-    );
-  };
-
-  const salesDropdown = useCallback(
-    (type: "servicing" | "dealing") => {
-      if (!customerName || !branchOrder || !customerSales.data?.length) {
-        return [];
-      }
-
-      let _dropdown = [];
-      if (type === "dealing") {
-        _dropdown = customerSales.data
-          .filter((o) => o.branch?.id === branchOrder)
-          .map((v) => ({
-            label: v.salesDealing?.name || "-",
-            value: v.salesDealing?.name || "-",
-          }));
-      } else {
-        _dropdown = customerSales.data
-          .filter((o) => o.branch?.id === branchOrder)
-          .map((v) => ({
-            label: v.salesServicing?.name || "-",
-            value: v.salesServicing?.name || "-",
-          }));
-      }
-
-      return filterSameVal(_dropdown);
-    },
-    [customerName, branchOrder, customerSales],
-  );
-
   const FORM_ORDER_CONFIG: ChildConfig[] = [
     {
       id: "customerName",
@@ -260,7 +216,7 @@ const BookingOrderForm: FC<BookingOrderFormProps> = ({
       onClear() {
         dispatch(customerActions.getCustomersFetch({ ...PAYLOAD }));
       },
-      loading: loading[customerTypes.GET_CUSTOMERS],
+      loading: loading[customerActions.getCustomersFetch.type],
       disabled: isEdit,
     },
     {
@@ -299,24 +255,6 @@ const BookingOrderForm: FC<BookingOrderFormProps> = ({
       rules: [{ required: true, message: requiredMessage }],
     },
     {
-      id: "salesDealing",
-      type: "select",
-      name: "salesDealing",
-      label: t("input.salesDealing.label"),
-      options: salesDropdown("dealing"),
-      placeholder: t("input.salesDealing.placeholder"),
-      rules: [{ required: true, message: requiredMessage }],
-    },
-    {
-      id: "salesServicing",
-      type: "select",
-      name: "salesServicing",
-      label: t("input.salesServicing.label"),
-      options: salesDropdown("servicing"),
-      placeholder: t("input.salesServicing.placeholder"),
-      rules: [{ required: true, message: requiredMessage }],
-    },
-    {
       id: "additionalRequest",
       type: "checkbox",
       name: "additionalRequest",
@@ -331,7 +269,7 @@ const BookingOrderForm: FC<BookingOrderFormProps> = ({
       loading: loading[bookingOrderTypes.GET_DROPDOWN_ADDITIONAL_REQUEST_ITEMS],
       dependency: {
         fields: [],
-        visibility: () => !!customerName && !!detailCustomer.data?.id,
+        visibility: () => !!customerName,
       },
     },
   ];
@@ -382,34 +320,14 @@ const BookingOrderForm: FC<BookingOrderFormProps> = ({
     dispatch(bookingOrderActions.getDropdownAdditionalRequestItemsFetch());
     dispatch(businessAreaActions.getDropdownBusinessAreasFetch({}));
     dispatch(vehicleTypeActions.getDropdownVehicleTypesFetch({}));
-    dispatch(customerActions.getDropdownSalesFetch());
     dispatch(customerActions.getCustomersFetch({ ...PAYLOAD }));
 
     return () => {
-      dispatch(customerActions.getCustomersClear());
       dispatch(bookingOrderActions.getDropdownAdditionalRequestItemsClear());
       dispatch(businessAreaActions.getDropdownBusinessAreasClear());
       dispatch(vehicleTypeActions.getDropdownVehicleTypesClear());
-      dispatch(customerActions.getDropdownSalesClear());
-      dispatch(customerActions.getCustomersClear());
     };
   }, []);
-
-  useEffect(() => {
-    if (customerName) {
-      // getCustomerRoute();
-      dispatch(customerActions.getDetailCustomerFetch({ id: customerName }));
-      dispatch(
-        customerActions.getCustomerSalesFetch({ customerId: customerName }),
-      );
-    }
-
-    return () => {
-      dispatch(customerRouteActions.getDropdownCustomerRoutesClear());
-      dispatch(customerActions.getDetailCustomerClear());
-      dispatch(customerActions.getCustomerSalesClear());
-    };
-  }, [customerName]);
 
   useEffect(() => {
     if (id)
@@ -431,8 +349,6 @@ const BookingOrderForm: FC<BookingOrderFormProps> = ({
         branchId,
         shipmentType,
         pickUpDate,
-        salesDealing,
-        salesServicing,
         shipmentDetail,
         additionalRequests,
       } = detailBooking.data;
@@ -451,8 +367,6 @@ const BookingOrderForm: FC<BookingOrderFormProps> = ({
         branchOrder: branchId,
         shipmentType,
         pickUpDate: dayjs(pickUpDate),
-        salesDealing,
-        salesServicing,
         additionalRequest: additionalRequests?.map((v) => v?.id),
         shipmentDetails: [
           ...(IS_DROP_BASED_TYPE
@@ -481,20 +395,6 @@ const BookingOrderForm: FC<BookingOrderFormProps> = ({
       });
     }
   }, [detailBooking?.data?.id, id]);
-
-  useEffect(() => {
-    if (
-      customerName &&
-      customerSales?.data?.length &&
-      detailCustomer?.data?.id &&
-      !isEdit &&
-      !isDetail
-    ) {
-      form.resetFields(["additionalRequest"]);
-      const additionalRequestVal = detailCustomer.data.additionalRequests;
-      form.setFieldValue("additionalRequest", additionalRequestVal);
-    }
-  }, [customerSales, detailCustomer, isEdit, isDetail]);
 
   return (
     <>
