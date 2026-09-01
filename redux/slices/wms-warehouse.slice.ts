@@ -4,7 +4,7 @@ import { BaseType, PaginationType } from "@sera-types/base.type";
 import {
   GetWmsWarehousesResponse,
   WmsWarehouse,
-} from "@sera-types/wms-customer.type";
+} from "@sera-types/customer.type";
 
 import initialState from "../states/wms-warehouse.state";
 

@@ -7,7 +7,7 @@ import bookingOrderSaga from "./booking-order.saga";
 import businessAreaSaga from "./business-area.saga";
 import city from "./city.saga";
 import company from "./company.saga";
-import customer from "./customer.saga";
+import customerSaga from "./customer.saga";
 import customerContract from "./customer-contract.saga";
 import customerLocation from "./customer-location.saga";
 import customerRoute from "./customer-route.saga";
@@ -49,7 +49,6 @@ import userLogSaga from "./user-logs.saga";
 import vehicleGroupSaga from "./vehicle-group.saga";
 import vehicleTypeSaga from "./vehicle-type.saga";
 import vodSaga from "./voice-of-driver.saga";
-import wmsCustomerSaga from "./wms-customer.saga";
 import wmsWarehouseSaga from "./wms-warehouse.saga";
 
 export default function* rootSaga() {
@@ -60,7 +59,6 @@ export default function* rootSaga() {
     company(),
     city(),
     district(),
-    customer(),
     customerContract(),
     customerRoute(),
     customerLocation(),
@@ -72,7 +70,7 @@ export default function* rootSaga() {
     notificationSaga(),
     provinceSaga(),
     roleSaga(),
-    wmsCustomerSaga(),
+    customerSaga(),
     wmsWarehouseSaga(),
     roleMenuSaga(),
     serviceGroupSaga(),

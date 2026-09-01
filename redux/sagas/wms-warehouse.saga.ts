@@ -5,7 +5,7 @@ import { BaseType } from "@sera-types/base.type";
 import {
   GetWmsWarehousesResponse,
   WmsWarehouseState,
-} from "@sera-types/wms-customer.type";
+} from "@sera-types/customer.type";
 import { AxiosResponse } from "axios";
 import Router from "next/router";
 import { all, call, put, takeEvery } from "redux-saga/effects";

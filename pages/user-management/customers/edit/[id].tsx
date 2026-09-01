@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { LayoutUserManagement } from "@sera-components/pages/user-management";
-import { RootState, wmsCustomerActions } from "@sera-redux";
+import { customerActions, RootState } from "@sera-redux";
+import { CustomerState } from "@sera-types/customer.type";
 import { LoadingState } from "@sera-types/loading.type";
-import { WmsCustomerState } from "@sera-types/wms-customer.type";
 import { Form } from "antd";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -19,9 +19,9 @@ const CustomerEdit = ({
   customers,
 }: {
   loading: LoadingState;
-  updateCustomer: typeof wmsCustomerActions.updateCustomerFetch;
-  getCustomerDetail: typeof wmsCustomerActions.getCustomerDetailFetch;
-  customers: WmsCustomerState;
+  updateCustomer: typeof customerActions.updateCustomerFetch;
+  getCustomerDetail: typeof customerActions.getCustomerDetailFetch;
+  customers: CustomerState;
 }) => {
   const router = useRouter();
   const { id } = router.query;
@@ -70,12 +70,12 @@ const CustomerEdit = ({
 };
 
 const mapStateToProps = (state: RootState) => ({
-  customers: state.wmsCustomers,
+  customers: state.customers,
   loading: state.loading,
 });
 const mapDispatchToProps = {
-  updateCustomer: wmsCustomerActions.updateCustomerFetch,
-  getCustomerDetail: wmsCustomerActions.getCustomerDetailFetch,
+  updateCustomer: customerActions.updateCustomerFetch,
+  getCustomerDetail: customerActions.getCustomerDetailFetch,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomerEdit);

@@ -11,7 +11,7 @@ import {
   RootState,
 } from "@sera-redux";
 import { jmpActions } from "@sera-redux/slices/jmp.slice";
-import { CustomerState, customerTypes } from "@sera-types/customer.type";
+import { CustomerState } from "@sera-types/customer.type";
 import { CustomerRouteState } from "@sera-types/customer-route.type";
 import { JMPState } from "@sera-types/jmp.type";
 import { LoadingState } from "@sera-types/loading.type";
@@ -152,7 +152,7 @@ const JMPForm = ({
       name: "customerId",
       label: t("input.customerId.label"),
       placeholder: t("input.customerId.placeholder"),
-      options: customers?.data?.list ?? [],
+      options: customers?.data ?? [],
       valueField: "id",
       labelField: "name",
       onSearch(_value) {
@@ -161,7 +161,7 @@ const JMPForm = ({
       onClear() {
         getCustomers(PAYLOAD);
       },
-      loading: loadingState[customerTypes.GET_CUSTOMERS],
+      loading: loadingState[customerActions.getCustomersFetch.type],
       dependency: {
         fields: ["specificCustomer"],
         required: {

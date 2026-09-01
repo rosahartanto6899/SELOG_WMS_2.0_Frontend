@@ -1,4 +1,4 @@
-import { WmsWarehouseState } from "@sera-types/wms-customer.type";
+import { WmsWarehouseState } from "@sera-types/customer.type";
 
 const initialState: WmsWarehouseState = {
   data: [],

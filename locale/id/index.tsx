@@ -31,10 +31,6 @@ import pairingMatching from "./operation-management/pairing-matching.json";
 import pairingMatchingOps from "./operation-management/pairing-matching-ops.json";
 import unitDriverCapacity from "./operation-management/unit-driver-capacity.json";
 import bookingOrder from "./sales-management/booking-order.json";
-import customer from "./sales-management/customer.json";
-import customerContract from "./sales-management/customer-contract.json";
-import customerLocation from "./sales-management/customer-location.json";
-import customerRoute from "./sales-management/customer-route.json";
 import orderStatus from "./sales-management/order-status.json";
 import menuConfiguration from "./user-management/menu-configuration.json";
 import rolePermission from "./user-management/role-permission.json";
@@ -46,10 +42,6 @@ import xenditLink from "./xendit-link.json";
 
 export default {
   translation: {
-    customer,
-    customerContract,
-    customerLocation,
-    customerRoute,
     dashboard,
     driverBehaviour,
     driverFatigue,

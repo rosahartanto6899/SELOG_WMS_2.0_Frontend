@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { LayoutUserManagement } from "@sera-components/pages/user-management";
 import { RootState, wmsWarehouseActions } from "@sera-redux";
+import { WmsWarehouseState } from "@sera-types/customer.type";
 import { LoadingState } from "@sera-types/loading.type";
-import { WmsWarehouseState } from "@sera-types/wms-customer.type";
 import { Form } from "antd";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
