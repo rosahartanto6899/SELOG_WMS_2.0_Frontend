@@ -277,6 +277,14 @@ html {
   filter: brightness(1.15);
 }
 
+.ant-card-head {
+  background: linear-gradient(90deg, #3730a3 0%, #0e7490 100%) !important;
+}
+
+.ant-card-head-title {
+  text-shadow: 0 1px 2px rgb(0 0 0 / 25%);
+}
+
 .ant-btn > .sera-icon {
   line-height: 1;
 
