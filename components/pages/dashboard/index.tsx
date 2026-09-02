@@ -2,16 +2,29 @@ import Typography from "@sera-components/typography";
 import logoImage from "@sera-public/images/logo.svg";
 import { Flex } from "antd";
 import Image from "next/image";
-import { useTranslation } from "react-i18next";
+
+import styles from "./dashboard.module.scss";
 
 export default function Dashboard() {
-  const { t } = useTranslation();
   return (
-    <Flex justify="center" align="center" vertical style={{ height: "100vh" }}>
-      <Typography.Title style={{ color: "#3A8DDB" }}>
-        {t("dashboard.welcome")}
-      </Typography.Title>
-      <Image src={logoImage} alt="Sera Logo" width={200} height={80} priority />
+    <Flex justify="center" align="center" vertical className={styles.welcome}>
+      <div className={styles["welcome-copy"]}>
+        <Typography.Title level={4} className={styles["welcome-title"]}>
+          Welcome to WMS
+        </Typography.Title>
+        <Typography.Text className={styles["welcome-subtitle"]}>
+          Warehouse Management System
+        </Typography.Text>
+      </div>
+      <div className={styles["logo-wrapper"]}>
+        <Image
+          src={logoImage}
+          alt="SELOG"
+          fill
+          priority
+          style={{ objectFit: "contain" }}
+        />
+      </div>
     </Flex>
   );
 }

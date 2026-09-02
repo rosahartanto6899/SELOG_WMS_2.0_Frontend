@@ -1,12 +1,5 @@
-import { useSession } from "next-auth/react";
-import React from "react";
+import Dashboard from "@sera-components/pages/dashboard";
 
-import PageLayout from "../components/layout/page-layout";
-
-const Welcome = () => {
-  const { data } = useSession() as any;
-
-  return <PageLayout title={`Welcome, ${data?.user.name}`} content={null} />;
-};
+const Welcome = () => <Dashboard />;
 
 export default Welcome;

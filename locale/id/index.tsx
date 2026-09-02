@@ -1,18 +1,13 @@
 /* eslint-disable import/no-anonymous-default-export */
-import additionalExpense from "./approvals/additional-expense.json";
-import shipmentCancellations from "./approvals/shipment-cancellations.json";
 import auth from "./auth.json";
 import customerManagement from "./customer-management.json";
 import dashboard from "./dashboard.json";
-import filterTag from "./filter-tag.json";
 import global from "./global.json";
 import businessArea from "./master-data/business-area.json";
 import company from "./master-data/company.json";
 import location from "./master-data/location.json";
 import serviceGroup from "./master-data/service-group.json";
 import vehicleType from "./master-data/vehicle-type.json";
-import bookingOrder from "./sales-management/booking-order.json";
-import orderStatus from "./sales-management/order-status.json";
 import menuConfiguration from "./user-management/menu-configuration.json";
 import rolePermission from "./user-management/role-permission.json";
 import roles from "./user-management/roles.json";
@@ -38,11 +33,6 @@ export default {
     businessArea,
     vehicleType,
     xenditLink,
-    filterTag,
     serviceGroup,
-    bookingOrder,
-    orderStatus,
-    additionalExpense,
-    shipmentCancellations,
   },
 };

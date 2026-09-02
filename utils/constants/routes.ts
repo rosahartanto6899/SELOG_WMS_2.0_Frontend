@@ -1,9 +1,5 @@
 export const ROUTE = {
   DASHBOARD: "/",
-  SALES_MANAGEMENT: {
-    BOOKING_ORDER: "/sales-management/booking-order",
-    SHIPMENT_STATUS: "/sales-management/shipment-status",
-  },
   MASTER_DATA: {
     MASTER_BRANCH: "/master-data/master-branch",
     MASTER_COMPANY: "/master-data/master-company",
@@ -19,9 +15,5 @@ export const ROUTE = {
     USERS: "/user-management/users",
     CUSTOMERS: "/user-management/customers",
     WAREHOUSES: "/user-management/warehouses",
-  },
-  APPROVALS: {
-    ADDITIONAL_EXPENSE: "/approvals/additional-expense",
-    SHIPMENT_CANCELLATIONS: "/approvals/shipment-cancellation",
   },
 };
