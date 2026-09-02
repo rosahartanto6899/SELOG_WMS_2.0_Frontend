@@ -1,0 +1,121 @@
+.spinner-wrapper {
+  display: inline-block;
+}
+
+.spinner-svg {
+  display: block;
+  overflow: visible;
+}
+
+.rack-line {
+  fill: none;
+  stroke: #3a8ddb;
+  stroke-linecap: round;
+  stroke-opacity: 0.25;
+  stroke-width: 3;
+}
+
+.shelf-line {
+  fill: none;
+  stroke: #3a8ddb;
+  stroke-linecap: round;
+  stroke-width: 3;
+}
+
+.shelf-bottom {
+  animation: shelf-glow-bottom 3.6s ease-in-out infinite;
+}
+
+.shelf-mid {
+  animation: shelf-glow-mid 3.6s ease-in-out infinite;
+}
+
+.shelf-top {
+  animation: shelf-glow-top 3.6s ease-in-out infinite;
+}
+
+.box-group {
+  animation: box-climb 3.6s ease-in-out infinite;
+  filter: drop-shadow(0 3px 4px rgb(18 42 69 / 30%));
+  transform-box: fill-box;
+}
+
+@keyframes box-climb {
+  0% {
+    opacity: 0;
+    transform: translateY(36px);
+  }
+
+  8% {
+    opacity: 1;
+    transform: translateY(36px);
+  }
+
+  22%,
+  34% {
+    transform: translateY(0);
+  }
+
+  48%,
+  60% {
+    transform: translateY(-32px);
+  }
+
+  74%,
+  88% {
+    opacity: 1;
+    transform: translateY(-64px);
+  }
+
+  96% {
+    opacity: 0;
+    transform: translateY(-64px);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(36px);
+  }
+}
+
+@keyframes shelf-glow-bottom {
+  0%,
+  15%,
+  40%,
+  100% {
+    stroke-opacity: 0.3;
+  }
+
+  22%,
+  34% {
+    stroke-opacity: 1;
+  }
+}
+
+@keyframes shelf-glow-mid {
+  0%,
+  40%,
+  66%,
+  100% {
+    stroke-opacity: 0.3;
+  }
+
+  48%,
+  60% {
+    stroke-opacity: 1;
+  }
+}
+
+@keyframes shelf-glow-top {
+  0%,
+  66%,
+  92%,
+  100% {
+    stroke-opacity: 0.3;
+  }
+
+  74%,
+  88% {
+    stroke-opacity: 1;
+  }
+}

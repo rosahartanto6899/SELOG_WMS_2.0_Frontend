@@ -1,0 +1,204 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1210 830" width="1210" height="830">
+  <defs>
+    <linearGradient id="uniform" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#3E7BFF"/>
+      <stop offset="100%" stop-color="#2657D6"/>
+    </linearGradient>
+    <linearGradient id="boxAmber" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFC670"/>
+      <stop offset="100%" stop-color="#FF9F45"/>
+    </linearGradient>
+    <linearGradient id="wmsGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#22D3EE"/>
+      <stop offset="50%" stop-color="#6366F1"/>
+      <stop offset="100%" stop-color="#22D3EE"/>
+    </linearGradient>
+    <filter id="soft" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+    <filter id="softSmall" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+  </defs>
+
+  <!-- background blob shapes (transparent canvas, so it drops onto any landing page section) -->
+  <ellipse cx="600" cy="410" rx="560" ry="370" fill="#E6F0FD"/>
+  <ellipse cx="740" cy="470" rx="430" ry="270" fill="#FFF2E1" opacity="0.55"/>
+  <circle cx="150" cy="120" r="60" fill="#FFD9A8" opacity="0.5"/>
+  <circle cx="1100" cy="140" r="46" fill="#BFE3FF" opacity="0.6"/>
+
+  <!-- headline -->
+  <g font-family="'Segoe UI', Helvetica, Arial, sans-serif" text-anchor="middle">
+    <text x="606" y="112" font-size="54" font-weight="800" fill="#0f172a" opacity="0.10">Welcome to <tspan fill="#0f172a">WMS 2.0</tspan></text>
+    <text x="605" y="110" font-size="54" font-weight="800" fill="#173B7A">Welcome to <tspan fill="url(#wmsGrad)">WMS 2.0</tspan></text>
+    <text x="605" y="150" font-size="17" font-weight="600" fill="#4C6FA5" letter-spacing="0.5">Faster scanning. Smarter tracking. One connected warehouse.</text>
+    <rect x="525" y="170" width="160" height="6" rx="3" fill="url(#wmsGrad)"/>
+  </g>
+
+  <!-- floor -->
+  <ellipse cx="600" cy="715" rx="540" ry="75" fill="#CFE0F5"/>
+  <ellipse cx="600" cy="715" rx="540" ry="75" fill="#000000" opacity="0.03"/>
+
+  <!-- back shelving, left -->
+  <g opacity="0.85">
+    <rect x="55" y="230" width="10" height="400" fill="#AFC0D8"/>
+    <rect x="255" y="250" width="10" height="380" fill="#AFC0D8"/>
+    <rect x="55" y="230" width="210" height="8" fill="#AFC0D8"/>
+    <rect x="60" y="330" width="200" height="8" fill="#AFC0D8"/>
+    <rect x="60" y="430" width="200" height="8" fill="#AFC0D8"/>
+    <rect x="60" y="530" width="200" height="8" fill="#AFC0D8"/>
+    <rect x="78"  y="280" width="46" height="40" rx="4" fill="#DCE7F5"/>
+    <rect x="140" y="285" width="40" height="35" rx="4" fill="#F3DBB8"/>
+    <rect x="200" y="278" width="42" height="42" rx="4" fill="#DCE7F5"/>
+    <rect x="82"  y="378" width="44" height="42" rx="4" fill="#F3DBB8"/>
+    <rect x="150" y="382" width="46" height="38" rx="4" fill="#DCE7F5"/>
+    <rect x="80"  y="478" width="50" height="40" rx="4" fill="#DCE7F5"/>
+    <rect x="160" y="482" width="42" height="36" rx="4" fill="#F3DBB8"/>
+  </g>
+
+  <!-- back shelving, right -->
+  <g opacity="0.85">
+    <rect x="935" y="250" width="10" height="380" fill="#AFC0D8"/>
+    <rect x="1135" y="230" width="10" height="400" fill="#AFC0D8"/>
+    <rect x="935" y="250" width="210" height="8" fill="#AFC0D8"/>
+    <rect x="940" y="345" width="200" height="8" fill="#AFC0D8"/>
+    <rect x="940" y="445" width="200" height="8" fill="#AFC0D8"/>
+    <rect x="940" y="545" width="200" height="8" fill="#AFC0D8"/>
+    <rect x="960"  y="290" width="46" height="40" rx="4" fill="#F3DBB8"/>
+    <rect x="1020" y="295" width="42" height="35" rx="4" fill="#DCE7F5"/>
+    <rect x="1082" y="288" width="44" height="42" rx="4" fill="#F3DBB8"/>
+    <rect x="965"  y="392" width="46" height="42" rx="4" fill="#DCE7F5"/>
+    <rect x="1030" y="396" width="44" height="38" rx="4" fill="#F3DBB8"/>
+    <rect x="970"  y="492" width="48" height="40" rx="4" fill="#F3DBB8"/>
+    <rect x="1040" y="496" width="46" height="36" rx="4" fill="#DCE7F5"/>
+  </g>
+
+  <!-- ===================== FORKLIFT (left) ===================== -->
+  <g>
+    <ellipse cx="260" cy="705" rx="120" ry="18" fill="#000" opacity="0.06"/>
+    <!-- mast -->
+    <rect x="345" y="380" width="10" height="230" fill="#6B7A90"/>
+    <rect x="365" y="380" width="8" height="230" fill="#6B7A90"/>
+    <!-- pallet + boxes lifted -->
+    <rect x="392" y="560" width="92" height="14" rx="3" fill="#8A5A34"/>
+    <rect x="398" y="472" width="78" height="88" rx="6" fill="url(#boxAmber)"/>
+    <rect x="407" y="412" width="60" height="62" rx="6" fill="#3E7BFF"/>
+    <rect x="417" y="428" width="40" height="6" fill="#EAF2FF" opacity="0.8"/>
+    <!-- forks -->
+    <rect x="350" y="562" width="95" height="9" fill="#3B4656"/>
+    <rect x="350" y="586" width="95" height="9" fill="#3B4656"/>
+    <!-- body -->
+    <rect x="175" y="558" width="175" height="92" rx="16" fill="url(#boxAmber)"/>
+    <rect x="175" y="558" width="175" height="30" rx="14" fill="#FFDCA0" opacity="0.6"/>
+    <!-- cabin -->
+    <rect x="185" y="462" width="95" height="100" rx="14" fill="#1E335C"/>
+    <rect x="197" y="474" width="72" height="52" rx="8" fill="#BFE3FF"/>
+    <circle cx="232" cy="452" r="8" fill="#FFD25A"/>
+    <!-- driver -->
+    <circle cx="232" cy="498" r="20" fill="#EFB48A"/>
+    <path d="M 210 486 a 22 18 0 0 1 44 0 z" fill="#2B2320"/>
+    <rect x="212" y="516" width="42" height="40" rx="10" fill="url(#uniform)"/>
+    <!-- wheels -->
+    <circle cx="215" cy="658" r="36" fill="#26303F"/>
+    <circle cx="215" cy="658" r="15" fill="#B9C2CE"/>
+    <circle cx="330" cy="658" r="36" fill="#26303F"/>
+    <circle cx="330" cy="658" r="15" fill="#B9C2CE"/>
+    <!-- motion lines -->
+    <g stroke="#9FB6D6" stroke-width="5" stroke-linecap="round" opacity="0.7">
+      <line x1="95" y1="600" x2="150" y2="600"/>
+      <line x1="85" y1="628" x2="150" y2="628"/>
+      <line x1="100" y1="656" x2="150" y2="656"/>
+    </g>
+  </g>
+
+  <!-- ===================== WORKER - SCANNING (center) ===================== -->
+  <g>
+    <ellipse cx="655" cy="770" rx="95" ry="16" fill="#000" opacity="0.06"/>
+    <!-- legs -->
+    <rect x="612" y="672" width="26" height="96" rx="10" fill="#2B3A55"/>
+    <rect x="654" y="672" width="26" height="96" rx="10" fill="#26324A"/>
+    <rect x="606" y="756" width="38" height="16" rx="8" fill="#16213A"/>
+    <rect x="648" y="756" width="38" height="16" rx="8" fill="#16213A"/>
+    <!-- torso -->
+    <rect x="598" y="548" width="100" height="130" rx="24" fill="url(#uniform)"/>
+    <rect x="598" y="596" width="100" height="16" fill="#FF9F45"/>
+    <!-- head -->
+    <circle cx="648" cy="512" r="34" fill="#E3AA76"/>
+    <path d="M 616 500 a 32 26 0 0 1 64 0 c 0 -18 -64 -18 -64 0 z" fill="#2B2320"/>
+    <!-- arms holding scanner -->
+    <rect x="686" y="572" width="60" height="24" rx="12" fill="url(#uniform)" transform="rotate(-18 686 572)"/>
+    <rect x="592" y="572" width="34" height="24" rx="12" fill="url(#uniform)" transform="rotate(20 592 572)"/>
+    <!-- scanner device -->
+    <rect x="722" y="568" width="36" height="52" rx="7" fill="#16213A"/>
+    <rect x="728" y="575" width="24" height="20" rx="3" fill="#6FE3B4"/>
+    <line x1="740" y1="620" x2="760" y2="662" stroke="#FF5A5A" stroke-width="2" stroke-dasharray="2 4"/>
+    <!-- box being scanned, on small cart -->
+    <rect x="700" y="660" width="30" height="6" fill="#8A5A34"/>
+    <circle cx="705" cy="670" r="6" fill="#3B4656"/>
+    <circle cx="725" cy="670" r="6" fill="#3B4656"/>
+    <rect x="702" y="608" width="76" height="60" rx="6" fill="url(#boxAmber)"/>
+    <rect x="712" y="624" width="56" height="6" fill="#fff" opacity="0.8"/>
+    <rect x="712" y="636" width="56" height="6" fill="#fff" opacity="0.5"/>
+
+    <!-- floating WMS UI confirmation card -->
+    <g filter="url(#softSmall)" opacity="0.25">
+      <rect x="676" y="368" width="150" height="76" rx="16" fill="#0f172a"/>
+    </g>
+    <rect x="676" y="364" width="150" height="76" rx="16" fill="#FFFFFF" stroke="#D8E3F0" stroke-width="2"/>
+    <circle cx="704" cy="402" r="16" fill="#22C55E"/>
+    <path d="M 697 402 l 5 6 l 11 -13" stroke="#fff" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="730" y="388" width="80" height="8" rx="4" fill="#334155"/>
+    <rect x="730" y="404" width="60" height="7" rx="3.5" fill="#94A3B8"/>
+    <line x1="726" y1="490" x2="742" y2="440" stroke="#B9C8DE" stroke-width="2" stroke-dasharray="3 5"/>
+  </g>
+
+  <!-- ===================== WORKER - HAND TRUCK (right) ===================== -->
+  <g>
+    <ellipse cx="1005" cy="775" rx="95" ry="16" fill="#000" opacity="0.06"/>
+    <!-- hand truck -->
+    <rect x="1000" y="560" width="10" height="185" fill="#6B7A90"/>
+    <rect x="985" y="742" width="70" height="10" rx="3" fill="#3B4656"/>
+    <circle cx="995" cy="760" r="15" fill="#26303F"/>
+    <circle cx="1045" cy="760" r="15" fill="#26303F"/>
+    <rect x="912" y="640" width="88" height="60" rx="6" fill="url(#uniform)" transform="rotate(-6 912 640)"/>
+    <rect x="922" y="590" width="82" height="56" rx="6" fill="url(#boxAmber)" transform="rotate(-6 922 590)"/>
+    <rect x="932" y="542" width="76" height="52" rx="6" fill="#3E7BFF" transform="rotate(-6 932 542)"/>
+
+    <!-- legs (walking stance) -->
+    <rect x="850" y="676" width="26" height="94" rx="10" fill="#2B3A55" transform="rotate(-10 850 676)"/>
+    <rect x="884" y="676" width="26" height="94" rx="10" fill="#26324A" transform="rotate(12 884 676)"/>
+    <rect x="836" y="756" width="38" height="16" rx="8" fill="#16213A"/>
+    <rect x="892" y="756" width="38" height="16" rx="8" fill="#16213A"/>
+    <!-- torso -->
+    <rect x="836" y="552" width="98" height="128" rx="24" fill="url(#uniform)"/>
+    <rect x="836" y="600" width="98" height="16" fill="#FF9F45"/>
+    <!-- head -->
+    <circle cx="885" cy="516" r="33" fill="#F2C6A0"/>
+    <path d="M 855 508 a 30 24 0 0 1 60 0 c 0 -16 -60 -16 -60 0 z" fill="#3B2A1A"/>
+    <!-- arms reaching forward to hand truck -->
+    <rect x="900" y="576" width="70" height="22" rx="11" fill="url(#uniform)" transform="rotate(-8 900 576)"/>
+    <rect x="828" y="580" width="46" height="22" rx="11" fill="url(#uniform)" transform="rotate(14 828 580)"/>
+  </g>
+
+  <!-- scattered floor boxes for extra "busy" feel -->
+  <g>
+    <rect x="150" y="700" width="58" height="50" rx="6" fill="url(#boxAmber)" transform="rotate(-6 150 700)"/>
+    <rect x="1055" y="690" width="54" height="46" rx="6" fill="#3E7BFF" transform="rotate(8 1055 690)"/>
+    <rect x="455" y="712" width="46" height="40" rx="6" fill="#F3DBB8" transform="rotate(4 455 712)"/>
+  </g>
+
+  <!-- decorative floating icons -->
+  <g opacity="0.8">
+    <g transform="translate(1075,230)">
+      <rect x="0" y="0" width="3" height="34" fill="#93A5C2"/>
+      <rect x="7" y="0" width="6" height="34" fill="#93A5C2"/>
+      <rect x="17" y="0" width="3" height="34" fill="#93A5C2"/>
+      <rect x="24" y="0" width="5" height="34" fill="#93A5C2"/>
+      <rect x="33" y="0" width="3" height="34" fill="#93A5C2"/>
+    </g>
+    <g transform="translate(95,190)" fill="none" stroke="#FF9F45" stroke-width="4">
+      <circle cx="16" cy="16" r="14"/>
+      <path d="M16 4 v6 M16 22 v6 M4 16 h6 M22 16 h6 M7 7 l4 4 M21 21 l4 4 M25 7 l-4 4 M11 21 l-4 4"/>
+    </g>
+  </g>
+</svg>

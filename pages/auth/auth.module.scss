@@ -47,6 +47,15 @@
         z-index: 0;
       }
 
+      &::after {
+        background: linear-gradient(180deg, #22d3ee 0%, #6366f1 100%);
+        content: "";
+        inset: 0 auto 0 0;
+        position: absolute;
+        width: 3px;
+        z-index: 2;
+      }
+
       .navbar-wrapper {
         align-items: center;
         background-color: white;

@@ -1,8 +1,9 @@
-import { LoadingOutlined } from "@ant-design/icons";
 import logoImage from "@sera-public/images/logo.svg";
-import { Col, Row, Spin } from "antd";
+import { Col, Row } from "antd";
 import Image from "next/image";
 import React from "react";
+
+import WarehouseSpinner from "./warehouse-spinner";
 
 interface LoadingPageProps {
   height?: string;
@@ -26,11 +27,7 @@ const LoadingPage = (props: LoadingPageProps) => {
         style={{ height: height || "50vh", paddingTop: "2.5rem" }}
       >
         <Col>
-          <Spin
-            indicator={
-              <LoadingOutlined style={{ fontSize: 40, fontWeight: 900 }} spin />
-            }
-          />
+          <WarehouseSpinner size={96} />
         </Col>
       </Row>
     </>

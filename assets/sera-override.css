@@ -490,11 +490,23 @@ html {
 
 .ant-menu-submenu.ant-menu-submenu-selected div.ant-menu-submenu-title,
 .ant-menu.ant-menu-root > .ant-menu-item.ant-menu-item-selected {
-  background: linear-gradient(135deg, #1e3f66 0%, #17324f 50%, #122a45 100%);
+  background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
   border-radius: 1.2rem;
-  box-shadow: 0 2px 8px rgb(18 42 69 / 35%);
-  color: #fff;
-  padding: 0 12px;
+  color: #4338ca;
+  padding: 0 12px 0 16px;
+  position: relative;
+}
+
+.ant-menu-submenu.ant-menu-submenu-selected div.ant-menu-submenu-title::before,
+.ant-menu.ant-menu-root > .ant-menu-item.ant-menu-item-selected::before {
+  background: linear-gradient(180deg, #22d3ee 0%, #6366f1 100%);
+  border-radius: 4px;
+  bottom: 8px;
+  content: "";
+  left: 4px;
+  position: absolute;
+  top: 8px;
+  width: 3px;
 }
 
 .submenu-page.ant-menu-horizontal {
@@ -582,7 +594,7 @@ html {
   > .ant-menu-item.ant-menu-item-selected
   .ant-menu-item-icon
   svg {
-  color: #fff;
+  color: #4338ca;
 }
 
 .ant-menu.ant-menu-root

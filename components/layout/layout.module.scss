@@ -30,6 +30,14 @@ $navbar-height: 68px;
       padding: 1rem 1.7rem;
       position: relative;
 
+      &::before {
+        background: linear-gradient(90deg, #22d3ee 0%, #6366f1 100%);
+        content: "";
+        height: 3px;
+        inset: 0 0 auto;
+        position: absolute;
+      }
+
       .image-wrapper {
         height: 100%;
         position: relative;
@@ -91,6 +99,14 @@ $navbar-height: 68px;
     padding: 0 24px;
     position: relative;
     z-index: auto;
+
+    &::before {
+      background: linear-gradient(90deg, #22d3ee 0%, #6366f1 100%);
+      content: "";
+      height: 3px;
+      inset: 0 0 auto;
+      position: absolute;
+    }
 
     .navbar-wrapper {
       align-items: center;
