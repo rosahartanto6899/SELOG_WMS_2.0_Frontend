@@ -61,7 +61,7 @@ const MenuConfiguration = ({
   const [menusListOptions, setMenusListOptions] = useState<BaseType>({
     page: 1,
     limit: menus.options?.limit ?? 10,
-    order: "menuName",
+    order: "menuOrder",
     sort: "asc",
   });
   const [menusAutoCompleteOptions, setMenusAutoCompleteOptions] =
