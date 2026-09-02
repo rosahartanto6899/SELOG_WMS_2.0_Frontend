@@ -75,15 +75,12 @@ const CustomerTable = (props: Props) => {
 
   const COLUMNS = [
     {
-      title: t("table.columns.no"),
       key: "no",
       dataIndex: "no",
-      render: (_: unknown, record: Customer) => (
-        <Row justify="center">
-          <Col>{record.no}</Col>
-        </Row>
-      ),
-      width: 40,
+      title: "No.",
+      fixed: "left",
+      width: 60,
+      align: "center",
     },
     {
       title: t("table.columns.code"),
