@@ -63,7 +63,7 @@ export default function TableEditable({
                 );
               }
 
-              if (isDate) {
+              if (isDate || isTime) {
                 return (
                   <InputDateShell
                     value={_payload?.[0]}
@@ -75,6 +75,7 @@ export default function TableEditable({
                       });
                     }}
                     onBlur={() => setActiveEdit(null)}
+                    isDate={isDate}
                     isTime={isTime}
                   />
                 );

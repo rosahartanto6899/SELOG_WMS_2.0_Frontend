@@ -9,6 +9,7 @@ import notificationSaga from "./notification.saga";
 import provinceSaga from "./province.saga";
 import roleSaga from "./role.saga";
 import roleMenuSaga from "./role-menu.saga";
+import uploadIncomingAhmSaga from "./upload-incoming-ahm.saga";
 import userSaga from "./user.saga";
 import wmsWarehouseSaga from "./wms-warehouse.saga";
 
@@ -25,5 +26,6 @@ export default function* rootSaga() {
     wmsWarehouseSaga(),
     roleMenuSaga(),
     userSaga(),
+    uploadIncomingAhmSaga(),
   ]);
 }

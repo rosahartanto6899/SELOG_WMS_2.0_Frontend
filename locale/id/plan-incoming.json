@@ -1,0 +1,33 @@
+{
+  "uploadAhm": {
+    "title": "Upload Plan Incoming AHM",
+    "breadcrumb": ["Plan Incoming", "Upload AHM"],
+    "subtitle": "Upload massal plan incoming AHM dari file Excel (maks {{max}} baris).",
+    "downloadTemplate": "Download Template",
+    "submit": "Submit",
+    "stepUpload": "Upload File Excel",
+    "hintUpload": "Unduh template, isi data mulai baris ke-6, lalu unggah di sini. Kolom kuning opsional.",
+    "previewTitle": "Preview & Perbaiki Data ({{count}} baris)",
+    "colStatus": "Status",
+    "colReason": "Alasan Gagal",
+    "status": {
+      "pending": "Menunggu",
+      "submitting": "Diproses",
+      "success": "Sukses",
+      "failed": "Gagal"
+    },
+    "summary": "{{success}} baris sukses, {{failed}} baris gagal.",
+    "summaryDone": "Semua data berhasil diproses.",
+    "summaryFixHint": "Perbaiki baris gagal pada tabel (klik sel untuk edit), lalu submit ulang.",
+    "message": {
+      "import": "File tidak sesuai template. Download template terbaru lalu isi ulang.",
+      "limit": "Jumlah baris melebihi batas maksimal {{max}} baris.",
+      "cellError": "Masih ada sel yang belum valid — perbaiki di tabel sebelum submit.",
+      "headerMismatch": "Ada baris dengan Delivery Note No sama tapi data header berbeda (tanggal DN, status, tipe, PO number, plant, gate, atau supplier). Samakan dulu sebelum submit.",
+      "parsed": "{{count}} baris terbaca dan siap diproses.",
+      "nothingToSubmit": "Tidak ada baris untuk dikirim — semua sudah sukses. Edit sel untuk menandai baris dikirim ulang.",
+      "downloadFailed": "Gagal mengunduh template. Coba lagi atau hubungi administrator."
+    },
+    "selectWarehouse": "Pilih Gudang"
+  }
+}
