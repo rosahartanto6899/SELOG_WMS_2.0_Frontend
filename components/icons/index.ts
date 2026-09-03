@@ -183,6 +183,8 @@ export { default as Report } from "./Report";
 export { default as RequiredActivityIcon } from "./RequiredActivityIcon";
 export { default as ResourceLockingImage } from "./ResourceLockingImage";
 export { default as RestrictedAccessIcon } from "./RestrictedAccessIcon";
+export { default as ReturnDeliveryNoteIcon } from "./ReturnDeliveryNoteIcon";
+export { default as ReturnHandlingIcon } from "./ReturnHandlingIcon";
 export { default as RouteOutlined } from "./RouteOutlined";
 export { default as Satelit } from "./Satelit";
 export { default as Search } from "./Search";

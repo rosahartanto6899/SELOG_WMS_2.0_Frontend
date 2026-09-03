@@ -14,7 +14,7 @@ import { decryptData } from "@sera-utils/encryptor";
 import PermissionUtils from "@sera-utils/permission-utils";
 import SharedUtils from "@sera-utils/shared-utils";
 import Utils from "@sera-utils/utils";
-import { Flex, Grid, MenuProps, Space, Spin } from "antd";
+import { Flex, Grid, MenuProps, Space, Spin, Tooltip } from "antd";
 import { ItemType } from "antd/es/menu/interface";
 import _ from "lodash";
 import dynamic from "next/dynamic";
@@ -95,13 +95,15 @@ const SharedLayout = (props: SharedLibrariesProps) => {
         );
         const submenu = child.map((_c: any) => ({
           label: (
-            <Link
-              id={`link-level2-${Utils().titleToKebabCase(_c.menuName)}`}
-              href={_c.menuLink}
-              passHref
-            >
-              {_c.menuName}
-            </Link>
+            <Tooltip title={_c.menuName} placement="right">
+              <Link
+                id={`link-level2-${Utils().titleToKebabCase(_c.menuName)}`}
+                href={_c.menuLink}
+                passHref
+              >
+                {_c.menuName}
+              </Link>
+            </Tooltip>
           ),
           key: _c.id,
           // Uniform, hardcoded icon for all sub-menu items — intentionally
@@ -367,6 +369,10 @@ const SharedLayout = (props: SharedLibrariesProps) => {
     setSelectedKeys(activeMenu.menuKey);
   }, [pathname, sidebar]);
 
+  const selectedCustomerName = tenantOptions.find(
+    (tenant) => tenant.id === data?.user?.customerId,
+  )?.name;
+
   return (
     <Layout
       siderMenuData={sidebar}
@@ -375,6 +381,7 @@ const SharedLayout = (props: SharedLibrariesProps) => {
       defaultOpenKeys={selectedParentKeys}
       sideMenuItemClick={sideMenuItemClick}
       user={data?.user}
+      selectedCustomerName={selectedCustomerName}
       // onNotificationClick={showNotificationHandler}
     >
       {children}

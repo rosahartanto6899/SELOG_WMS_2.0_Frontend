@@ -53,6 +53,7 @@ interface LayoutProps {
   headerMenu?: ItemType[];
   // roleMenu?: ItemType[];
   user?: any;
+  selectedCustomerName?: string;
 }
 
 const { useBreakpoint } = Grid;
@@ -72,6 +73,7 @@ const Layout = (props: LayoutProps) => {
     sideMenuItemClick,
     headerMenu,
     user,
+    selectedCustomerName,
     children,
   } = props;
 
@@ -287,6 +289,18 @@ const Layout = (props: LayoutProps) => {
                 </Dropdown>
               ) : null} */}
               {/* <NotificationList /> */}
+
+              {selectedCustomerName ? (
+                <div className={styles["navbar-customer"]}>
+                  <Typography.Text
+                    variant="light"
+                    fontSize={13}
+                    fontWeight={500}
+                  >
+                    {selectedCustomerName}
+                  </Typography.Text>
+                </div>
+              ) : null}
 
               <Dropdown
                 className={styles["navbar-dropdown"]}

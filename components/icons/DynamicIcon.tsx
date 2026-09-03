@@ -83,6 +83,8 @@ import {
   Recruitment,
   Report,
   RestrictedAccessIcon,
+  ReturnDeliveryNoteIcon,
+  ReturnHandlingIcon,
   Search,
   Setting,
   Sleep,
@@ -279,6 +281,10 @@ const DynamicIcon = (props: DynamicIconProps) => {
       return <Report style={style} />;
     case "RestrictedAccessIcon":
       return <RestrictedAccessIcon style={style} />;
+    case "ReturnDeliveryNoteIcon":
+      return <ReturnDeliveryNoteIcon style={style} />;
+    case "ReturnHandlingIcon":
+      return <ReturnHandlingIcon style={style} />;
     case "Search":
       return <Search style={style} />;
     case "Setting":
