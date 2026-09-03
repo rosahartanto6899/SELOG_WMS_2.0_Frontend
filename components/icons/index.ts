@@ -217,6 +217,7 @@ export { default as TriangleWarning } from "./TriangleWarning";
 export { default as TriangleWarningFilledIcon } from "./TriangleWarningFilledIcon";
 export { default as TriggerIcon } from "./TriggerIcon";
 export { default as TripExpense } from "./TripExpense";
+export { default as TruckLoadingIcon } from "./TruckLoadingIcon";
 export { default as UpcomingDisposalVehicle } from "./UpcomingDisposalVehicle";
 export { default as UploadIcon } from "./UploadIcon";
 export { default as UserBlock } from "./UserBlock";

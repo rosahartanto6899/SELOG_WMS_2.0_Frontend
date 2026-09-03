@@ -96,6 +96,7 @@ import {
   TriangleWarning,
   TriangleWarningFilledIcon,
   TripExpense,
+  TruckLoadingIcon,
   UserBlock,
   UserCheck,
   UserFrameIcon,
@@ -302,6 +303,8 @@ const DynamicIcon = (props: DynamicIconProps) => {
       return <TriangleWarning style={style} />;
     case "TripExpense":
       return <TripExpense style={style} />;
+    case "TruckLoadingIcon":
+      return <TruckLoadingIcon style={style} />;
     case "UserBlock":
       return <UserBlock style={style} />;
     case "UserCheck":
