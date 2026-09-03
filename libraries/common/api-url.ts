@@ -5,6 +5,7 @@ const apiUrl = {
   user: decryptData(process.env.SERVICE_USER),
   master: decryptData(process.env.SERVICE_MASTER),
   vehicle: decryptData(process.env.SERVICE_VEHICLE),
+  incoming: decryptData(process.env.SERVICE_INCOMING),
   export: "",
   image: "",
 };

@@ -10,6 +10,7 @@ import notificationReducer from "./notification.slice";
 import provinceReducer from "./province.slice";
 import rolesReducer from "./role.slice";
 import rolesMenuReducer from "./role-menu.slice";
+import uploadIncomingAhmReducer from "./upload-incoming-ahm.slice";
 import userReducer from "./user.slice";
 import wmsWarehousesReducer from "./wms-warehouse.slice";
 
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
   provinces: provinceReducer,
   cities: cityReducer,
   districts: districtReducer,
+  uploadIncomingAhm: uploadIncomingAhmReducer,
 });
 
 export default rootReducer;

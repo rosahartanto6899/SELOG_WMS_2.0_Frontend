@@ -1,0 +1,33 @@
+{
+  "uploadAhm": {
+    "title": "Upload Incoming Plan AHM",
+    "breadcrumb": ["Incoming Plan", "Upload AHM"],
+    "subtitle": "Bulk upload AHM incoming plan from an Excel file (max {{max}} rows).",
+    "downloadTemplate": "Download Template",
+    "submit": "Submit",
+    "stepUpload": "Upload Excel File",
+    "hintUpload": "Download the template, fill data starting at row 6, then upload here. Yellow columns are optional.",
+    "previewTitle": "Preview & Fix Data ({{count}} rows)",
+    "colStatus": "Status",
+    "colReason": "Failure Reason",
+    "status": {
+      "pending": "Pending",
+      "submitting": "Processing",
+      "success": "Success",
+      "failed": "Failed"
+    },
+    "summary": "{{success}} rows succeeded, {{failed}} rows failed.",
+    "summaryDone": "All rows processed successfully.",
+    "summaryFixHint": "Fix failed rows in the table (click a cell to edit), then submit again.",
+    "message": {
+      "import": "File does not match the template. Download the latest template and refill.",
+      "limit": "Row count exceeds the {{max}}-row limit.",
+      "cellError": "Some cells are still invalid — fix them in the table before submitting.",
+      "headerMismatch": "Rows sharing a Delivery Note No have different header data (DN date, status, type, PO number, plant, gate, or supplier). Make them consistent before submitting.",
+      "parsed": "{{count}} rows read and ready to process.",
+      "nothingToSubmit": "Nothing to submit — all rows already succeeded. Edit a cell to mark a row for resubmission.",
+      "downloadFailed": "Failed to download template. Retry or contact your administrator."
+    },
+    "selectWarehouse": "Select Warehouse"
+  }
+}
