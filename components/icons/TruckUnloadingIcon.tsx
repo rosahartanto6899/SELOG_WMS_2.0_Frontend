@@ -4,7 +4,7 @@ interface SVGRProps {
   title?: string;
   titleId?: string;
 }
-const SvgTruckLoadingIcon = ({
+const SvgTruckUnloadingIcon = ({
   title,
   titleId,
   ...props
@@ -12,7 +12,7 @@ const SvgTruckLoadingIcon = ({
   <svg
     width="1.25em"
     height="1.25em"
-    viewBox="0 0 24 24"
+    viewBox="0 0 24 20"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     className="sera-icon"
@@ -20,46 +20,48 @@ const SvgTruckLoadingIcon = ({
     {...props}
   >
     {title ? <title id={titleId}>{title}</title> : null}
-    {/* inbox tray */}
-    <path
-      d="M3 11.5V17.5C3 18.6046 3.89543 19.5 5 19.5H19C20.1046 19.5 21 18.6046 21 17.5V11.5"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M3 11.5H8.5L10 14H14L15.5 11.5H21"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    {/* box dropping in */}
+    {/* cargo bed with box already loaded */}
     <rect
-      x="9"
-      y="2"
-      width="6"
-      height="6"
-      rx="0.8"
+      x="5"
+      y="7"
+      width="11"
+      height="7"
+      rx="1"
       stroke="currentColor"
       strokeWidth="1.5"
       strokeLinejoin="round"
     />
     <path
-      d="M9 5H15"
+      d="M8.5 7V4.5C8.5 3.94772 8.94772 3.5 9.5 3.5H11.5C12.0523 3.5 12.5 3.94772 12.5 4.5V7"
       stroke="currentColor"
       strokeWidth="1.5"
-      strokeLinecap="round"
+      strokeLinejoin="round"
     />
-    {/* arrow into tray */}
+    {/* cab */}
     <path
-      d="M12 9V13.2M8.8 10.4L12 13.2L15.2 10.4"
+      d="M16 9.5H19.7208C20.1276 9.5 20.5057 9.71014 20.7211 10.0553L22.2003 12.4285C22.3255 12.6289 22.3917 12.8604 22.3917 13.0966V14H16"
       stroke="currentColor"
       strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
+    />
+    {/* wheels */}
+    <circle cx="9" cy="16" r="1.8" stroke="currentColor" strokeWidth="1.5" />
+    <circle cx="19.5" cy="16" r="1.8" stroke="currentColor" strokeWidth="1.5" />
+    <path
+      d="M10.8 16H17.9M21.3 16H20.2"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
+    {/* motion lines trailing behind */}
+    <path
+      d="M1.5 8.5H4M0.5 11H3.5M1.5 13.5H4"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      opacity="0.6"
     />
   </svg>
 );
-export default SvgTruckLoadingIcon;
+export default SvgTruckUnloadingIcon;

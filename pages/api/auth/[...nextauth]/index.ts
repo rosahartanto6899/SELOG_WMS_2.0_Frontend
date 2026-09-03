@@ -289,6 +289,8 @@ const authOptions: NextAuthOptions = {
               roleName: (token.data as any).user.roleName,
               roles: (token.data as any).user.roles,
               isInternal: (token.data as any).user.isInternal,
+              customerId: (token.data as any).user.customerId,
+              customers: (token.data as any).user.customers,
             },
           },
           accessTokenExpires: refreshToken.accessTokenExpires,

@@ -91,12 +91,14 @@ import {
   Store,
   StoreMenu,
   Support,
+  SupportToolsIcon,
   ThirdPartyManagement,
   TrainingManagement,
   TriangleWarning,
   TriangleWarningFilledIcon,
   TripExpense,
   TruckLoadingIcon,
+  TruckUnloadingIcon,
   UserBlock,
   UserCheck,
   UserFrameIcon,
@@ -293,6 +295,8 @@ const DynamicIcon = (props: DynamicIconProps) => {
       return <Store style={style} />;
     case "Support":
       return <Support style={style} />;
+    case "SupportToolsIcon":
+      return <SupportToolsIcon style={style} />;
     case "ThirdPartyManagement":
       return <ThirdPartyManagement style={style} />;
     case "TrainingManagement":
@@ -305,6 +309,8 @@ const DynamicIcon = (props: DynamicIconProps) => {
       return <TripExpense style={style} />;
     case "TruckLoadingIcon":
       return <TruckLoadingIcon style={style} />;
+    case "TruckUnloadingIcon":
+      return <TruckUnloadingIcon style={style} />;
     case "UserBlock":
       return <UserBlock style={style} />;
     case "UserCheck":

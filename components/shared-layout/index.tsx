@@ -24,6 +24,7 @@ import { useSession } from "next-auth/react";
 import React, { ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import SubMenuDotIcon from "../icons/SubMenuDotIcon";
 import Layout from "../layout";
 
 const IS_SERVER = typeof window === "undefined";
@@ -103,6 +104,10 @@ const SharedLayout = (props: SharedLibrariesProps) => {
             </Link>
           ),
           key: _c.id,
+          // Uniform, hardcoded icon for all sub-menu items — intentionally
+          // not sourced from _c.menuIcon (DB) so sub-menus stay visually
+          // consistent regardless of what's configured per-menu.
+          icon: <SubMenuDotIcon />,
           path: pathIsServer(window.location.pathname, "", _c.menuLink),
           pathname: [_c.menuLink],
         }));

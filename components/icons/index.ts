@@ -203,6 +203,7 @@ export { default as Storage } from "./Storage";
 export { default as Store } from "./Store";
 export { default as StoreMenu } from "./StoreMenu";
 export { default as Support } from "./Support";
+export { default as SupportToolsIcon } from "./SupportToolsIcon";
 export { default as TelescopeOutlined } from "./TelescopeOutlined";
 export { default as ThirdPartyManagement } from "./ThirdPartyManagement";
 export { default as TimelineDot } from "./TimelineDot";
@@ -218,6 +219,7 @@ export { default as TriangleWarningFilledIcon } from "./TriangleWarningFilledIco
 export { default as TriggerIcon } from "./TriggerIcon";
 export { default as TripExpense } from "./TripExpense";
 export { default as TruckLoadingIcon } from "./TruckLoadingIcon";
+export { default as TruckUnloadingIcon } from "./TruckUnloadingIcon";
 export { default as UpcomingDisposalVehicle } from "./UpcomingDisposalVehicle";
 export { default as UploadIcon } from "./UploadIcon";
 export { default as UserBlock } from "./UserBlock";

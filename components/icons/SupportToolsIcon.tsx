@@ -4,7 +4,7 @@ interface SVGRProps {
   title?: string;
   titleId?: string;
 }
-const SvgTruckLoadingIcon = ({
+const SvgSupportToolsIcon = ({
   title,
   titleId,
   ...props
@@ -20,41 +20,40 @@ const SvgTruckLoadingIcon = ({
     {...props}
   >
     {title ? <title id={titleId}>{title}</title> : null}
-    {/* inbox tray */}
+    {/* wrench, top-left to bottom-right */}
+    <circle cx="5.5" cy="5.5" r="3" stroke="currentColor" strokeWidth="1.5" />
     <path
-      d="M3 11.5V17.5C3 18.6046 3.89543 19.5 5 19.5H19C20.1046 19.5 21 18.6046 21 17.5V11.5"
+      d="M7.6 7.6L17 17"
       stroke="currentColor"
       strokeWidth="1.5"
       strokeLinecap="round"
-      strokeLinejoin="round"
     />
     <path
-      d="M3 11.5H8.5L10 14H14L15.5 11.5H21"
+      d="M15.3 15.3L17.5 13.1L19 14.6L16.8 16.8L15.3 15.3Z"
       stroke="currentColor"
       strokeWidth="1.5"
-      strokeLinecap="round"
       strokeLinejoin="round"
     />
-    {/* box dropping in */}
+    {/* screwdriver, bottom-left to top-right */}
     <rect
-      x="9"
-      y="2"
-      width="6"
-      height="6"
-      rx="0.8"
+      x="2.3"
+      y="16.5"
+      width="5.5"
+      height="3.4"
+      rx="1"
       stroke="currentColor"
       strokeWidth="1.5"
       strokeLinejoin="round"
+      transform="rotate(-45 2.3 16.5)"
     />
     <path
-      d="M9 5H15"
+      d="M8.8 15L16.5 7.3"
       stroke="currentColor"
       strokeWidth="1.5"
       strokeLinecap="round"
     />
-    {/* arrow into tray */}
     <path
-      d="M12 9V13.2M8.8 10.4L12 13.2L15.2 10.4"
+      d="M15.5 8.3L16.5 7.3L17.8 6L19 7.2L17.7 8.5L16.7 9.5"
       stroke="currentColor"
       strokeWidth="1.5"
       strokeLinecap="round"
@@ -62,4 +61,4 @@ const SvgTruckLoadingIcon = ({
     />
   </svg>
 );
-export default SvgTruckLoadingIcon;
+export default SvgSupportToolsIcon;
