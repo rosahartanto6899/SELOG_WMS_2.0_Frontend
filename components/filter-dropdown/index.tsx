@@ -178,6 +178,7 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
           loading={loading}
           disabled={disabled}
           ref={triggerRef}
+          style={{ borderRadius: "1.2rem" }}
         >
           {buttonLabel} <CaretDownOutlined />
         </Button>

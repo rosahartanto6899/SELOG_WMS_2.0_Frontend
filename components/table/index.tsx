@@ -163,7 +163,7 @@ const Table: React.FC<TableProps> = (props: TableProps) => {
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys(newSelectedRowKeys);
-    if (onSelectedRowsChange) onSelectedRowsChange(selectedRowKeys);
+    if (onSelectedRowsChange) onSelectedRowsChange(newSelectedRowKeys);
   };
 
   const rowSelection: TableRowSelection<object> = {
@@ -178,22 +178,20 @@ const Table: React.FC<TableProps> = (props: TableProps) => {
         key: "odd",
         text: "Select Odd Row",
         onSelect: (changeableRowKeys) => {
-          let newSelectedRowKeys = [];
-          newSelectedRowKeys = changeableRowKeys.filter(
+          const newSelectedRowKeys = changeableRowKeys.filter(
             (_, index) => index % 2 === 0,
           );
-          setSelectedRowKeys(newSelectedRowKeys);
+          onSelectChange(newSelectedRowKeys);
         },
       },
       {
         key: "even",
         text: "Select Even Row",
         onSelect: (changeableRowKeys) => {
-          let newSelectedRowKeys = [];
-          newSelectedRowKeys = changeableRowKeys.filter(
+          const newSelectedRowKeys = changeableRowKeys.filter(
             (_, index) => index % 2 !== 0,
           );
-          setSelectedRowKeys(newSelectedRowKeys);
+          onSelectChange(newSelectedRowKeys);
         },
       },
     ],
@@ -271,9 +269,9 @@ const Table: React.FC<TableProps> = (props: TableProps) => {
       {(showTitle || search || showActions) && (
         <div className={styles["sera-table-wrapper__header"]}>
           {/* Header */}
-          <Row gutter={[4, 4]} align="middle">
-            <Col flex="auto">
-              <Row align="middle" gutter={[16, 4]}>
+          <Row gutter={[8, 8]} align="middle">
+            <Col xs={24} md={{ flex: "auto" }}>
+              <Row align="middle" gutter={[16, 8]}>
                 {showTitle && (
                   <Col>
                     <h3 className={styles["sera-table-wrapper-header-title"]}>
@@ -296,14 +294,18 @@ const Table: React.FC<TableProps> = (props: TableProps) => {
                     />
                   </Col>
                 )}
-                {isCustomSearch && <Col>{customSearch}</Col>}
+                {isCustomSearch && (
+                  <Col xs={24} md={{ flex: "0 1 auto" }}>
+                    {customSearch}
+                  </Col>
+                )}
               </Row>
             </Col>
             {showActions && (
-              <Col flex="auto">
+              <Col xs={24} md={{ flex: "auto" }}>
                 <Row justify="end">
                   <Col>{actions}</Col>
-                  {selectedRowKeys.length > 0 && (
+                  {onDeleteSelectedRows && selectedRowKeys.length > 0 && (
                     <Col>
                       <Button
                         id="delete-selected"
@@ -361,7 +363,11 @@ const Table: React.FC<TableProps> = (props: TableProps) => {
             }}
             rowSelection={
               multipleSelect
-                ? { type: rowSelectionType ?? "checkbox", ...rowSelectionCheck }
+                ? {
+                    type: rowSelectionType ?? "checkbox",
+                    ...rowSelection,
+                    ...rowSelectionCheck,
+                  }
                 : multipleDelete
                   ? rowSelection
                   : undefined

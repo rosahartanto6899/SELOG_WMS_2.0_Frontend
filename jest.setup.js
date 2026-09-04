@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 /* eslint-disable @typescript-eslint/no-var-requires */
 import "@testing-library/jest-dom";
-import "@testing-library/jest-dom/extend-expect"; // Extends jest expect with additional matchers
+import "@testing-library/jest-dom"; // Extends jest expect with additional matchers
 import "jest-environment-jsdom";
 // import { server } from './__mocks__/serverMock'; // If using MSW for API mocking
 

@@ -231,12 +231,12 @@ html {
 
 .ant-pagination-options > .ant-select > .ant-select-selector {
   border: 0.1rem solid #8c8c8c !important;
-  border-radius: 2rem !important;
+  border-radius: 1.2rem !important;
 }
 
 .ant-pagination-options-quick-jumper > input {
   border: 0.1rem solid #8c8c8c !important;
-  border-radius: 2rem !important;
+  border-radius: 1.2rem !important;
 }
 
 .ant-pagination-jump-prev
@@ -1683,5 +1683,12 @@ iframe {
     &::after {
       display: none;
     }
+  }
+}
+
+/* searchBy select full-width on mobile only — desktop stays 20rem from inline style */
+@media (width <= 767px) {
+  .table-search-select .ant-select {
+    width: 100% !important;
   }
 }

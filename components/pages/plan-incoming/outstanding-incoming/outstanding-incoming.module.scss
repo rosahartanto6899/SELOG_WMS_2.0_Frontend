@@ -1,0 +1,25 @@
+/* Page-specific styles for outstanding-incoming. */
+
+/* Data numbers (qty/leadtime) — columns don't shift when data changes */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* QI staging rows (Excel uploaded but not saved yet) — legacy green highlight parity */
+.qi-highlight-row {
+  background-color: #e6f4e6;
+}
+
+/* SERA-style form controls — 20px pill InputNumber + 8px textarea */
+.sera-controls {
+  :global {
+    .ant-input-number,
+    .ant-input-number .ant-input-number-input {
+      border-radius: 20px;
+    }
+
+    textarea.ant-input {
+      border-radius: 8px 8px 0;
+    }
+  }
+}

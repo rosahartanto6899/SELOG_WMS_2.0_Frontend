@@ -3,6 +3,7 @@ import auth from "./auth.json";
 import customerManagement from "./customer-management.json";
 import dashboard from "./dashboard.json";
 import global from "./global.json";
+import masterData from "./master-data.json";
 import planIncoming from "./plan-incoming.json";
 import menuConfiguration from "./user-management/menu-configuration.json";
 import rolePermission from "./user-management/role-permission.json";
@@ -22,5 +23,6 @@ export default {
     customerManagement,
     warehouseManagement,
     planIncoming,
+    masterData,
   },
 };

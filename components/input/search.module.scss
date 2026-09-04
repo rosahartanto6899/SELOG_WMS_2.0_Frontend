@@ -7,17 +7,17 @@
 
   :global {
     .ant-input-group > .ant-input {
-      border-radius: 2rem 0 0 2rem !important;
+      border-radius: 1.2rem 0 0 1.2rem !important;
     }
 
     .ant-input-group-addon:last-child {
-      border-radius: 0 2rem 2rem 0 !important;
+      border-radius: 0 1.2rem 1.2rem 0 !important;
     }
 
     .ant-input-group
       > .ant-input-group-addon:last-child
       .ant-input-search-button {
-      border-radius: 0 2rem 2rem 0 !important;
+      border-radius: 0 1.2rem 1.2rem 0 !important;
     }
 
     .ant-input-group-addon:last-child {
@@ -74,6 +74,6 @@
 }
 
 .sera-autocomplete {
-  position: "relative";
-  width: "300px";
+  display: block;
+  max-width: 100%;
 }
