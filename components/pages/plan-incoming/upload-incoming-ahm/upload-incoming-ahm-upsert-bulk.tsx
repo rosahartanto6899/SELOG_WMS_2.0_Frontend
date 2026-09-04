@@ -118,7 +118,7 @@ function UploadIncomingAhmUpsertBulk(props: any) {
     },
   ];
 
-  // Feedback error global (mis. download template gagal) — sekali per perubahan error.
+  // Global error feedback (e.g. template download failed) — once per error change.
   useEffect(() => {
     if (props.error && props.error !== lastErrorRef.current) {
       lastErrorRef.current = props.error;
@@ -132,7 +132,7 @@ function UploadIncomingAhmUpsertBulk(props: any) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.error]);
 
-  // Submit berantai: terapkan hasil baris terakhir, lanjut baris pending berikutnya.
+  // Chained submit: apply the last row's result, then continue with the next pending row.
   useEffect(() => {
     if (!lastResult || !data) return;
     setData((prev) => {
@@ -160,7 +160,7 @@ function UploadIncomingAhmUpsertBulk(props: any) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastResult]);
 
-  // Satu DN = satu header — revalidasi tiap data berubah (termasuk hasil edit sel).
+  // One DN = one header — revalidate whenever data changes (including cell edits).
   useEffect(() => {
     setConsistencyErrors(data ? validateHeaderConsistency(data) : {});
   }, [data]);
@@ -249,7 +249,7 @@ function UploadIncomingAhmUpsertBulk(props: any) {
 
   const handleSubmit = () => {
     if (!data?.length) return;
-    // baris sukses tidak dikirim ulang; edit baris sukses mengubahnya jadi pending.
+    // successful rows are not resubmitted; editing a successful row marks it pending again.
     const toSubmit = data.filter((r) => r.upsertStatus !== "success").length;
     if (!toSubmit) {
       message.info(t("message.nothingToSubmit"));

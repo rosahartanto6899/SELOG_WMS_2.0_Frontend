@@ -1,0 +1,296 @@
+{
+  "zone": {
+    "title": "Master Zone",
+    "breadcrumb": ["Master Data", "Zone"],
+    "table": {
+      "title": "Daftar Zone",
+      "selectWarehouse": "Pilih warehouse",
+      "searchPlaceholder": "Cari zone",
+      "columns": {
+        "code": "Kode Zone",
+        "name": "Nama Zone",
+        "description": "Deskripsi",
+        "createdAt": "Dibuat Pada",
+        "actions": "Aksi"
+      },
+      "button": {
+        "add": {
+          "label": "Tambah Zone"
+        },
+        "update": {
+          "tooltip": "Ubah"
+        },
+        "delete": {
+          "tooltip": "Hapus"
+        }
+      },
+      "searchBy": "Cari berdasarkan",
+      "selectWarehouseFirst": "Pilih warehouse terlebih dahulu untuk melihat data"
+    },
+    "modal": {
+      "delete": {
+        "title": "Hapus Zone",
+        "subtitle": "Yakin ingin menghapus zone",
+        "okText": "Ya",
+        "cancelText": "Tidak"
+      }
+    },
+    "form": {
+      "title": "Form Zone",
+      "message": {
+        "default": "Field ini wajib diisi"
+      },
+      "warehouse": {
+        "label": "Warehouse",
+        "placeholder": "Pilih warehouse"
+      },
+      "code": {
+        "label": "Kode Zone",
+        "placeholder": "Masukkan kode zone"
+      },
+      "name": {
+        "label": "Nama Zone",
+        "placeholder": "Masukkan nama zone"
+      },
+      "description": {
+        "label": "Deskripsi",
+        "placeholder": "Masukkan deskripsi"
+      },
+      "button": {
+        "cancel": "Batal",
+        "save": "Simpan"
+      }
+    }
+  },
+  "location": {
+    "title": "Master Location",
+    "breadcrumb": ["Master Data", "Location"],
+    "table": {
+      "title": "Daftar Location",
+      "selectWarehouse": "Pilih warehouse",
+      "searchPlaceholder": "Cari location",
+      "columns": {
+        "code": "Kode Location",
+        "name": "Nama Location",
+        "barcode": "Barcode",
+        "category": "Kategori",
+        "zone": "Zone",
+        "description": "Deskripsi",
+        "createdAt": "Dibuat Pada",
+        "actions": "Aksi"
+      },
+      "button": {
+        "add": {
+          "label": "Tambah Location"
+        },
+        "print": {
+          "tooltip": "Cetak Barcode"
+        },
+        "update": {
+          "tooltip": "Ubah"
+        },
+        "delete": {
+          "tooltip": "Hapus"
+        }
+      },
+      "searchBy": "Cari berdasarkan",
+      "selectWarehouseFirst": "Pilih warehouse terlebih dahulu untuk melihat data"
+    },
+    "modal": {
+      "delete": {
+        "title": "Hapus Location",
+        "subtitle": "Yakin ingin menghapus location",
+        "okText": "Ya",
+        "cancelText": "Tidak"
+      }
+    },
+    "form": {
+      "title": "Form Location",
+      "message": {
+        "default": "Field ini wajib diisi"
+      },
+      "warehouse": {
+        "label": "Warehouse",
+        "placeholder": "Pilih warehouse"
+      },
+      "code": {
+        "label": "Kode Location",
+        "placeholder": "Masukkan kode location"
+      },
+      "name": {
+        "label": "Nama Location",
+        "placeholder": "Masukkan nama location"
+      },
+      "zone": {
+        "label": "Zone",
+        "placeholder": "Pilih zone"
+      },
+      "barcode": {
+        "label": "Barcode (pool UPCA)",
+        "placeholder": "Pilih barcode"
+      },
+      "category": {
+        "label": "Kategori",
+        "placeholder": "Pilih kategori"
+      },
+      "description": {
+        "label": "Deskripsi",
+        "placeholder": "Masukkan deskripsi"
+      },
+      "button": {
+        "cancel": "Batal",
+        "save": "Simpan"
+      }
+    },
+    "message": {
+      "noBarcode": "Location ini tidak memiliki barcode yang valid",
+      "printFailed": "Gagal membuat barcode"
+    },
+    "print": {
+      "title": "Cetak Barcode Location"
+    }
+  },
+  "material": {
+    "title": "Master Material",
+    "breadcrumb": ["Master Data", "Material"],
+    "table": {
+      "title": "Daftar Material",
+      "searchPlaceholder": "Cari material",
+      "columns": {
+        "code": "Kode Material",
+        "name": "Nama Material",
+        "brand": "Brand",
+        "barcode": "Barcode",
+        "category": "Kategori",
+        "uom": "UoM",
+        "description": "Deskripsi",
+        "createdAt": "Dibuat Pada",
+        "actions": "Aksi"
+      },
+      "button": {
+        "add": {
+          "label": "Tambah Material"
+        },
+        "print": {
+          "tooltip": "Cetak Barcode"
+        },
+        "update": {
+          "tooltip": "Ubah"
+        },
+        "delete": {
+          "tooltip": "Hapus"
+        }
+      },
+      "searchBy": "Cari berdasarkan"
+    },
+    "modal": {
+      "delete": {
+        "title": "Hapus Material",
+        "subtitle": "Yakin ingin menghapus material",
+        "okText": "Ya",
+        "cancelText": "Tidak"
+      }
+    },
+    "form": {
+      "title": "Form Material",
+      "message": {
+        "default": "Field ini wajib diisi"
+      },
+      "code": {
+        "label": "Kode Material",
+        "placeholder": "Masukkan kode material"
+      },
+      "name": {
+        "label": "Nama Material",
+        "placeholder": "Masukkan nama material"
+      },
+      "category": {
+        "label": "Kategori",
+        "placeholder": "Pilih kategori"
+      },
+      "barcode": {
+        "label": "Barcode (pool UPCA)",
+        "placeholder": "Pilih barcode"
+      },
+      "brand": {
+        "label": "Brand",
+        "placeholder": "Masukkan brand"
+      },
+      "uom": {
+        "label": "UoM",
+        "placeholder": "Masukkan UoM"
+      },
+      "description": {
+        "label": "Deskripsi",
+        "placeholder": "Masukkan deskripsi"
+      },
+      "button": {
+        "cancel": "Batal",
+        "save": "Simpan"
+      }
+    },
+    "message": {
+      "noBarcode": "Material ini tidak memiliki barcode yang valid",
+      "printFailed": "Gagal membuat barcode"
+    },
+    "print": {
+      "title": "Cetak Barcode Material"
+    }
+  },
+  "materialMapping": {
+    "title": "Material Mapping",
+    "breadcrumb": ["Master Data", "Material Mapping"],
+    "upload": {
+      "title": "Upload Material Mapping",
+      "subtitle": "Petakan material ke location secara massal via Excel (maks {{max}} baris)."
+    },
+    "selectWarehouse": "Pilih warehouse",
+    "downloadTemplate": "Download Template",
+    "stepUpload": "Upload File Excel",
+    "hintUpload": "Unduh template, isi kolom dropdown (material & location), lalu unggah di sini. Kolom kuning opsional.",
+    "previewTitle": "Preview & Perbaiki Data ({{count}} baris)",
+    "colStatus": "Status",
+    "colReason": "Alasan Gagal",
+    "submit": "Submit",
+    "status": {
+      "pending": "Menunggu",
+      "submitting": "Diproses",
+      "success": "Sukses",
+      "failed": "Gagal"
+    },
+    "summary": "{{success}} baris sukses, {{failed}} gagal.",
+    "summaryFixHint": "Perbaiki baris gagal langsung di tabel, lalu submit ulang.",
+    "summaryDone": "Semua baris berhasil diproses.",
+    "message": {
+      "import": "Template tidak valid — silakan unduh template terbaru",
+      "limit": "Maksimal {{max}} baris per upload",
+      "cellError": "Beberapa sel memiliki error — perbaiki sebelum submit",
+      "parsed": "{{count}} baris berhasil diparsing",
+      "nothingToSubmit": "Tidak ada baris untuk disubmit",
+      "downloadFailed": "Gagal mengunduh template"
+    },
+    "modal": {
+      "submit": {
+        "title": "Konfirmasi Submit",
+        "content": "Submit {{count}} baris ke warehouse {{warehouse}}?",
+        "ok": "Submit",
+        "cancel": "Batal"
+      }
+    },
+    "list": {
+      "title": "Daftar Material Mapping",
+      "selectWarehouse": "Pilih warehouse",
+      "searchPlaceholder": "Cari mapping",
+      "columns": {
+        "materialCode": "Kode Material",
+        "materialName": "Nama Material",
+        "materialBrand": "Brand",
+        "locationName": "Nama Location",
+        "createdDate": "Dibuat Pada",
+        "createdBy": "Dibuat Oleh"
+      },
+      "searchBy": "Cari berdasarkan",
+      "selectWarehouseFirst": "Pilih warehouse terlebih dahulu untuk melihat data"
+    }
+  }
+}

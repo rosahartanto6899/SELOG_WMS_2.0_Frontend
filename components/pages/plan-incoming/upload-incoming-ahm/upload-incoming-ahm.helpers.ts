@@ -3,18 +3,18 @@ import type { UploadIncomingAhmRow } from "@sera-types/upload-incoming-ahm.type"
 import { isEqual } from "lodash";
 import * as XLSX from "xlsx";
 
-/** Sheet wajib ada di file upload (integritas template). */
+/** Sheets that must exist in the uploaded file (template integrity). */
 export const REQUIRED_SHEET = ["Formulir input", "Ref_bodyKey"] as const;
 
-/** Header row mulai baris ke-5 (index 4) — konvensi template ServiceVehicle. */
+/** Header row starts at row 5 (index 4) — ServiceVehicle template convention. */
 export const HEADER_ROW_RANGE = 4;
 
-/** Batas baris data per upload (paritas aturan lama). */
+/** Max data rows per upload (parity with the legacy rule). */
 export const MAX_ROWS = 5000;
 
 /**
- * 19 field key — HARUS identik dengan `columns[].key` backend
- * (upload-incoming-ahm.constant.ts). Dipakai cek integritas Ref_bodyKey.
+ * 19 field keys — MUST match the backend `columns[].key`
+ * (upload-incoming-ahm.constant.ts). Used for Ref_bodyKey integrity checks.
  */
 export const HEADER_KEYS = [
   "deliveryNoteNo",
@@ -51,7 +51,7 @@ export const REQUIRED_KEYS = HEADER_KEYS.filter(
     ].includes(k),
 );
 
-/** Label kolom human-readable — identik header template Excel. */
+/** Human-readable column labels — identical to the Excel template headers. */
 export const COLUMN_LABELS: Record<string, string> = {
   deliveryNoteNo: "Delivery Note No",
   deliveryNoteDate: "DN Date",
@@ -82,7 +82,7 @@ export const DATE_KEYS = [
 export const TIME_KEYS = ["planReceiveMinTime", "planReceiveMaxTime"];
 export const INT_KEYS = ["qtySumDiOri", "qtyDn"];
 
-// Terima format baru (YYYY-MM-DD, HH:mm) + legacy AHM (DD-MON-YYYY, HH:mm:ss)
+// Accept new format (YYYY-MM-DD, HH:mm) + legacy AHM (DD-MON-YYYY, HH:mm:ss)
 const DATE_RE = /^(\d{4}-\d{2}-\d{2}|\d{2}-[A-Za-z]{3}-\d{4})$/;
 const TIME_RE = /^([01]\d|2[0-3]):[0-5]\d(:[0-5]\d)?$/;
 
@@ -101,7 +101,7 @@ const MONTHS = [
   "DEC",
 ];
 
-/** 07-NOV-2022 → 2022-11-07; lolos jika sudah kanonik. */
+/** 07-NOV-2022 → 2022-11-07; passes through if already canonical. */
 export function normalizeDate(value: string): string {
   if (/^\d{2}-[A-Za-z]{3}-\d{4}$/.test(value)) {
     const mm = String(
@@ -112,12 +112,12 @@ export function normalizeDate(value: string): string {
   return value;
 }
 
-/** 09:30 → 09:30:00 (kanonik simpan HH:mm:ss); lolos jika sudah lengkap. */
+/** 09:30 → 09:30:00 (canonical stored as HH:mm:ss); passes through if already full. */
 export function normalizeTime(value: string): string {
   return /^([01]\d|2[0-3]):[0-5]\d$/.test(value) ? `${value}:00` : value;
 }
 
-/** Field header — wajib identik antar baris dengan deliveryNoteNo sama (satu DN = satu header). */
+/** Header fields — must be identical across rows sharing the same deliveryNoteNo (one DN = one header). */
 export const HEADER_CONSISTENCY_KEYS = [
   "deliveryNoteDate",
   "deliveryNoteStatus",
@@ -130,7 +130,7 @@ export const HEADER_CONSISTENCY_KEYS = [
   "supplierDesc",
 ] as const;
 
-/** Baris dengan DN sama tapi field header beda → error per sel (key `${index}-${key}`). */
+/** Rows with the same DN but different header fields → per-cell error (key `${index}-${key}`). */
 export function validateHeaderConsistency(
   rows: UploadIncomingAhmRow[],
 ): Record<string, string> {
@@ -166,9 +166,9 @@ export function XLSXtoJSON(
 }
 
 /**
- * Cek integritas template 3 lapis:
- * 1. sheet wajib ada; 2. header sheet utama == nama di Ref_bodyKey;
- * 3. id di Ref_bodyKey == HEADER_KEYS FE (deteksi template lama/dimodifikasi).
+ * 3-layer template integrity check:
+ * 1. required sheets exist; 2. main sheet header == names in Ref_bodyKey;
+ * 3. ids in Ref_bodyKey == FE HEADER_KEYS (detects old/modified templates).
  */
 export function validateWorkbookIntegrity(
   workbook: XLSX.WorkBook,
@@ -193,13 +193,13 @@ export function validateWorkbookIntegrity(
   return null;
 }
 
-/** Parse baris data + validasi per sel. Return null jika file invalid. */
+/** Parse data rows + per-cell validation. Returns null if the file is invalid. */
 export function parseRows(
   workbook: XLSX.WorkBook,
   onCellError: (rowIndex: number, key: string, message: string) => void,
 ): UploadIncomingAhmRow[] {
   const raw = XLSXtoJSON(workbook, "Formulir input", HEADER_ROW_RANGE);
-  // header sel = label ("Delivery Note No"), bukan id — peta dari Ref_bodyKey.
+  // cell headers are labels ("Delivery Note No"), not ids — map via Ref_bodyKey.
   const labelToKey = new Map<string, string>(
     XLSXtoJSON(workbook, "Ref_bodyKey").map((r: any) => [r.name, r.id]),
   );
@@ -216,7 +216,7 @@ export function parseRows(
         typeof src[key] === "string" ? (src[key] as string).trim() : src[key];
     });
 
-    if (!row.deliveryNoteNo && !row.supplierPartNumber) return; // baris kosong
+    if (!row.deliveryNoteNo && !row.supplierPartNumber) return; // empty row
 
     REQUIRED_KEYS.forEach((key) => {
       if (row[key] === "" || row[key] === null || row[key] === undefined) {

@@ -1,5 +1,9 @@
 export const ROUTE = {
   DASHBOARD: "/",
+  PLAN_INCOMING: {
+    OUTSTANDING_INCOMING: "/plan-incoming/outstanding-incoming",
+    UPLOAD_AHM: "/plan-incoming/upload-incoming-ahm",
+  },
   USER_MANAGEMENT: {
     ROLE: "/user-management/role-permissions",
     ROLES: "/user-management/roles",

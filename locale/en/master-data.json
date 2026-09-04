@@ -1,0 +1,296 @@
+{
+  "zone": {
+    "title": "Master Zone",
+    "breadcrumb": ["Master Data", "Zone"],
+    "table": {
+      "title": "Zone List",
+      "selectWarehouse": "Select warehouse",
+      "searchPlaceholder": "Search zone",
+      "columns": {
+        "code": "Zone Code",
+        "name": "Zone Name",
+        "description": "Description",
+        "createdAt": "Created At",
+        "actions": "Actions"
+      },
+      "button": {
+        "add": {
+          "label": "Add Zone"
+        },
+        "update": {
+          "tooltip": "Edit"
+        },
+        "delete": {
+          "tooltip": "Delete"
+        }
+      },
+      "searchBy": "Search by",
+      "selectWarehouseFirst": "Select a warehouse first to view data"
+    },
+    "modal": {
+      "delete": {
+        "title": "Delete Zone",
+        "subtitle": "Are you sure you want to delete zone",
+        "okText": "Yes",
+        "cancelText": "No"
+      }
+    },
+    "form": {
+      "title": "Zone Form",
+      "message": {
+        "default": "This field is required"
+      },
+      "warehouse": {
+        "label": "Warehouse",
+        "placeholder": "Select warehouse"
+      },
+      "code": {
+        "label": "Zone Code",
+        "placeholder": "Enter zone code"
+      },
+      "name": {
+        "label": "Zone Name",
+        "placeholder": "Enter zone name"
+      },
+      "description": {
+        "label": "Description",
+        "placeholder": "Enter description"
+      },
+      "button": {
+        "cancel": "Cancel",
+        "save": "Save"
+      }
+    }
+  },
+  "location": {
+    "title": "Master Location",
+    "breadcrumb": ["Master Data", "Location"],
+    "table": {
+      "title": "Location List",
+      "selectWarehouse": "Select warehouse",
+      "searchPlaceholder": "Search location",
+      "columns": {
+        "code": "Location Code",
+        "name": "Location Name",
+        "barcode": "Barcode",
+        "category": "Category",
+        "zone": "Zone",
+        "description": "Description",
+        "createdAt": "Created At",
+        "actions": "Actions"
+      },
+      "button": {
+        "add": {
+          "label": "Add Location"
+        },
+        "print": {
+          "tooltip": "Print Barcode"
+        },
+        "update": {
+          "tooltip": "Edit"
+        },
+        "delete": {
+          "tooltip": "Delete"
+        }
+      },
+      "searchBy": "Search by",
+      "selectWarehouseFirst": "Select a warehouse first to view data"
+    },
+    "modal": {
+      "delete": {
+        "title": "Delete Location",
+        "subtitle": "Are you sure you want to delete location",
+        "okText": "Yes",
+        "cancelText": "No"
+      }
+    },
+    "form": {
+      "title": "Location Form",
+      "message": {
+        "default": "This field is required"
+      },
+      "warehouse": {
+        "label": "Warehouse",
+        "placeholder": "Select warehouse"
+      },
+      "code": {
+        "label": "Location Code",
+        "placeholder": "Enter location code"
+      },
+      "name": {
+        "label": "Location Name",
+        "placeholder": "Enter location name"
+      },
+      "zone": {
+        "label": "Zone",
+        "placeholder": "Select zone"
+      },
+      "barcode": {
+        "label": "Barcode (UPCA pool)",
+        "placeholder": "Select barcode"
+      },
+      "category": {
+        "label": "Category",
+        "placeholder": "Select category"
+      },
+      "description": {
+        "label": "Description",
+        "placeholder": "Enter description"
+      },
+      "button": {
+        "cancel": "Cancel",
+        "save": "Save"
+      }
+    },
+    "message": {
+      "noBarcode": "This location has no valid barcode",
+      "printFailed": "Failed to generate barcode"
+    },
+    "print": {
+      "title": "Print Barcode Location"
+    }
+  },
+  "material": {
+    "title": "Master Material",
+    "breadcrumb": ["Master Data", "Material"],
+    "table": {
+      "title": "Material List",
+      "searchPlaceholder": "Search material",
+      "columns": {
+        "code": "Material Code",
+        "name": "Material Name",
+        "brand": "Brand",
+        "barcode": "Barcode",
+        "category": "Category",
+        "uom": "UoM",
+        "description": "Description",
+        "createdAt": "Created At",
+        "actions": "Actions"
+      },
+      "button": {
+        "add": {
+          "label": "Add Material"
+        },
+        "print": {
+          "tooltip": "Print Barcode"
+        },
+        "update": {
+          "tooltip": "Edit"
+        },
+        "delete": {
+          "tooltip": "Delete"
+        }
+      },
+      "searchBy": "Search by"
+    },
+    "modal": {
+      "delete": {
+        "title": "Delete Material",
+        "subtitle": "Are you sure you want to delete material",
+        "okText": "Yes",
+        "cancelText": "No"
+      }
+    },
+    "form": {
+      "title": "Material Form",
+      "message": {
+        "default": "This field is required"
+      },
+      "code": {
+        "label": "Material Code",
+        "placeholder": "Enter material code"
+      },
+      "name": {
+        "label": "Material Name",
+        "placeholder": "Enter material name"
+      },
+      "category": {
+        "label": "Category",
+        "placeholder": "Select category"
+      },
+      "barcode": {
+        "label": "Barcode (UPCA pool)",
+        "placeholder": "Select barcode"
+      },
+      "brand": {
+        "label": "Brand",
+        "placeholder": "Enter brand"
+      },
+      "uom": {
+        "label": "UoM",
+        "placeholder": "Enter UoM"
+      },
+      "description": {
+        "label": "Description",
+        "placeholder": "Enter description"
+      },
+      "button": {
+        "cancel": "Cancel",
+        "save": "Save"
+      }
+    },
+    "message": {
+      "noBarcode": "This material has no valid barcode",
+      "printFailed": "Failed to generate barcode"
+    },
+    "print": {
+      "title": "Print Barcode Material"
+    }
+  },
+  "materialMapping": {
+    "title": "Material Mapping",
+    "breadcrumb": ["Master Data", "Material Mapping"],
+    "upload": {
+      "title": "Upload Material Mapping",
+      "subtitle": "Bulk map material to location from Excel (max {{max}} rows)."
+    },
+    "selectWarehouse": "Select warehouse",
+    "downloadTemplate": "Download Template",
+    "stepUpload": "Upload Excel File",
+    "hintUpload": "Download the template, fill the dropdowns (material & location), then upload here. Yellow columns are optional.",
+    "previewTitle": "Preview & Fix Data ({{count}} rows)",
+    "colStatus": "Status",
+    "colReason": "Failure Reason",
+    "submit": "Submit",
+    "status": {
+      "pending": "Pending",
+      "submitting": "Processing",
+      "success": "Success",
+      "failed": "Failed"
+    },
+    "summary": "{{success}} row(s) succeeded, {{failed}} failed.",
+    "summaryFixHint": "Fix failed rows directly in the table, then submit again.",
+    "summaryDone": "All rows processed successfully.",
+    "message": {
+      "import": "Invalid template — please download the latest template",
+      "limit": "Maximum {{max}} rows per upload",
+      "cellError": "Some cells contain errors — fix them before submitting",
+      "parsed": "{{count}} row(s) parsed successfully",
+      "nothingToSubmit": "Nothing to submit",
+      "downloadFailed": "Failed to download template"
+    },
+    "modal": {
+      "submit": {
+        "title": "Confirm Submission",
+        "content": "Submit {{count}} row(s) to warehouse {{warehouse}}?",
+        "ok": "Submit",
+        "cancel": "Cancel"
+      }
+    },
+    "list": {
+      "title": "Material Mapping List",
+      "selectWarehouse": "Select warehouse",
+      "searchPlaceholder": "Search mapping",
+      "columns": {
+        "materialCode": "Material Code",
+        "materialName": "Material Name",
+        "materialBrand": "Brand",
+        "locationName": "Location Name",
+        "createdDate": "Created At",
+        "createdBy": "Created By"
+      },
+      "searchBy": "Search by",
+      "selectWarehouseFirst": "Select a warehouse first to view data"
+    }
+  }
+}
