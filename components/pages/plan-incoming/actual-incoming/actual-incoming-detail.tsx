@@ -2,6 +2,7 @@
 import Card from "@sera-components/card";
 import Empty from "@sera-components/empty";
 import StatusTag from "@sera-components/status-tag";
+import ActualIncomingApi from "@sera-libraries/api/actual-incoming";
 import OutstandingIncomingApi from "@sera-libraries/api/outstanding-incoming";
 import {
   ForActualResult,
@@ -28,6 +29,7 @@ const ActualIncomingDetail = () => {
   const [locations, setLocations] = useState<
     Array<{ location?: string | null; planIncomingHeaderId?: string | null }>
   >([]);
+  const [actual, setActual] = useState<any>(null);
 
   useEffect(() => {
     if (!id) return;
@@ -36,17 +38,20 @@ const ActualIncomingDetail = () => {
       setLoading(true);
       try {
         const api = OutstandingIncomingApi();
-        const [forActual, historyRows, locationRows] = await Promise.all([
-          api.retrieveForActual([String(id)]),
-          api.retrieveHistoryTyped(String(id)),
-          api
-            .retrieveLocations(String(id))
-            .then((resp: any) => resp?.data?.data ?? []),
-        ]);
+        const [forActual, historyRows, locationRows, actual] =
+          await Promise.all([
+            api.retrieveForActual([String(id)]),
+            api.retrieveHistoryTyped(String(id)),
+            api
+              .retrieveLocations(String(id))
+              .then((resp: any) => resp?.data?.data ?? []),
+            ActualIncomingApi().retrieveActual(String(id)),
+          ]);
         if (cancelled) return;
         setPreview(forActual);
         setHistory(historyRows);
         setLocations(locationRows);
+        setActual(actual);
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -65,7 +70,6 @@ const ActualIncomingDetail = () => {
   }
 
   const header = preview?.headerIncoming?.[0] ?? null;
-  const actual = (preview as any)?.actualIncoming?.[0] ?? null;
   if (!header) return <Empty description={t("empty")} />;
 
   const toDate = (v?: string | null) =>

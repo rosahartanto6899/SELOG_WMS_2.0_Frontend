@@ -8,16 +8,15 @@ import {
 
 /**
  * API untuk halaman Actual Incoming (spec 002-actual-incoming-page,
- * ServiceIncoming A-List & A-Delete). Envelope respons backend: { data, pagination? }.
+ * ServiceIncoming modul actual-incoming: A-List & A-Delete & A-Detail).
+ * Envelope respons backend: { data, pagination? }.
  */
 const ActualIncomingApi = () => {
-  const base = `${apiUrl.incoming}/outstanding-incoming`;
+  const base = `${apiUrl.incoming}/actual-incoming`;
 
-  /** A-List GET /actual */
+  /** A-List GET / */
   function retrieveList(payload: ActualIncomingListPayload) {
-    return httpService
-      .get(`${base}/actual`, { params: payload })
-      .then((resp) => resp);
+    return httpService.get(`${base}`, { params: payload }).then((resp) => resp);
   }
 
   async function retrieveListTyped(
@@ -34,16 +33,23 @@ const ActualIncomingApi = () => {
     };
   }
 
-  /** A-Delete POST /actual/delete — bulk + alasan (audit) */
+  /** A-Detail GET /:id — record GR aktif (PIC, grBy/grDate, lokasi binning) */
+  function retrieveActual(id: string) {
+    return httpService
+      .get(`${base}/${id}`)
+      .then((resp: any) => resp?.data?.data ?? resp?.data);
+  }
+
+  /** A-Delete POST /delete — bulk + alasan (audit) */
   function deleteActual(items: ActualIncomingDeleteItem[]) {
     return httpService
-      .post(`${base}/actual/delete`, { items })
+      .post(`${base}/delete`, { items })
       .then(
         (resp: any) => resp?.data?.data ?? resp?.data,
       ) as Promise<ActualIncomingDeleteResponse>;
   }
 
-  return { retrieveList, retrieveListTyped, deleteActual };
+  return { retrieveList, retrieveListTyped, retrieveActual, deleteActual };
 };
 
 export default ActualIncomingApi;
