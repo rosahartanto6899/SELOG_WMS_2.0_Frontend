@@ -1,5 +1,6 @@
 import { all } from "redux-saga/effects";
 
+import actualIncomingSaga from "./actual-incoming.saga";
 import businessAreaSaga from "./business-area.saga";
 import city from "./city.saga";
 import customerSaga from "./customer.saga";
@@ -32,6 +33,7 @@ export default function* rootSaga() {
     roleMenuSaga(),
     userSaga(),
     uploadIncomingAhmSaga(),
+    actualIncomingSaga(),
     outstandingIncomingSaga(),
     zoneSaga(),
     locationSaga(),

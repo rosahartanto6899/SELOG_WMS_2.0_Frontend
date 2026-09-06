@@ -34,7 +34,8 @@
     "page": {
       "title": "Outstanding Incoming",
       "detailTitle": "Outstanding Incoming Detail",
-      "breadcrumb": ["Plan Incoming", "Outstanding Incoming", "Detail"]
+      "breadcrumb": ["Plan Incoming", "Outstanding Incoming", "Detail"],
+      "inputTitle": "Input Incoming"
     },
     "filter": {
       "warehouse": "Filter Warehouse"
@@ -52,6 +53,7 @@
       "cancelled": "Cancelled",
       "confirmFlowTitle": "Change status to {{status}}?",
       "confirmFlowHint": "You cannot revert this action.",
+      "grUnbalanced": "Please re-check the Actual Qty and make sure it is balanced.",
       "skipped": "Update skipped — header status unchanged"
     },
     "table": {
@@ -88,7 +90,12 @@
         "bulkConfirm": "Confirm Draft",
         "bulkDelete": "Delete",
         "bulkCreateActual": "Create Actual / GR",
-        "flow": "Flow"
+        "flow": "Status"
+      },
+      "indicator": {
+        "green": "Actual Qty balanced — ready for Goods Receipt",
+        "blue": "Partial qty exists — quantity still in process",
+        "red": "Actual Qty is not balanced"
       },
       "options": [
         "Delivery Note No.",
@@ -120,7 +127,10 @@
         "poQty": "PO Qty",
         "partialQty": "Partial Qty",
         "binningQty": "Binning Qty",
-        "binningDate": "Binning Date"
+        "binningDate": "Binning Date",
+        "informationTitle": "Delivery Note Information",
+        "materialTitle": "Material Detail",
+        "historyTitle": "Status History"
       },
       "history": {
         "status": "Status",
@@ -163,7 +173,10 @@
       "title": "Adjust Plan Qty",
       "detail": "Material detail",
       "selectDetail": "Select material",
+      "noBinned": "No binned material yet — qty cannot be adjusted",
       "planQty": "New Plan Qty",
+      "currentPoQty": "Current PO Qty",
+      "currentBinningQty": "Current Binning Qty",
       "description": "Description (appended)",
       "required": "Required",
       "failed": "Failed",
@@ -174,23 +187,69 @@
         "qtySOH": "Qty SOH",
         "qtyPlanIncoming": "Qty Plan Incoming",
         "qtyPlanOutgoing": "Qty Plan Outgoing"
-      }
+      },
+      "loading": "Loading materials..."
     },
     "binning": {
       "title": "Binning",
-      "locations": "Locations",
       "materialCode": "Material Code",
       "materialName": "Material Name",
-      "poQty": "PO Qty",
-      "binningQty": "Binning Qty",
-      "remaining": "Remaining",
-      "detail": "Material",
-      "selectDetail": "Select material",
-      "actualQty": "Actual Qty",
-      "incrementHint": "Value is INCREMENTED into binningQty; partialQty is reset to 0. When all details are done → status automatically becomes Goods Receipt.",
-      "required": "Required",
       "success": "Binning saved",
-      "failed": "Failed"
+      "failed": "Failed",
+      "printSlip": "Print Binning Slip",
+      "binningAll": "Binning All",
+      "close": "Close",
+      "filterPlaceholder": "Filter by material name or code...",
+      "qty": "Qty",
+      "poQty": "PO Qty",
+      "remaining": "Remaining to Bin",
+      "allFailed": "Failed",
+      "materialBarcode": "Material Barcode",
+      "locationBarcode": "Location Barcode",
+      "complete": "Complete",
+      "completed": "Completed",
+      "noPartial": "Please input Partial Quantity first.",
+      "allNothing": "All items are already binned or nothing to bin.",
+      "allDone": "Binning All done: {{count}} item(s).",
+      "filteredEmpty": "No material matches the filter.",
+      "processing": "Processing",
+      "scanMaterial": "Scan material barcode",
+      "scanLocation": "Scan location barcode",
+      "invalidMaterialBarcode": "Invalid material barcode",
+      "invalidLocationBarcode": "Invalid location barcode",
+      "fillMaterialBarcode": "Please enter Material Barcode",
+      "fillLocationBarcode": "Please enter Location Barcode",
+      "cameraFailed": "Failed to access camera",
+      "cameraDenied": "camera permission denied — allow it in the browser",
+      "cameraNotFound": "no camera found",
+      "cameraInsecure": "camera requires HTTPS or localhost",
+      "cameraHint": "Point the barcode at the camera — scan result is validated automatically.",
+      "cameraMode": "Back to Camera",
+      "uploadMode": "Upload Image",
+      "detecting": "Detecting barcode...",
+      "noBarcodeInImage": "No barcode detected in the image",
+      "stepMaterial": "Material",
+      "stepLocation": "Location",
+      "stepDone": "Done",
+      "back": "Back",
+      "breadcrumb": ["Plan Incoming", "Outstanding Incoming", "Binning"],
+      "doneAsk": "All materials are binned. Return to the Outstanding Incoming list?",
+      "doneBack": "Back to List",
+      "doneStay": "Stay Here"
+    },
+    "barcodeLabeling": {
+      "title": "Barcode Labeling",
+      "print": "Print Barcode ({{count}})",
+      "noValid": "No valid barcode (min. 11 digits) in selection",
+      "searchPlaceholder": "Search material...",
+      "materialCode": "Material Code",
+      "materialName": "Material Name",
+      "materialBrand": "Brand",
+      "barcode": "Barcode",
+      "poQty": "PO Qty",
+      "partialQty": "Partial Qty",
+      "binningQty": "Binning Qty",
+      "uom": "UoM"
     },
     "slip": {
       "title": "Binning Slip",
@@ -208,7 +267,8 @@
       "materialName": "Material Name",
       "materialBrand": "Brand",
       "uom": "UoM",
-      "poQty": "Plan Qty",
+      "poQty": "PO Qty",
+      "binningQty": "Binning Qty",
       "actualQty": "Actual Qty",
       "partialQty": "Partial Qty",
       "description": "Description",
@@ -238,14 +298,15 @@
       "staged": "{{n}} rows staged — click Save Changes",
       "actualQtyRequired": "Binning Qty is required!",
       "skipped": "Update skipped — header status unchanged",
-      "editTitle": "Edit Actual Qty",
+      "editTitle": "Edit Quality Inspection",
       "save": "Save",
       "close": "Close",
       "planQtyHint": "Plan qty (read-only)",
       "fileName": "File Name",
       "uploadedDate": "Uploaded Date",
       "download": "Download",
-      "partialRequired": "Partial Qty is required"
+      "partialRequired": "Partial Qty is required",
+      "searchPlaceholder": "Search material..."
     },
     "createActual": {
       "title": "Create Actual / Goods Receipt",
@@ -292,7 +353,96 @@
       "noMaterial": "At least one material must be filled",
       "created": "Incoming saved (Draft)",
       "updated": "Changes saved",
-      "failed": "Failed to save"
+      "failed": "Failed to save",
+      "noCustomerSession": "Active customer not detected from login session",
+      "warehouse": "Warehouse",
+      "warehousePlaceholder": "Select warehouse",
+      "pickMaterial": "Pick Material",
+      "pickMaterialPlaceholder": "Search material code / name...",
+      "noMaterialFound": "No material found"
+    }
+  },
+  "actualIncoming": {
+    "page": {
+      "title": "Actual Incoming",
+      "detailTitle": "Actual Incoming Detail",
+      "breadcrumb": ["Plan Incoming", "Actual Incoming", "Detail"]
+    },
+    "filter": {
+      "warehouse": "Filter Warehouse"
+    },
+    "list": {
+      "confirmDelete": "Delete selected actual incoming?",
+      "confirmDeleteHint": "GR records are deleted and the DN returns to Binning status. Fill the reason for audit.",
+      "reasonLabel": "Reason (required)",
+      "reasonPlaceholder": "Deletion reason...",
+      "deleted": "Deleted ({{count}} DN), skipped: {{skipped}}",
+      "skipped": "DN skipped",
+      "cancel": "Cancel",
+      "confirm": "Delete"
+    },
+    "table": {
+      "title": "Actual Incoming",
+      "search": {
+        "placeholder": "Search..."
+      },
+      "options": [
+        "Delivery Note No",
+        "PO No",
+        "Customer",
+        "Reference No",
+        "Supplier",
+        "Description",
+        "Status"
+      ],
+      "button": {
+        "view": "Detail",
+        "bulkDelete": "Delete",
+        "export": "Export CSV"
+      },
+      "column": {
+        "status": "Status",
+        "deliveryNoteNo": "Delivery Note No",
+        "incomingDate": "Incoming Date",
+        "poNo": "PO No",
+        "poType": "PO Type",
+        "poDate": "PO Date",
+        "supplierName": "Supplier",
+        "referenceNo": "Reference No",
+        "description": "Description",
+        "additionalInfo": "Additional Information",
+        "grDate": "GR Date",
+        "grBy": "GR By"
+      }
+    },
+    "detail": {
+      "header": {
+        "title": "DN Information"
+      },
+      "pic": {
+        "title": "GR Actors",
+        "picReceiver": "PIC Receiver",
+        "picBinner": "PIC Binner",
+        "grBy": "GR Created By",
+        "grDate": "GR Date",
+        "binningLocation": "Binning Location"
+      },
+      "tab": {
+        "material": "Material & Location",
+        "addInfo": "Additional Information",
+        "attachment": "Attachment",
+        "history": "Status History"
+      },
+      "material": {
+        "materialCode": "Material Code",
+        "materialName": "Material Name",
+        "materialBrand": "Brand",
+        "uom": "UoM",
+        "poQty": "PO Qty",
+        "binningQty": "Binning Qty",
+        "location": "Location"
+      },
+      "empty": "No data"
     }
   }
 }
