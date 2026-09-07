@@ -116,17 +116,17 @@
       background: $essentials-white;
     }
 
-    .ant-table-tbody
-      > tr.ant-table-row-selected
-      > td:not(.ant-table-column-sort),
-    .ant-table-tbody
-      > tr.ant-table-row-selected
-      > td:not(.ant-table-column-sort):hover,
     .ant-table-tbody > tr.ant-table-row:hover > td,
     .ant-table-tbody > tr.ant-table-row:hover > td:not(.ant-table-column-sort),
     .ant-table-tbody > tr > td.ant-table-cell-row-hover,
     .ant-table-tbody > tr > td.ant-table-row-hover {
       background: $primary-subtle;
+    }
+
+    .ant-table-tbody > tr.ant-table-row-selected > td,
+    .ant-table-tbody > tr.ant-table-row-selected > td:hover,
+    .ant-table-tbody > tr.ant-table-row-selected:hover > td {
+      background: $accent-subtle !important;
     }
 
     .ant-table-thead > tr > th,

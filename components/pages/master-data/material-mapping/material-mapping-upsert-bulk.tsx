@@ -85,6 +85,7 @@ function MaterialMappingUpsertBulk(props: any) {
       key: "no",
       width: 45,
       fixed: "left" as const,
+      align: "center" as const,
     },
     ...HEADER_KEYS.map((key) => ({
       title: COLUMN_LABELS[key] ?? key,

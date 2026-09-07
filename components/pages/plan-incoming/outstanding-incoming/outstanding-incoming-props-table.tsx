@@ -16,7 +16,7 @@ import { OutstandingIncomingRow } from "@sera-types/outstanding-incoming.type";
 import { ROUTE } from "@sera-utils/constants/routes";
 import FormatUtils from "@sera-utils/format";
 import useCheckPermission from "@sera-utils/hooks/useCheckPermission";
-import { Col, Dropdown, Grid, MenuProps, Row, Space, Tag, Tooltip } from "antd";
+import { Dropdown, Grid, MenuProps, Space, Tag, Tooltip } from "antd";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 
@@ -98,11 +98,8 @@ export const Columns = (handlers: RowActionHandlers) => {
     {
       title: "No",
       key: "no",
-      render: (_: never, record: any) => (
-        <Row justify="center">
-          <Col>{record.no}</Col>
-        </Row>
-      ),
+      align: "center" as const,
+      render: (_: never, record: any) => record.no,
       fixed: leftFixed,
       exception: true,
       width: 60,

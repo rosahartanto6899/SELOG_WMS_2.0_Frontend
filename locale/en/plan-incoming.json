@@ -1,8 +1,8 @@
 {
   "uploadAhm": {
-    "title": "Upload Incoming Plan AHM",
+    "title": "Upload Plan Incoming AHM",
     "breadcrumb": ["Incoming Plan", "Upload AHM"],
-    "subtitle": "Bulk upload AHM incoming plan from an Excel file (max {{max}} rows).",
+    "subtitle": "Bulk upload plan incoming AHM from an Excel file (max {{max}} rows).",
     "downloadTemplate": "Download Template",
     "submit": "Submit",
     "stepUpload": "Upload Excel File",
