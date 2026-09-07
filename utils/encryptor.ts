@@ -41,17 +41,25 @@ export const decryptData = (
   keyIV?: any,
 ): any => {
   if (!process.env.SECRET_KEY || !encryptedData) return "";
-  if (key !== undefined && keyIV !== undefined) {
-    const bytes = AES.decrypt(encryptedData, enc.Hex.parse(key!), {
-      iv: enc.Hex.parse(keyIV),
-      keySize: 256,
-    });
+  try {
+    if (key !== undefined && keyIV !== undefined) {
+      const bytes = AES.decrypt(encryptedData, enc.Hex.parse(key!), {
+        iv: enc.Hex.parse(keyIV),
+        keySize: 256,
+      });
 
-    return bytes.toString(enc.Utf8);
+      return bytes.toString(enc.Utf8);
+    }
+
+    const bytes = AES.decrypt(encryptedData, process.env.SECRET_KEY);
+    return JSON.parse(bytes.toString(enc.Utf8));
+  } catch {
+    // Ciphertext tidak cocok dengan SECRET_KEY saat ini (mis. key baru saja
+    // berganti, atau data localStorage sudah usang) — perlakukan sebagai
+    // "tidak ada data" agar pemanggil bisa fallback fetch/re-encrypt ulang,
+    // bukan crash dengan unhandled "Malformed UTF-8 data".
+    return "";
   }
-
-  const bytes = AES.decrypt(encryptedData, process.env.SECRET_KEY);
-  return JSON.parse(bytes.toString(enc.Utf8));
 };
 
 export const encryptDataGCM = async (
