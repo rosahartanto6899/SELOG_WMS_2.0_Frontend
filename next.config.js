@@ -50,12 +50,8 @@ const nextConfig = {
     ),
     SERVICE_USER: encryptData(process.env.SERVICE_USER),
     SERVICE_MASTER: encryptData(process.env.SERVICE_MASTER),
-    SERVICE_VEHICLE: encryptData(process.env.SERVICE_VEHICLE),
     SERVICE_INCOMING: encryptData(process.env.SERVICE_INCOMING),
-    SERVICE_ORDER: encryptData(process.env.SERVICE_ORDER),
-    SERVICE_DRIVER: encryptData(process.env.SERVICE_DRIVER),
-    SERVICE_JOURNEY: encryptData(process.env.SERVICE_JOURNEY),
-    SERVICE_BILLING: encryptData(process.env.SERVICE_BILLING),
+    SERVICE_OUTGOING: encryptData(process.env.SERVICE_OUTGOING),
     AUTH_URL: encryptData(process.env.AUTH_URL),
 
     API_BASE_URL: encryptData(process.env.API_BASE_URL),

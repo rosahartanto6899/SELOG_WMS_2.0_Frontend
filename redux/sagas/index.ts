@@ -11,6 +11,7 @@ import materialLocationMappingSaga from "./material-location-mapping.saga";
 import menusSaga from "./menu.saga";
 import notificationSaga from "./notification.saga";
 import outstandingIncomingSaga from "./outstanding-incoming.saga";
+import outstandingOutgoingSaga from "./outstanding-outgoing.saga";
 import provinceSaga from "./province.saga";
 import roleSaga from "./role.saga";
 import roleMenuSaga from "./role-menu.saga";
@@ -35,6 +36,7 @@ export default function* rootSaga() {
     uploadIncomingAhmSaga(),
     actualIncomingSaga(),
     outstandingIncomingSaga(),
+    outstandingOutgoingSaga(),
     zoneSaga(),
     locationSaga(),
     materialSaga(),

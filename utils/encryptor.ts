@@ -60,6 +60,12 @@ export const decryptData = (
     // bukan crash dengan unhandled "Malformed UTF-8 data".
     return "";
   }
+  const bytes = AES.decrypt(encryptedData, process.env.SECRET_KEY);
+  const text = bytes.toString(enc.Utf8);
+  // .env dev kadang diisi plaintext — pakai langsung; ciphertext crypto-js selalu
+  // berawalan "U2FsdGVkX1" (OpenSSL salted), nilai lain dianggap plaintext
+  if (!text) return encryptedData.startsWith("U2FsdGVkX1") ? "" : encryptedData;
+  return JSON.parse(text);
 };
 
 export const encryptDataGCM = async (

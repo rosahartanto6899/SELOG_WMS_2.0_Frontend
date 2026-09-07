@@ -35,7 +35,7 @@
       "title": "Outstanding Incoming",
       "detailTitle": "Detail Outstanding Incoming",
       "breadcrumb": ["Plan Incoming", "Outstanding Incoming", "Detail"],
-      "inputTitle": "Input Incoming"
+      "inputTitle": "Input Plan Incoming"
     },
     "filter": {
       "warehouse": "Filter Gudang"
@@ -86,7 +86,7 @@
         "edit": "Edit",
         "cancel": "Cancel",
         "confirmCancel": "Confirm Cancel",
-        "inputIncoming": "Input Incoming",
+        "inputIncoming": "Input Plan Incoming",
         "holdList": "Daftar Hold",
         "bulkConfirm": "Confirm Draft",
         "bulkDelete": "Delete",
@@ -323,8 +323,8 @@
       "failed": "Gagal"
     },
     "form": {
-      "title": "Input Incoming",
-      "editTitle": "Edit Incoming",
+      "title": "Input Plan Incoming",
+      "editTitle": "Edit Plan Incoming",
       "submit": "Submit",
       "cancel": "Batal",
       "customerCode": "Kode Pelanggan",

@@ -12,6 +12,7 @@ import materialLocationMappingReducer from "./material-location-mapping.slice";
 import menuReducer from "./menu.slice";
 import notificationReducer from "./notification.slice";
 import outstandingIncomingReducer from "./outstanding-incoming.slice";
+import outstandingOutgoingReducer from "./outstanding-outgoing.slice";
 import provinceReducer from "./province.slice";
 import rolesReducer from "./role.slice";
 import rolesMenuReducer from "./role-menu.slice";
@@ -36,6 +37,7 @@ const rootReducer = combineReducers({
   uploadIncomingAhm: uploadIncomingAhmReducer,
   actualIncoming: actualIncomingReducer,
   outstandingIncoming: outstandingIncomingReducer,
+  outstandingOutgoing: outstandingOutgoingReducer,
   zones: zoneReducer,
   locations: locationReducer,
   materials: materialReducer,
