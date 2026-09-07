@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Card from "@sera-components/card";
 import Empty from "@sera-components/empty";
-import StatusTag from "@sera-components/status-tag";
+import Input from "@sera-components/input";
+import { Input as AntdInput } from "antd";
 import {
   outstandingIncomingActions,
   useAppDispatch,
@@ -9,7 +10,7 @@ import {
 } from "@sera-redux";
 import { outstandingIncomingTypes } from "@sera-types/outstanding-incoming.type";
 import FormatUtils from "@sera-utils/format";
-import { Descriptions, Space, Table, Tabs, Tag } from "antd";
+import { Col, Form, Row, Space, Table } from "antd";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -32,6 +33,7 @@ const OutstandingIncomingDetail = () => {
       state.loading[outstandingIncomingTypes.GET_OUTSTANDING_INCOMING_DETAIL],
   );
 
+
   useEffect(() => {
     if (id) {
       dispatch(
@@ -47,6 +49,15 @@ const OutstandingIncomingDetail = () => {
 
   const toDate = (v?: string | null) =>
     v ? FormatUtils().dateTimeTransform(v) : "-";
+
+  /* Kolom add-info detail — nama unik lintas baris material. */
+  const detailAddInfoNames = [
+    ...new Set(
+      (header?.details ?? []).flatMap((d) =>
+        (d.addInfos ?? []).map((a) => a.name).filter(Boolean) as string[],
+      ),
+    ),
+  ];
 
   const detailColumns = [
     {
@@ -71,7 +82,6 @@ const OutstandingIncomingDetail = () => {
       dataIndex: "poQty",
       key: "poQty",
       width: 90,
-      align: "right" as const,
       className: styles["tabular-nums"],
     },
     {
@@ -79,7 +89,6 @@ const OutstandingIncomingDetail = () => {
       dataIndex: "partialQty",
       key: "partialQty",
       width: 100,
-      align: "right" as const,
       className: styles["tabular-nums"],
     },
     {
@@ -87,7 +96,6 @@ const OutstandingIncomingDetail = () => {
       dataIndex: "binningQty",
       key: "binningQty",
       width: 100,
-      align: "right" as const,
       className: styles["tabular-nums"],
     },
     {
@@ -102,6 +110,12 @@ const OutstandingIncomingDetail = () => {
       key: "description",
       truncate: true,
     },
+    ...detailAddInfoNames.map((name) => ({
+      title: name,
+      key: `addinfo-${name}`,
+      render: (_: any, row: any) =>
+        row.addInfos?.find((a: any) => a.name === name)?.value ?? "-",
+    })),
   ];
 
   const historyColumns = [
@@ -117,7 +131,6 @@ const OutstandingIncomingDetail = () => {
       title: t("history.leadtime"),
       dataIndex: "leadtime",
       key: "leadtime",
-      align: "right" as const,
       className: styles["tabular-nums"],
       render: (v: number | null) =>
         v == null ? "-" : `${v} ${t("history.minutes")}`,
@@ -129,76 +142,89 @@ const OutstandingIncomingDetail = () => {
     },
   ];
 
+  /* Field read-only ala form LOGIS: label atas + input disabled (lihat
+     shipment-detail-form), grid 2 kolom responsif. Add-info header ikut
+     jadi field dinamis. */
+  const infoFields = [
+    { label: t("detail.deliveryNoteNo"), value: header?.deliveryNoteNo },
+    { label: t("detail.poNo"), value: header?.poNo },
+    { label: t("detail.customerName"), value: header?.customerName },
+    { label: t("detail.warehouseName"), value: header?.warehouseName },
+    { label: t("detail.supplierName"), value: header?.supplierName },
+    ...(header?.addInfos ?? []).map((a) => ({
+      label: a.name ?? "-",
+      value: a.value,
+    })),
+  ];
+
   return (
-    <Card>
-      <Tabs
-        items={[
-          {
-            key: "detail",
-            label: t("tabs.detail"),
-            children: (
-              <>
-                <Descriptions size="small" bordered column={2}>
-                  <Descriptions.Item label={t("detail.deliveryNoteNo")}>
-                    {header?.deliveryNoteNo ?? "-"}
-                  </Descriptions.Item>
-                  <Descriptions.Item label={t("detail.poNo")}>
-                    {header?.poNo ?? "-"}
-                  </Descriptions.Item>
-                  <Descriptions.Item label={t("detail.customerName")}>
-                    {header?.customerName ?? "-"}
-                  </Descriptions.Item>
-                  <Descriptions.Item label={t("detail.warehouseName")}>
-                    {header?.warehouseName ?? "-"}
-                  </Descriptions.Item>
-                  <Descriptions.Item label={t("detail.supplierName")}>
-                    {header?.supplierName ?? "-"}
-                  </Descriptions.Item>
-                  <Descriptions.Item label={t("detail.status")}>
-                    <Space size={4}>
-                      <StatusTag
-                        value={header?.status ?? "-"}
-                        fallback="default"
-                      />
-                      {header?.isHold ? <Tag color="warning">HOLD</Tag> : null}
-                    </Space>
-                  </Descriptions.Item>
-                  <Descriptions.Item label={t("detail.description")}>
-                    {header?.description ?? "-"}
-                  </Descriptions.Item>
-                </Descriptions>
-                <Table
-                  className="mt-4"
-                  size="small"
-                  rowKey="id"
-                  loading={loading}
-                  locale={{ emptyText: <Empty /> }}
-                  dataSource={header?.details ?? []}
-                  columns={detailColumns}
-                  pagination={false}
-                  scroll={{ x: 900 }}
-                />
-              </>
-            ),
-          },
-          {
-            key: "history",
-            label: t("tabs.history"),
-            children: (
-              <Table
-                size="small"
-                rowKey="id"
-                loading={loading}
-                locale={{ emptyText: <Empty /> }}
-                dataSource={history ?? []}
-                columns={historyColumns}
-                pagination={false}
-              />
-            ),
-          },
-        ]}
-      />
-    </Card>
+    <Space
+      direction="vertical"
+      size={24}
+      style={{ display: "flex" }}
+      className={styles["detail-stack"]}
+    >
+      <Card title={t("detail.informationTitle")}>
+            <Form layout="vertical">
+              <Row gutter={16}>
+                {infoFields.map((f) => (
+                  <Col key={f.label} xs={24} md={12}>
+                    <Form.Item label={f.label}>
+                      <Input disabled value={f.value ?? "-"} />
+                    </Form.Item>
+                  </Col>
+                ))}
+                <Col xs={24} md={12}>
+                  <Form.Item label={t("detail.description")}>
+                    <AntdInput.TextArea
+                      disabled
+                      autoSize={{ minRows: 1, maxRows: 4 }}
+                      value={header?.description ?? "-"}
+                    />
+                  </Form.Item>
+                </Col>
+                <Col xs={24} md={12}>
+                  <Form.Item label={t("detail.status")}>
+                    <Input
+                      disabled
+                      value={[
+                        header?.status,
+                        header?.isHold ? "HOLD" : null,
+                      ]
+                        .filter(Boolean)
+                        .join(" — ") || "-"}
+                    />
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Form>
+          </Card>
+      <Card title={t("detail.materialTitle")}>
+        <Table
+          size="small"
+          rowKey="id"
+          loading={loading}
+          locale={{ emptyText: <Empty /> }}
+          dataSource={header?.details ?? []}
+          columns={detailColumns}
+          pagination={false}
+          scroll={{ x: 900 }}
+        />
+      </Card>
+      <Card title={t("detail.historyTitle")}>
+        <Table
+          size="small"
+          rowKey="id"
+          loading={loading}
+          locale={{ emptyText: <Empty /> }}
+          dataSource={[...(history ?? [])].sort((a, b) =>
+            (b.date ?? "").localeCompare(a.date ?? ""),
+          )}
+          columns={historyColumns}
+          pagination={false}
+        />
+      </Card>
+    </Space>
   );
 };
 

@@ -412,7 +412,8 @@
         "description": "Description",
         "additionalInfo": "Additional Information",
         "grDate": "GR Date",
-        "grBy": "GR By"
+        "grBy": "GR By",
+        "action": "Action"
       }
     },
     "detail": {

@@ -412,7 +412,8 @@
         "description": "Deskripsi",
         "additionalInfo": "Informasi Tambahan",
         "grDate": "Tanggal GR",
-        "grBy": "Oleh GR"
+        "grBy": "Oleh GR",
+        "action": "Aksi"
       }
     },
     "detail": {

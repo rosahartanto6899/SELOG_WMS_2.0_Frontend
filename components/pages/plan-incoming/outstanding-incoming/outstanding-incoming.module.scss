@@ -10,6 +10,214 @@
   background-color: #e6f4e6;
 }
 
+/* Indicator dot status — efek "menyala" (LED glow + pulse halus).
+   Warna via CSS var --c dari TSX. */
+.indicator-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 6px;
+  border-radius: 50%;
+  background: var(--c);
+  box-shadow:
+    inset 0 0 2px rgb(255 255 255 / 55%),
+    0 0 5px 1px color-mix(in srgb, var(--c) 75%, transparent),
+    0 0 12px 3px color-mix(in srgb, var(--c) 40%, transparent);
+  animation: indicator-glow 2.2s ease-in-out infinite;
+}
+
+@keyframes indicator-glow {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow:
+      inset 0 0 2px rgb(255 255 255 / 55%),
+      0 0 5px 1px color-mix(in srgb, var(--c) 75%, transparent),
+      0 0 12px 3px color-mix(in srgb, var(--c) 40%, transparent);
+  }
+
+  50% {
+    opacity: 0.8;
+    box-shadow:
+      inset 0 0 2px rgb(255 255 255 / 40%),
+      0 0 3px 0 color-mix(in srgb, var(--c) 60%, transparent),
+      0 0 7px 1px color-mix(in srgb, var(--c) 28%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .indicator-dot {
+    animation: none;
+  }
+}
+
+/* Card di halaman detail — shadow lebih halus dr .sera-card global (yg terlalu tajam).
+   :global(.ant-card) biar menang specificity runtime cssinjs antd. */
+.detail-stack :global(.ant-card) {
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 3%),
+    0 1px 6px -1px rgb(0 0 0 / 2%),
+    0 2px 4px rgb(0 0 0 / 2%);
+}
+
+/* Binning card — parity visual WMS_CoreApp (main.css .binning-card/.step-bar) */
+.binning-card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px 0 rgb(33 37 41 / 10%);
+  padding: 24px 20px;
+  height: 100%;
+
+  label {
+    display: block;
+    margin: 10px 0 4px;
+    font-weight: 500;
+    color: #222;
+
+    &:first-of-type {
+      margin-top: 0;
+    }
+  }
+
+  :global(.ant-input) {
+    border-radius: 8px;
+    background: #fafbfc;
+  }
+
+  /* tombol scan menyatu dgn input — menang atas .ant-btn radius global (!important) */
+  :global(.ant-space-compact) > :global(.ant-input) {
+    border-radius: 8px 0 0 8px !important;
+  }
+
+  :global(.ant-space-compact) > :global(.ant-btn) {
+    border-radius: 0 !important;
+  }
+
+  :global(.ant-space-compact) > :global(.ant-btn):last-child {
+    border-radius: 0 8px 8px 0 !important;
+  }
+
+  /* 🔍 biru · 📷 hijau — dua aksi dibedakan warna.
+     !important wajib: kalah dgn .ant-btn-primary navy gradient global (sera-override). */
+  :global(.ant-space-compact) > .btn-scan-search:not(:disabled) {
+    background: linear-gradient(135deg, #1677ff 0%, #0958d9 100%) !important;
+    border-color: transparent !important;
+    color: #fff !important;
+  }
+
+  :global(.ant-space-compact) > .btn-scan-camera:not(:disabled) {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    border-color: transparent !important;
+    color: #fff !important;
+  }
+
+  :global(.ant-space-compact) > .btn-scan-search:not(:disabled):hover {
+    background: linear-gradient(135deg, #0d6edb 0%, #084aae 100%) !important;
+    color: #fff !important;
+  }
+
+  :global(.ant-space-compact) > .btn-scan-camera:not(:disabled):hover {
+    background: linear-gradient(135deg, #0d9f6e 0%, #047857 100%) !important;
+    color: #fff !important;
+  }
+
+  /* disabled → abu antd, bukan gradient */
+  :global(.ant-space-compact) > .btn-scan-search:disabled,
+  :global(.ant-space-compact) > .btn-scan-camera:disabled {
+    background: #f5f5f5 !important;
+    color: rgba(0, 0, 0, 0.25) !important;
+  }
+
+  /* Parity main.css WMS_CoreApp (.binning-card .is-valid / .is-invalid):
+     valid hijau lembut, gagal scan merah lembut */
+  .scan-ok:global(.ant-input),
+  .scan-ok:global(.ant-input[disabled]) {
+    border-color: #10b981 !important;
+    background: #d1fae5 !important;
+    color: #065f46 !important;
+  }
+
+  .scan-err:global(.ant-input) {
+    border-color: #ef4444 !important;
+    background: #fee2e2 !important;
+    color: #991b1b !important;
+  }
+
+  &.completed {
+    background: #e6f9ed;
+    border: 2px solid #10b981;
+    box-shadow: 0 4px 24px 0 rgb(16 185 129 / 15%);
+    color: #065f46;
+
+    label {
+      color: #065f46;
+    }
+  }
+}
+
+/* Step bar ala legacy: circle + bar, aktif biru #2563eb */
+.step-bar {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
+
+  .circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 2px solid #e0e0e0;
+    border-radius: 50%;
+    background: #fff;
+    color: #bbb;
+    font-size: 14px;
+    transition: all 0.3s ease;
+  }
+
+  .step-label {
+    margin-top: 6px;
+    color: #bbb;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+
+  &.active {
+    .circle {
+      border-color: #2563eb;
+      background: #2563eb;
+      color: #fff;
+      transform: scale(1.1);
+    }
+
+    .step-label {
+      color: #2563eb;
+      font-weight: 600;
+    }
+  }
+}
+
+.step-bar .bar {
+  flex: 1;
+  height: 3px;
+  margin: 15px 8px 0;
+  border-radius: 2px;
+  background: #e0e0e0;
+  transition: all 0.3s ease;
+
+  &.active {
+    background: #2563eb;
+  }
+}
+
 /* SERA-style form controls — 20px pill InputNumber + 8px textarea */
 .sera-controls {
   :global {
@@ -22,4 +230,43 @@
       border-radius: 8px 8px 0;
     }
   }
+}
+
+/* Scan screen fullscreen (modal) — viewfinder gaya DANA/m-BCA */
+.scan-corner {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+}
+
+.scan-frame-line {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, transparent, #38bdf8, transparent);
+  animation: scan-sweep 2.2s ease-in-out infinite alternate;
+}
+
+@keyframes scan-sweep {
+  from {
+    top: 10%;
+  }
+
+  to {
+    top: 88%;
+  }
+}
+
+/* Search bar binning — pill besar di tengah ala CoreApp (filter-wrapper) */
+.binning-search :global(.ant-input-affix-wrapper) {
+  border-radius: 26px 0 0 26px !important;
+  background: #fff;
+  box-shadow: 0 2px 10px 0 rgb(33 37 41 / 8%);
+}
+
+.binning-search :global(.ant-btn) {
+  border-radius: 0 26px 26px 0 !important;
+  box-shadow: 0 2px 10px 0 rgb(33 37 41 / 8%);
 }
