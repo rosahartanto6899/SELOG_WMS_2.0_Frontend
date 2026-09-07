@@ -86,6 +86,29 @@ export const INT_KEYS = ["qtySumDiOri", "qtyDn"];
 const DATE_RE = /^(\d{4}-\d{2}-\d{2}|\d{2}-[A-Za-z]{3}-\d{4})$/;
 const TIME_RE = /^([01]\d|2[0-3]):[0-5]\d(:[0-5]\d)?$/;
 
+/** Sel date/time Excel datang sebagai serial number atau Date (cellDates:true) → teks. */
+export function excelSerialToTime(v: number | Date): string {
+  if (v instanceof Date) {
+    return [v.getUTCHours(), v.getUTCMinutes(), v.getUTCSeconds()]
+      .map((x) => String(x).padStart(2, "0"))
+      .join(":");
+  }
+  const total = Math.round((v - Math.floor(v)) * 86400);
+  const h = String(Math.floor(total / 3600)).padStart(2, "0");
+  const m = String(Math.floor((total % 3600) / 60)).padStart(2, "0");
+  const s = String(total % 60).padStart(2, "0");
+  return `${h}:${m}:${s}`;
+}
+
+export function excelSerialToDate(v: number | Date): string {
+  const d =
+    v instanceof Date ? v : new Date(Math.round((v - 25569) * 86400000));
+  const y = d.getUTCFullYear();
+  const m = String(d.getUTCMonth() + 1).padStart(2, "0");
+  const day = String(d.getUTCDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
 const MONTHS = [
   "JAN",
   "FEB",
@@ -217,6 +240,16 @@ export function parseRows(
     });
 
     if (!row.deliveryNoteNo && !row.supplierPartNumber) return; // empty row
+
+    // normalisasi sel berformat date/time (Date via cellDates / serial number Excel)
+    DATE_KEYS.forEach((key) => {
+      if (row[key] instanceof Date || typeof row[key] === "number")
+        row[key] = excelSerialToDate(row[key]);
+    });
+    TIME_KEYS.forEach((key) => {
+      if (row[key] instanceof Date || typeof row[key] === "number")
+        row[key] = excelSerialToTime(row[key]);
+    });
 
     REQUIRED_KEYS.forEach((key) => {
       if (row[key] === "" || row[key] === null || row[key] === undefined) {
