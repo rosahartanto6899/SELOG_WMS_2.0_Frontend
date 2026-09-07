@@ -26,21 +26,29 @@ export const DeleteActualForm = ({ open, ids, onClose, onDone }: Props) => {
   const submit = async (values: { description: string }) => {
     setLoading(true);
     try {
-      const result = await ActualIncomingApi().deleteActual(
-        ids.map((id) => ({ id, description: values.description })),
-      );
+      const api = ActualIncomingApi();
+      let deleted = 0;
+      const skipped: Array<{ id: string; reason: string }> = [];
+      // satu per satu per id terpilih (DELETE /:id)
+      for (const id of ids) {
+        try {
+          const r = await api.deleteActual(id, values.description);
+          if (r?.deleted) deleted += r.deleted;
+          else skipped.push({ id, reason: r?.reason ?? "Skipped" });
+        } catch (error: any) {
+          skipped.push({
+            id,
+            reason:
+              error?.response?.data?.message ?? error?.statusText ?? "Failed",
+          });
+        }
+      }
       message.success(
-        t("deleted", {
-          count: result?.deleted ?? 0,
-          skipped: result?.skipped?.length ?? 0,
-        }),
+        t("deleted", { count: deleted, skipped: skipped.length }),
       );
       form.resetFields();
       onDone();
       onClose();
-    } catch (error: any) {
-      const body: any = error?.response?.data ?? error?.data ?? {};
-      message.error(body?.message ?? error?.statusText ?? "Failed");
     } finally {
       setLoading(false);
     }

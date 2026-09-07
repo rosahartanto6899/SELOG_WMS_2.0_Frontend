@@ -1,5 +1,5 @@
 import PageLayout from "@sera-components/layout/page-layout";
-import ActualIncomingComponent from "@sera-components/pages/plan-incoming/actual-incoming";
+import OutstandingIncomingComponent from "@sera-components/pages/plan-incoming/outstanding-incoming";
 import { ROUTE } from "@sera-utils/constants/routes";
 import { useTranslation } from "react-i18next";
 
@@ -22,7 +22,7 @@ const ActualIncomingDetailPage = () => {
       backUrl={ROUTE.PLAN_INCOMING.ACTUAL_INCOMING}
       isDirectToURL
       withTab={false}
-      content={<ActualIncomingComponent.ActualIncomingDetail />}
+      content={<OutstandingIncomingComponent.OutstandingIncomingDetail />}
     />
   );
 };

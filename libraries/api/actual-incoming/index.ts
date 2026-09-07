@@ -1,10 +1,6 @@
 import apiUrl from "@sera-libraries/common/api-url";
 import { httpService } from "@sera-libraries/http-service";
-import {
-  ActualIncomingDeleteItem,
-  ActualIncomingDeleteResponse,
-  ActualIncomingListPayload,
-} from "@sera-types/actual-incoming.type";
+import { ActualIncomingListPayload } from "@sera-types/actual-incoming.type";
 
 /**
  * API untuk halaman Actual Incoming (spec 002-actual-incoming-page,
@@ -33,23 +29,17 @@ const ActualIncomingApi = () => {
     };
   }
 
-  /** A-Detail GET /:id — record GR aktif (PIC, grBy/grDate, lokasi binning) */
-  function retrieveActual(id: string) {
+  /** A-Delete DELETE /:id — satu id per request (alasan di body) */
+  function deleteActual(id: string, description: string) {
     return httpService
-      .get(`${base}/${id}`)
-      .then((resp: any) => resp?.data?.data ?? resp?.data);
+      .del(`${base}/${id}`, { data: { description } })
+      .then((resp: any) => resp?.data?.data ?? resp?.data) as Promise<{
+      deleted: number;
+      reason?: string;
+    }>;
   }
 
-  /** A-Delete POST /delete — bulk + alasan (audit) */
-  function deleteActual(items: ActualIncomingDeleteItem[]) {
-    return httpService
-      .post(`${base}/delete`, { items })
-      .then(
-        (resp: any) => resp?.data?.data ?? resp?.data,
-      ) as Promise<ActualIncomingDeleteResponse>;
-  }
-
-  return { retrieveList, retrieveListTyped, retrieveActual, deleteActual };
+  return { retrieveList, retrieveListTyped, deleteActual };
 };
 
 export default ActualIncomingApi;
