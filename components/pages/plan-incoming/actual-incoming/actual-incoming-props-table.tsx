@@ -8,7 +8,7 @@ import { ActualIncomingRow } from "@sera-types/actual-incoming.type";
 import { ROUTE } from "@sera-utils/constants/routes";
 import FormatUtils from "@sera-utils/format";
 import useCheckPermission from "@sera-utils/hooks/useCheckPermission";
-import { Col, Grid, Row, Space } from "antd";
+import { Grid, Space } from "antd";
 import Link from "next/link";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -50,11 +50,8 @@ export const Columns = () => {
     {
       title: "No",
       key: "no",
-      render: (_: never, record: any) => (
-        <Row justify="center">
-          <Col>{record.no}</Col>
-        </Row>
-      ),
+      align: "center" as const,
+      render: (_: never, record: any) => record.no,
       fixed: leftFixed,
       exception: true,
       width: 60,

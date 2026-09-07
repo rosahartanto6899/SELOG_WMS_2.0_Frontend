@@ -115,10 +115,11 @@ $navbar-height: 68px;
 
       .navbar-customer {
         align-items: center;
-        border-right: 1px solid rgb(255 255 255 / 15%);
+        border: 1px solid rgb(255 255 255 / 25%);
+        border-radius: 8px;
         display: flex;
         margin-right: 14px;
-        padding-right: 14px;
+        padding: 4px 12px;
       }
 
       .navbar-dropdown {
