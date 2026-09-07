@@ -172,7 +172,6 @@ function UploadIncomingAhmUpsertBulk(props: any) {
         const arrayBuffer = e.target?.result as ArrayBuffer;
         const workbook = XLSX.read(arrayBuffer, {
           type: "array",
-          cellDates: true,
           cellNF: false,
           cellText: false,
         });
