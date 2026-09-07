@@ -83,7 +83,7 @@ export const Columns = (handlers: RowActionHandlers) => {
     keyPrefix: "planIncoming.outstandingIncoming.table",
   });
 
-  const { isRead, isUpdate, isDelete } = useCheckPermission({
+  const { isRead, isUpdate } = useCheckPermission({
     menuLink: ROUTE.PLAN_INCOMING.OUTSTANDING_INCOMING,
   });
 
@@ -247,16 +247,6 @@ export const Columns = (handlers: RowActionHandlers) => {
                   onClick={() => handlers.onEdit(record)}
                 />
               )}
-              {isUpdate && isDelete && (
-                <Button
-                  size="small"
-                  type="text"
-                  danger
-                  icon={<StopOutlined />}
-                  tooltip={t("button.cancel")}
-                  onClick={() => handlers.onCancel(record)}
-                />
-              )}
             </Space>
           );
         }
@@ -317,6 +307,16 @@ export const Columns = (handlers: RowActionHandlers) => {
                   {t("button.flow")}
                 </Button>
               </Dropdown>
+            )}
+            {isUpdate && record.status === "Cancellation" && (
+              <Button
+                size="small"
+                type="text"
+                danger
+                icon={<StopOutlined />}
+                tooltip={t("button.confirmCancel")}
+                onClick={() => handlers.onCancel(record)}
+              />
             )}
             {isUpdate && (
               <Dropdown

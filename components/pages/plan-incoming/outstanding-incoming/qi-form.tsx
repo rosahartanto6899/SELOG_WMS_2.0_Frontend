@@ -20,9 +20,7 @@ import {
   InputNumber,
   message,
   Modal,
-  Popover,
   Row,
-  Select,
   Typography,
   Upload,
 } from "antd";
@@ -289,6 +287,16 @@ const QiForm = (props: Props) => {
     ...extra,
   });
 
+  // Kolom add-info dinamis — nama unik lintas baris (pola material detail)
+  const addInfoNames = [
+    ...new Set(
+      details.flatMap(
+        (d) =>
+          (d.addInfos ?? []).map((a) => a.name).filter(Boolean) as string[],
+      ),
+    ),
+  ];
+
   const columns = [
     {
       title: "#",
@@ -324,27 +332,6 @@ const QiForm = (props: Props) => {
       key: "poQty",
       width: 90,
       ...num(),
-      // parity CoreApp: PlanQty column rendered as AddInfo link
-      render: (v: number, record: OutstandingIncomingDetail) => (
-        <Popover
-          title={t("addInfo")}
-          content={
-            (record.addInfos ?? []).length ? (
-              <div style={{ maxWidth: 280 }}>
-                {(record.addInfos ?? []).map((a, i) => (
-                  <div key={i}>
-                    <b>{a.name}</b>: {a.value}
-                  </div>
-                ))}
-              </div>
-            ) : (
-              "-"
-            )
-          }
-        >
-          <Typography.Link>{v}</Typography.Link>
-        </Popover>
-      ),
     },
     {
       title: t("partialQty"),
@@ -382,6 +369,13 @@ const QiForm = (props: Props) => {
       key: "description",
       ellipsis: true,
     },
+    ...addInfoNames.map((name) => ({
+      title: name,
+      key: `addinfo-${name}`,
+      ellipsis: true,
+      render: (_: unknown, row: QiRow) =>
+        row.addInfos?.find((a: any) => a.name === name)?.value ?? "-",
+    })),
     {
       title: t("action"),
       key: "operation",

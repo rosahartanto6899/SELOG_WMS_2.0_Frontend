@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Card from "@sera-components/card";
-import Empty from "@sera-components/empty";
 import Input from "@sera-components/input";
-import { Input as AntdInput } from "antd";
+import Table from "@sera-components/table";
 import {
   outstandingIncomingActions,
   useAppDispatch,
@@ -10,11 +9,13 @@ import {
 } from "@sera-redux";
 import { outstandingIncomingTypes } from "@sera-types/outstanding-incoming.type";
 import FormatUtils from "@sera-utils/format";
-import { Col, Form, Row, Space, Table } from "antd";
+import { Input as AntdInput } from "antd";
+import { Col, Form, Row, Space } from "antd";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import MaterialSearch from "./material-search";
 import styles from "./outstanding-incoming.module.scss";
 
 const OutstandingIncomingDetail = () => {
@@ -33,6 +34,15 @@ const OutstandingIncomingDetail = () => {
       state.loading[outstandingIncomingTypes.GET_OUTSTANDING_INCOMING_DETAIL],
   );
 
+  // history: client-side pagination (pola qi-form)
+  const [histPage, setHistPage] = useState(1);
+  const [histPageSize, setHistPageSize] = useState(10);
+
+  // material: client-side search + pagination (pola qi-form), kolom add-info tetap dinamis
+  const [matSearch, setMatSearch] = useState("");
+  const [matSearchBy, setMatSearchBy] = useState("materialCode");
+  const [matPage, setMatPage] = useState(1);
+  const [matPageSize, setMatPageSize] = useState(10);
 
   useEffect(() => {
     if (id) {
@@ -53,8 +63,9 @@ const OutstandingIncomingDetail = () => {
   /* Kolom add-info detail — nama unik lintas baris material. */
   const detailAddInfoNames = [
     ...new Set(
-      (header?.details ?? []).flatMap((d) =>
-        (d.addInfos ?? []).map((a) => a.name).filter(Boolean) as string[],
+      (header?.details ?? []).flatMap(
+        (d) =>
+          (d.addInfos ?? []).map((a) => a.name).filter(Boolean) as string[],
       ),
     ),
   ];
@@ -142,6 +153,21 @@ const OutstandingIncomingDetail = () => {
     },
   ];
 
+  /* History terbaru dulu, paging client-side. */
+  const historyRows = [...(history ?? [])].sort((a, b) =>
+    (b.date ?? "").localeCompare(a.date ?? ""),
+  );
+
+  /* Filter material utk search by + keyword (pola qi-form). */
+  const matNeedle = matSearch.trim().toLowerCase();
+  const matFiltered = matNeedle
+    ? (header?.details ?? []).filter((d: any) =>
+        String(d[matSearchBy] ?? "")
+          .toLowerCase()
+          .includes(matNeedle),
+      )
+    : (header?.details ?? []);
+
   /* Field read-only ala form LOGIS: label atas + input disabled (lihat
      shipment-detail-form), grid 2 kolom responsif. Add-info header ikut
      jadi field dinamis. */
@@ -165,63 +191,100 @@ const OutstandingIncomingDetail = () => {
       className={styles["detail-stack"]}
     >
       <Card title={t("detail.informationTitle")}>
-            <Form layout="vertical">
-              <Row gutter={16}>
-                {infoFields.map((f) => (
-                  <Col key={f.label} xs={24} md={12}>
-                    <Form.Item label={f.label}>
-                      <Input disabled value={f.value ?? "-"} />
-                    </Form.Item>
-                  </Col>
-                ))}
-                <Col xs={24} md={12}>
-                  <Form.Item label={t("detail.description")}>
-                    <AntdInput.TextArea
-                      disabled
-                      autoSize={{ minRows: 1, maxRows: 4 }}
-                      value={header?.description ?? "-"}
-                    />
-                  </Form.Item>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Form.Item label={t("detail.status")}>
-                    <Input
-                      disabled
-                      value={[
-                        header?.status,
-                        header?.isHold ? "HOLD" : null,
-                      ]
-                        .filter(Boolean)
-                        .join(" — ") || "-"}
-                    />
-                  </Form.Item>
-                </Col>
-              </Row>
-            </Form>
-          </Card>
+        <Form layout="vertical">
+          <Row gutter={16}>
+            {infoFields.map((f) => (
+              <Col key={f.label} xs={24} md={12}>
+                <Form.Item label={f.label}>
+                  <Input disabled value={f.value ?? "-"} />
+                </Form.Item>
+              </Col>
+            ))}
+            <Col xs={24} md={12}>
+              <Form.Item label={t("detail.description")}>
+                <AntdInput.TextArea
+                  disabled
+                  autoSize={{ minRows: 1, maxRows: 4 }}
+                  value={header?.description ?? "-"}
+                />
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={12}>
+              <Form.Item label={t("detail.status")}>
+                <Input
+                  disabled
+                  value={
+                    [header?.status, header?.isHold ? "HOLD" : null]
+                      .filter(Boolean)
+                      .join(" — ") || "-"
+                  }
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
+      </Card>
       <Card title={t("detail.materialTitle")}>
         <Table
-          size="small"
           rowKey="id"
           loading={loading}
-          locale={{ emptyText: <Empty /> }}
-          dataSource={header?.details ?? []}
-          columns={detailColumns}
-          pagination={false}
-          scroll={{ x: 900 }}
+          dataSource={matFiltered.slice(
+            (matPage - 1) * matPageSize,
+            matPage * matPageSize,
+          )}
+          columns={detailColumns as any}
+          scroll={{ x: "max-content" }}
+          total={matFiltered.length}
+          current={matPage}
+          pageSize={matPageSize}
+          onPageChange={(p) => setMatPage(p)}
+          onShowSizeChange={(_, s) => {
+            setMatPageSize(s);
+            setMatPage(1);
+          }}
+          isCustomSearch
+          showTitle={false}
+          showActions={false}
+          customSearch={
+            <MaterialSearch
+              id="detail-material"
+              searchBy={matSearchBy}
+              onSearchBy={(value) => {
+                setMatSearchBy(value);
+                setMatSearch("");
+                setMatPage(1);
+              }}
+              placeholder={t("detail.searchPlaceholder")}
+              onSearchValue={(v) => {
+                setMatSearch(v);
+                setMatPage(1);
+              }}
+              options={["materialCode", "materialName", "materialBrand"].map(
+                (k) => ({ value: k, label: t(`detail.${k}`) }),
+              )}
+            />
+          }
         />
       </Card>
       <Card title={t("detail.historyTitle")}>
         <Table
-          size="small"
           rowKey="id"
           loading={loading}
-          locale={{ emptyText: <Empty /> }}
-          dataSource={[...(history ?? [])].sort((a, b) =>
-            (b.date ?? "").localeCompare(a.date ?? ""),
+          dataSource={historyRows.slice(
+            (histPage - 1) * histPageSize,
+            histPage * histPageSize,
           )}
-          columns={historyColumns}
-          pagination={false}
+          columns={historyColumns as any}
+          total={historyRows.length}
+          current={histPage}
+          pageSize={histPageSize}
+          onPageChange={(p) => setHistPage(p)}
+          onShowSizeChange={(_, s) => {
+            setHistPageSize(s);
+            setHistPage(1);
+          }}
+          showTitle={false}
+          showActions={false}
         />
       </Card>
     </Space>

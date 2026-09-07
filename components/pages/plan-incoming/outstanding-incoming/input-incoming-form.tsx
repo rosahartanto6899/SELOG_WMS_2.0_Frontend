@@ -24,6 +24,7 @@ import {
   Select,
   Space,
   Table,
+  Tooltip,
 } from "antd";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
@@ -160,15 +161,18 @@ const InputIncomingForm = (props: Props) => {
       .get(`${apiUrl.user}/warehouses/dropdown`)
       .then((resp: any) => {
         const all = resp?.data?.data ?? [];
-        setWarehouses(
-          all
-            .filter(
-              (w: any) =>
-                w.customer?.id === customerId &&
-                (!roleWarehouses.length || roleWarehouses.includes(w.id)),
-            )
-            .map((w: any) => ({ id: w.id, code: w.code, name: w.name })),
-        );
+        const list = all
+          .filter(
+            (w: any) =>
+              w.customer?.id === customerId &&
+              (!roleWarehouses.length || roleWarehouses.includes(w.id)),
+          )
+          .map((w: any) => ({ id: w.id, code: w.code, name: w.name }));
+        setWarehouses(list);
+        // default: warehouse teratas (mode create, belum ada pilihan)
+        if (list.length && !editData && !form.getFieldValue("warehouseCode")) {
+          form.setFieldValue("warehouseCode", list[0].code);
+        }
       })
       .catch(() => undefined);
   }, [open, session?.user?.customerId, session?.user?.roles]);
@@ -193,6 +197,10 @@ const InputIncomingForm = (props: Props) => {
     const rows = materials.filter((m) => m.materialCode && m.qty != null);
     if (!rows.length) {
       message.warning(t("noMaterial"));
+      return;
+    }
+    if (rows.some((m) => (m.qty ?? 0) < 1)) {
+      message.warning(t("invalidQty"));
       return;
     }
     const additionalInformation = addInfos
@@ -497,8 +505,25 @@ const InputIncomingForm = (props: Props) => {
             locale={{ emptyText: <Empty /> }}
             expandable={{
               // Add-info LEVEL DETAIL — expand baris material
+              expandIcon: ({ expanded, onExpand, record }) => (
+                <Tooltip title={t("addInfos")}>
+                  <button
+                    type="button"
+                    className={`ant-table-row-expand-icon${
+                      expanded
+                        ? " ant-table-row-expand-icon-expanded"
+                        : " ant-table-row-expand-icon-collapsed"
+                    }`}
+                    onClick={(e) => onExpand(record, e)}
+                  />
+                </Tooltip>
+              ),
               expandedRowRender: (row: MaterialRow) => (
-                <div style={{ maxWidth: 560 }}>
+                <Card
+                  type="inner"
+                  title={t("addInfos")}
+                  style={{ maxWidth: 560 }}
+                >
                   {(row.additionalInformation ?? [{}]).map((a, i) => (
                     <Row key={i} gutter={8} className="mb-2">
                       <Col span={10}>
@@ -561,7 +586,7 @@ const InputIncomingForm = (props: Props) => {
                   >
                     {t("addInfo")}
                   </Button>
-                </div>
+                </Card>
               ),
             }}
           />

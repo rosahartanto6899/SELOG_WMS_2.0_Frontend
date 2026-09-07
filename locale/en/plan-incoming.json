@@ -85,6 +85,7 @@
         "slip": "Slip",
         "edit": "Edit",
         "cancel": "Cancel",
+        "confirmCancel": "Confirm Cancel",
         "inputIncoming": "Input Incoming",
         "holdList": "Hold List",
         "bulkConfirm": "Confirm Draft",
@@ -130,6 +131,7 @@
         "binningDate": "Binning Date",
         "informationTitle": "Delivery Note Information",
         "materialTitle": "Material Detail",
+        "searchPlaceholder": "Search material...",
         "historyTitle": "Status History"
       },
       "history": {
@@ -351,6 +353,7 @@
       "value": "Value",
       "required": "Required",
       "noMaterial": "At least one material must be filled",
+      "invalidQty": "Each material qty must be at least 1",
       "created": "Incoming saved (Draft)",
       "updated": "Changes saved",
       "failed": "Failed to save",

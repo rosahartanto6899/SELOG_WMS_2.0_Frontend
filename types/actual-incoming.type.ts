@@ -38,16 +38,6 @@ export interface GetActualIncomingResponse {
   recordsTotal?: number;
 }
 
-export interface ActualIncomingDeleteItem {
-  id: string;
-  description: string;
-}
-
-export interface ActualIncomingDeleteResponse {
-  deleted?: number;
-  skipped?: Array<{ id: string; reason: string }>;
-}
-
 export interface ActualIncomingState {
   isLoading: boolean;
   error: Error | string | null;
