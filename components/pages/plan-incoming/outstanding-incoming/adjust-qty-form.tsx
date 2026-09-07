@@ -22,19 +22,26 @@ import styles from "./outstanding-incoming.module.scss";
 interface Props {
   open: boolean;
   details: OutstandingIncomingDetail[]; // details of the selected header
+  loading?: boolean; // true saat details masih di-fetch (popup dibuka paralel)
+  deliveryNoteNo?: string | null; // konteks row — parity UX legacy menampilkan DN
   onClose: () => void;
   onDone: () => void;
 }
 
 /** adjust qty per detail; the StockAvailability result is shown after submit. */
 const AdjustQtyForm = (props: Props) => {
-  const { open, details, onClose, onDone } = props;
+  const { open, details, loading, deliveryNoteNo, onClose, onDone } = props;
   const { t } = useTranslation(undefined, {
     keyPrefix: "planIncoming.outstandingIncoming.adjustQty",
   });
   const [form] = Form.useForm();
   const [stock, setStock] = useState<StockAvailabilityResult[] | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  // Parity legacy btnEditDetail: hanya detail yang SUDAH binning (binningDate != null)
+  // yang boleh di-adjust — row belum binning tidak ada yang bisa diubah qty-nya
+  const binned = details.filter((d) => d.binningDate != null);
+  const selected = binned.find((d) => d.id === selectedId);
 
   const submit = async (values: any) => {
     setSubmitting(true);
@@ -89,7 +96,9 @@ const AdjustQtyForm = (props: Props) => {
   return (
     <Modal
       open={open}
-      title={t("title")}
+      title={
+        deliveryNoteNo ? `${t("title")} (${deliveryNoteNo})` : t("title")
+      }
       onCancel={onClose}
       onOk={() => form.submit()}
       confirmLoading={submitting}
@@ -105,7 +114,10 @@ const AdjustQtyForm = (props: Props) => {
           >
             <Select
               placeholder={t("selectDetail")}
-              options={details.map((d) => ({
+              onChange={(v) => setSelectedId(v)}
+              loading={loading}
+              notFoundContent={loading ? t("loading") : t("noBinned")}
+              options={binned.map((d) => ({
                 value: d.id,
                 label: `${d.materialCode} — ${d.materialName} (PO ${d.poQty})`,
               }))}
@@ -115,6 +127,13 @@ const AdjustQtyForm = (props: Props) => {
             name="planQty"
             label={t("planQty")}
             rules={[{ required: true, message: t("required") }]}
+            extra={
+              selected
+                ? `${t("currentPoQty")}: ${selected.poQty ?? 0} · ${t(
+                    "currentBinningQty",
+                  )}: ${selected.binningQty ?? 0}`
+                : undefined
+            }
           >
             <InputNumber min={0} style={{ width: "100%" }} />
           </Form.Item>

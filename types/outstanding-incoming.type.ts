@@ -34,6 +34,11 @@ export interface OutstandingIncomingRow {
   createdBy?: string | null;
   isHold: number;
   no?: number;
+  /** Indikator balance (parity warna legacy CheckIndicator) — dihitung backend Q1 */
+  poQtyTotal?: number;
+  binningQtyTotal?: number;
+  partialQtyTotal?: number;
+  indicator?: "green" | "blue" | "red";
 }
 
 export interface OutstandingIncomingAddInfo {

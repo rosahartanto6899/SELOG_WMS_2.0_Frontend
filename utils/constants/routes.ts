@@ -2,7 +2,9 @@ export const ROUTE = {
   DASHBOARD: "/",
   PLAN_INCOMING: {
     OUTSTANDING_INCOMING: "/plan-incoming/outstanding-incoming",
+    ACTUAL_INCOMING: "/plan-incoming/actual-incoming",
     UPLOAD_AHM: "/plan-incoming/upload-incoming-ahm",
+    INPUT_INCOMING: "/plan-incoming/input-incoming",
   },
   USER_MANAGEMENT: {
     ROLE: "/user-management/role-permissions",

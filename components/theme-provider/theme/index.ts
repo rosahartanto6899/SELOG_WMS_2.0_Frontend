@@ -41,6 +41,11 @@ export const defaultTheme: ThemeConfig = {
       colorTextPlaceholder: colorScheme.TEXT.PLACEHOLDER,
       algorithm: true,
     },
+    InputNumber: {
+      colorBorder: colorScheme.PRIMARY.MAIN,
+      colorTextPlaceholder: colorScheme.TEXT.PLACEHOLDER,
+      algorithm: true,
+    },
     Select: {
       colorBorder: colorScheme.PRIMARY.MAIN,
       colorTextPlaceholder: colorScheme.TEXT.PLACEHOLDER,

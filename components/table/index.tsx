@@ -170,31 +170,7 @@ const Table: React.FC<TableProps> = (props: TableProps) => {
     selectedRowKeys,
     onChange: onSelectChange,
     getCheckboxProps,
-    selections: [
-      AntdTable.SELECTION_ALL,
-      AntdTable.SELECTION_INVERT,
-      AntdTable.SELECTION_NONE,
-      {
-        key: "odd",
-        text: "Select Odd Row",
-        onSelect: (changeableRowKeys) => {
-          const newSelectedRowKeys = changeableRowKeys.filter(
-            (_, index) => index % 2 === 0,
-          );
-          onSelectChange(newSelectedRowKeys);
-        },
-      },
-      {
-        key: "even",
-        text: "Select Even Row",
-        onSelect: (changeableRowKeys) => {
-          const newSelectedRowKeys = changeableRowKeys.filter(
-            (_, index) => index % 2 !== 0,
-          );
-          onSelectChange(newSelectedRowKeys);
-        },
-      },
-    ],
+    // tanpa `selections` (dropdown All/Invert/Odd/Even) — cukup checkbox select-all polos
   };
 
   const onMultipleDeleteSelectedListener = () => {
@@ -266,7 +242,7 @@ const Table: React.FC<TableProps> = (props: TableProps) => {
 
   return (
     <div className={styles["sera-table-wrapper"]}>
-      {(showTitle || search || showActions) && (
+      {(showTitle || search || showActions || isCustomSearch) && (
         <div className={styles["sera-table-wrapper__header"]}>
           {/* Header */}
           <Row gutter={[8, 8]} align="middle">

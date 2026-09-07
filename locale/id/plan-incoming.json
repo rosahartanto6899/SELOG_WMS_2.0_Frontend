@@ -34,7 +34,8 @@
     "page": {
       "title": "Outstanding Incoming",
       "detailTitle": "Detail Outstanding Incoming",
-      "breadcrumb": ["Plan Incoming", "Outstanding Incoming", "Detail"]
+      "breadcrumb": ["Plan Incoming", "Outstanding Incoming", "Detail"],
+      "inputTitle": "Input Incoming"
     },
     "filter": {
       "warehouse": "Filter Gudang"
@@ -52,6 +53,7 @@
       "cancelled": "Dibatalkan",
       "confirmFlowTitle": "Ubah status menjadi {{status}}?",
       "confirmFlowHint": "Tindakan ini tidak dapat dikembalikan.",
+      "grUnbalanced": "Harap periksa kembali Actual Qty dan pastikan seimbang.",
       "skipped": "Update skipped — status header tidak berubah"
     },
     "table": {
@@ -88,7 +90,12 @@
         "bulkConfirm": "Confirm Draft",
         "bulkDelete": "Delete",
         "bulkCreateActual": "Create Actual / GR",
-        "flow": "Alur"
+        "flow": "Status"
+      },
+      "indicator": {
+        "green": "Actual Qty seimbang — siap Goods Receipt",
+        "blue": "Ada partial qty — qty belum selesai diproses",
+        "red": "Actual Qty belum seimbang"
       },
       "options": [
         "No. Surat Jalan",
@@ -120,7 +127,10 @@
         "poQty": "Qty PO",
         "partialQty": "Qty Partial",
         "binningQty": "Qty Binning",
-        "binningDate": "Tanggal Binning"
+        "binningDate": "Tanggal Binning",
+        "informationTitle": "Informasi Surat Jalan",
+        "materialTitle": "Detail Material",
+        "historyTitle": "Riwayat Status"
       },
       "history": {
         "status": "Status",
@@ -163,7 +173,10 @@
       "title": "Adjust Qty Plan",
       "detail": "Detail material",
       "selectDetail": "Pilih material",
+      "noBinned": "Tidak ada material yang sudah binning — qty belum bisa di-adjust",
       "planQty": "Plan Qty baru",
+      "currentPoQty": "Qty PO saat ini",
+      "currentBinningQty": "Qty Binning saat ini",
       "description": "Deskripsi (di-append)",
       "required": "Wajib diisi",
       "failed": "Gagal",
@@ -174,23 +187,69 @@
         "qtySOH": "Qty SOH",
         "qtyPlanIncoming": "Qty Plan Incoming",
         "qtyPlanOutgoing": "Qty Plan Outgoing"
-      }
+      },
+      "loading": "Memuat material..."
     },
     "binning": {
       "title": "Binning",
-      "locations": "Lokasi",
       "materialCode": "Kode Material",
       "materialName": "Nama Material",
-      "poQty": "Qty PO",
-      "binningQty": "Qty Binning",
-      "remaining": "Sisa",
-      "detail": "Material",
-      "selectDetail": "Pilih material",
-      "actualQty": "Actual Qty",
-      "incrementHint": "Nilai DIINCREMENT ke binningQty; partialQty di-reset 0. Semua detail selesai → status otomatis Goods Receipt.",
-      "required": "Wajib diisi",
       "success": "Binning tersimpan",
-      "failed": "Gagal"
+      "failed": "Gagal",
+      "printSlip": "Print Binning Slip",
+      "binningAll": "Binning All",
+      "close": "Tutup",
+      "filterPlaceholder": "Filter nama / kode material...",
+      "qty": "Qty",
+      "poQty": "Qty PO",
+      "remaining": "Sisa Belum Binning",
+      "allFailed": "Gagal",
+      "materialBarcode": "Barcode Material",
+      "locationBarcode": "Barcode Lokasi",
+      "complete": "Selesai",
+      "completed": "Selesai",
+      "noPartial": "Mohon input Partial Quantity terlebih dahulu.",
+      "allNothing": "Semua item sudah ter-binning atau tidak ada item yang perlu di-binning.",
+      "allDone": "Binning All selesai: {{count}} item.",
+      "filteredEmpty": "Tidak ada material yang cocok dengan filter.",
+      "processing": "Memproses",
+      "scanMaterial": "Scan barcode material",
+      "scanLocation": "Scan barcode lokasi",
+      "invalidMaterialBarcode": "Barcode material tidak valid",
+      "invalidLocationBarcode": "Barcode lokasi tidak valid",
+      "fillMaterialBarcode": "Silakan isi Barcode Material",
+      "fillLocationBarcode": "Silakan isi Barcode Lokasi",
+      "cameraFailed": "Gagal mengakses kamera",
+      "cameraDenied": "izin kamera ditolak — izinkan di browser",
+      "cameraNotFound": "kamera tidak ditemukan",
+      "cameraInsecure": "kamera butuh HTTPS atau localhost",
+      "cameraHint": "Arahkan barcode ke kamera — hasil scan otomatis tervalidasi.",
+      "cameraMode": "Kembali ke Kamera",
+      "uploadMode": "Upload Gambar",
+      "detecting": "Mendeteksi barcode...",
+      "noBarcodeInImage": "Barcode tidak terdeteksi di gambar",
+      "stepMaterial": "Material",
+      "stepLocation": "Lokasi",
+      "stepDone": "Selesai",
+      "back": "Kembali",
+      "breadcrumb": ["Plan Incoming", "Outstanding Incoming", "Binning"],
+      "doneAsk": "Semua material sudah dibinning. Kembali ke daftar Outstanding Incoming?",
+      "doneBack": "Kembali ke Daftar",
+      "doneStay": "Tetap di Sini"
+    },
+    "barcodeLabeling": {
+      "title": "Barcode Labeling",
+      "print": "Print Barcode ({{count}})",
+      "noValid": "Tidak ada barcode valid (min. 11 digit) pada pilihan",
+      "searchPlaceholder": "Cari material...",
+      "materialCode": "Kode Material",
+      "materialName": "Nama Material",
+      "materialBrand": "Merk",
+      "barcode": "Barcode",
+      "poQty": "Qty PO",
+      "partialQty": "Qty Partial",
+      "binningQty": "Qty Binning",
+      "uom": "Satuan"
     },
     "slip": {
       "title": "Binning Slip",
@@ -208,7 +267,8 @@
       "materialName": "Nama Material",
       "materialBrand": "Brand",
       "uom": "UoM",
-      "poQty": "Plan Qty",
+      "poQty": "PO Qty",
+      "binningQty": "Binning Qty",
       "actualQty": "Actual Qty",
       "partialQty": "Partial Qty",
       "description": "Deskripsi",
@@ -238,14 +298,15 @@
       "staged": "{{n}} baris ditampung — klik Simpan Perubahan",
       "actualQtyRequired": "Binning Qty tidak boleh kosong!",
       "skipped": "Update skipped — status header tidak berubah",
-      "editTitle": "Edit Actual Qty",
+      "editTitle": "Edit Quality Inspection",
       "save": "Simpan",
       "close": "Tutup",
       "planQtyHint": "Qty plan (read-only)",
       "fileName": "Nama File",
       "uploadedDate": "Tgl Upload",
       "download": "Unduh",
-      "partialRequired": "Partial Qty wajib diisi"
+      "partialRequired": "Partial Qty wajib diisi",
+      "searchPlaceholder": "Cari material..."
     },
     "createActual": {
       "title": "Create Actual / Goods Receipt",
@@ -292,7 +353,97 @@
       "noMaterial": "Minimal satu material harus diisi",
       "created": "Incoming tersimpan (Draft)",
       "updated": "Perubahan tersimpan",
-      "failed": "Gagal menyimpan"
+      "failed": "Gagal menyimpan",
+      "noCustomerSession": "Customer aktif tidak terdeteksi dari sesi login",
+      "warehouse": "Warehouse",
+      "warehousePlaceholder": "Pilih warehouse",
+      "pickMaterial": "Pilih Material",
+      "pickMaterialPlaceholder": "Cari kode / nama material...",
+      "noMaterialFound": "Material tidak ditemukan"
+    }
+  },
+  "actualIncoming": {
+    "page": {
+      "title": "Actual Incoming",
+      "detailTitle": "Detail Actual Incoming",
+      "breadcrumb": ["Plan Incoming", "Actual Incoming", "Detail"]
+    },
+    "filter": {
+      "warehouse": "Filter Gudang"
+    },
+    "list": {
+      "confirmDelete": "Hapus actual incoming terpilih?",
+      "confirmDeleteHint": "Record GR dihapus dan DN dikembalikan ke status Binning. Isi alasan untuk audit.",
+      "reasonLabel": "Alasan (wajib)",
+      "reasonPlaceholder": "Alasan penghapusan...",
+      "deleted": "Terhapus ({{count}} DN), dilewati: {{skipped}}",
+      "skipped": "DN dilewati",
+      "cancel": "Batal",
+      "confirm": "Hapus"
+    },
+    "table": {
+      "title": "Actual Incoming",
+      "search": {
+        "placeholder": "Cari data..."
+      },
+      "options": [
+        "No. Surat Jalan",
+        "No. PO",
+        "Pelanggan",
+        "No. Referensi",
+        "Supplier",
+        "Deskripsi",
+        "Status"
+      ],
+      "button": {
+        "view": "Detail",
+        "bulkDelete": "Hapus",
+        "export": "Ekspor CSV"
+      },
+      "column": {
+        "status": "Status",
+        "deliveryNoteNo": "No. Surat Jalan",
+        "incomingDate": "Tanggal Incoming",
+        "poNo": "No. PO",
+        "poType": "Tipe PO",
+        "poDate": "Tanggal PO",
+        "supplierName": "Supplier",
+        "referenceNo": "No. Referensi",
+        "description": "Deskripsi",
+        "additionalInfo": "Informasi Tambahan",
+        "grDate": "Tanggal GR",
+        "grBy": "Oleh GR",
+        "action": "Aksi"
+      }
+    },
+    "detail": {
+      "header": {
+        "title": "Informasi DN"
+      },
+      "pic": {
+        "title": "Pelaku GR",
+        "picReceiver": "PIC Receiver",
+        "picBinner": "PIC Binner",
+        "grBy": "Dibuat GR oleh",
+        "grDate": "Tanggal GR",
+        "binningLocation": "Lokasi Binning"
+      },
+      "tab": {
+        "material": "Material & Lokasi",
+        "addInfo": "Informasi Tambahan",
+        "attachment": "Lampiran",
+        "history": "Riwayat Status"
+      },
+      "material": {
+        "materialCode": "Kode Material",
+        "materialName": "Nama Material",
+        "materialBrand": "Merek",
+        "uom": "Satuan",
+        "poQty": "Qty PO",
+        "binningQty": "Qty Binning",
+        "location": "Lokasi"
+      },
+      "empty": "Tidak ada data"
     }
   }
 }
