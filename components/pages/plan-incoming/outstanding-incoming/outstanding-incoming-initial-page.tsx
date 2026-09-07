@@ -218,7 +218,7 @@ const OutstandingIncomingInitialPage = () => {
         Modal.confirm({
           title: t("list.confirmCancel"),
           onOk: async () => {
-            await OutstandingIncomingApi().cancelPlanIncoming(row.id);
+            await OutstandingIncomingApi().confirmCancellation([row.id]);
             message.success(t("list.cancelled"));
             refresh();
           },
@@ -311,6 +311,23 @@ const OutstandingIncomingInitialPage = () => {
     }),
     [listOptions, filter],
   );
+
+  const onConfirmCancelBulk = async () => {
+    if (!selectedIds.length) return;
+    setBulkLoading("cancel");
+    try {
+      const resp: any =
+        await OutstandingIncomingApi().confirmCancellation(selectedIds);
+      message.info(resp?.data?.data?.message ?? t("list.cancelled"));
+      setSelectedIds([]);
+      refresh();
+    } catch (error: any) {
+      const body: any = error?.response?.data ?? error?.data ?? {};
+      message.error(body?.message ?? error?.statusText ?? "Failed");
+    } finally {
+      setBulkLoading(null);
+    }
+  };
 
   const onConfirmDraft = async () => {
     if (!selectedIds.length) return;
@@ -472,6 +489,16 @@ const OutstandingIncomingInitialPage = () => {
                         onClick={onConfirmDraft}
                       >
                         {t("table.button.bulkConfirm")}
+                      </Button>
+                    )}
+                    {isUpdate && (
+                      <Button
+                        danger
+                        loading={bulkLoading === "cancel"}
+                        disabled={!selectedIds.length}
+                        onClick={onConfirmCancelBulk}
+                      >
+                        {t("table.button.confirmCancel")}
                       </Button>
                     )}
                     {isDelete && (

@@ -80,6 +80,13 @@ const OutstandingIncomingApi = () => {
       .then((resp) => resp);
   }
 
+  /** A12 confirm cancellation bulk (Cancelled + isActive=0 + SQS WHSCLIN) */
+  function confirmCancellation(ids: string[]) {
+    return httpService
+      .post(`${base}/confirm-cancellation`, { ids })
+      .then((resp) => resp);
+  }
+
   function insertHolds(
     holds: Array<{
       planIncomingHeaderId: string;
@@ -315,6 +322,7 @@ const OutstandingIncomingApi = () => {
     retrieveHistoryTyped,
     checkIndicator,
     confirmDraft,
+    confirmCancellation,
     insertHolds,
     uploadHoldAttachment,
     retrieveHolds,
