@@ -127,7 +127,7 @@ const OutstandingIncomingDetail = () => {
       render: (_: any, row: any) =>
         row.addInfos?.find((a: any) => a.name === name)?.value ?? "-",
     })),
-  ];
+  ].map((c) => ({ ...c, align: "left" as const })); // semua kolom rata kiri
 
   const historyColumns = [
     { title: t("history.status"), dataIndex: "status", key: "status" },
@@ -151,7 +151,7 @@ const OutstandingIncomingDetail = () => {
       dataIndex: "createdBy",
       key: "createdBy",
     },
-  ];
+  ].map((c) => ({ ...c, align: "left" as const })); // semua kolom rata kiri
 
   /* History terbaru dulu, paging client-side. */
   const historyRows = [...(history ?? [])].sort((a, b) =>

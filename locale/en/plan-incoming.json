@@ -35,7 +35,7 @@
       "title": "Outstanding Incoming",
       "detailTitle": "Outstanding Incoming Detail",
       "breadcrumb": ["Plan Incoming", "Outstanding Incoming", "Detail"],
-      "inputTitle": "Input Incoming"
+      "inputTitle": "Input Plan Incoming"
     },
     "filter": {
       "warehouse": "Filter Warehouse"
@@ -86,7 +86,7 @@
         "edit": "Edit",
         "cancel": "Cancel",
         "confirmCancel": "Confirm Cancel",
-        "inputIncoming": "Input Incoming",
+        "inputIncoming": "Input Plan Incoming",
         "holdList": "Hold List",
         "bulkConfirm": "Confirm Draft",
         "bulkDelete": "Delete",
@@ -323,8 +323,8 @@
       "failed": "Failed"
     },
     "form": {
-      "title": "Input Incoming",
-      "editTitle": "Edit Incoming",
+      "title": "Input Plan Incoming",
+      "editTitle": "Edit Plan Incoming",
       "submit": "Submit",
       "cancel": "Cancel",
       "customerCode": "Customer Code",

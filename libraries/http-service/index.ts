@@ -65,8 +65,10 @@ const HttpService = (url = baseURL) => {
         retryCount -= 1;
       } else {
         retryCount = maxRetry;
-        if (!isServer) errorHandler.handleComponentBaseError(error.response);
-        reject(error.response);
+        // response bisa undefined (network error) — fallback ke error axios
+        if (!isServer)
+          errorHandler.handleComponentBaseError(error.response ?? error);
+        reject(error.response ?? error);
       }
     });
   }
@@ -118,14 +120,15 @@ const HttpService = (url = baseURL) => {
     }
 
     if (!isServer && status !== 401) {
-      errorHandler.handleComponentBaseError(error.response);
+      // response bisa undefined (network error) — fallback ke error axios
+      errorHandler.handleComponentBaseError(error.response ?? error);
     }
 
     if (status === 500) {
       MessageHandler().error("Internal Server Error");
     }
 
-    return Promise.reject(error.response);
+    return Promise.reject(error.response ?? error);
   }
   /**
    * Public method which handles the default authorization header

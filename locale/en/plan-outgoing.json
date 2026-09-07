@@ -1,7 +1,7 @@
 {
   "outgoingForm": {
-    "title": "Input Outgoing Plan",
-    "editTitle": "Edit Outgoing Plan",
+    "title": "Input Plan Outgoing",
+    "editTitle": "Edit Plan Outgoing",
     "submit": "Submit",
     "cancel": "Cancel",
     "warehouse": "Warehouse",
@@ -38,7 +38,7 @@
     "nameMaxLength": "Additional info name is limited to 20 characters"
   },
   "page": {
-    "inputTitle": "Input Outgoing Plan",
-    "breadcrumb": ["Outgoing Plan", "Input Outgoing Plan"]
+    "inputTitle": "Input Plan Outgoing",
+    "breadcrumb": ["Plan Outgoing", "Input Plan Outgoing"]
   }
 }

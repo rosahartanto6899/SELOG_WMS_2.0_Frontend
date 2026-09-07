@@ -19,6 +19,8 @@ const MESSAGES = {
 
 const MessageHandler = () => {
   function getErrorMessage(error: any) {
+    // ponytail: error bisa undefined — guard "in" operator
+    if (error == null) return MESSAGES.SERVER_BUSY ?? "Something went wrong";
     if (
       ("code" in error && error.code === 500) ||
       ("status" in error && error.status === 500)
@@ -129,44 +131,46 @@ const MessageHandler = () => {
   }
 
   function handleError(err: any, _message?: string) {
-    let processedError = err;
+    const processedError = err;
     let message = _message;
 
-    if ("data" in err && err.data) {
-      if (err.data && !err.data.message) {
-        message = err.message;
-      } else if (err.data.message) {
-        message = err.data.message;
+    // ponytail: err bisa undefined (network error / reject tanpa payload) —
+    // guard dulu, dulu crash "Cannot use 'in' operator ... in undefined"
+    const e: any = err ?? {};
+
+    if (e.data) {
+      if (!e.data.message) {
+        message = e.message;
       } else {
-        processedError = err.error;
+        message = e.data.message;
       }
     } else {
-      message = err.message;
+      message = e.message ?? _message;
     }
 
     if (message) {
       if (
-        err.data.code !== API_STATUS_CODE.AUTH.VALIDATION_ERROR &&
-        err.data.code !== API_STATUS_CODE.AUTH.INTERNAL_USER &&
-        err.data.code !== API_STATUS_CODE.AUTH.INVALID_TOKEN &&
-        // err.data.code !== API_STATUS_CODE.USER.BAD_REQUEST &&
-        err.data.code !== API_STATUS_CODE.MASTER_REPORT_MAPPING.NOT_FOUND &&
-        err.data.code !== API_STATUS_CODE.USER_VERIFICATION.EXPIRED_TOKEN &&
-        err.data.code !== API_STATUS_CODE.LOGOUT.MULTIPLE_DEVICE &&
-        err.data.code !== API_STATUS_CODE.LOGOUT.CHANGE_ROLE &&
-        err.data.code !== API_STATUS_CODE.LOGOUT.UPDATE_USER &&
-        err.data.code !== API_STATUS_CODE.LOGOUT.DELETE_USER &&
-        // err.data.code !== API_STATUS_CODE.POI.DUPLICATE &&
-        err.data.code !== API_STATUS_CODE.MASTER_DEVICE.DUPLICATE &&
-        err.data.code !== API_STATUS_CODE.MASTER_DRIVER.VALIDATION_ERROR &&
-        err.data.code !== API_STATUS_CODE.MASTER_VEHICLE.VALIDATION_ERROR &&
-        err.data.code !== API_STATUS_CODE.MASTER_DEVICE.VALIDATION_ERROR &&
-        err.data.code !== API_STATUS_CODE.POI.VALIDATION_ERROR &&
-        err.status !== 500
+        e.data?.code !== API_STATUS_CODE.AUTH.VALIDATION_ERROR &&
+        e.data?.code !== API_STATUS_CODE.AUTH.INTERNAL_USER &&
+        e.data?.code !== API_STATUS_CODE.AUTH.INVALID_TOKEN &&
+        // e.data?.code !== API_STATUS_CODE.USER.BAD_REQUEST &&
+        e.data?.code !== API_STATUS_CODE.MASTER_REPORT_MAPPING.NOT_FOUND &&
+        e.data?.code !== API_STATUS_CODE.USER_VERIFICATION.EXPIRED_TOKEN &&
+        e.data?.code !== API_STATUS_CODE.LOGOUT.MULTIPLE_DEVICE &&
+        e.data?.code !== API_STATUS_CODE.LOGOUT.CHANGE_ROLE &&
+        e.data?.code !== API_STATUS_CODE.LOGOUT.UPDATE_USER &&
+        e.data?.code !== API_STATUS_CODE.LOGOUT.DELETE_USER &&
+        // e.data?.code !== API_STATUS_CODE.POI.DUPLICATE &&
+        e.data?.code !== API_STATUS_CODE.MASTER_DEVICE.DUPLICATE &&
+        e.data?.code !== API_STATUS_CODE.MASTER_DRIVER.VALIDATION_ERROR &&
+        e.data?.code !== API_STATUS_CODE.MASTER_VEHICLE.VALIDATION_ERROR &&
+        e.data?.code !== API_STATUS_CODE.MASTER_DEVICE.VALIDATION_ERROR &&
+        e.data?.code !== API_STATUS_CODE.POI.VALIDATION_ERROR &&
+        e.status !== 500
       ) {
         error({ content: message });
       }
-    } else if (![502, 503].includes(err.status))
+    } else if (![502, 503].includes(e.status))
       error({ content: getErrorMessage(processedError) });
   }
 
