@@ -6,6 +6,9 @@ export const ROUTE = {
     UPLOAD_AHM: "/plan-incoming/upload-incoming-ahm",
     INPUT_INCOMING: "/plan-incoming/input-incoming",
   },
+  PLAN_OUTGOING: {
+    INPUT_OUTGOING: "/plan-outgoing/input-outgoing",
+  },
   USER_MANAGEMENT: {
     ROLE: "/user-management/role-permissions",
     ROLES: "/user-management/roles",
