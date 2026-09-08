@@ -10,7 +10,7 @@ const initialState: OutstandingIncomingState = {
     isLoading: false,
     error: null,
     payload: null,
-    data: { total: 0, byWarehouse: [] },
+    data: { carryOver: 0, today: 0, planned: 0, hold: 0 },
   },
   detail: {
     isLoading: false,

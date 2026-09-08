@@ -35,16 +35,20 @@ import BarcodeLabelingForm from "./barcode-labeling-form";
 import BinningSlipForm from "./binning-slip-form";
 import CreateActualForm from "./create-actual-form";
 import { HoldIncomingForm, HoldListForm } from "./hold-incoming-form";
-import OutstandingIncomingFilter, {
-  FilterStateProps,
-} from "./outstanding-incoming-filter";
+import { FilterStateProps } from "./outstanding-incoming-filter";
 import { Columns, SearchByOptions } from "./outstanding-incoming-props-table";
 import OutstandingIncomingSummary from "./outstanding-incoming-summary";
 import QiForm from "./qi-form";
 
 const INIT_SEARCH_BY = "deliveryNoteNo";
 
-const OutstandingIncomingInitialPage = () => {
+export interface OutstandingIncomingInitialPageProps {
+  filter?: FilterStateProps;
+}
+
+const OutstandingIncomingInitialPage = ({
+  filter = {},
+}: OutstandingIncomingInitialPageProps) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { t } = useTranslation(undefined, {
@@ -67,7 +71,6 @@ const OutstandingIncomingInitialPage = () => {
     COLUMN_KEYS.map((_item: any) => _item?.key),
   );
 
-  const [filter, setFilter] = useState<FilterStateProps>({});
   const [searchBy, setSearchBy] = useState(INIT_SEARCH_BY);
   const [listOptions, setListOptions] = useState<
     BaseType & { [key: string]: any }
@@ -112,10 +115,10 @@ const OutstandingIncomingInitialPage = () => {
     refresh();
   }, [listOptions, filter]);
 
-  const onChangeFilter = (v: any, type: string) => {
-    setFilter((prev) => ({ ...prev, [type]: v }));
+  // Filter dipindah ke header halaman (sejajar judul) — reset ke page 1 saat berubah.
+  useEffect(() => {
     setListOptions((prev) => ({ ...prev, page: 1 }));
-  };
+  }, [filter.warehouseCodes]);
 
   const onPageChangeListener = (current: number, limit: number) => {
     setListOptions((prevState) => ({ ...prevState, page: current, limit }));
@@ -383,16 +386,7 @@ const OutstandingIncomingInitialPage = () => {
     <>
       {/* one shadow from Card.Container is enough — inner cards shadowless like other pages */}
       <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-        <Card.Filter>
-          <OutstandingIncomingFilter
-            filter={filter}
-            onChangeFilter={onChangeFilter}
-          />
-        </Card.Filter>
-
-        <Card noShadow>
-          <OutstandingIncomingSummary />
-        </Card>
+        <OutstandingIncomingSummary />
 
         <Card noShadow>
           <Table

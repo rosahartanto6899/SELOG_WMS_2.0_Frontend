@@ -5,11 +5,19 @@
     "subtitle": "Bulk upload plan incoming AHM from an Excel file (max {{max}} rows).",
     "downloadTemplate": "Download Template",
     "submit": "Submit",
+    "scrollToSubmit": "Jump to Submit",
+    "scrollToTop": "Back to Top",
     "stepUpload": "Upload Excel File",
     "hintUpload": "Download the template, fill data starting at row 6, then upload here. Yellow columns are optional.",
     "previewTitle": "Preview & Fix Data ({{count}} rows)",
     "colStatus": "Status",
     "colReason": "Failure Reason",
+    "filter": {
+      "deliveryNoteNo": "Search Delivery Note No",
+      "poNumber": "Search PO Number",
+      "supplierPartNumber": "Search Supplier Part Number",
+      "status": "Filter Status"
+    },
     "status": {
       "pending": "Pending",
       "submitting": "Processing",
@@ -20,6 +28,7 @@
     "summaryDone": "All rows processed successfully.",
     "summaryFixHint": "Fix failed rows in the table (click a cell to edit), then submit again.",
     "message": {
+      "parsing": "Reading and validating the file...",
       "import": "File does not match the template. Download the latest template and refill.",
       "limit": "Row count exceeds the {{max}}-row limit.",
       "cellError": "Some cells are still invalid — fix them in the table before submitting.",
@@ -28,7 +37,8 @@
       "nothingToSubmit": "Nothing to submit — all rows already succeeded. Edit a cell to mark a row for resubmission.",
       "downloadFailed": "Failed to download template. Retry or contact your administrator."
     },
-    "selectWarehouse": "Select Warehouse"
+    "selectWarehouse": "Select Warehouse",
+    "required": "Required"
   },
   "outstandingIncoming": {
     "page": {
@@ -42,7 +52,11 @@
     },
     "summary": {
       "fields": {
-        "total": "Total Outstanding"
+        "carryOver": "Carry Over",
+        "today": "Today",
+        "planned": "Planned",
+        "hold": "Hold",
+        "deliveryNote": "Delivery Note"
       }
     },
     "list": {

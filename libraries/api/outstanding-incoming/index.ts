@@ -9,6 +9,7 @@ import {
   OutstandingIncomingHeader,
   OutstandingIncomingHistory,
   OutstandingIncomingListPayload,
+  OutstandingIncomingSummaryBuckets,
   OutstandingIncomingTotals,
   StockAvailabilityResult,
 } from "@sera-types/outstanding-incoming.type";
@@ -59,6 +60,15 @@ const OutstandingIncomingApi = () => {
   }) {
     return httpService
       .post(`${base}/totals/by-warehouse`, payload)
+      .then((resp) => resp);
+  }
+
+  function retrieveSummaryBuckets(payload: {
+    customerCode?: string;
+    warehouseCodes: string[];
+  }) {
+    return httpService
+      .post(`${base}/totals/by-status`, payload)
       .then((resp) => resp);
   }
 
@@ -308,6 +318,14 @@ const OutstandingIncomingApi = () => {
     return resp?.data?.data ?? [];
   }
 
+  async function retrieveSummaryBucketsTyped(payload: {
+    customerCode?: string;
+    warehouseCodes: string[];
+  }): Promise<OutstandingIncomingSummaryBuckets> {
+    const resp: any = await retrieveSummaryBuckets(payload);
+    return resp?.data?.data ?? { carryOver: 0, today: 0, planned: 0, hold: 0 };
+  }
+
   return {
     retrieveList,
     retrieveDetail,
@@ -318,6 +336,8 @@ const OutstandingIncomingApi = () => {
     retrieveTotalsTyped,
     retrieveTotalsByWarehouse,
     retrieveTotalsByWarehouseTyped,
+    retrieveSummaryBuckets,
+    retrieveSummaryBucketsTyped,
     retrieveHistory,
     retrieveHistoryTyped,
     checkIndicator,

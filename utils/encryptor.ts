@@ -52,7 +52,12 @@ export const decryptData = (
     }
 
     const bytes = AES.decrypt(encryptedData, process.env.SECRET_KEY);
-    return JSON.parse(bytes.toString(enc.Utf8));
+    const text = bytes.toString(enc.Utf8);
+    // .env dev kadang diisi plaintext — pakai langsung; ciphertext crypto-js selalu
+    // berawalan "U2FsdGVkX1" (OpenSSL salted), nilai lain dianggap plaintext
+    if (!text)
+      return encryptedData.startsWith("U2FsdGVkX1") ? "" : encryptedData;
+    return JSON.parse(text);
   } catch {
     // Ciphertext tidak cocok dengan SECRET_KEY saat ini (mis. key baru saja
     // berganti, atau data localStorage sudah usang) — perlakukan sebagai
@@ -60,12 +65,6 @@ export const decryptData = (
     // bukan crash dengan unhandled "Malformed UTF-8 data".
     return "";
   }
-  const bytes = AES.decrypt(encryptedData, process.env.SECRET_KEY);
-  const text = bytes.toString(enc.Utf8);
-  // .env dev kadang diisi plaintext — pakai langsung; ciphertext crypto-js selalu
-  // berawalan "U2FsdGVkX1" (OpenSSL salted), nilai lain dianggap plaintext
-  if (!text) return encryptedData.startsWith("U2FsdGVkX1") ? "" : encryptedData;
-  return JSON.parse(text);
 };
 
 export const encryptDataGCM = async (

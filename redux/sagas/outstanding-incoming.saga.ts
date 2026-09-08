@@ -41,18 +41,13 @@ function* getOutstandingIncomingSummary(
 ): Generator<unknown, void, AxiosResponse> {
   try {
     const warehouseCodes = params.payload?.warehouseCodes ?? [];
-    const [total, byWarehouse] = (yield all([
-      call(OutstandingIncomingApi().retrieveTotalsTyped, { warehouseCodes }),
-      call(OutstandingIncomingApi().retrieveTotalsByWarehouseTyped, {
-        warehouseCodes,
-      }),
-    ])) as unknown as any[];
+    const buckets = (yield call(
+      OutstandingIncomingApi().retrieveSummaryBucketsTyped,
+      { warehouseCodes },
+    )) as unknown as any;
     yield put(
       outstandingIncomingActions.getOutstandingIncomingSummarySuccess({
-        data: {
-          total: total?.totalDataOutstanding ?? 0,
-          byWarehouse: byWarehouse ?? [],
-        },
+        data: buckets,
       }),
     );
   } catch (error: any) {

@@ -5,11 +5,19 @@
     "subtitle": "Upload massal plan incoming AHM dari file Excel (maks {{max}} baris).",
     "downloadTemplate": "Download Template",
     "submit": "Submit",
+    "scrollToSubmit": "Lompat ke Submit",
+    "scrollToTop": "Kembali ke Atas",
     "stepUpload": "Upload File Excel",
     "hintUpload": "Unduh template, isi data mulai baris ke-6, lalu unggah di sini. Kolom kuning opsional.",
     "previewTitle": "Preview & Perbaiki Data ({{count}} baris)",
     "colStatus": "Status",
     "colReason": "Alasan Gagal",
+    "filter": {
+      "deliveryNoteNo": "Cari Delivery Note No",
+      "poNumber": "Cari PO Number",
+      "supplierPartNumber": "Cari Supplier Part Number",
+      "status": "Filter Status"
+    },
     "status": {
       "pending": "Menunggu",
       "submitting": "Diproses",
@@ -20,6 +28,7 @@
     "summaryDone": "Semua data berhasil diproses.",
     "summaryFixHint": "Perbaiki baris gagal pada tabel (klik sel untuk edit), lalu submit ulang.",
     "message": {
+      "parsing": "Membaca dan memvalidasi file...",
       "import": "File tidak sesuai template. Download template terbaru lalu isi ulang.",
       "limit": "Jumlah baris melebihi batas maksimal {{max}} baris.",
       "cellError": "Masih ada sel yang belum valid — perbaiki di tabel sebelum submit.",
@@ -28,7 +37,8 @@
       "nothingToSubmit": "Tidak ada baris untuk dikirim — semua sudah sukses. Edit sel untuk menandai baris dikirim ulang.",
       "downloadFailed": "Gagal mengunduh template. Coba lagi atau hubungi administrator."
     },
-    "selectWarehouse": "Pilih Gudang"
+    "selectWarehouse": "Pilih Gudang",
+    "required": "Wajib diisi"
   },
   "outstandingIncoming": {
     "page": {
@@ -42,7 +52,11 @@
     },
     "summary": {
       "fields": {
-        "total": "Total Outstanding"
+        "carryOver": "Carry Over",
+        "today": "Today",
+        "planned": "Planned",
+        "hold": "Hold",
+        "deliveryNote": "Delivery Note"
       }
     },
     "list": {

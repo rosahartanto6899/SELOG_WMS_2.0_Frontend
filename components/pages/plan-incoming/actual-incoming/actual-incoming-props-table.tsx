@@ -5,6 +5,7 @@ import { EyeOutlined } from "@ant-design/icons";
 import Button from "@sera-components/button";
 import StatusTag from "@sera-components/status-tag";
 import { ActualIncomingRow } from "@sera-types/actual-incoming.type";
+import { INCOMING_STATUS_COLOR } from "@sera-utils/constants/incoming-status-color";
 import { ROUTE } from "@sera-utils/constants/routes";
 import FormatUtils from "@sera-utils/format";
 import useCheckPermission from "@sera-utils/hooks/useCheckPermission";
@@ -63,7 +64,11 @@ export const Columns = () => {
       fixed: leftFixed,
       width: 170,
       render: (value: string) => (
-        <StatusTag value={value ?? "-"} fallback="default" />
+        <StatusTag
+          value={value ?? "-"}
+          fallback="default"
+          color={INCOMING_STATUS_COLOR[value]}
+        />
       ),
     },
     {

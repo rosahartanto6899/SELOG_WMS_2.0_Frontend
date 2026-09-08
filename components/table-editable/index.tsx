@@ -12,7 +12,14 @@ import InputNumberShell from "./input-number-shell";
 import InputSelectShell from "./input-select-shell";
 import InputShell from "./input-shell";
 
-export type ActiveEdit = { key: string; index: number };
+// rowKey = record.key milik baris yang sedang diedit — stabil terhadap posisi
+// (index) baris di dalam dataSource yang di-render (index berubah kalau
+// dataSource di-slice untuk pagination client-side; rowKey tidak).
+export type ActiveEdit = {
+  key: string;
+  index: number;
+  rowKey?: string | number;
+};
 
 interface TableEditableProps extends TableProps {
   onSaveAction: (_arg: ActiveEdit & { value: any }) => void;
@@ -129,6 +136,7 @@ export default function TableEditable({
                         ? {
                             key: key,
                             index: _payload?.[2],
+                            rowKey: _payload?.[1]?.key,
                           }
                         : null,
                     );

@@ -13,6 +13,7 @@ import {
 import Button from "@sera-components/button";
 import StatusTag from "@sera-components/status-tag";
 import { OutstandingIncomingRow } from "@sera-types/outstanding-incoming.type";
+import { INCOMING_STATUS_COLOR } from "@sera-utils/constants/incoming-status-color";
 import { ROUTE } from "@sera-utils/constants/routes";
 import FormatUtils from "@sera-utils/format";
 import useCheckPermission from "@sera-utils/hooks/useCheckPermission";
@@ -122,7 +123,11 @@ export const Columns = (handlers: RowActionHandlers) => {
               }
             />
           </Tooltip>
-          <StatusTag value={value ?? "-"} fallback="default" />
+          <StatusTag
+            value={value ?? "-"}
+            fallback="default"
+            color={INCOMING_STATUS_COLOR[value]}
+          />
           {record.isHold ? <Tag color="warning">HOLD</Tag> : null}
         </Space>
       ),

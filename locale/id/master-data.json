@@ -192,7 +192,7 @@
       }
     },
     "form": {
-      "title": "Form Material",
+      "title": "Input Master Material",
       "message": {
         "default": "Field ini wajib diisi"
       },
@@ -209,7 +209,7 @@
         "placeholder": "Pilih kategori"
       },
       "barcode": {
-        "label": "Barcode (pool UPCA)",
+        "label": "Barcode",
         "placeholder": "Pilih barcode"
       },
       "brand": {

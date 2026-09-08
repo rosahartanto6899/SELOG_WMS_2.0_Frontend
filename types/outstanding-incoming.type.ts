@@ -104,6 +104,14 @@ export interface OutstandingIncomingTotals {
   warehouseName?: string | null;
 }
 
+/** Kartu summary halaman — Carry Over/Today/Planned berdasar IncomingDate vs hari ini, Hold berdasar IsHold. */
+export interface OutstandingIncomingSummaryBuckets {
+  carryOver: number;
+  today: number;
+  planned: number;
+  hold: number;
+}
+
 export interface StockAvailabilityResult {
   customerCode?: string | null;
   customerName?: string | null;
@@ -231,7 +239,7 @@ export interface OutstandingIncomingState {
     isLoading?: boolean;
     error?: Error | string | null;
     payload?: { warehouseCodes?: string[] | null } | null;
-    data?: { total: number; byWarehouse: OutstandingIncomingTotals[] };
+    data?: OutstandingIncomingSummaryBuckets;
   };
   detail: {
     isLoading?: boolean;
@@ -249,7 +257,7 @@ export interface OutstandingIncomingListPayload extends BaseType {
 }
 
 export interface OutstandingIncomingSummaryResponse {
-  data?: { total: number; byWarehouse: OutstandingIncomingTotals[] };
+  data?: OutstandingIncomingSummaryBuckets;
 }
 
 export interface OutstandingIncomingDetailResponse {

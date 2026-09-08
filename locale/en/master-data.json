@@ -192,7 +192,7 @@
       }
     },
     "form": {
-      "title": "Material Form",
+      "title": "Input Master Material",
       "message": {
         "default": "This field is required"
       },
@@ -209,7 +209,7 @@
         "placeholder": "Select category"
       },
       "barcode": {
-        "label": "Barcode (UPCA pool)",
+        "label": "Barcode",
         "placeholder": "Select barcode"
       },
       "brand": {
