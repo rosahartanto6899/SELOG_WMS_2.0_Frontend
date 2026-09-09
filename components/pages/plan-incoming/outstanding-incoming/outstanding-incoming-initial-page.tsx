@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
+  CheckOutlined,
+  CloseCircleOutlined,
+  DeleteOutlined,
   // HolderOutlined, // reuse when the Hold feature is re-enabled
   InsertRowAboveOutlined,
   PlusOutlined,
@@ -27,6 +30,7 @@ import { ROUTE } from "@sera-utils/constants/routes";
 import useCheckPermission from "@sera-utils/hooks/useCheckPermission";
 import { Col, message, Modal, Row, Space } from "antd";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -35,20 +39,13 @@ import BarcodeLabelingForm from "./barcode-labeling-form";
 import BinningSlipForm from "./binning-slip-form";
 import CreateActualForm from "./create-actual-form";
 import { HoldIncomingForm, HoldListForm } from "./hold-incoming-form";
-import { FilterStateProps } from "./outstanding-incoming-filter";
 import { Columns, SearchByOptions } from "./outstanding-incoming-props-table";
 import OutstandingIncomingSummary from "./outstanding-incoming-summary";
 import QiForm from "./qi-form";
 
 const INIT_SEARCH_BY = "deliveryNoteNo";
 
-export interface OutstandingIncomingInitialPageProps {
-  filter?: FilterStateProps;
-}
-
-const OutstandingIncomingInitialPage = ({
-  filter = {},
-}: OutstandingIncomingInitialPageProps) => {
+const OutstandingIncomingInitialPage = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { t } = useTranslation(undefined, {
@@ -71,12 +68,26 @@ const OutstandingIncomingInitialPage = ({
     COLUMN_KEYS.map((_item: any) => _item?.key),
   );
 
+  const { data: session } = useSession() as any;
+  // Active warehouse dari session switch — backend filter per warehouse aktif,
+  // filter dropdown warehouse dihapus dari UI
+  const activeWarehouseCode = (session?.user?.warehouseCode ?? "") as string;
+
   const [searchBy, setSearchBy] = useState(INIT_SEARCH_BY);
   const [listOptions, setListOptions] = useState<
     BaseType & { [key: string]: any }
   >({ page: 1, limit: 10, order: "createdAt", sort: "desc" });
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [bulkLoading, setBulkLoading] = useState<string | null>(null);
+
+  // parity outgoing hasCancellation — Cancel PO hanya aktif bila ada baris
+  // terpilih ber-status Cancellation
+  const selectedRows = (data ?? []).filter((r: any) =>
+    selectedIds.includes(r.id),
+  );
+  const hasCancellation = selectedRows.some(
+    (r: any) => r.status === "Cancellation",
+  );
 
   // modal/form state (row & bulk actions)
   const [activeHeader, setActiveHeader] = useState<string | null>(null);
@@ -97,28 +108,21 @@ const OutstandingIncomingInitialPage = ({
     dispatch(
       outstandingIncomingActions.getOutstandingIncomingFetch({
         ...listOptions,
-        warehouseCode: filter.warehouseCodes?.length
-          ? filter.warehouseCodes.join(",")
-          : undefined,
+        warehouseCode: activeWarehouseCode || undefined,
       }),
     );
 
   useEffect(() => {
     dispatch(
       outstandingIncomingActions.getOutstandingIncomingSummaryFetch({
-        warehouseCodes: filter.warehouseCodes ?? null,
+        warehouseCodes: activeWarehouseCode ? [activeWarehouseCode] : null,
       }),
     );
-  }, [filter.warehouseCodes]);
+  }, [activeWarehouseCode]);
 
   useEffect(() => {
     refresh();
-  }, [listOptions, filter]);
-
-  // Filter dipindah ke header halaman (sejajar judul) — reset ke page 1 saat berubah.
-  useEffect(() => {
-    setListOptions((prev) => ({ ...prev, page: 1 }));
-  }, [filter.warehouseCodes]);
+  }, [listOptions, activeWarehouseCode]);
 
   const onPageChangeListener = (current: number, limit: number) => {
     setListOptions((prevState) => ({ ...prevState, page: current, limit }));
@@ -312,7 +316,7 @@ const OutstandingIncomingInitialPage = ({
         });
       },
     }),
-    [listOptions, filter],
+    [listOptions, activeWarehouseCode],
   );
 
   const onConfirmCancelBulk = async () => {
@@ -478,6 +482,7 @@ const OutstandingIncomingInitialPage = ({
                   */}
                     {isUpdate && (
                       <Button
+                        icon={<CheckOutlined />}
                         loading={bulkLoading === "confirm"}
                         disabled={!selectedIds.length}
                         onClick={onConfirmDraft}
@@ -485,24 +490,26 @@ const OutstandingIncomingInitialPage = ({
                         {t("table.button.bulkConfirm")}
                       </Button>
                     )}
-                    {isUpdate && (
-                      <Button
-                        danger
-                        loading={bulkLoading === "cancel"}
-                        disabled={!selectedIds.length}
-                        onClick={onConfirmCancelBulk}
-                      >
-                        {t("table.button.confirmCancel")}
-                      </Button>
-                    )}
                     {isDelete && (
                       <Button
                         danger
+                        icon={<DeleteOutlined />}
                         loading={bulkLoading === "delete"}
                         disabled={!selectedIds.length}
                         onClick={onDeleteBulk}
                       >
                         {t("table.button.bulkDelete")}
+                      </Button>
+                    )}
+                    {isUpdate && (
+                      <Button
+                        danger
+                        icon={<CloseCircleOutlined />}
+                        loading={bulkLoading === "cancel"}
+                        disabled={!selectedIds.length || !hasCancellation}
+                        onClick={onConfirmCancelBulk}
+                      >
+                        {t("table.button.confirmCancel")}
                       </Button>
                     )}
                     {/* Create Actual feature hidden for now

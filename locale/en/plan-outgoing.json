@@ -65,7 +65,9 @@
         "5": "Status",
         "materialCodeOpt": "Material Code",
         "materialNameOpt": "Material Name",
-        "materialBrandOpt": "Brand"
+        "materialBrandOpt": "Brand",
+        "packagingNoOpt": "Packaging No.",
+        "shipmentNoOpt": "Shipment No."
       },
       "column": {
         "status": "Status",
@@ -123,7 +125,8 @@
     },
     "summary": {
       "fields": {
-        "total": "Total Outstanding Data"
+        "total": "Total Outstanding Data",
+        "caption": "Delivery Note"
       }
     },
     "confirm": {

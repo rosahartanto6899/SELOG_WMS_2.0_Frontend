@@ -38,7 +38,9 @@
       "downloadFailed": "Failed to download template. Retry or contact your administrator."
     },
     "selectWarehouse": "Select Warehouse",
-    "required": "Required"
+    "required": "Required",
+    "activeWarehouse": "Active warehouse",
+    "noActiveWarehouse": "No active warehouse — pick one in the warehouse switch first"
   },
   "outstandingIncoming": {
     "page": {
@@ -99,10 +101,10 @@
         "slip": "Slip",
         "edit": "Edit",
         "cancel": "Cancel",
-        "confirmCancel": "Confirm Cancel",
+        "confirmCancel": "Cancel PO",
         "inputIncoming": "Input Plan Incoming",
         "holdList": "Hold List",
-        "bulkConfirm": "Confirm Draft",
+        "bulkConfirm": "Confirm",
         "bulkDelete": "Delete",
         "bulkCreateActual": "Create Actual / GR",
         "flow": "Status"

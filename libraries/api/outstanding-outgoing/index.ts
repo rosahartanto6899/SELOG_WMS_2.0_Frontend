@@ -58,17 +58,19 @@ const OutstandingOutgoingApi = () => {
     return httpService.get(base, { params: payload }).then((resp) => resp);
   }
 
-  /** Q2/Q3/Q4 — tab DN Items / Packaging / Shipment (list penuh) */
+  /** Q2/Q3/Q4 — tab DN Items / Packaging / Shipment (server-side parity) */
   function retrieveItems(params: {
     customerCode: string;
     warehouseCode: string;
+    [key: string]: any;
   }) {
-    return httpService.get(`${base}/items`, { params }).then((resp) => resp);
+    return httpService.get(base, { params }).then((resp) => resp);
   }
 
   function retrievePackagings(params: {
     customerCode: string;
     warehouseCode: string;
+    [key: string]: any;
   }) {
     return httpService
       .get(`${base}/packagings`, { params })
@@ -78,6 +80,7 @@ const OutstandingOutgoingApi = () => {
   function retrieveShipments(params: {
     customerCode: string;
     warehouseCode: string;
+    [key: string]: any;
   }) {
     return httpService
       .get(`${base}/shipments`, { params })
@@ -198,18 +201,28 @@ const OutstandingOutgoingApi = () => {
       .then((resp) => resp);
   }
 
-  /** Q5 — PO pembentuk packaging */
-  function retrievePosByPackaging(packagingNo: string) {
+  /** Q5 — PO pembentuk packaging (server-side paging/search) */
+  function retrievePosByPackaging(
+    packagingNo: string,
+    params?: { [key: string]: any },
+  ) {
     return httpService
-      .get(`${base}/packagings/${encodeURIComponent(packagingNo)}/pos`)
-      .then((resp) => (resp as any)?.data?.data ?? []);
+      .get(`${base}/packagings/${encodeURIComponent(packagingNo)}/pos`, {
+        params,
+      })
+      .then((resp) => resp);
   }
 
-  /** Q6 — packaging per shipment */
-  function retrievePackagingsByShipment(shipmentNo: string) {
+  /** Q6 — packaging per shipment (server-side paging/search) */
+  function retrievePackagingsByShipment(
+    shipmentNo: string,
+    params?: { [key: string]: any },
+  ) {
     return httpService
-      .get(`${base}/shipments/${encodeURIComponent(shipmentNo)}/packagings`)
-      .then((resp) => (resp as any)?.data?.data ?? []);
+      .get(`${base}/shipments/${encodeURIComponent(shipmentNo)}/packagings`, {
+        params,
+      })
+      .then((resp) => resp);
   }
 
   // ===== Sequential AHM (spec 004 Fase 6) =====

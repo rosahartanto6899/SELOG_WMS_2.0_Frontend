@@ -30,6 +30,7 @@ import {
 } from "antd";
 import { RcFile } from "antd/lib/upload";
 import { cloneDeep } from "lodash";
+import { useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
@@ -76,36 +77,31 @@ function UploadIncomingAhmUpsertBulk(props: any) {
   });
   const submitRef = useRef<HTMLDivElement>(null);
   const topRef = useRef<HTMLDivElement>(null);
-  const [warehouses, setWarehouses] = useState<any[]>([]);
+  const lastErrorRef = useRef<unknown>(null);
+
+  // warehouse aktif diambil dari BACKEND via warehouseId session (parity
+  // customer aktif: customerId → CustomerApi().retrieveCustomerDetail) —
+  // guard FE tetap: tanpa warehouse aktif, submit disabled
+  const { data: session } = useSession() as any;
   const [warehouse, setWarehouse] = useState<{
     code: string;
     name: string;
   } | null>(null);
-  const lastErrorRef = useRef<unknown>(null);
 
   useEffect(() => {
+    const warehouseId = session?.user?.warehouseId;
+    if (!warehouseId) {
+      setWarehouse(null);
+      return;
+    }
     WmsWarehouseApi()
-      .retrieveDropdownWarehouses()
-      .then((resp: any) => setWarehouses(resp?.data?.data ?? []))
-      .catch(() => undefined);
-  }, []);
-
-  const warehouseOptions = useMemo(
-    () =>
-      warehouses.map((w: any) => ({
-        value: w.id,
-        label: `${w.code} — ${w.name}`,
-        code: w.code,
-        name: w.name,
-      })),
-    [warehouses],
-  );
-
-  const withWarehouse = (row: UploadIncomingAhmRow): UploadIncomingAhmRow => ({
-    ...row,
-    warehouseCode: warehouse?.code,
-    warehouseName: warehouse?.name,
-  });
+      .retrieveWarehouseDetail({ id: warehouseId })
+      .then((resp: any) => {
+        const d = resp?.data?.data;
+        setWarehouse(d?.code ? { code: d.code, name: d.name ?? "" } : null);
+      })
+      .catch(() => setWarehouse(null));
+  }, [session?.user?.warehouseId]);
 
   // Memo — array 22 kolom ini sebelumnya dibuat ulang (reference baru) di
   // SETIAP render, memicu TableEditable membangun ulang seluruh definisi
@@ -185,7 +181,7 @@ function UploadIncomingAhmUpsertBulk(props: any) {
         dispatch(
           uploadIncomingAhmActions.upsertRowFetch({
             index: pending,
-            row: withWarehouse(next[pending]),
+            row: next[pending],
           }),
         );
       } else {
@@ -310,7 +306,7 @@ function UploadIncomingAhmUpsertBulk(props: any) {
       dispatch(
         uploadIncomingAhmActions.upsertRowFetch({
           index: first,
-          row: withWarehouse(next[first]),
+          row: next[first],
         }),
       );
       return next;
@@ -464,27 +460,11 @@ function UploadIncomingAhmUpsertBulk(props: any) {
               wrap
               style={{ justifyContent: "flex-end", width: "100%" }}
             >
-              <div style={{ flex: "1 1 320px", minWidth: 0 }}>
-                <Select
-                  showSearch
-                  optionFilterProp="label"
-                  placeholder={t("selectWarehouse")}
-                  style={{ textAlign: "left", width: "100%" }}
-                  popupMatchSelectWidth={false}
-                  disabled={isSubmitting}
-                  options={warehouseOptions}
-                  onChange={(_v: any, opt: any) =>
-                    setWarehouse({ code: opt.code, name: opt.name })
-                  }
-                />
-                {!warehouse && (
-                  <div>
-                    <Typography.Text type="danger" style={{ fontSize: 12 }}>
-                      {t("required")}
-                    </Typography.Text>
-                  </div>
-                )}
-              </div>
+              {!warehouse && (
+                <Typography.Text type="danger" style={{ fontSize: 12 }}>
+                  {t("noActiveWarehouse")}
+                </Typography.Text>
+              )}
               <Button
                 icon={<CloudDownloadOutlined />}
                 loading={isLoading}

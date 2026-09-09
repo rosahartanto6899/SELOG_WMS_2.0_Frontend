@@ -90,7 +90,9 @@ const DnItemsTab = ({
     OutstandingOutgoingApi()
       .retrieveItems({ customerCode, warehouseCode, ...listOptions } as any)
       .then((resp: any) => {
-        setRows(resp?.data?.data ?? []);
+        // picked-only difilter backend (Q2: pickingDate IS NOT NULL + packagingNo
+        // IS NULL) — FE tidak perlu filter lagi; materialCode kosong dibuang FE
+        setRows((resp?.data?.data ?? []).filter((r: any) => r.materialCode));
         setTotal(resp?.data?.pagination?.totalData ?? 0);
       })
       .catch(() => setRows([]));
@@ -130,13 +132,7 @@ const DnItemsTab = ({
       message.error(t("table.selectInfo"));
       return;
     }
-    const destinations = new Set(
-      selectedRows.map((r: any) => r.customerDestination ?? ""),
-    );
-    if (destinations.size > 1) {
-      message.error(t("packaging.destinationMismatch"));
-      return;
-    }
+    // destination beda boleh — grup packaging per material+destination
     setPendingRows(selectedRows);
     setModalOpen(true);
   };
@@ -165,13 +161,18 @@ const DnItemsTab = ({
         detailIds: pendingIds,
         packagings,
       });
-      const no = (resp as any)?.data?.data?.packagingNo ?? "-";
+      const body = (resp as any)?.data?.data ?? {};
+      // A8 per-grup materialCode → array nomor (fallback single utk compat)
+      const nos: string[] =
+        body.packagingNos ?? (body.packagingNo ? [body.packagingNo] : []);
       Modal.success({
         title: t("packaging.createdTitle"),
         content: (
           <span
             dangerouslySetInnerHTML={{
-              __html: t("packaging.created", { no: `<strong>${no}</strong>` }),
+              __html: t("packaging.created", {
+                no: nos.map((n) => `<strong>${n}</strong>`).join("<br/>"),
+              }),
             }}
           />
         ),

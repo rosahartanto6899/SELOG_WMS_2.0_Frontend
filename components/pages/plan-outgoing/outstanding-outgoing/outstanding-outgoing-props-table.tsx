@@ -35,10 +35,17 @@ const flowMenuItems = (
   record: OutstandingOutgoingListRow,
   isSequential?: boolean,
 ): MenuProps["items"] => {
+  // semua material sudah di-picking (indicator YES) + status Packaging →
+  // status terkunci, tidak bisa kembali ke Picking/QC
+  const locked = record.status === "Packaging" && record.indicator === "YES";
   if (isSequential) {
     return [
-      { key: "Picking", label: "1. Picking" },
-      { key: "Quality Control", label: "2. Quality Control" },
+      { key: "Picking", label: "1. Picking", disabled: locked },
+      {
+        key: "Quality Control",
+        label: "2. Quality Control",
+        disabled: locked,
+      },
       { key: "__rts__", label: "3. Ready To Ship" },
     ];
   }
@@ -49,8 +56,12 @@ const flowMenuItems = (
     ];
   }
   return [
-    { key: "Picking", label: "1. Picking" },
-    { key: "Quality Control", label: "2. Quality Control" },
+    { key: "Picking", label: "1. Picking", disabled: locked },
+    {
+      key: "Quality Control",
+      label: "2. Quality Control",
+      disabled: locked,
+    },
   ];
 };
 
@@ -371,6 +382,27 @@ export const ItemsSearchByOptions = () => {
   ];
 };
 
+export const PackagingSearchByOptions = () => {
+  const { t } = useTranslation(undefined, {
+    keyPrefix: "planOutgoing.outstandingOutgoing.table.options",
+  });
+  return [
+    { label: t("packagingNoOpt"), value: "packagingNo" },
+    { label: t("materialCodeOpt"), value: "materialCode" },
+    { label: t("materialNameOpt"), value: "materialName" },
+  ];
+};
+
+export const ShipmentSearchByOptions = () => {
+  const { t } = useTranslation(undefined, {
+    keyPrefix: "planOutgoing.outstandingOutgoing.table.options",
+  });
+  return [
+    { label: t("shipmentNoOpt"), value: "shipmentNo" },
+    { label: t("2"), value: "customerDestination" },
+  ];
+};
+
 /** Kolom tab Packaging — parity datatablePackaging */
 export const PackagingColumns = () => {
   const { t } = useTranslation(undefined, {
@@ -385,11 +417,17 @@ export const PackagingColumns = () => {
       width: 240,
     },
     {
-      title: t("column.customerDestination"),
-      dataIndex: "customerDestination",
-      key: "customerDestination",
+      title: t("column.materialCode"),
+      dataIndex: "materialCode",
+      key: "materialCode",
       truncate: true,
-      width: 180,
+      width: 160,
+    },
+    {
+      title: t("column.materialName"),
+      dataIndex: "materialName",
+      key: "materialName",
+      truncate: true,
     },
     {
       title: t("column.qty"),

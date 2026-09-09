@@ -12,6 +12,7 @@ const MaterialApi = () => {
     searchBy?: string | null;
     order?: string | null;
     sort?: string | null;
+    customerCode?: string;
   }) {
     return httpService
       .get(`${apiUrl.master}/materials`, { params: payload })

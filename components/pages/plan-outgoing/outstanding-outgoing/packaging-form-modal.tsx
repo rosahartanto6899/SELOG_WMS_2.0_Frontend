@@ -45,7 +45,10 @@ const PackagingFormModal = ({
     if (!open) return;
     const acc = new Map<string, GroupRow>();
     for (const r of rows) {
-      const key = `${r.materialCode}|${r.materialName}|${r.materialBrand}|${r.customerDestination}`;
+      // grup per materialCode — qty di-sum lintas DN/destination;
+      // destination grup = kemunculan pertama (ponytail: kalau nanti perlu
+      // pisah kotak per tujuan, tambah destination ke key)
+      const key = `${r.materialCode}`;
       const prev = acc.get(key);
       if (prev) {
         prev.qty += Number(r.poQty ?? 0);

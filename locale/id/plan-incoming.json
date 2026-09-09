@@ -38,7 +38,9 @@
       "downloadFailed": "Gagal mengunduh template. Coba lagi atau hubungi administrator."
     },
     "selectWarehouse": "Pilih Gudang",
-    "required": "Wajib diisi"
+    "required": "Wajib diisi",
+    "activeWarehouse": "Warehouse aktif",
+    "noActiveWarehouse": "Tidak ada warehouse aktif — pilih warehouse di switch gudang dulu"
   },
   "outstandingIncoming": {
     "page": {
@@ -99,10 +101,10 @@
         "slip": "Slip",
         "edit": "Edit",
         "cancel": "Cancel",
-        "confirmCancel": "Confirm Cancel",
+        "confirmCancel": "Cancel PO",
         "inputIncoming": "Input Plan Incoming",
         "holdList": "Daftar Hold",
-        "bulkConfirm": "Confirm Draft",
+        "bulkConfirm": "Confirm",
         "bulkDelete": "Delete",
         "bulkCreateActual": "Create Actual / GR",
         "flow": "Status"

@@ -555,9 +555,7 @@ const OutstandingOutgoingInitialPage = () => {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-      <Card noShadow>
-        <OutstandingOutgoingSummary />
-      </Card>
+      <OutstandingOutgoingSummary />
 
       <Card noShadow>
         <Tabs
@@ -645,22 +643,6 @@ const OutstandingOutgoingInitialPage = () => {
                           {t("table.button.confirm")}
                         </Button>
                       )}
-                      {isUpdate && (
-                        <Button
-                          danger
-                          icon={<CloseCircleOutlined />}
-                          loading={bulkLoading === "cancelDo"}
-                          disabled={!selectedIds.length || !hasCancellation}
-                          onClick={() =>
-                            confirmProcess(
-                              "cancelDo",
-                              OutstandingOutgoingApi().confirmCancellation,
-                            )
-                          }
-                        >
-                          {t("table.button.cancelDo")}
-                        </Button>
-                      )}
                       {isDelete && (
                         <Button
                           danger
@@ -675,6 +657,22 @@ const OutstandingOutgoingInitialPage = () => {
                           }
                         >
                           {t("table.button.delete")}
+                        </Button>
+                      )}
+                      {isUpdate && (
+                        <Button
+                          danger
+                          icon={<CloseCircleOutlined />}
+                          loading={bulkLoading === "cancelDo"}
+                          disabled={!selectedIds.length || !hasCancellation}
+                          onClick={() =>
+                            confirmProcess(
+                              "cancelDo",
+                              OutstandingOutgoingApi().confirmCancellation,
+                            )
+                          }
+                        >
+                          {t("table.button.cancelDo")}
                         </Button>
                       )}
                       {isUpdate && isSequential && (
