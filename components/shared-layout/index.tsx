@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   // GlobalOutlined,
+  HomeOutlined,
   LoadingOutlined,
   SyncOutlined,
   UserOutlined,
@@ -177,6 +178,7 @@ const SharedLayout = (props: SharedLibrariesProps) => {
   const [tenantOptions, setTenantOptions] = useState<
     { id: string; name: string }[]
   >([]);
+  const [warehouseDropdown, setWarehouseDropdown] = useState<any[]>([]);
 
   useEffect(() => {
     const accessible = data?.user?.customers || [];
@@ -196,9 +198,49 @@ const SharedLayout = (props: SharedLibrariesProps) => {
             .filter((id: string) => byId.has(id))
             .map((id: string) => ({ id, name: byId.get(id) })),
         );
+        setWarehouseDropdown(all);
       })
       .catch(() => undefined);
   }, [data?.user?.customers]);
+
+  const handleSwitchWarehouse: MenuProps["onClick"] = async (e) => {
+    try {
+      const res: any = await SharedUtils().switchWarehouse(e.key);
+      await update({
+        ...res.data.data,
+        detail: {
+          data: {
+            ...res.data.data,
+          },
+        },
+      });
+    } catch (error) {
+      console.error("Update session error", error);
+    } finally {
+      router.push("/");
+    }
+  };
+
+  // Switch warehouse — opsi = warehouse customer aktif yang juga masuk
+  // akses role (session.warehouses, code-based) + id dari dropdown
+  const sessionWarehouses: Array<{
+    warehouseCode: string;
+    warehouseName: string | null;
+  }> = (data as any)?.detail?.data?.session?.warehouses ?? [];
+  const accessibleCodes = new Set(
+    sessionWarehouses.map((w) => w.warehouseCode),
+  );
+  const warehouseMenu = warehouseDropdown
+    .filter(
+      (w: any) =>
+        w.customer?.id === data?.user?.customerId &&
+        accessibleCodes.has(w.code),
+    )
+    .map((w: any) => ({
+      label: w.name,
+      key: w.id,
+      onClick: handleSwitchWarehouse,
+    }));
 
   const handleSwitchCustomer: MenuProps["onClick"] = async (e) => {
     try {
@@ -269,6 +311,18 @@ const SharedLayout = (props: SharedLibrariesProps) => {
             ),
             children: tenantMenu,
             icon: <UserOutlined />,
+          },
+        ]
+      : []),
+    ...(warehouseMenu.length
+      ? [
+          {
+            key: "switch-warehouse",
+            label: (
+              <Space size={14}>{t("global.header.menu.switchWarehouse")}</Space>
+            ),
+            children: warehouseMenu,
+            icon: <HomeOutlined />,
           },
         ]
       : []),

@@ -84,6 +84,19 @@ const SharedUtils = () => {
         });
     });
 
+  const switchWarehouse = (warehouseId: string) =>
+    new Promise((resolve, reject) => {
+      UserApi()
+        .switchWarehouse(warehouseId)
+        .then(async (response) => {
+          localStorage.removeItem("accessMenus");
+          resolve(response);
+        })
+        .catch(async (error) => {
+          reject(error);
+        });
+    });
+
   return {
     clearSession,
     logout,
@@ -91,6 +104,7 @@ const SharedUtils = () => {
     changeActiveSectionKey,
     switchRole,
     switchCustomer,
+    switchWarehouse,
   };
 };
 

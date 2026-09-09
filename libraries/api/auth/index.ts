@@ -83,6 +83,13 @@ const UserApi = () => {
       .catch((err) => err);
   }
 
+  async function switchWarehouse(warehouseId: string) {
+    return httpService
+      .post(`${apiUrl.user}/login/switch-warehouse`, { warehouseId })
+      .then((resp) => resp)
+      .catch((err) => err);
+  }
+
   function resendVerification(email: string) {
     return httpService.post(`${apiUrl.user}/user/verification/resend`, {
       email,
@@ -161,6 +168,7 @@ const UserApi = () => {
     logoutUser,
     switchRole,
     switchCustomer,
+    switchWarehouse,
     registerUser,
     resendVerification,
     checkVerification,
