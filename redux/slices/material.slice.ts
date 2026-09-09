@@ -12,6 +12,7 @@ export const materialState = createSlice({
     getMaterialsFetch: (state, _action: PayloadAction<BaseType>) => {
       state.error = null;
       state.isLoading = true;
+      state.data = [];
     },
     getMaterialsSuccess: (
       state,

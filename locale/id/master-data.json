@@ -172,7 +172,8 @@
           "label": "Tambah Material"
         },
         "print": {
-          "tooltip": "Cetak Barcode"
+          "tooltip": "Cetak Barcode",
+          "label": "Cetak Barcode"
         },
         "update": {
           "tooltip": "Ubah"

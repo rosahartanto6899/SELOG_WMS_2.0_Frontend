@@ -172,7 +172,8 @@
           "label": "Add Material"
         },
         "print": {
-          "tooltip": "Print Barcode"
+          "tooltip": "Print Barcode",
+          "label": "Print Barcode"
         },
         "update": {
           "tooltip": "Edit"

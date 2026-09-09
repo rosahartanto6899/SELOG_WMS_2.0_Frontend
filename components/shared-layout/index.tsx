@@ -426,6 +426,7 @@ const SharedLayout = (props: SharedLibrariesProps) => {
   const selectedCustomerName = tenantOptions.find(
     (tenant) => tenant.id === data?.user?.customerId,
   )?.name;
+  const selectedWarehouseName = data?.user?.warehouseName ?? undefined;
 
   return (
     <Layout
@@ -436,6 +437,7 @@ const SharedLayout = (props: SharedLibrariesProps) => {
       sideMenuItemClick={sideMenuItemClick}
       user={data?.user}
       selectedCustomerName={selectedCustomerName}
+      selectedWarehouseName={selectedWarehouseName}
       // onNotificationClick={showNotificationHandler}
     >
       {children}

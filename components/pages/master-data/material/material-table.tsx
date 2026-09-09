@@ -47,6 +47,8 @@ const MaterialTable = (props: Props) => {
     id: "",
     name: "",
   });
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [bulkPrintLoading, setBulkPrintLoading] = useState(false);
 
   useEffect(() => {
     onFetch(listOptions);
@@ -84,20 +86,27 @@ const MaterialTable = (props: Props) => {
     setSelected(obj);
   };
 
-  // per-row label print (single) — multi-select print to follow if Table exposes rowSelection
-  const printLabel = async (record: Material) => {
-    if (!record?.barcode) {
+  // Cetak label barcode — dipakai untuk print per-baris (single) maupun bulk
+  // dari baris yang dicentang lewat checkbox.
+  const printLabels = async (
+    records: { barcode?: string | null; code?: string; name?: string }[],
+  ) => {
+    const withBarcode = records.filter(
+      (r): r is { barcode: string; code?: string; name?: string } =>
+        !!r.barcode,
+    );
+    if (!withBarcode.length) {
       message.warning(t("message.noBarcode"));
       return;
     }
     try {
-      const resp: any = await MaterialApi().generateBarcodeLabels([
-        {
-          barcode: record.barcode,
-          code: record.code,
-          name: record.name,
-        },
-      ]);
+      const resp: any = await MaterialApi().generateBarcodeLabels(
+        withBarcode.map((r) => ({
+          barcode: r.barcode,
+          code: r.code,
+          name: r.name,
+        })),
+      );
       const items = resp?.data?.data ?? [];
       if (!items.length) {
         message.warning(t("message.noBarcode"));
@@ -124,6 +133,17 @@ const MaterialTable = (props: Props) => {
     } catch {
       message.error(t("message.printFailed"));
     }
+  };
+
+  const printLabel = (record: Material) => printLabels([record]);
+
+  const printSelectedLabels = async () => {
+    const records = (dataSource ?? []).filter((r) =>
+      selectedIds.includes(r.id ?? ""),
+    );
+    setBulkPrintLoading(true);
+    await printLabels(records);
+    setBulkPrintLoading(false);
   };
 
   const COLUMNS = [
@@ -259,29 +279,37 @@ const MaterialTable = (props: Props) => {
             current={Number(options?.page)}
             pageSize={options?.limit}
             total={options?.totalData ?? 0}
-            rowKey={(row: Material) => `${row.no}`}
+            rowKey={(row: Material) => row.id ?? `${row.no}`}
             loading={loading}
             title={t("table.title")}
             scroll={{ x: 1200 }}
             onPageChange={onPageChangeListener}
             onTableChange={onTableChangeListener}
             isCustomSearch
+            multipleSelect
             multipleDelete={false}
+            onSelectedRowsChange={(keys) => setSelectedIds(keys as string[])}
             actions={
               <Row gutter={8}>
+                <Col>
+                  <Button
+                    id="action-bulk-print"
+                    icon={<PrinterOutlined />}
+                    loading={bulkPrintLoading}
+                    disabled={!selectedIds.length}
+                    onClick={printSelectedLabels}
+                  >
+                    {t("table.button.print.label")}
+                  </Button>
+                </Col>
                 {isCreate ? (
-                  <Col span={24}>
+                  <Col>
                     <Link
                       id="link-add-material"
                       href={`${baseLink}/add`}
                       passHref
                     >
-                      <Button
-                        id="action-add"
-                        type="primary"
-                        icon={<Plus />}
-                        style={{ width: "100%" }}
-                      >
+                      <Button id="action-add" type="primary" icon={<Plus />}>
                         {t("table.button.add.label")}
                       </Button>
                     </Link>

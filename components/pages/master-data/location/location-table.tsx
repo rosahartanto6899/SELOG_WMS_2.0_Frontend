@@ -2,8 +2,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { PrinterOutlined } from "@ant-design/icons";
 import Button from "@sera-components/button";
-import Card from "@sera-components/card";
-import FilterDropdown from "@sera-components/filter-dropdown";
 // eslint-disable-next-line import/no-named-as-default
 import { DeleteOutlined, EditOutlined, Plus } from "@sera-components/icons";
 import Input from "@sera-components/input";
@@ -11,7 +9,6 @@ import Modal from "@sera-components/modal";
 import Select from "@sera-components/select";
 import Table from "@sera-components/table";
 import LocationApi from "@sera-libraries/api/location";
-import WmsWarehouseApi from "@sera-libraries/api/wms-warehouse";
 import { locationActions } from "@sera-redux";
 import { BaseType } from "@sera-types/base.type";
 import { Location } from "@sera-types/location.type";
@@ -38,8 +35,6 @@ const ZoneTable = (props: Props) => {
     menuLink: baseLink,
   });
 
-  const [warehouses, setWarehouses] = useState<any[]>([]);
-  const [warehouseCodes, setWarehouseCodes] = useState<string[]>([]);
   const [listOptions, setListOptions] = useState<BaseType>({
     page: 1,
     limit: 10,
@@ -54,20 +49,8 @@ const ZoneTable = (props: Props) => {
   });
 
   useEffect(() => {
-    WmsWarehouseApi()
-      .retrieveDropdownWarehouses()
-      .then((resp: any) => setWarehouses(resp?.data?.data ?? []))
-      .catch(() => undefined);
-  }, []);
-
-  useEffect(() => {
-    onFetch({
-      ...listOptions,
-      warehouseCode: warehouseCodes.length
-        ? warehouseCodes.join(",")
-        : undefined,
-    });
-  }, [listOptions, warehouseCodes]);
+    onFetch(listOptions);
+  }, [listOptions]);
 
   const onPageChangeListener = (page: number, pageSize?: number) => {
     setListOptions((prevState: BaseType) => ({
@@ -263,24 +246,6 @@ const ZoneTable = (props: Props) => {
   return (
     <>
       <Flex vertical gap={24}>
-        <Card.Filter>
-          <Row gutter={[8, 4]}>
-            <Col>
-              <FilterDropdown
-                buttonLabel={t("table.selectWarehouse")}
-                options={warehouses.map((w: any) => ({
-                  label: w.name,
-                  value: w.code,
-                }))}
-                selectedValues={warehouseCodes}
-                onChange={(values) => setWarehouseCodes(values ?? [])}
-                loading={false}
-                disabled={false}
-              />
-            </Col>
-          </Row>
-        </Card.Filter>
-
         {dataSource && (
           <Table
             dataSource={dataSource}
@@ -379,10 +344,7 @@ const ZoneTable = (props: Props) => {
           onDelete({
             id: selected.id,
             name: selected.name,
-            options: {
-              ...listOptions,
-              warehouseCode: warehouseCodes.join(",") || undefined,
-            },
+            options: listOptions,
           });
           setShowDeleteConfirm(false);
         }}
