@@ -28,11 +28,17 @@ const ActionForm = ({ form, loading, onSubmit, type }: ActionFormProps) => {
   });
 
   const [barcodes, setBarcodes] = useState<any[]>([]);
+  const [uoms, setUoms] = useState<any[]>([]);
 
   useEffect(() => {
     MaterialApi()
       .retrieveAvailableBarcodes()
       .then((resp: any) => setBarcodes(resp?.data?.data ?? []))
+      .catch(() => undefined);
+
+    MaterialApi()
+      .retrieveUomDropdown()
+      .then((resp: any) => setUoms(resp?.data?.data ?? []))
       .catch(() => undefined);
   }, []);
 
@@ -40,7 +46,7 @@ const ActionForm = ({ form, loading, onSubmit, type }: ActionFormProps) => {
 
   return (
     <Form form={form} layout="vertical" disabled={loading} autoComplete="off">
-      <Card title={t("title")}>
+      <Card title={t("cardTitle")}>
         <Row gutter={16}>
           <Col xs={24} sm={24} md={12}>
             <Form.Item
@@ -114,10 +120,15 @@ const ActionForm = ({ form, loading, onSubmit, type }: ActionFormProps) => {
           </Col>
           <Col xs={24} sm={24} md={12}>
             <Form.Item label={t("uom.label")} name="uoM">
-              <Input
+              <Select
                 id="uoM"
                 placeholder={t("uom.placeholder")}
-                maxLength={20}
+                showSearch
+                optionFilterProp="label"
+                options={uoms.map((u: any) => ({
+                  value: u.uoM,
+                  label: u.label ?? `${u.uoM} (${u.name})`,
+                }))}
               />
             </Form.Item>
           </Col>

@@ -193,6 +193,7 @@
     },
     "form": {
       "title": "Input Master Material",
+      "cardTitle": "Master Material",
       "message": {
         "default": "This field is required"
       },
@@ -218,7 +219,7 @@
       },
       "uom": {
         "label": "UoM",
-        "placeholder": "Enter UoM"
+        "placeholder": "Select UoM"
       },
       "description": {
         "label": "Description",

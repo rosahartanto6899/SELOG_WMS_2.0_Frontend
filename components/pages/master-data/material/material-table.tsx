@@ -38,8 +38,8 @@ const MaterialTable = (props: Props) => {
   const [listOptions, setListOptions] = useState<BaseType>({
     page: 1,
     limit: 10,
-    order: "code",
-    sort: "asc",
+    order: "createdDate",
+    sort: "desc",
   });
   const [searchByOption, setSearchByOption] = useState("code");
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);

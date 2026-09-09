@@ -5,6 +5,7 @@ import { LayoutUserManagement } from "@sera-components/pages/user-management";
 import { materialActions, RootState } from "@sera-redux";
 import { MaterialState } from "@sera-types/material.type";
 import { Form } from "antd";
+import { omit } from "lodash";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -47,7 +48,14 @@ const MaterialEdit = ({
 
   const handleSubmit = () => {
     form.validateFields().then((values) => {
-      updateMaterial({ id: id as string, items: values });
+      // code & barcode disabled (immutable) di form update — tetap ikut
+      // dikembalikan oleh validateFields(), tapi UpdateMaterialDto backend
+      // sengaja tidak mendeklarasikan keduanya (whitelist validation),
+      // jadi harus dibuang dari payload sebelum dikirim.
+      updateMaterial({
+        id: id as string,
+        items: omit(values, ["code", "barcode"]),
+      });
     });
   };
 
