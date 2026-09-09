@@ -35,7 +35,8 @@
     "menu": {
       "witchRole": "Switch Role",
       "logout": "Logout",
-      "witchCustomer": "Switch Customer"
+      "witchCustomer": "Switch Customer",
+      "switchWarehouse": "Switch Warehouse"
     }
   },
   "notification": {

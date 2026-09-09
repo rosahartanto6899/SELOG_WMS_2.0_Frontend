@@ -43,6 +43,9 @@ export interface DataUser {
   }[];
   customerId?: string | null;
   customers?: string[];
+  warehouseId?: string | null;
+  warehouseCode?: string | null;
+  warehouseName?: string | null;
   roleName: string;
   fleetGroup: string;
   isInternal: IsInternal;

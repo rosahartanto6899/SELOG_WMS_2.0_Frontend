@@ -336,6 +336,9 @@ const authOptions: NextAuthOptions = {
             roles: user.roles,
             customerId: user.customerId,
             customers: user.customers,
+            warehouseId: user.warehouseId ?? null,
+            warehouseCode: user.warehouseCode ?? null,
+            warehouseName: user.warehouseName ?? null,
           },
           detail: {
             data: {

@@ -73,9 +73,170 @@ function* getOutgoingEdit(
   }
 }
 
+// ================= spec 004 Fase 1 — worklist =================
+
+function* getOutgoingList(
+  params: PayloadAction<any>,
+): Generator<unknown, void, AxiosResponse> {
+  try {
+    const result = yield call(
+      OutstandingOutgoingApi().retrieveList,
+      params.payload,
+    );
+    const body = (result as any)?.data;
+    yield put(
+      outstandingOutgoingActions.getOutgoingListSuccess({
+        data: body?.data ?? [],
+        pagination: body?.pagination,
+        recordsTotal:
+          body?.pagination?.recordsTotal ?? body?.pagination?.totalData ?? 0,
+      }),
+    );
+  } catch (error: any) {
+    yield put(
+      outstandingOutgoingActions.getOutgoingListFailure(
+        error?.response?.data ?? { message: error?.message },
+      ),
+    );
+  }
+}
+
+function* fetchTab(
+  apiFn: (p: any) => any,
+  successFn: (body: any) => any,
+  payload: { customerCode: string; warehouseCode: string },
+): Generator<unknown, void, any> {
+  const result = yield call(apiFn, payload);
+  yield put(successFn({ data: (result as any)?.data?.data ?? [] }));
+}
+
+function* getOutgoingItems(
+  params: PayloadAction<{ customerCode: string; warehouseCode: string }>,
+): Generator<unknown, void, AxiosResponse> {
+  try {
+    yield* fetchTab(
+      OutstandingOutgoingApi().retrieveItems as any,
+      outstandingOutgoingActions.getOutgoingItemsSuccess as any,
+      params.payload,
+    );
+  } catch (error: any) {
+    yield put(
+      outstandingOutgoingActions.getOutgoingItemsFailure(
+        error?.response?.data ?? { message: error?.message },
+      ),
+    );
+  }
+}
+
+function* getOutgoingPackagings(
+  params: PayloadAction<{ customerCode: string; warehouseCode: string }>,
+): Generator<unknown, void, AxiosResponse> {
+  try {
+    yield* fetchTab(
+      OutstandingOutgoingApi().retrievePackagings as any,
+      outstandingOutgoingActions.getOutgoingPackagingsSuccess as any,
+      params.payload,
+    );
+  } catch (error: any) {
+    yield put(
+      outstandingOutgoingActions.getOutgoingPackagingsFailure(
+        error?.response?.data ?? { message: error?.message },
+      ),
+    );
+  }
+}
+
+function* getOutgoingShipments(
+  params: PayloadAction<{ customerCode: string; warehouseCode: string }>,
+): Generator<unknown, void, AxiosResponse> {
+  try {
+    yield* fetchTab(
+      OutstandingOutgoingApi().retrieveShipments as any,
+      outstandingOutgoingActions.getOutgoingShipmentsSuccess as any,
+      params.payload,
+    );
+  } catch (error: any) {
+    yield put(
+      outstandingOutgoingActions.getOutgoingShipmentsFailure(
+        error?.response?.data ?? { message: error?.message },
+      ),
+    );
+  }
+}
+
+function* getOutgoingTotals(
+  params: PayloadAction<{ warehouseCodes?: string[] | null }>,
+): Generator<unknown, void, AxiosResponse> {
+  try {
+    const warehouseCodes = params.payload?.warehouseCodes ?? [];
+    const [total, byWarehouse] = (yield all([
+      call(OutstandingOutgoingApi().retrieveTotals, { warehouseCodes }),
+      call(OutstandingOutgoingApi().retrieveTotalsByWarehouse, {
+        warehouseCodes,
+      }),
+    ])) as unknown as any[];
+    yield put(
+      outstandingOutgoingActions.getOutgoingTotalsSuccess({
+        total: total?.data?.data?.totalDataOutstanding ?? 0,
+        byWarehouse: byWarehouse?.data?.data ?? [],
+      }),
+    );
+  } catch (error: any) {
+    yield put(
+      outstandingOutgoingActions.getOutgoingTotalsFailure(
+        error?.response?.data ?? { message: error?.message },
+      ),
+    );
+  }
+}
+
+function* getOutgoingDetail(
+  params: PayloadAction<{ id: string }>,
+): Generator<unknown, void, AxiosResponse> {
+  try {
+    const [detail, history] = (yield all([
+      call(OutstandingOutgoingApi().retrieveDetails, params.payload.id),
+      call(OutstandingOutgoingApi().retrieveHistory, params.payload.id),
+    ])) as unknown as any[];
+    yield put(
+      outstandingOutgoingActions.getOutgoingDetailSuccess({
+        data: detail?.data?.data ?? null,
+        history: history?.data?.data ?? [],
+      }),
+    );
+  } catch (error: any) {
+    yield put(
+      outstandingOutgoingActions.getOutgoingDetailFailure(
+        error?.response?.data ?? { message: error?.message },
+      ),
+    );
+  }
+}
+
 export default function* outstandingOutgoingSaga() {
   yield all([
     takeEvery(outstandingOutgoingActions.submitOutgoingFetch, submitOutgoing),
     takeEvery(outstandingOutgoingActions.getOutgoingEditFetch, getOutgoingEdit),
+    takeEvery(outstandingOutgoingActions.getOutgoingListFetch, getOutgoingList),
+    takeEvery(
+      outstandingOutgoingActions.getOutgoingItemsFetch,
+      getOutgoingItems,
+    ),
+    takeEvery(
+      outstandingOutgoingActions.getOutgoingPackagingsFetch,
+      getOutgoingPackagings,
+    ),
+    takeEvery(
+      outstandingOutgoingActions.getOutgoingShipmentsFetch,
+      getOutgoingShipments,
+    ),
+    takeEvery(
+      outstandingOutgoingActions.getOutgoingTotalsFetch,
+      getOutgoingTotals,
+    ),
+    takeEvery(
+      outstandingOutgoingActions.getOutgoingDetailFetch,
+      getOutgoingDetail,
+    ),
   ]);
 }
