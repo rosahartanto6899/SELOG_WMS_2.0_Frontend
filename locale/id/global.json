@@ -35,7 +35,8 @@
     "menu": {
       "witchRole": "Switch Role",
       "logout": "Logout",
-      "witchCustomer": "Ganti Customer"
+      "witchCustomer": "Ganti Customer",
+      "switchWarehouse": "Ganti Warehouse"
     }
   },
   "notification": {

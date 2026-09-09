@@ -1,0 +1,27 @@
+import PageLayout from "@sera-components/layout/page-layout";
+import DnDetailPage from "@sera-components/pages/plan-outgoing/outstanding-outgoing/dn-detail-page";
+import { ROUTE } from "@sera-utils/constants/routes";
+import { useTranslation } from "react-i18next";
+
+/** View detail DN outstanding — ?id= (spec 004 Fase 3). */
+const OutstandingOutgoingDetailPage = () => {
+  const { t } = useTranslation(undefined, {
+    keyPrefix: "planOutgoing.page",
+  });
+
+  return (
+    <PageLayout
+      title={t("outstandingTitle")}
+      breadcrumb={[
+        { title: t("outstandingBreadcrumb.0") },
+        { title: t("outstandingBreadcrumb.1") },
+      ]}
+      backUrl={ROUTE.PLAN_OUTGOING.OUTSTANDING_OUTGOING}
+      isDirectToURL
+      withTab={false}
+      content={<DnDetailPage />}
+    />
+  );
+};
+
+export default OutstandingOutgoingDetailPage;

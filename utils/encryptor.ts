@@ -41,6 +41,19 @@ export const decryptData = (
   keyIV?: any,
 ): any => {
   if (!process.env.SECRET_KEY || !encryptedData) return "";
+  // .env dev kadang diisi plaintext — pakai langsung; ciphertext crypto-js selalu
+  // berawalan "U2FsdGVkX1" (OpenSSL salted), nilai lain dianggap plaintext.
+  // decrypt() pada input tak-valid MELEMPAR "Malformed UTF-8 data" (bukan
+  // return kosong) — mis. state/cookie terenkripsi dengan SECRET_KEY lama
+  // setelah key berganti; jangan sampai meruntuhkan SSR halaman.
+  const safeUtf8 = (bytes: any): string => {
+    try {
+      return bytes.toString(enc.Utf8);
+    } catch {
+      return "";
+    }
+  };
+
   try {
     if (key !== undefined && keyIV !== undefined) {
       const bytes = AES.decrypt(encryptedData, enc.Hex.parse(key!), {
@@ -48,13 +61,14 @@ export const decryptData = (
         keySize: 256,
       });
 
-      return bytes.toString(enc.Utf8);
+      const text = safeUtf8(bytes);
+      if (!text)
+        return encryptedData.startsWith("U2FsdGVkX1") ? "" : encryptedData;
+      return text;
     }
 
     const bytes = AES.decrypt(encryptedData, process.env.SECRET_KEY);
-    const text = bytes.toString(enc.Utf8);
-    // .env dev kadang diisi plaintext — pakai langsung; ciphertext crypto-js selalu
-    // berawalan "U2FsdGVkX1" (OpenSSL salted), nilai lain dianggap plaintext
+    const text = safeUtf8(bytes);
     if (!text)
       return encryptedData.startsWith("U2FsdGVkX1") ? "" : encryptedData;
     return JSON.parse(text);
