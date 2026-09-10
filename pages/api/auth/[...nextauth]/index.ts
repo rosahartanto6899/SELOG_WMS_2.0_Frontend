@@ -69,6 +69,10 @@ const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt" as SessionStrategy,
     maxAge,
+    // Perpanjang cookie (sliding window) tiap 1 jam pemakaian aktif, bukan
+    // default NextAuth 24 jam — supaya sesi terus mengalir selama user aktif,
+    // bukan cuma bertahan `maxAge` dari login pertama.
+    updateAge: 60 * 60,
   },
   providers: [
     AzureADProvider({

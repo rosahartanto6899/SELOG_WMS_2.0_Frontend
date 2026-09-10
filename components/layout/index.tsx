@@ -54,6 +54,7 @@ interface LayoutProps {
   // roleMenu?: ItemType[];
   user?: any;
   selectedCustomerName?: string;
+  selectedWarehouseName?: string;
 }
 
 const { useBreakpoint } = Grid;
@@ -74,6 +75,7 @@ const Layout = (props: LayoutProps) => {
     headerMenu,
     user,
     selectedCustomerName,
+    selectedWarehouseName,
     children,
   } = props;
 
@@ -297,7 +299,9 @@ const Layout = (props: LayoutProps) => {
                     fontSize={13}
                     fontWeight={500}
                   >
-                    {selectedCustomerName}
+                    {selectedWarehouseName
+                      ? `${selectedCustomerName} | ${selectedWarehouseName}`
+                      : selectedCustomerName}
                   </Typography.Text>
                 </div>
               ) : null}

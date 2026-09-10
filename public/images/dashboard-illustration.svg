@@ -1,204 +1,265 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1210 830" width="1210" height="830">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900">
   <defs>
-    <linearGradient id="uniform" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#3E7BFF"/>
-      <stop offset="100%" stop-color="#2657D6"/>
+    <linearGradient id="titleGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#2563EB"/>
+      <stop offset="1" stop-color="#38BDF8"/>
     </linearGradient>
-    <linearGradient id="boxAmber" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#FFC670"/>
-      <stop offset="100%" stop-color="#FF9F45"/>
+    <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#EAF4FF"/>
+      <stop offset="1" stop-color="#F8FBFF"/>
     </linearGradient>
-    <linearGradient id="wmsGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#22D3EE"/>
-      <stop offset="50%" stop-color="#6366F1"/>
-      <stop offset="100%" stop-color="#22D3EE"/>
+    <linearGradient id="waterGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8FCBFF"/>
+      <stop offset="1" stop-color="#4E9AE8"/>
     </linearGradient>
-    <filter id="soft" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="14"/>
-    </filter>
-    <filter id="softSmall" x="-80%" y="-80%" width="260%" height="260%">
-      <feGaussianBlur stdDeviation="6"/>
-    </filter>
+    <linearGradient id="bldgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1E40AF"/>
+      <stop offset="1" stop-color="#0EA5E9"/>
+    </linearGradient>
+    <linearGradient id="fadeTop" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FAFAFA" stop-opacity="1"/>
+      <stop offset="1" stop-color="#FAFAFA" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="fadeLeft" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#FAFAFA" stop-opacity="1"/>
+      <stop offset="1" stop-color="#FAFAFA" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="fadeRight" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#FAFAFA" stop-opacity="0"/>
+      <stop offset="1" stop-color="#FAFAFA" stop-opacity="1"/>
+    </linearGradient>
+    <linearGradient id="fadeBottom" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FAFAFA" stop-opacity="0"/>
+      <stop offset="1" stop-color="#FAFAFA" stop-opacity="1"/>
+    </linearGradient>
+    <linearGradient id="seamBlend" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#FAFAFA" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#FAFAFA" stop-opacity="0.65"/>
+      <stop offset="1" stop-color="#FAFAFA" stop-opacity="0"/>
+    </linearGradient>
+    <symbol id="selogLogo" viewBox="0 0 380 148"><image href="data:image/png;base64,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" width="380" height="148"/></symbol>
   </defs>
 
-  <!-- background blob shapes (transparent canvas, so it drops onto any landing page section) -->
-  <ellipse cx="600" cy="410" rx="560" ry="370" fill="#E6F0FD"/>
-  <ellipse cx="740" cy="470" rx="430" ry="270" fill="#FFF2E1" opacity="0.55"/>
-  <circle cx="150" cy="120" r="60" fill="#FFD9A8" opacity="0.5"/>
-  <circle cx="1100" cy="140" r="46" fill="#BFE3FF" opacity="0.6"/>
+  <!-- background -->
+  <rect width="1600" height="900" fill="#F8FBFF"/>
+  <rect width="1600" height="560" fill="url(#skyGrad)"/>
+  <circle cx="150" cy="80" r="100" fill="#FDE9CB" opacity="0.55"/>
+  <circle cx="1470" cy="100" r="120" fill="#D9ECFF" opacity="0.6"/>
+  <circle cx="1520" cy="260" r="12" fill="#FDBA74" opacity="0.5"/>
 
-  <!-- headline -->
-  <g font-family="'Segoe UI', Helvetica, Arial, sans-serif" text-anchor="middle">
-    <text x="606" y="112" font-size="54" font-weight="800" fill="#0f172a" opacity="0.10">Welcome to <tspan fill="#0f172a">WMS 2.0</tspan></text>
-    <text x="605" y="110" font-size="54" font-weight="800" fill="#173B7A">Welcome to <tspan fill="url(#wmsGrad)">WMS 2.0</tspan></text>
-    <text x="605" y="150" font-size="17" font-weight="600" fill="#4C6FA5" letter-spacing="0.5">Faster scanning. Smarter tracking. One connected warehouse.</text>
-    <rect x="525" y="170" width="160" height="6" rx="3" fill="url(#wmsGrad)"/>
+  <!-- skyline behind ship -->
+  <g fill="#CBD5E1">
+    <rect x="20" y="380" width="40" height="180" opacity="0.5"/>
+    <rect x="70" y="340" width="50" height="220" opacity="0.5"/>
+    <rect x="130" y="400" width="36" height="160" opacity="0.4"/>
+    <rect x="180" y="360" width="44" height="200" opacity="0.4"/>
   </g>
 
-  <!-- floor -->
-  <ellipse cx="600" cy="715" rx="540" ry="75" fill="#CFE0F5"/>
-  <ellipse cx="600" cy="715" rx="540" ry="75" fill="#000000" opacity="0.03"/>
-
-  <!-- back shelving, left -->
-  <g opacity="0.85">
-    <rect x="55" y="230" width="10" height="400" fill="#AFC0D8"/>
-    <rect x="255" y="250" width="10" height="380" fill="#AFC0D8"/>
-    <rect x="55" y="230" width="210" height="8" fill="#AFC0D8"/>
-    <rect x="60" y="330" width="200" height="8" fill="#AFC0D8"/>
-    <rect x="60" y="430" width="200" height="8" fill="#AFC0D8"/>
-    <rect x="60" y="530" width="200" height="8" fill="#AFC0D8"/>
-    <rect x="78"  y="280" width="46" height="40" rx="4" fill="#DCE7F5"/>
-    <rect x="140" y="285" width="40" height="35" rx="4" fill="#F3DBB8"/>
-    <rect x="200" y="278" width="42" height="42" rx="4" fill="#DCE7F5"/>
-    <rect x="82"  y="378" width="44" height="42" rx="4" fill="#F3DBB8"/>
-    <rect x="150" y="382" width="46" height="38" rx="4" fill="#DCE7F5"/>
-    <rect x="80"  y="478" width="50" height="40" rx="4" fill="#DCE7F5"/>
-    <rect x="160" y="482" width="42" height="36" rx="4" fill="#F3DBB8"/>
+  <!-- water -->
+  <rect x="0" y="560" width="430" height="340" fill="url(#waterGrad)"/>
+  <g stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" opacity="0.35" fill="none">
+    <path d="M20 620 Q60 610 100 620"/>
+    <path d="M140 660 Q180 650 220 660"/>
+    <path d="M40 700 Q90 690 140 700"/>
   </g>
 
-  <!-- back shelving, right -->
-  <g opacity="0.85">
-    <rect x="935" y="250" width="10" height="380" fill="#AFC0D8"/>
-    <rect x="1135" y="230" width="10" height="400" fill="#AFC0D8"/>
-    <rect x="935" y="250" width="210" height="8" fill="#AFC0D8"/>
-    <rect x="940" y="345" width="200" height="8" fill="#AFC0D8"/>
-    <rect x="940" y="445" width="200" height="8" fill="#AFC0D8"/>
-    <rect x="940" y="545" width="200" height="8" fill="#AFC0D8"/>
-    <rect x="960"  y="290" width="46" height="40" rx="4" fill="#F3DBB8"/>
-    <rect x="1020" y="295" width="42" height="35" rx="4" fill="#DCE7F5"/>
-    <rect x="1082" y="288" width="44" height="42" rx="4" fill="#F3DBB8"/>
-    <rect x="965"  y="392" width="46" height="42" rx="4" fill="#DCE7F5"/>
-    <rect x="1030" y="396" width="44" height="38" rx="4" fill="#F3DBB8"/>
-    <rect x="970"  y="492" width="48" height="40" rx="4" fill="#F3DBB8"/>
-    <rect x="1040" y="496" width="46" height="36" rx="4" fill="#DCE7F5"/>
-  </g>
-
-  <!-- ===================== FORKLIFT (left) ===================== -->
+  <!-- dock tower crane -->
   <g>
-    <ellipse cx="260" cy="705" rx="120" ry="18" fill="#000" opacity="0.06"/>
-    <!-- mast -->
-    <rect x="345" y="380" width="10" height="230" fill="#6B7A90"/>
-    <rect x="365" y="380" width="8" height="230" fill="#6B7A90"/>
-    <!-- pallet + boxes lifted -->
-    <rect x="392" y="560" width="92" height="14" rx="3" fill="#8A5A34"/>
-    <rect x="398" y="472" width="78" height="88" rx="6" fill="url(#boxAmber)"/>
-    <rect x="407" y="412" width="60" height="62" rx="6" fill="#3E7BFF"/>
-    <rect x="417" y="428" width="40" height="6" fill="#EAF2FF" opacity="0.8"/>
-    <!-- forks -->
-    <rect x="350" y="562" width="95" height="9" fill="#3B4656"/>
-    <rect x="350" y="586" width="95" height="9" fill="#3B4656"/>
-    <!-- body -->
-    <rect x="175" y="558" width="175" height="92" rx="16" fill="url(#boxAmber)"/>
-    <rect x="175" y="558" width="175" height="30" rx="14" fill="#FFDCA0" opacity="0.6"/>
-    <!-- cabin -->
-    <rect x="185" y="462" width="95" height="100" rx="14" fill="#1E335C"/>
-    <rect x="197" y="474" width="72" height="52" rx="8" fill="#BFE3FF"/>
-    <circle cx="232" cy="452" r="8" fill="#FFD25A"/>
-    <!-- driver -->
-    <circle cx="232" cy="498" r="20" fill="#EFB48A"/>
-    <path d="M 210 486 a 22 18 0 0 1 44 0 z" fill="#2B2320"/>
-    <rect x="212" y="516" width="42" height="40" rx="10" fill="url(#uniform)"/>
-    <!-- wheels -->
-    <circle cx="215" cy="658" r="36" fill="#26303F"/>
-    <circle cx="215" cy="658" r="15" fill="#B9C2CE"/>
-    <circle cx="330" cy="658" r="36" fill="#26303F"/>
-    <circle cx="330" cy="658" r="15" fill="#B9C2CE"/>
-    <!-- motion lines -->
-    <g stroke="#9FB6D6" stroke-width="5" stroke-linecap="round" opacity="0.7">
-      <line x1="95" y1="600" x2="150" y2="600"/>
-      <line x1="85" y1="628" x2="150" y2="628"/>
-      <line x1="100" y1="656" x2="150" y2="656"/>
+    <rect x="60" y="585" width="60" height="15" fill="#64748B"/>
+    <rect x="85" y="250" width="10" height="340" fill="#94A3B8"/>
+    <rect x="55" y="240" width="30" height="18" fill="#475569"/>
+    <rect x="80" y="238" width="20" height="14" fill="#334155"/>
+    <rect x="90" y="245" width="240" height="8" fill="#94A3B8"/>
+    <line x1="300" y1="253" x2="300" y2="330" stroke="#475569" stroke-width="2"/>
+    <rect x="288" y="330" width="24" height="20" fill="#F59E0B"/>
+  </g>
+
+  <!-- ship -->
+  <g>
+    <ellipse cx="200" cy="655" rx="200" ry="10" fill="#0B2540" opacity="0.15"/>
+    <polygon points="30,600 10,618 30,650" fill="#0B2540"/>
+    <rect x="30" y="590" width="340" height="60" rx="6" fill="#0B2540"/>
+    <rect x="150" y="598" width="100" height="44" rx="6" fill="#FFFFFF"/>
+    <use href="#selogLogo" x="155" y="602" width="90" height="35"/>
+    <g>
+      <rect x="50" y="550" width="50" height="40" fill="#2563EB"/>
+      <rect x="110" y="550" width="50" height="40" fill="#F59E0B"/>
+      <rect x="170" y="550" width="50" height="40" fill="#F1F5F9"/>
+      <rect x="230" y="550" width="50" height="40" fill="#2563EB"/>
+      <rect x="290" y="550" width="50" height="40" fill="#F59E0B"/>
+      <rect x="80" y="510" width="50" height="40" fill="#F59E0B"/>
+      <rect x="140" y="510" width="50" height="40" fill="#F1F5F9"/>
+      <rect x="200" y="510" width="50" height="40" fill="#2563EB"/>
+      <rect x="260" y="510" width="50" height="40" fill="#F1F5F9"/>
     </g>
   </g>
 
-  <!-- ===================== WORKER - SCANNING (center) ===================== -->
-  <g>
-    <ellipse cx="655" cy="770" rx="95" ry="16" fill="#000" opacity="0.06"/>
-    <!-- legs -->
-    <rect x="612" y="672" width="26" height="96" rx="10" fill="#2B3A55"/>
-    <rect x="654" y="672" width="26" height="96" rx="10" fill="#26324A"/>
-    <rect x="606" y="756" width="38" height="16" rx="8" fill="#16213A"/>
-    <rect x="648" y="756" width="38" height="16" rx="8" fill="#16213A"/>
-    <!-- torso -->
-    <rect x="598" y="548" width="100" height="130" rx="24" fill="url(#uniform)"/>
-    <rect x="598" y="596" width="100" height="16" fill="#FF9F45"/>
-    <!-- head -->
-    <circle cx="648" cy="512" r="34" fill="#E3AA76"/>
-    <path d="M 616 500 a 32 26 0 0 1 64 0 c 0 -18 -64 -18 -64 0 z" fill="#2B2320"/>
-    <!-- arms holding scanner -->
-    <rect x="686" y="572" width="60" height="24" rx="12" fill="url(#uniform)" transform="rotate(-18 686 572)"/>
-    <rect x="592" y="572" width="34" height="24" rx="12" fill="url(#uniform)" transform="rotate(20 592 572)"/>
-    <!-- scanner device -->
-    <rect x="722" y="568" width="36" height="52" rx="7" fill="#16213A"/>
-    <rect x="728" y="575" width="24" height="20" rx="3" fill="#6FE3B4"/>
-    <line x1="740" y1="620" x2="760" y2="662" stroke="#FF5A5A" stroke-width="2" stroke-dasharray="2 4"/>
-    <!-- box being scanned, on small cart -->
-    <rect x="700" y="660" width="30" height="6" fill="#8A5A34"/>
-    <circle cx="705" cy="670" r="6" fill="#3B4656"/>
-    <circle cx="725" cy="670" r="6" fill="#3B4656"/>
-    <rect x="702" y="608" width="76" height="60" rx="6" fill="url(#boxAmber)"/>
-    <rect x="712" y="624" width="56" height="6" fill="#fff" opacity="0.8"/>
-    <rect x="712" y="636" width="56" height="6" fill="#fff" opacity="0.5"/>
+  <!-- ground / yard road (extended down to the canvas bottom, flush with the water) -->
+  <rect x="430" y="660" width="1170" height="240" fill="#E2E8F0"/>
+  <rect x="430" y="660" width="1170" height="6" fill="#CBD5E1"/>
+  <g fill="#FFFFFF" opacity="0.85">
+    <rect x="450" y="826" width="46" height="8" rx="3"/>
+    <rect x="530" y="826" width="46" height="8" rx="3"/>
+    <rect x="690" y="826" width="46" height="8" rx="3"/>
+    <rect x="1000" y="826" width="46" height="8" rx="3"/>
+    <rect x="1150" y="826" width="46" height="8" rx="3"/>
+  </g>
 
-    <!-- floating WMS UI confirmation card -->
-    <g filter="url(#softSmall)" opacity="0.25">
-      <rect x="676" y="368" width="150" height="76" rx="16" fill="#0f172a"/>
+  <!-- soft blend at the road/water border so it doesn't look like a hard cut/seam -->
+  <rect x="380" y="560" width="100" height="340" fill="url(#seamBlend)"/>
+
+  <!-- mobile harbour crane (aligned/level with the SELOG truck on the road) -->
+  <g transform="translate(40,75)">
+    <ellipse cx="472" cy="672" rx="82" ry="9" fill="#0B2540" opacity="0.12"/>
+    <rect x="405" y="615" width="115" height="48" rx="8" fill="#1E293B"/>
+    <rect x="418" y="586" width="36" height="34" rx="5" fill="#0F172A"/>
+    <rect x="424" y="594" width="24" height="16" rx="2" fill="#BFE3FF"/>
+    <circle cx="430" cy="671" r="15" fill="#334155"/>
+    <circle cx="430" cy="671" r="6" fill="#64748B"/>
+    <circle cx="495" cy="671" r="15" fill="#334155"/>
+    <circle cx="495" cy="671" r="6" fill="#64748B"/>
+    <circle cx="472" cy="600" r="16" fill="#0F172A"/>
+    <path d="M472,600 L452,513" stroke="#0EA5E9" stroke-width="16" stroke-linecap="round" fill="none"/>
+    <path d="M452,513 L617,430" stroke="#38BDF8" stroke-width="12" stroke-linecap="round" fill="none"/>
+    <line x1="607" y1="435" x2="607" y2="473" stroke="#475569" stroke-width="2"/>
+    <rect x="598" y="473" width="18" height="15" rx="2" fill="#F59E0B"/>
+  </g>
+
+  <!-- forklift on the road, working between the delivery truck and the warehouse worker -->
+  <g transform="translate(-30,0)">
+    <ellipse cx="965" cy="744" rx="60" ry="8" fill="#0B2540" opacity="0.12"/>
+    <rect x="975" y="655" width="6" height="82" fill="#475569"/>
+    <rect x="991" y="655" width="6" height="82" fill="#475569"/>
+    <rect x="915" y="706" width="80" height="30" rx="6" fill="#F59E0B"/>
+    <rect x="921" y="680" width="32" height="28" rx="4" fill="#1E293B"/>
+    <rect x="962" y="685" width="48" height="42" rx="4" fill="#2563EB"/>
+    <rect x="965" y="725" width="42" height="6" fill="#475569"/>
+    <circle cx="935" cy="738" r="11" fill="#1E293B"/>
+    <circle cx="975" cy="738" r="11" fill="#1E293B"/>
+  </g>
+
+  <!-- delivery truck (SELOG) heading right toward the warehouse, now beside the crane -->
+  <g transform="translate(-80,0)">
+    <ellipse cx="790" cy="748" rx="130" ry="9" fill="#0B2540" opacity="0.12"/>
+    <rect x="670" y="650" width="160" height="90" rx="10" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="2"/>
+    <rect x="670" y="650" width="160" height="18" fill="#2563EB"/>
+    <rect x="693" y="674" width="114" height="48" rx="6" fill="#FFFFFF"/>
+    <use href="#selogLogo" x="699" y="679" width="102" height="38"/>
+    <rect x="830" y="680" width="70" height="60" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="2"/>
+    <rect x="840" y="690" width="50" height="24" rx="4" fill="#BFE3FF"/>
+    <circle cx="895" cy="705" r="4" fill="#FBBF24"/>
+    <circle cx="700" cy="740" r="16" fill="#1E293B"/>
+    <circle cx="700" cy="740" r="6" fill="#94A3B8"/>
+    <circle cx="790" cy="740" r="16" fill="#1E293B"/>
+    <circle cx="790" cy="740" r="6" fill="#94A3B8"/>
+    <circle cx="870" cy="740" r="16" fill="#1E293B"/>
+    <circle cx="870" cy="740" r="6" fill="#94A3B8"/>
+  </g>
+
+  <!-- warehouse building -->
+  <g>
+    <rect x="1130" y="500" width="460" height="24" rx="8" fill="#0B3B78"/>
+    <rect x="1140" y="520" width="440" height="240" rx="14" fill="url(#bldgGrad)"/>
+    <rect x="1300" y="468" width="140" height="42" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+    <use href="#selogLogo" x="1329" y="473" width="82" height="32"/>
+
+    <rect x="1300" y="620" width="140" height="140" rx="10" fill="#0B1F3A"/>
+    <g>
+      <rect x="1313" y="633" width="34" height="34" rx="3" fill="#FBBF24"/>
+      <rect x="1353" y="633" width="34" height="34" rx="3" fill="#F1F5F9"/>
+      <rect x="1393" y="633" width="34" height="34" rx="3" fill="#38BDF8"/>
+      <rect x="1313" y="673" width="34" height="34" rx="3" fill="#38BDF8"/>
+      <rect x="1353" y="673" width="34" height="34" rx="3" fill="#FBBF24"/>
+      <rect x="1393" y="673" width="34" height="34" rx="3" fill="#F1F5F9"/>
+      <rect x="1313" y="713" width="34" height="34" rx="3" fill="#F1F5F9"/>
+      <rect x="1353" y="713" width="34" height="34" rx="3" fill="#38BDF8"/>
+      <rect x="1393" y="713" width="34" height="34" rx="3" fill="#FBBF24"/>
     </g>
-    <rect x="676" y="364" width="150" height="76" rx="16" fill="#FFFFFF" stroke="#D8E3F0" stroke-width="2"/>
-    <circle cx="704" cy="402" r="16" fill="#22C55E"/>
-    <path d="M 697 402 l 5 6 l 11 -13" stroke="#fff" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-    <rect x="730" y="388" width="80" height="8" rx="4" fill="#334155"/>
-    <rect x="730" y="404" width="60" height="7" rx="3.5" fill="#94A3B8"/>
-    <line x1="726" y1="490" x2="742" y2="440" stroke="#B9C8DE" stroke-width="2" stroke-dasharray="3 5"/>
-  </g>
 
-  <!-- ===================== WORKER - HAND TRUCK (right) ===================== -->
-  <g>
-    <ellipse cx="1005" cy="775" rx="95" ry="16" fill="#000" opacity="0.06"/>
-    <!-- hand truck -->
-    <rect x="1000" y="560" width="10" height="185" fill="#6B7A90"/>
-    <rect x="985" y="742" width="70" height="10" rx="3" fill="#3B4656"/>
-    <circle cx="995" cy="760" r="15" fill="#26303F"/>
-    <circle cx="1045" cy="760" r="15" fill="#26303F"/>
-    <rect x="912" y="640" width="88" height="60" rx="6" fill="url(#uniform)" transform="rotate(-6 912 640)"/>
-    <rect x="922" y="590" width="82" height="56" rx="6" fill="url(#boxAmber)" transform="rotate(-6 922 590)"/>
-    <rect x="932" y="542" width="76" height="52" rx="6" fill="#3E7BFF" transform="rotate(-6 932 542)"/>
-
-    <!-- legs (walking stance) -->
-    <rect x="850" y="676" width="26" height="94" rx="10" fill="#2B3A55" transform="rotate(-10 850 676)"/>
-    <rect x="884" y="676" width="26" height="94" rx="10" fill="#26324A" transform="rotate(12 884 676)"/>
-    <rect x="836" y="756" width="38" height="16" rx="8" fill="#16213A"/>
-    <rect x="892" y="756" width="38" height="16" rx="8" fill="#16213A"/>
-    <!-- torso -->
-    <rect x="836" y="552" width="98" height="128" rx="24" fill="url(#uniform)"/>
-    <rect x="836" y="600" width="98" height="16" fill="#FF9F45"/>
-    <!-- head -->
-    <circle cx="885" cy="516" r="33" fill="#F2C6A0"/>
-    <path d="M 855 508 a 30 24 0 0 1 60 0 c 0 -16 -60 -16 -60 0 z" fill="#3B2A1A"/>
-    <!-- arms reaching forward to hand truck -->
-    <rect x="900" y="576" width="70" height="22" rx="11" fill="url(#uniform)" transform="rotate(-8 900 576)"/>
-    <rect x="828" y="580" width="46" height="22" rx="11" fill="url(#uniform)" transform="rotate(14 828 580)"/>
-  </g>
-
-  <!-- scattered floor boxes for extra "busy" feel -->
-  <g>
-    <rect x="150" y="700" width="58" height="50" rx="6" fill="url(#boxAmber)" transform="rotate(-6 150 700)"/>
-    <rect x="1055" y="690" width="54" height="46" rx="6" fill="#3E7BFF" transform="rotate(8 1055 690)"/>
-    <rect x="455" y="712" width="46" height="40" rx="6" fill="#F3DBB8" transform="rotate(4 455 712)"/>
-  </g>
-
-  <!-- decorative floating icons -->
-  <g opacity="0.8">
-    <g transform="translate(1075,230)">
-      <rect x="0" y="0" width="3" height="34" fill="#93A5C2"/>
-      <rect x="7" y="0" width="6" height="34" fill="#93A5C2"/>
-      <rect x="17" y="0" width="3" height="34" fill="#93A5C2"/>
-      <rect x="24" y="0" width="5" height="34" fill="#93A5C2"/>
-      <rect x="33" y="0" width="3" height="34" fill="#93A5C2"/>
-    </g>
-    <g transform="translate(95,190)" fill="none" stroke="#FF9F45" stroke-width="4">
-      <circle cx="16" cy="16" r="14"/>
-      <path d="M16 4 v6 M16 22 v6 M4 16 h6 M22 16 h6 M7 7 l4 4 M21 21 l4 4 M25 7 l-4 4 M11 21 l-4 4"/>
+    <g fill="#BFE3FF" opacity="0.9">
+      <rect x="1165" y="640" width="38" height="52" rx="4"/>
+      <rect x="1500" y="640" width="38" height="52" rx="4"/>
     </g>
   </g>
+
+  <!-- artistic warehouse rack units -->
+  <g transform="translate(1160,540)">
+    <ellipse cx="70" cy="228" rx="80" ry="9" fill="#0B2540" opacity="0.1"/>
+    <rect x="0" y="0" width="6" height="220" fill="#94A3B8"/>
+    <rect x="134" y="0" width="6" height="220" fill="#94A3B8"/>
+    <rect x="-6" y="0" width="152" height="8" fill="#CBD5E1"/>
+    <rect x="-6" y="70" width="152" height="8" fill="#CBD5E1"/>
+    <rect x="-6" y="140" width="152" height="8" fill="#CBD5E1"/>
+    <rect x="-6" y="212" width="152" height="8" fill="#CBD5E1"/>
+    <rect x="14" y="32" width="42" height="35" rx="4" fill="#2563EB"/>
+    <rect x="66" y="26" width="48" height="41" rx="4" fill="#FBBF24"/>
+    <rect x="16" y="100" width="40" height="37" rx="4" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="2"/>
+    <rect x="66" y="94" width="52" height="43" rx="4" fill="#2563EB"/>
+    <rect x="12" y="170" width="48" height="39" rx="4" fill="#FBBF24"/>
+    <rect x="68" y="164" width="44" height="45" rx="4" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="2"/>
+  </g>
+
+  <g transform="translate(1450,560)">
+    <ellipse cx="60" cy="198" rx="70" ry="8" fill="#0B2540" opacity="0.1"/>
+    <rect x="0" y="0" width="6" height="190" fill="#94A3B8"/>
+    <rect x="114" y="0" width="6" height="190" fill="#94A3B8"/>
+    <rect x="-6" y="0" width="132" height="7" fill="#CBD5E1"/>
+    <rect x="-6" y="60" width="132" height="7" fill="#CBD5E1"/>
+    <rect x="-6" y="120" width="132" height="7" fill="#CBD5E1"/>
+    <rect x="-6" y="182" width="132" height="7" fill="#CBD5E1"/>
+    <rect x="12" y="18" width="38" height="34" rx="4" fill="#FBBF24"/>
+    <rect x="58" y="14" width="42" height="38" rx="4" fill="#2563EB"/>
+    <rect x="14" y="78" width="40" height="34" rx="4" fill="#2563EB"/>
+    <rect x="60" y="74" width="44" height="38" rx="4" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="2"/>
+    <rect x="12" y="140" width="42" height="34" rx="4" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="2"/>
+    <rect x="60" y="136" width="42" height="38" rx="4" fill="#FBBF24"/>
+  </g>
+
+  <!-- warehouse worker scanning a barcode, beside the warehouse -->
+  <g transform="translate(1000,595)">
+    <ellipse cx="55" cy="144" rx="60" ry="7" fill="#0B2540" opacity="0.12"/>
+    <rect x="8" y="60" width="12" height="38" rx="6" fill="#2563EB"/>
+    <rect x="25" y="100" width="13" height="36" rx="4" fill="#1E293B"/>
+    <rect x="42" y="100" width="13" height="36" rx="4" fill="#1E293B"/>
+    <ellipse cx="31" cy="140" rx="9" ry="6" fill="#0F172A"/>
+    <ellipse cx="49" cy="140" rx="9" ry="6" fill="#0F172A"/>
+    <rect x="17" y="56" width="42" height="48" rx="13" fill="#2563EB"/>
+    <rect x="17" y="68" width="42" height="5" fill="#FBBF24"/>
+    <rect x="17" y="84" width="42" height="5" fill="#FBBF24"/>
+    <circle cx="38" cy="36" r="16" fill="#E8B08A"/>
+    <rect x="23" y="18" width="30" height="15" rx="8" fill="#3B2A20"/>
+    <path d="M60,64 L82,54" stroke="#2563EB" stroke-width="12" stroke-linecap="round" fill="none"/>
+    <circle cx="82" cy="54" r="6" fill="#E8B08A"/>
+    <rect x="80" y="46" width="20" height="11" rx="3" fill="#1E293B" transform="rotate(-15 90 51)"/>
+
+    <rect x="91" y="95" width="5" height="26" fill="#94A3B8"/>
+    <rect x="118" y="95" width="5" height="26" fill="#94A3B8"/>
+    <rect x="88" y="88" width="40" height="7" rx="2" fill="#94A3B8"/>
+    <rect x="86" y="54" width="44" height="34" rx="4" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="2"/>
+    <g stroke="#1E293B" stroke-linecap="butt">
+      <line x1="91" y1="60" x2="91" y2="82" stroke-width="2"/>
+      <line x1="96" y1="60" x2="96" y2="82" stroke-width="3"/>
+      <line x1="101" y1="60" x2="101" y2="82" stroke-width="2"/>
+      <line x1="106" y1="60" x2="106" y2="82" stroke-width="4"/>
+      <line x1="112" y1="60" x2="112" y2="82" stroke-width="2"/>
+      <line x1="117" y1="60" x2="117" y2="82" stroke-width="3"/>
+      <line x1="122" y1="60" x2="122" y2="82" stroke-width="2"/>
+    </g>
+    <line x1="92" y1="51" x2="107" y2="65" stroke="#EF4444" stroke-width="2" opacity="0.85"/>
+    <circle cx="128" cy="52" r="9" fill="#22C55E"/>
+    <path d="M124,52 L127,56 L133,47" stroke="#FFFFFF" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- edge fade to white (top, left, right, bottom) -->
+  <rect x="0" y="0" width="1600" height="130" fill="url(#fadeTop)"/>
+  <rect x="0" y="0" width="200" height="900" fill="url(#fadeLeft)"/>
+  <rect x="1400" y="0" width="200" height="900" fill="url(#fadeRight)"/>
+  <rect x="0" y="780" width="1600" height="120" fill="url(#fadeBottom)"/>
+
+  <!-- title (drawn above the fade so it stays crisp) -->
+  <text x="800" y="95" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="54" font-weight="800">
+    <tspan fill="#16264A">Welcome to </tspan><tspan fill="url(#titleGrad)">WMS 2.0</tspan>
+  </text>
+  <text x="800" y="140" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="600" font-style="italic" fill="#2563EB">Faster scanning. Smarter tracking. One connected warehouse.</text>
+  <rect x="690" y="162" width="220" height="6" rx="3" fill="url(#titleGrad)"/>
 </svg>
