@@ -16,6 +16,7 @@ const OutstandingOutgoingPage = () => {
         { title: t("outstandingBreadcrumb.0") },
         { title: t("outstandingBreadcrumb.1") },
       ]}
+      withTab={false}
       content={<OutstandingOutgoingComponent.OutstandingOutgoingInitialPage />}
     />
   );

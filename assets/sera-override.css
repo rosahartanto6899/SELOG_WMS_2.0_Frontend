@@ -1941,3 +1941,94 @@ iframe {
 .rc-virtual-list-scrollbar-thumb {
   background: linear-gradient(180deg, #4338ca 0%, #0e7490 100%) !important;
 }
+
+/* ============================================================
+   Submenu-page tab bar — parity LOGIS (sera-override.css LOGIS):
+   menu horizontal folder-tab menempel card container di bawahnya.
+   Dipakai page dengan tab in-page (mis. Outstanding Outgoing).
+   ============================================================ */
+.submenu-page.ant-menu-horizontal {
+  align-items: end;
+  background: transparent;
+  border: none;
+}
+
+@media screen and (width > 720px) {
+  .submenu-page.ant-menu-horizontal {
+    max-width: calc(100vw - 400px);
+  }
+}
+
+.submenu-page.ant-menu.ant-menu-root > .ant-menu-item {
+  background: #e8f5fc;
+  border-radius: 10px 10px 0 0;
+  box-shadow:
+    0 1px 2px 0 rgb(0 0 0 / 3%),
+    0 1px 6px -1px rgb(0 0 0 / 2%),
+    0 2px 4px 0 rgb(0 0 0 / 2%);
+  color: #206690;
+  font-weight: 500;
+  height: 40px;
+  margin-right: 32.5px;
+  padding: 0 15px 0 35px !important;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.submenu-page.ant-menu.ant-menu-root > .ant-menu-item::after {
+  background: #e8f5fc;
+  border-radius: 0 10px 0 0;
+  content: " ";
+  display: block;
+  height: 100%;
+  left: auto;
+  position: absolute;
+  right: -23px;
+  top: 0;
+  transform: skew(25deg);
+  width: 40px;
+}
+
+.submenu-page.ant-menu.ant-menu-root > .ant-menu-item .ant-menu-title-content {
+  position: relative;
+  z-index: 1;
+}
+
+.submenu-page.ant-menu.ant-menu-root > .ant-menu-item.ant-menu-item-selected {
+  background: #fff;
+  border-radius: 10px 10px 0 0;
+  color: #206690;
+  height: 56px;
+  margin-right: 35px;
+  padding: 6px 15px 0 35px !important;
+}
+
+.submenu-page.ant-menu.ant-menu-root
+  > .ant-menu-item.ant-menu-item-selected::after {
+  background: #fff;
+}
+
+.submenu-page.ant-menu.ant-menu-root
+  > .ant-menu-item.ant-menu-item-selected
+  .ant-menu-title-content {
+  border-bottom: solid #206690 2px;
+}
+
+.submenu-page.ant-menu-light.ant-menu-horizontal
+  > .ant-menu-item-selected::after,
+.submenu-page.ant-menu-light.ant-menu-horizontal > .ant-menu-item:hover::after {
+  border-bottom-color: transparent;
+}
+
+/* matikan bar aksen vertikal gradien (rule sidebar global di atas) +
+   pill indigo — tidak berlaku utk tab folder halaman */
+.submenu-page.ant-menu.ant-menu-root
+  > .ant-menu-item.ant-menu-item-selected::before {
+  content: none;
+}
+
+.submenu-page.ant-menu.ant-menu-root > .ant-menu-item.ant-menu-item-selected {
+  background: #fff;
+  color: #206690;
+  padding: 6px 15px 0 35px !important;
+}

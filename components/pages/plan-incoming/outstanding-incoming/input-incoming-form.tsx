@@ -4,8 +4,6 @@ import Empty from "@sera-components/empty";
 import CustomerApi from "@sera-libraries/api/customer";
 import MaterialApi from "@sera-libraries/api/material";
 import OutstandingIncomingApi from "@sera-libraries/api/outstanding-incoming";
-import apiUrl from "@sera-libraries/common/api-url";
-import { httpService } from "@sera-libraries/http-service";
 import {
   InputIncomingPayload,
   OutstandingIncomingHeader,
@@ -21,14 +19,13 @@ import {
   message,
   Modal,
   Row,
-  Select,
   Space,
   Table,
   Tooltip,
 } from "antd";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import MaterialSearch from "./material-search";
@@ -79,10 +76,6 @@ const InputIncomingForm = (props: Props) => {
     code?: string;
     name?: string;
   }>({});
-  // Dropdown warehouse — sesuai customer aktif + akses role (roles[].warehouses)
-  const [warehouses, setWarehouses] = useState<
-    Array<{ id: string; code: string; name: string }>
-  >([]);
   // Popup pilih material (multi) — list sesuai customer aktif
   const [matOpen, setMatOpen] = useState(false);
   const [matLoading, setMatLoading] = useState(false);
@@ -90,8 +83,41 @@ const InputIncomingForm = (props: Props) => {
     Array<{ id: string; code: string; name: string; brand?: string }>
   >([]);
   const [matSel, setMatSel] = useState<string[]>([]); // material IDs terpilih
+  // ponytail: row terpilih disimpan lokal agar seleksi awet lintas halaman server-side
+  const [matSelRows, setMatSelRows] = useState<
+    Record<string, { id: string; code: string; name: string; brand?: string }>
+  >({});
+  const [matPage, setMatPage] = useState(1);
+  const [matTotal, setMatTotal] = useState(0);
   const [matQ, setMatQ] = useState("");
   const [matSearchBy, setMatSearchBy] = useState("code");
+  const MAT_PAGE_SIZE = 10;
+
+  // Kode material yang sudah ada di tabel — tidak bisa dipilih lagi
+  const chosenCodes = useMemo(
+    () => new Set(materials.map((m) => m.materialCode)),
+    [materials],
+  );
+
+  // Server-side pagination — search & paging di ServiceMasterData (GET /materials)
+  const loadMat = (page: number, search: string) => {
+    setMatLoading(true);
+    MaterialApi()
+      .retrieveMaterials({
+        page,
+        limit: MAT_PAGE_SIZE,
+        search: search || null,
+        searchBy: search ? matSearchBy : null,
+        customerCode: customer.code ?? editData?.customerCode ?? undefined,
+      })
+      .then((resp: any) => {
+        setMatOptions(resp?.data?.data ?? []);
+        setMatPage(resp?.data?.pagination?.page ?? page);
+        setMatTotal(resp?.data?.pagination?.totalData ?? 0);
+      })
+      .catch(() => undefined)
+      .finally(() => setMatLoading(false));
+  };
 
   useEffect(() => {
     if (!open) return;
@@ -149,34 +175,6 @@ const InputIncomingForm = (props: Props) => {
       .catch(() => undefined);
   }, [open, editId, session?.user?.customerId]);
 
-  // Warehouse dropdown: customer aktif (tenant) + akses role — parity shared-layout
-  useEffect(() => {
-    if (!open) return;
-    const customerId = session?.user?.customerId;
-    if (!customerId) return;
-    const roleWarehouses = (session?.user?.roles ?? []).flatMap(
-      (r: any) => r?.warehouses ?? [],
-    );
-    httpService
-      .get(`${apiUrl.user}/warehouses/dropdown`)
-      .then((resp: any) => {
-        const all = resp?.data?.data ?? [];
-        const list = all
-          .filter(
-            (w: any) =>
-              w.customer?.id === customerId &&
-              (!roleWarehouses.length || roleWarehouses.includes(w.id)),
-          )
-          .map((w: any) => ({ id: w.id, code: w.code, name: w.name }));
-        setWarehouses(list);
-        // default: warehouse teratas (mode create, belum ada pilihan)
-        if (list.length && !editData && !form.getFieldValue("warehouseCode")) {
-          form.setFieldValue("warehouseCode", list[0].code);
-        }
-      })
-      .catch(() => undefined);
-  }, [open, session?.user?.customerId, session?.user?.roles]);
-
   const updateMaterial = (key: number, patch: Partial<MaterialRow>) =>
     setMaterials((prev) =>
       prev.map((m) => (m.key === key ? { ...m, ...patch } : m)),
@@ -190,10 +188,12 @@ const InputIncomingForm = (props: Props) => {
       message.error(t("noCustomerSession"));
       return;
     }
-    // warehouseName ikut kode warehouse yang dipilih di dropdown
+    // warehouse dari session switch (aktif warehouse) — bukan input form
+    // (getFieldsValue tidak mengembalikan field tanpa Form.Item ter-mount)
+    const warehouseCode =
+      (session?.user?.warehouseCode as string) ?? editData?.warehouseCode;
     const warehouseName =
-      warehouses.find((w) => w.code === values.warehouseCode)?.name ??
-      editData?.warehouseName;
+      (session?.user?.warehouseName as string) ?? editData?.warehouseName;
     const rows = materials.filter((m) => m.materialCode && m.qty != null);
     if (!rows.length) {
       message.warning(t("noMaterial"));
@@ -213,6 +213,7 @@ const InputIncomingForm = (props: Props) => {
         // C3 header + add-info replace; detail qty changes via C4; new materials via C2
         await OutstandingIncomingApi().updateIncomingHeader(editId, {
           ...values,
+          warehouseCode,
           customerCode,
           customerName,
           warehouseName,
@@ -247,6 +248,7 @@ const InputIncomingForm = (props: Props) => {
       } else {
         const payload: InputIncomingPayload = {
           ...values,
+          warehouseCode,
           customerCode,
           customerName,
           warehouseName,
@@ -344,20 +346,13 @@ const InputIncomingForm = (props: Props) => {
             nomornya (Tanggal PO setelah No. PO, Tgl Incoming setelah No. SJ). */}
         <Row gutter={12}>
           <Col xs={24} md={12}>
-            <Form.Item
-              name="warehouseCode"
-              label={t("warehouse")}
-              rules={[{ required: true, message: t("required") }]}
-            >
-              <Select
-                showSearch
-                optionFilterProp="label"
-                disabled={!!editId}
-                placeholder={t("warehousePlaceholder")}
-                options={warehouses.map((w) => ({
-                  value: w.code,
-                  label: `${w.name} (${w.code})`,
-                }))}
+            <Form.Item label={t("warehouse")}>
+              <Input
+                disabled
+                value={
+                  (session?.user?.warehouseName as string) ??
+                  editData?.warehouseName
+                }
               />
             </Form.Item>
           </Col>
@@ -473,20 +468,10 @@ const InputIncomingForm = (props: Props) => {
             icon={<PlusOutlined />}
             onClick={() => {
               setMatSel([]);
+              setMatSelRows({});
+              setMatQ("");
               setMatOpen(true);
-              if (!matOptions.length) {
-                setMatLoading(true);
-                MaterialApi()
-                  .retrieveDropdownMaterials({
-                    customerCode:
-                      customer.code ?? editData?.customerCode ?? undefined,
-                  })
-                  .then((resp: any) => {
-                    setMatOptions(resp?.data?.data ?? []);
-                  })
-                  .catch(() => undefined)
-                  .finally(() => setMatLoading(false));
-              }
+              loadMat(1, "");
             }}
           >
             {t("addMaterial")}
@@ -519,10 +504,13 @@ const InputIncomingForm = (props: Props) => {
                 </Tooltip>
               ),
               expandedRowRender: (row: MaterialRow) => (
+                /* Card kecil: size=small + body padding rapat (paritas outgoing) */
                 <Card
                   type="inner"
+                  size="small"
                   title={t("addInfos")}
                   style={{ maxWidth: 560 }}
+                  styles={{ body: { padding: "8px 12px 12px" } }}
                 >
                   {(row.additionalInformation ?? [{}]).map((a, i) => (
                     <Row key={i} gutter={8} className="mb-2">
@@ -577,8 +565,12 @@ const InputIncomingForm = (props: Props) => {
                     icon={<PlusOutlined />}
                     onClick={() =>
                       updateMaterial(row.key, {
+                        // mulai dari fallback render [{}] — klik PERTAMA
+                        // langsung nambah baris kedua (dulu baru efek di klik ke-2)
                         additionalInformation: [
-                          ...(row.additionalInformation ?? []),
+                          ...(row.additionalInformation?.length
+                            ? row.additionalInformation
+                            : [{}]),
                           {},
                         ],
                       })
@@ -604,7 +596,7 @@ const InputIncomingForm = (props: Props) => {
         cancelText={t("cancel")}
         onCancel={() => setMatOpen(false)}
         onOk={async () => {
-          const picked = matOptions.filter((m) => matSel.includes(m.id));
+          const picked = matSel.map((id) => matSelRows[id]).filter(Boolean);
           // uom/barcode dari detail master (fallback input manual bila kosong)
           const withDetail = await Promise.all(
             picked.map(async (m) => {
@@ -650,9 +642,14 @@ const InputIncomingForm = (props: Props) => {
           onSearchBy={(v) => {
             setMatSearchBy(v);
             setMatQ("");
+            loadMat(1, "");
           }}
           placeholder={t("pickMaterialPlaceholder")}
-          onSearchValue={(v) => setMatQ((v ?? "").toLowerCase())}
+          onSearchValue={(v) => {
+            const q = v ?? "";
+            setMatQ(q);
+            loadMat(1, q);
+          }}
           options={[
             { value: "code", label: t("materialCode") },
             { value: "name", label: t("materialName") },
@@ -664,26 +661,47 @@ const InputIncomingForm = (props: Props) => {
           size="small"
           rowKey="id"
           loading={matLoading}
-          pagination={{ pageSize: 10, showSizeChanger: false }}
+          pagination={{
+            current: matPage,
+            pageSize: MAT_PAGE_SIZE,
+            total: matTotal,
+            showSizeChanger: false,
+            onChange: (p) => loadMat(p, matQ),
+          }}
           scroll={{ y: 420 }}
           locale={{
             emptyText: <Empty description={t("noMaterialFound")} />,
           }}
+          rowClassName={(r: any) =>
+            chosenCodes.has(r.code) ? "opacity-50" : ""
+          }
           rowSelection={{
             selectedRowKeys: matSel,
-            onChange: (keys) => setMatSel(keys as string[]),
+            preserveSelectedRowKeys: true,
+            getCheckboxProps: (r: any) => ({
+              disabled: chosenCodes.has(r.code),
+            }),
+            onChange: (keys, rows) => {
+              setMatSel(keys as string[]);
+              setMatSelRows((prev) => {
+                const next = { ...prev };
+                Object.keys(next).forEach((k) => {
+                  if (!keys.includes(k)) delete next[k];
+                });
+                rows.forEach((r) => {
+                  next[r.id] = r;
+                });
+                return next;
+              });
+            },
           }}
-          dataSource={matOptions.filter((m) => {
-            if (!matQ) return true;
-            return String((m as any)[matSearchBy] ?? "")
-              .toLowerCase()
-              .includes(matQ);
-          })}
+          dataSource={matOptions}
           columns={[
             {
               title: "No",
               width: 50,
-              render: (_: any, __: any, i: number) => i + 1,
+              render: (_: any, __: any, i: number) =>
+                (matPage - 1) * MAT_PAGE_SIZE + i + 1,
             },
             { title: t("materialCode"), dataIndex: "code", width: 140 },
             { title: t("materialName"), dataIndex: "name" },

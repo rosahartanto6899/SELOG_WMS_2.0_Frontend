@@ -35,10 +35,17 @@ const flowMenuItems = (
   record: OutstandingOutgoingListRow,
   isSequential?: boolean,
 ): MenuProps["items"] => {
+  // semua material sudah di-picking (indicator YES) + status Packaging →
+  // status terkunci, tidak bisa kembali ke Picking/QC
+  const locked = record.status === "Packaging" && record.indicator === "YES";
   if (isSequential) {
     return [
-      { key: "Picking", label: "1. Picking" },
-      { key: "Quality Control", label: "2. Quality Control" },
+      { key: "Picking", label: "1. Picking", disabled: locked },
+      {
+        key: "Quality Control",
+        label: "2. Quality Control",
+        disabled: locked,
+      },
       { key: "__rts__", label: "3. Ready To Ship" },
     ];
   }
@@ -49,8 +56,12 @@ const flowMenuItems = (
     ];
   }
   return [
-    { key: "Picking", label: "1. Picking" },
-    { key: "Quality Control", label: "2. Quality Control" },
+    { key: "Picking", label: "1. Picking", disabled: locked },
+    {
+      key: "Quality Control",
+      label: "2. Quality Control",
+      disabled: locked,
+    },
   ];
 };
 
@@ -60,21 +71,17 @@ export const INDICATOR_COLORS: Record<string, string> = {
   NO: "#f5222d",
 };
 
-/** searchBy options — advanced search popup legacy (3 kolom, SP parity) */
-export const SearchByOptions = () => {
-  const { t } = useTranslation(undefined, {
-    keyPrefix: "planOutgoing.outstandingOutgoing.table.options",
-  });
-
-  return [
-    { label: t("0"), value: "deliveryNoteNo" },
-    { label: t("1"), value: "poNo" },
-    { label: t("2"), value: "customerDestination" },
-    { label: t("3"), value: "referenceNo" },
-    { label: t("4"), value: "description" },
-    { label: t("5"), value: "status" },
-  ];
-};
+/** searchBy options — advanced search popup legacy (3 kolom, SP parity).
+ *  t diterima sebagai PARAM — dipanggil sebagai fungsi dalam JSX parent,
+ *  hook di sini melanggar rules-of-hooks (parity ItemsSearchByOptions). */
+export const SearchByOptions = (t: any) => [
+  { label: t("0"), value: "deliveryNoteNo" },
+  { label: t("1"), value: "poNo" },
+  { label: t("2"), value: "customerDestination" },
+  { label: t("3"), value: "referenceNo" },
+  { label: t("4"), value: "description" },
+  { label: t("5"), value: "status" },
+];
 
 const toDate = (v?: string | null) =>
   v ? FormatUtils().dateTimeTransform(v) : "-";
@@ -111,6 +118,7 @@ export const DnListColumns = (handlers?: RowActionHandlers) => {
       title: t("column.status"),
       dataIndex: "status",
       key: "status",
+      sorter: true, // server-side (LIST_ORDER_WHITELIST)
       // NOTE: jangan set truncate — override render memaksa plain text (parity catatan incoming)
       fixed: leftFixed,
       width: 170,
@@ -134,6 +142,7 @@ export const DnListColumns = (handlers?: RowActionHandlers) => {
       title: t("column.deliveryNoteNo"),
       dataIndex: "deliveryNoteNo",
       key: "deliveryNoteNo",
+      sorter: true, // server-side
       truncate: true,
       width: 160,
     },
@@ -141,6 +150,7 @@ export const DnListColumns = (handlers?: RowActionHandlers) => {
       title: t("column.poNo"),
       dataIndex: "poNo",
       key: "poNo",
+      sorter: true, // server-side
       truncate: true,
       width: 140,
     },
@@ -156,6 +166,7 @@ export const DnListColumns = (handlers?: RowActionHandlers) => {
       title: t("column.poDate"),
       dataIndex: "poDate",
       key: "poDate",
+      sorter: true, // server-side
       width: 160,
       render: (value: string) => toDate(value),
     },
@@ -171,6 +182,7 @@ export const DnListColumns = (handlers?: RowActionHandlers) => {
       title: t("column.outgoingDate"),
       dataIndex: "outgoingDate",
       key: "outgoingDate",
+      sorter: true, // server-side
       width: 160,
       render: (value: string) => toDate(value),
     },
@@ -203,6 +215,7 @@ export const DnListColumns = (handlers?: RowActionHandlers) => {
       title: t("column.createdAt"),
       dataIndex: "createdAt",
       key: "createdAt",
+      sorter: true, // server-side → createdDate (whitelist backend)
       width: 160,
       render: (value: string) => toDate(value),
     },
@@ -356,20 +369,29 @@ export const DnItemsColumns = () => {
   ];
 };
 
-/** searchBy options tab DN Items (whitelist Q2) */
-export const ItemsSearchByOptions = () => {
-  const { t } = useTranslation(undefined, {
-    keyPrefix: "planOutgoing.outstandingOutgoing.table.options",
-  });
-  return [
-    { label: t("materialCodeOpt"), value: "materialCode" },
-    { label: t("materialNameOpt"), value: "materialName" },
-    { label: t("materialBrandOpt"), value: "materialBrand" },
-    { label: t("0"), value: "deliveryNoteNo" },
-    { label: t("1"), value: "poNo" },
-    { label: t("2"), value: "customerDestination" },
-  ];
-};
+/** searchBy options tab DN Items (whitelist Q2).
+ *  t diterima sebagai PARAM (bukan hook) — fungsi ini dipanggil langsung
+ *  dalam JSX parent; hook di sini melanggar aturan hooks saat parent
+ *  mempunyai early-return (Rendered more hooks). */
+export const ItemsSearchByOptions = (t: any) => [
+  { label: t("materialCodeOpt"), value: "materialCode" },
+  { label: t("materialNameOpt"), value: "materialName" },
+  { label: t("materialBrandOpt"), value: "materialBrand" },
+  { label: t("0"), value: "deliveryNoteNo" },
+  { label: t("1"), value: "poNo" },
+  { label: t("2"), value: "customerDestination" },
+];
+
+export const PackagingSearchByOptions = (t: any) => [
+  { label: t("packagingNoOpt"), value: "packagingNo" },
+  { label: t("materialCodeOpt"), value: "materialCode" },
+  { label: t("materialNameOpt"), value: "materialName" },
+];
+
+export const ShipmentSearchByOptions = (t: any) => [
+  { label: t("shipmentNoOpt"), value: "shipmentNo" },
+  { label: t("2"), value: "customerDestination" },
+];
 
 /** Kolom tab Packaging — parity datatablePackaging */
 export const PackagingColumns = () => {
@@ -385,11 +407,17 @@ export const PackagingColumns = () => {
       width: 240,
     },
     {
-      title: t("column.customerDestination"),
-      dataIndex: "customerDestination",
-      key: "customerDestination",
+      title: t("column.materialCode"),
+      dataIndex: "materialCode",
+      key: "materialCode",
       truncate: true,
-      width: 180,
+      width: 160,
+    },
+    {
+      title: t("column.materialName"),
+      dataIndex: "materialName",
+      key: "materialName",
+      truncate: true,
     },
     {
       title: t("column.qty"),

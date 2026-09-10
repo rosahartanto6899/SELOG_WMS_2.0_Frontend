@@ -23,14 +23,11 @@ import Utils from "../../../../utils/utils";
 const useSecureCookies = Utils().isSecureUrl(process.env.NEXTAUTH_URL ?? "");
 const cookiePrefix = useSecureCookies ? "__Secure-" : "";
 const hostName = Utils().getDomainName(process.env.NEXTAUTH_URL ?? "");
-// Peninggalan dari waktu access token backend masih 1 jam — backend sekarang
-// pakai JWT_ACCESS_EXPIRES_IN=604800 (7 hari, lihat service-user/.env), tapi
-// maxAge cookie NextAuth ini tidak ikut diperpanjang. Karena `updateAge`
-// (default 24 jam) tidak di-override, cookie sesi selalu expired persis 1 jam
-// setelah issued/terakhir di-refresh — TIDAK peduli refreshAccessToken() di
-// bawah berhasil memperpanjang token backend. Akibatnya user selalu diminta
-// login ulang tiap ~1 jam walau sesi backend-nya (Redis) masih valid 7 hari.
-const maxAge = 7 * 24 * 60 * 60;
+// TTL access token backend — jwt callback refresh <5 mnt sebelum habis
+const accessTokenTtl = 1 * 60 * 60;
+// Umur cookie session — DECOUPLE dari accessTokenTtl: refresh token terus
+// muter access token selama cookie hidup (env-driven, default 12 jam)
+const maxAge = Number(process.env.SESSION_MAX_AGE ?? 12 * 60 * 60);
 const isLoginOTP =
   (decryptData(process.env.TOGGLE_OTP_LOGIN) as string).toLowerCase() ===
   "true";
@@ -49,7 +46,10 @@ const refreshAccessToken = async (token: LoginResponse | any) => {
   const response: AxiosResponse = await UserApi().refreshToken(payload);
 
   if (response.status === 200) {
-    return { ...response.data, accessTokenExpires: Date.now() + maxAge * 1000 };
+    return {
+      ...response.data,
+      accessTokenExpires: Date.now() + accessTokenTtl * 1000,
+    };
   }
 
   throw new Error(
@@ -110,7 +110,7 @@ const authOptions: NextAuthOptions = {
         if (response.status === 200) {
           return {
             ...response.data,
-            accessTokenExpires: Date.now() + maxAge * 1000,
+            accessTokenExpires: Date.now() + accessTokenTtl * 1000,
           };
         }
 
@@ -162,7 +162,7 @@ const authOptions: NextAuthOptions = {
           if (response?.status === 200) {
             return {
               ...response.data,
-              accessTokenExpires: Date.now() + maxAge * 1000,
+              accessTokenExpires: Date.now() + accessTokenTtl * 1000,
             };
           }
 
@@ -254,13 +254,13 @@ const authOptions: NextAuthOptions = {
         if (response.status === 200) {
           return Promise.resolve({
             ...response.data,
-            accessTokenExpires: Date.now() + maxAge * 1000,
+            accessTokenExpires: Date.now() + accessTokenTtl * 1000,
           });
         }
 
         token.refreshToken = account.refresh_token;
         token.user = user;
-        token.accessTokenExpires = Date.now() + maxAge * 1000;
+        token.accessTokenExpires = Date.now() + accessTokenTtl * 1000;
       } else if (
         account?.provider === "credentials" ||
         account?.provider === "credentials-local"

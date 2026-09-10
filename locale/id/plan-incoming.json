@@ -38,7 +38,9 @@
       "downloadFailed": "Gagal mengunduh template. Coba lagi atau hubungi administrator."
     },
     "selectWarehouse": "Pilih Gudang",
-    "required": "Wajib diisi"
+    "required": "Wajib diisi",
+    "activeWarehouse": "Warehouse aktif",
+    "noActiveWarehouse": "Tidak ada warehouse aktif — pilih warehouse di switch gudang dulu"
   },
   "outstandingIncoming": {
     "page": {
@@ -99,11 +101,12 @@
         "slip": "Slip",
         "edit": "Edit",
         "cancel": "Cancel",
-        "confirmCancel": "Confirm Cancel",
+        "confirmCancel": "Cancel PO",
         "inputIncoming": "Input Plan Incoming",
         "holdList": "Daftar Hold",
-        "bulkConfirm": "Confirm Draft",
+        "bulkConfirm": "Confirm",
         "bulkDelete": "Delete",
+        "moreActions": "Aksi Lain",
         "bulkCreateActual": "Create Actual / GR",
         "flow": "Status"
       },
@@ -228,6 +231,9 @@
       "allNothing": "Semua item sudah ter-binning atau tidak ada item yang perlu di-binning.",
       "allDone": "Binning All selesai: {{count}} item.",
       "filteredEmpty": "Tidak ada material yang cocok dengan filter.",
+      "binnedCount": "{{done}}/{{total}} ter-binning",
+      "binningQty": "Qty Binning",
+      "partialQty": "Qty Partial",
       "processing": "Memproses",
       "scanMaterial": "Scan barcode material",
       "scanLocation": "Scan barcode lokasi",
@@ -236,10 +242,10 @@
       "fillMaterialBarcode": "Silakan isi Barcode Material",
       "fillLocationBarcode": "Silakan isi Barcode Lokasi",
       "cameraFailed": "Gagal mengakses kamera",
-      "cameraDenied": "izin kamera ditolak — izinkan di browser",
+      "cameraDenied": "izin kamera ditolak, izinkan di browser",
       "cameraNotFound": "kamera tidak ditemukan",
       "cameraInsecure": "kamera butuh HTTPS atau localhost",
-      "cameraHint": "Arahkan barcode ke kamera — hasil scan otomatis tervalidasi.",
+      "cameraHint": "Arahkan barcode ke kamera, hasil scan otomatis tervalidasi.",
       "cameraMode": "Kembali ke Kamera",
       "uploadMode": "Upload Gambar",
       "detecting": "Mendeteksi barcode...",
@@ -251,7 +257,8 @@
       "breadcrumb": ["Plan Incoming", "Outstanding Incoming", "Binning"],
       "doneAsk": "Semua material sudah dibinning. Kembali ke daftar Outstanding Incoming?",
       "doneBack": "Kembali ke Daftar",
-      "doneStay": "Tetap di Sini"
+      "doneStay": "Tetap di Sini",
+      "waitingQi": "Isi Partial Qty di Quality Inspection dulu (sisa {{count}})"
     },
     "barcodeLabeling": {
       "title": "Barcode Labeling",

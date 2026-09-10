@@ -65,7 +65,9 @@
         "5": "Status",
         "materialCodeOpt": "Material Code",
         "materialNameOpt": "Material Name",
-        "materialBrandOpt": "Brand"
+        "materialBrandOpt": "Brand",
+        "packagingNoOpt": "Packaging No.",
+        "shipmentNoOpt": "Shipment No."
       },
       "column": {
         "status": "Status",
@@ -99,6 +101,9 @@
         "cancelDo": "Cancel DO",
         "delete": "Delete",
         "status": "Status",
+        "export": "Export",
+        "moreActions": "More Actions",
+        "inputOutgoing": "Input Plan Outgoing",
         "exportCsv": "Export CSV",
         "exportExcel": "Export Excel",
         "edit": "Edit",
@@ -123,7 +128,8 @@
     },
     "summary": {
       "fields": {
-        "total": "Total Outstanding Data"
+        "total": "Total Outstanding Data",
+        "caption": "Delivery Note"
       }
     },
     "confirm": {
@@ -297,10 +303,11 @@
     "allFailed": "Failed",
     "filteredEmpty": "No material matches the filter.",
     "noMaterials": "No materials in this DN.",
+    "pickedCount": "{{done}}/{{total}} picked",
     "cameraInsecure": "camera requires HTTPS or localhost",
-    "cameraDenied": "camera permission denied — allow in browser",
+    "cameraDenied": "camera permission denied, allow in browser",
     "cameraNotFound": "camera not found",
-    "cameraHint": "Point the barcode at the camera — scans are validated automatically.",
+    "cameraHint": "Point the barcode at the camera, scans are validated automatically.",
     "cameraMode": "Back to Camera",
     "uploadMode": "Upload Image",
     "detecting": "Detecting barcode...",

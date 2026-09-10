@@ -4,6 +4,7 @@ import { EditOutlined } from "@ant-design/icons";
 import Button from "@sera-components/button";
 import Card from "@sera-components/card";
 import Input from "@sera-components/input";
+import MaterialSearch from "@sera-components/pages/plan-incoming/outstanding-incoming/material-search";
 import Table from "@sera-components/table";
 import OutstandingOutgoingApi from "@sera-libraries/api/outstanding-outgoing";
 import {
@@ -50,6 +51,7 @@ const DnDetailPage = () => {
   const [histPage, setHistPage] = useState(1);
   const [histPageSize, setHistPageSize] = useState(10);
   const [matSearch, setMatSearch] = useState("");
+  const [matSearchBy, setMatSearchBy] = useState("materialCode");
   const [matPage, setMatPage] = useState(1);
   const [matPageSize, setMatPageSize] = useState(10);
 
@@ -217,11 +219,11 @@ const DnDetailPage = () => {
     (b.date ?? "").localeCompare(a.date ?? ""),
   );
 
+  /* Filter material utk search by + keyword (pola qi-form / detail incoming). */
   const matNeedle = matSearch.trim().toLowerCase();
   const matFiltered = matNeedle
     ? (header?.details ?? []).filter((d: any) =>
-        [d.materialCode ?? "", d.materialName ?? "", d.materialBrand ?? ""]
-          .join(" ")
+        String(d[matSearchBy] ?? "")
           .toLowerCase()
           .includes(matNeedle),
       )
@@ -311,14 +313,22 @@ const DnDetailPage = () => {
           showTitle={false}
           showActions={false}
           customSearch={
-            <Input.Search
-              loading={false}
-              placeholder={t("searchPlaceholder")}
-              onSearch={(v?: string) => {
-                setMatSearch(v ?? "");
+            <MaterialSearch
+              id="dn-detail-material"
+              searchBy={matSearchBy}
+              onSearchBy={(value) => {
+                setMatSearchBy(value);
+                setMatSearch("");
                 setMatPage(1);
               }}
-              onClear={() => setMatSearch("")}
+              placeholder={t("searchPlaceholder")}
+              onSearchValue={(v) => {
+                setMatSearch(v);
+                setMatPage(1);
+              }}
+              options={["materialCode", "materialName", "materialBrand"].map(
+                (k) => ({ value: k, label: t(k) }),
+              )}
             />
           }
         />

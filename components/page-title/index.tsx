@@ -76,7 +76,7 @@ const PageTitle: React.FC<PageTitleProps> = () => {
     };
   }, [router, pathname]);
 
-  const title = `LOGis - ${formatTitle(pathname)}`;
+  const title = `WMS - ${formatTitle(pathname)}`;
   return (
     <Head>
       <title>{title}</title>

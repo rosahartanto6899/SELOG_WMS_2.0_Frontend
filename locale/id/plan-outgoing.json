@@ -65,7 +65,9 @@
         "5": "Status",
         "materialCodeOpt": "Kode Material",
         "materialNameOpt": "Nama Material",
-        "materialBrandOpt": "Merk"
+        "materialBrandOpt": "Merk",
+        "packagingNoOpt": "No. Packaging",
+        "shipmentNoOpt": "No. Shipment"
       },
       "column": {
         "status": "Status",
@@ -99,6 +101,9 @@
         "cancelDo": "Cancel DO",
         "delete": "Delete",
         "status": "Status",
+        "export": "Export",
+        "moreActions": "Aksi Lain",
+        "inputOutgoing": "Input Plan Outgoing",
         "exportCsv": "Export CSV",
         "exportExcel": "Export Excel",
         "edit": "Edit",
@@ -123,7 +128,8 @@
     },
     "summary": {
       "fields": {
-        "total": "Total Data Outstanding"
+        "total": "Total Data Outstanding",
+        "caption": "Delivery Note"
       }
     },
     "confirm": {
@@ -297,10 +303,11 @@
     "allFailed": "Gagal",
     "filteredEmpty": "Tidak ada material yang cocok dengan filter.",
     "noMaterials": "Tidak ada material pada DN ini.",
+    "pickedCount": "{{done}}/{{total}} dipicking",
     "cameraInsecure": "kamera butuh HTTPS atau localhost",
-    "cameraDenied": "izin kamera ditolak — izinkan di browser",
+    "cameraDenied": "izin kamera ditolak, izinkan di browser",
     "cameraNotFound": "kamera tidak ditemukan",
-    "cameraHint": "Arahkan barcode ke kamera — hasil scan otomatis tervalidasi.",
+    "cameraHint": "Arahkan barcode ke kamera, hasil scan otomatis tervalidasi.",
     "cameraMode": "Kembali ke Kamera",
     "uploadMode": "Upload Gambar",
     "detecting": "Mendeteksi barcode...",

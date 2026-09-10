@@ -109,6 +109,7 @@ export const Columns = (handlers: RowActionHandlers) => {
       title: t("column.status"),
       dataIndex: "status",
       key: "status",
+      sorter: true, // server-side (LIST_ORDER_WHITELIST)
       // NOTE: jangan set truncate — Table override render truncate memaksa plain text,
       // menimpa render custom (dot indikator + StatusTag + HOLD)
       fixed: leftFixed,
@@ -136,6 +137,7 @@ export const Columns = (handlers: RowActionHandlers) => {
       title: t("column.deliveryNoteNo"),
       dataIndex: "deliveryNoteNo",
       key: "deliveryNoteNo",
+      sorter: true, // server-side
       truncate: true,
       width: 160,
     },
@@ -143,6 +145,7 @@ export const Columns = (handlers: RowActionHandlers) => {
       title: t("column.poNo"),
       dataIndex: "poNo",
       key: "poNo",
+      sorter: true, // server-side
       truncate: true,
       width: 140,
     },
@@ -157,6 +160,7 @@ export const Columns = (handlers: RowActionHandlers) => {
       title: t("column.poDate"),
       dataIndex: "poDate",
       key: "poDate",
+      sorter: true, // server-side
       width: 160,
       render: (value: string) => toDate(value),
     },
@@ -185,6 +189,7 @@ export const Columns = (handlers: RowActionHandlers) => {
       title: t("column.incomingDate"),
       dataIndex: "incomingDate",
       key: "incomingDate",
+      sorter: true, // server-side
       width: 160,
       render: (value: string) => toDate(value),
     },
@@ -213,6 +218,7 @@ export const Columns = (handlers: RowActionHandlers) => {
       title: t("column.createdAt"),
       dataIndex: "createdAt",
       key: "createdAt",
+      sorter: true, // server-side → createdDate (whitelist backend)
       width: 160,
       render: (value: string) => toDate(value),
     },
