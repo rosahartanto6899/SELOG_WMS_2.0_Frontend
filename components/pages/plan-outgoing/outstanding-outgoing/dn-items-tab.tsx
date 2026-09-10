@@ -45,6 +45,11 @@ const DnItemsTab = ({
   const { t } = useTranslation(undefined, {
     keyPrefix: "planOutgoing.outstandingOutgoing",
   });
+  // t utk opsi searchBy (key prefix table.options) — hook stabil di atas,
+  // bukan dipanggil dalam JSX (rules-of-hooks)
+  const { t: tOpt } = useTranslation(undefined, {
+    keyPrefix: "planOutgoing.outstandingOutgoing.table.options",
+  });
 
   const [rows, setRows] = useState<any[] | null>(null);
   const [total, setTotal] = useState(0);
@@ -245,7 +250,7 @@ const DnItemsTab = ({
                 onClear={() => handlerSelectSearchBy("")}
                 allowClear={false}
               >
-                {ItemsSearchByOptions().map((opt) => (
+                {ItemsSearchByOptions(tOpt).map((opt) => (
                   <Select.Option key={opt.value} value={opt.value}>
                     {opt.label}
                   </Select.Option>

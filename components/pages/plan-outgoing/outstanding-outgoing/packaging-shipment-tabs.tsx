@@ -39,6 +39,9 @@ export const PackagingTab = ({
   const { t } = useTranslation(undefined, {
     keyPrefix: "planOutgoing.outstandingOutgoing",
   });
+  const { t: tOpt } = useTranslation(undefined, {
+    keyPrefix: "planOutgoing.outstandingOutgoing.table.options",
+  });
   const INIT_SEARCH_BY = "packagingNo";
   const columns = PackagingColumns();
   const [rows, setRows] = useState<any[] | null>(null);
@@ -229,7 +232,7 @@ export const PackagingTab = ({
                 onClear={() => handlerSelectSearchBy("")}
                 allowClear={false}
               >
-                {PackagingSearchByOptions().map((opt) => (
+                {PackagingSearchByOptions(tOpt).map((opt) => (
                   <Select.Option key={opt.value} value={opt.value}>
                     {opt.label}
                   </Select.Option>
@@ -275,6 +278,9 @@ export const ShipmentTab = ({
 }: TabProps) => {
   const { t } = useTranslation(undefined, {
     keyPrefix: "planOutgoing.outstandingOutgoing",
+  });
+  const { t: tOpt } = useTranslation(undefined, {
+    keyPrefix: "planOutgoing.outstandingOutgoing.table.options",
   });
   const INIT_SEARCH_BY = "shipmentNo";
   const columns = ShipmentColumns();
@@ -382,7 +388,7 @@ export const ShipmentTab = ({
                 onClear={() => handlerSelectSearchBy("")}
                 allowClear={false}
               >
-                {ShipmentSearchByOptions().map((opt) => (
+                {ShipmentSearchByOptions(tOpt).map((opt) => (
                   <Select.Option key={opt.value} value={opt.value}>
                     {opt.label}
                   </Select.Option>

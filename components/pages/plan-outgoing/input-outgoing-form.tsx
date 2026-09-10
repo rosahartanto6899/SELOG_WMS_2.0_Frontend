@@ -27,7 +27,7 @@ import {
 } from "antd";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -96,6 +96,12 @@ const InputOutgoingForm = (props: Props) => {
   const [matQ, setMatQ] = useState("");
   const [matSearchBy, setMatSearchBy] = useState("code");
   const MAT_PAGE_SIZE = 10;
+
+  // Kode material yang sudah ada di tabel — tidak bisa dipilih lagi
+  const chosenCodes = useMemo(
+    () => new Set(materials.map((m) => m.materialCode)),
+    [materials],
+  );
 
   // Server-side pagination — search & paging di ServiceMasterData (GET /materials)
   const loadMat = (page: number, search: string) => {
@@ -522,10 +528,13 @@ const InputOutgoingForm = (props: Props) => {
                 </Tooltip>
               ),
               expandedRowRender: (row: MaterialRow) => (
+                /* Card kecil: size=small + body padding rapat */
                 <Card
                   type="inner"
+                  size="small"
                   title={t("addInfos")}
                   style={{ maxWidth: 560 }}
+                  styles={{ body: { padding: "8px 12px 12px" } }}
                 >
                   {(row.additionalInformation ?? [{}]).map((a, i) => (
                     <Row key={i} gutter={8} className="mb-2">
@@ -580,8 +589,12 @@ const InputOutgoingForm = (props: Props) => {
                     icon={<PlusOutlined />}
                     onClick={() =>
                       updateMaterial(row.key, {
+                        // mulai dari fallback render [{}] — klik PERTAMA
+                        // langsung nambah baris kedua (dulu baru efek di klik ke-2)
                         additionalInformation: [
-                          ...(row.additionalInformation ?? []),
+                          ...(row.additionalInformation?.length
+                            ? row.additionalInformation
+                            : [{}]),
                           {},
                         ],
                       })
@@ -683,9 +696,15 @@ const InputOutgoingForm = (props: Props) => {
           locale={{
             emptyText: <Empty description={t("noMaterialFound")} />,
           }}
+          rowClassName={(r: any) =>
+            chosenCodes.has(r.code) ? "opacity-50" : ""
+          }
           rowSelection={{
             selectedRowKeys: matSel,
             preserveSelectedRowKeys: true,
+            getCheckboxProps: (r: any) => ({
+              disabled: chosenCodes.has(r.code),
+            }),
             onChange: (keys, rows) => {
               setMatSel(keys as string[]);
               setMatSelRows((prev) => {

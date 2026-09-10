@@ -3,6 +3,7 @@ import {
   AimOutlined,
   BarcodeOutlined,
   CameraOutlined,
+  CheckCircleOutlined,
   CheckOutlined,
   CheckSquareOutlined,
   CloseCircleOutlined,
@@ -29,7 +30,6 @@ import {
   Row,
   Space,
   Spin,
-  Tag,
 } from "antd";
 import { useRouter } from "next/router";
 import React, {
@@ -96,7 +96,7 @@ const BinningPage = () => {
 
   // isDone/doneIds saat data pertama datang masih kosong → cek murni dari data
   // Bisa diproses = masih ada sisa qty (binningQty < poQty). partialQty ≠ 0
-  // diperlukan utk submit — user isi via Adjust Qty. Jangan pakai binningDate:
+  // diperlukan utk submit — user isi via Quality Inspection. Jangan pakai binningDate:
   // binning parsial (20/50) membuat binningDate terisi tapi belum selesai.
   const scannableStatic = (d: OutstandingIncomingDetail) =>
     (d.binningQty ?? 0) < (d.poQty ?? 0);
@@ -143,6 +143,8 @@ const BinningPage = () => {
     );
   }, [rows, filter]);
 
+  const doneCount = filtered.filter(isDone).length;
+
   // Parity legacy: setelah selesai, fokus ke input material card berikutnya
   const focusNextMaterial = (currentId: string) => {
     const idx = filtered.findIndex((d) => d.id === currentId);
@@ -154,6 +156,13 @@ const BinningPage = () => {
   // Langkah 1 — scan/validasi barcode material ("0" = bypass, parity legacy callApi).
   // code eksplisit dipakai saat berasal dari tombol search / kamera.
   const onMaterialScan = (d: OutstandingIncomingDetail) => (code?: string) => {
+    // Kartu biru "partial nyangkut": partialQty 0 & belum selesai → blokir scan,
+    // harus Adjust Qty dulu (parity validasi noPartial halaman list)
+    if (!isDone(d) && (d.partialQty ?? 0) <= 0) {
+      message.error(t("noPartial"));
+      materialRefs.current[d.id]?.focus();
+      return;
+    }
     const c = (code ?? matVal[d.id] ?? "").trim();
     if (!c) {
       // parity legacy btnSearchMaterialBarcode: kosong → warning + focus
@@ -203,7 +212,7 @@ const BinningPage = () => {
         setBusyId(d.id); // loading: input/tombol card terkunci selama submit
         await OutstandingIncomingApi().binning(d.id, d.partialQty ?? 0);
         setDoneIds((prev) => new Set(prev).add(d.id));
-        message.success(`${d.materialCode} — ${t("success")}`);
+        message.success(`${d.materialCode}: ${t("success")}`);
         focusNextMaterial(d.id);
       } catch (e: any) {
         message.error(e?.response?.data?.message ?? t("failed"));
@@ -428,7 +437,7 @@ const BinningPage = () => {
     try {
       await OutstandingIncomingApi().binning(d.id, d.partialQty ?? 0);
       setDoneIds((prev) => new Set(prev).add(d.id));
-      message.success(`${d.materialCode} — ${t("success")}`);
+      message.success(`${d.materialCode}: ${t("success")}`);
       load(); // refresh binningDate dr server
     } catch (e: any) {
       message.error(e?.response?.data?.message ?? t("failed"));
@@ -468,7 +477,7 @@ const BinningPage = () => {
       key,
       type: failed.length ? "warning" : "success",
       content: failed.length
-        ? `${t("allDone", { count: ok })} — ${t("allFailed")}: ${failed.join("; ")}`
+        ? `${t("allDone", { count: ok })}. ${t("allFailed")}: ${failed.join("; ")}`
         : t("allDone", { count: ok }),
       duration: failed.length ? 10 : 3,
     });
@@ -567,6 +576,23 @@ const BinningPage = () => {
             />
           </Space.Compact>
         </div>
+
+        {/* Progress real (turunan state, parity picking): operator lihat sisa kerja */}
+        {filtered.length > 0 && (
+          <div className={styles["pick-progress"]}>
+            <span className={styles["pick-progress-count"]}>
+              {t("binnedCount", { done: doneCount, total: filtered.length })}
+            </span>
+            <span className={styles["pick-progress-track"]}>
+              <span
+                className={styles["pick-progress-fill"]}
+                style={{
+                  transform: `scaleX(${doneCount / filtered.length})`,
+                }}
+              />
+            </span>
+          </div>
+        )}
       </div>
 
       <Spin spinning={loading}>
@@ -579,11 +605,132 @@ const BinningPage = () => {
             {filtered.map((d) => {
               const done = isDone(d);
               const matOk = matOkIds.has(d.id);
+              // Partial "nyangkut": sudah pernah di-binning (belum full) tapi
+              // tidak ada qty ter-stage (partialQty = 0) → varian biru, perlu
+              // Adjust Qty dulu. partialQty > 0 = siap dikerjakan → putih.
+              const partial =
+                !done && (d.partialQty ?? 0) === 0 && (d.binningQty ?? 0) > 0;
               return (
                 <Col xs={24} sm={12} xl={6} key={d.id}>
                   <div
-                    className={`${styles["binning-card"]} ${done ? styles.completed : ""}`.trim()}
+                    className={`${styles["binning-card"]} ${done ? styles.completed : partial ? styles.partial : ""}`.trim()}
                   >
+                    {/* Ornamen scan-arc — echo motif viewfinder kamera (parity
+                        picking): dekoratif, di bawah konten. */}
+                    <svg
+                      className={styles["card-ornament"]}
+                      viewBox="0 0 140 140"
+                      fill="none"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <circle
+                        cx="140"
+                        cy="0"
+                        r="36"
+                        stroke="currentColor"
+                        strokeOpacity="0.16"
+                        strokeWidth="1"
+                      />
+                      <circle
+                        cx="140"
+                        cy="0"
+                        r="60"
+                        stroke="currentColor"
+                        strokeOpacity="0.12"
+                        strokeWidth="1"
+                      />
+                      <circle
+                        cx="140"
+                        cy="0"
+                        r="84"
+                        stroke="currentColor"
+                        strokeOpacity="0.08"
+                        strokeWidth="1"
+                      />
+                      <circle
+                        cx="140"
+                        cy="0"
+                        r="108"
+                        stroke="currentColor"
+                        strokeOpacity="0.06"
+                        strokeWidth="1"
+                      />
+                      <circle
+                        cx="129.6"
+                        cy="59.1"
+                        r="2"
+                        fill="currentColor"
+                        fillOpacity="0.2"
+                      />
+                      <circle
+                        cx="105.6"
+                        cy="49.1"
+                        r="2"
+                        fill="currentColor"
+                        fillOpacity="0.2"
+                      />
+                      <circle
+                        cx="88"
+                        cy="30"
+                        r="2"
+                        fill="currentColor"
+                        fillOpacity="0.2"
+                      />
+                      <circle
+                        cx="75.7"
+                        cy="54"
+                        r="2.5"
+                        fill="currentColor"
+                        fillOpacity="0.25"
+                      />
+                    </svg>
+                    {/* Klaster cermin kiri-bawah — keseimbangan diagonal */}
+                    <svg
+                      className={styles["card-ornament-bl"]}
+                      viewBox="0 0 120 120"
+                      fill="none"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <circle
+                        cx="0"
+                        cy="120"
+                        r="44"
+                        stroke="currentColor"
+                        strokeOpacity="0.08"
+                        strokeWidth="1"
+                      />
+                      <circle
+                        cx="0"
+                        cy="120"
+                        r="72"
+                        stroke="currentColor"
+                        strokeOpacity="0.06"
+                        strokeWidth="1"
+                      />
+                      <circle
+                        cx="31.1"
+                        cy="88.9"
+                        r="1.8"
+                        fill="currentColor"
+                        fillOpacity="0.16"
+                      />
+                      <circle
+                        cx="42.5"
+                        cy="108.6"
+                        r="1.8"
+                        fill="currentColor"
+                        fillOpacity="0.16"
+                      />
+                      <circle
+                        cx="22"
+                        cy="81.9"
+                        r="1.8"
+                        fill="currentColor"
+                        fillOpacity="0.16"
+                      />
+                    </svg>
                     <div className={styles["step-bar"]}>
                       {/* Material: menyala sejak awal & TETAP menyala setelah scan sukses */}
                       <BinningStep
@@ -608,39 +755,71 @@ const BinningPage = () => {
                         label={t("stepDone")}
                       />
                     </div>
-                    <label>{t("materialName")}</label>
-                    <Input disabled value={d.materialName} />
-                    <label>{t("materialCode")}</label>
-                    <Input disabled value={d.materialCode} />
-                    {/* FR-001: qty siap tampil; rencana & sisa via info */}
-                    <label>{t("qty")}</label>
-                    <Space.Compact style={{ width: "100%" }}>
-                      <Input disabled value={d.partialQty ?? 0} />
-                      <Popover
-                        trigger="click"
-                        placement="left"
-                        overlayStyle={{ maxWidth: "70vw" }}
-                        content={
-                          <div style={{ minWidth: 160 }}>
-                            <div>
-                              {t("poQty")}: <b>{d.poQty ?? 0}</b>
-                            </div>
-                            <div>
-                              {t("remaining")}:{" "}
-                              <b>{(d.poQty ?? 0) - (d.binningQty ?? 0)}</b>
-                            </div>
-                          </div>
-                        }
-                      >
-                        <Button icon={<InfoCircleOutlined />} />
-                      </Popover>
-                    </Space.Compact>
+                    <div className={styles["card-head"]}>
+                      <div className={styles["card-head-main"]}>
+                        <div
+                          className={styles["card-head-title"]}
+                          title={d.materialName}
+                        >
+                          {d.materialName}
+                        </div>
+                        <div className={styles["card-head-code"]}>
+                          {t("materialCode")}:{" "}
+                          <span className={styles["card-code-value"]}>
+                            {d.materialCode}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    {/* Partial (akan di-binning) di depan, binned qty di
+                        sampingnya — parity pola qty picking; detail via popover */}
+                    <Row gutter={8}>
+                      <Col span={12}>
+                        <label>{t("partialQty")}</label>
+                        <Input
+                          disabled
+                          className={done ? styles["scan-ok"] : undefined}
+                          value={d.partialQty ?? 0}
+                        />
+                      </Col>
+                      <Col span={12}>
+                        <label>{t("binningQty")}</label>
+                        <Space.Compact style={{ width: "100%" }}>
+                          <Input
+                            disabled
+                            className={done ? styles["scan-ok"] : undefined}
+                            value={d.binningQty ?? 0}
+                          />
+                          <Popover
+                            trigger="click"
+                            placement="left"
+                            overlayStyle={{ maxWidth: "70vw" }}
+                            content={
+                              <div style={{ minWidth: 160 }}>
+                                <div>
+                                  {t("poQty")}: <b>{d.poQty ?? 0}</b>
+                                </div>
+                                <div>
+                                  {t("remaining")}:{" "}
+                                  <b>{(d.poQty ?? 0) - (d.binningQty ?? 0)}</b>
+                                </div>
+                              </div>
+                            }
+                          >
+                            <Button icon={<InfoCircleOutlined />} />
+                          </Popover>
+                        </Space.Compact>
+                      </Col>
+                    </Row>
                     <label>{t("materialBarcode")}</label>
-                    {/* Parity legacy: tombol disembunyikan setelah material tervalidasi */}
-                    {matOk || done ? (
+                    {/* Parity legacy: tombol disembunyikan setelah material tervalidasi;
+                        kartu biru (partial nyangkut) → input kunci, aksi = Adjust Qty */}
+                    {matOk || done || partial ? (
                       <Input
                         disabled
-                        className={styles["scan-ok"]}
+                        className={
+                          matOk || done ? styles["scan-ok"] : undefined
+                        }
                         value={matVal[d.id] || d.materialBarcode || "-"}
                       />
                     ) : (
@@ -753,9 +932,23 @@ const BinningPage = () => {
                       </Space.Compact>
                     )}
                     {done ? (
-                      <Tag color="success" style={{ marginTop: 12 }}>
-                        {t("completed")}
-                      </Tag>
+                      <div className={styles["card-done"]}>
+                        <span className={styles["card-done-pill"]}>
+                          <CheckCircleOutlined style={{ fontSize: 13 }} />
+                          {t("completed")}
+                        </span>
+                      </div>
+                    ) : partial ? (
+                      /* Seal biru: info sisa qty — partial qty di-stage via
+                         Quality Inspection (dari halaman list) */
+                      <div className={styles["card-partial"]}>
+                        <span className={styles["card-partial-pill"]}>
+                          <InfoCircleOutlined style={{ fontSize: 13 }} />
+                          {t("waitingQi", {
+                            count: (d.poQty ?? 0) - (d.binningQty ?? 0),
+                          })}
+                        </span>
+                      </div>
                     ) : (
                       <Button
                         block

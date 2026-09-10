@@ -106,6 +106,7 @@
         "holdList": "Hold List",
         "bulkConfirm": "Confirm",
         "bulkDelete": "Delete",
+        "moreActions": "More Actions",
         "bulkCreateActual": "Create Actual / GR",
         "flow": "Status"
       },
@@ -230,6 +231,9 @@
       "allNothing": "All items are already binned or nothing to bin.",
       "allDone": "Binning All done: {{count}} item(s).",
       "filteredEmpty": "No material matches the filter.",
+      "binnedCount": "{{done}}/{{total}} binned",
+      "binningQty": "Binned Qty",
+      "partialQty": "Partial Qty",
       "processing": "Processing",
       "scanMaterial": "Scan material barcode",
       "scanLocation": "Scan location barcode",
@@ -238,10 +242,10 @@
       "fillMaterialBarcode": "Please enter Material Barcode",
       "fillLocationBarcode": "Please enter Location Barcode",
       "cameraFailed": "Failed to access camera",
-      "cameraDenied": "camera permission denied — allow it in the browser",
+      "cameraDenied": "camera permission denied, allow it in the browser",
       "cameraNotFound": "no camera found",
       "cameraInsecure": "camera requires HTTPS or localhost",
-      "cameraHint": "Point the barcode at the camera — scan result is validated automatically.",
+      "cameraHint": "Point the barcode at the camera, scan result is validated automatically.",
       "cameraMode": "Back to Camera",
       "uploadMode": "Upload Image",
       "detecting": "Detecting barcode...",
@@ -253,7 +257,8 @@
       "breadcrumb": ["Plan Incoming", "Outstanding Incoming", "Binning"],
       "doneAsk": "All materials are binned. Return to the Outstanding Incoming list?",
       "doneBack": "Back to List",
-      "doneStay": "Stay Here"
+      "doneStay": "Stay Here",
+      "waitingQi": "Set Partial Qty in Quality Inspection first ({{count}} left)"
     },
     "barcodeLabeling": {
       "title": "Barcode Labeling",

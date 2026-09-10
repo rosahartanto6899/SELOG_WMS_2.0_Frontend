@@ -4,8 +4,10 @@ import {
   CheckOutlined,
   CloseCircleOutlined,
   DeleteOutlined,
+  DownOutlined,
   // HolderOutlined, // reuse when the Hold feature is re-enabled
   InsertRowAboveOutlined,
+  MoreOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
 import Button from "@sera-components/button";
@@ -28,7 +30,7 @@ import {
 } from "@sera-types/outstanding-incoming.type";
 import { ROUTE } from "@sera-utils/constants/routes";
 import useCheckPermission from "@sera-utils/hooks/useCheckPermission";
-import { Col, message, Modal, Row, Space } from "antd";
+import { Col, Dropdown, message, Modal, Row, Space } from "antd";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useMemo, useState } from "react";
@@ -129,11 +131,12 @@ const OutstandingIncomingInitialPage = () => {
   };
 
   const onTableChangeListener = (_p: any, _f: any, sorter: any) => {
-    if (sorter) {
+    if (sorter?.field) {
       setListOptions((prevState) => ({
         ...prevState,
-        order: sorter.field,
+        order: sorter.field, // = dataIndex, map whitelist backend
         sort: sorter.order === "ascend" ? "asc" : "desc",
+        page: 1, // sort baru → mulai dari halaman 1
       }));
     }
   };
@@ -490,27 +493,49 @@ const OutstandingIncomingInitialPage = () => {
                         {t("table.button.bulkConfirm")}
                       </Button>
                     )}
-                    {isDelete && (
-                      <Button
-                        danger
-                        icon={<DeleteOutlined />}
-                        loading={bulkLoading === "delete"}
-                        disabled={!selectedIds.length}
-                        onClick={onDeleteBulk}
+                    {(isDelete || isUpdate) && (
+                      <Dropdown
+                        menu={{
+                          items: [
+                            ...(isDelete
+                              ? [
+                                  {
+                                    key: "delete",
+                                    icon: <DeleteOutlined />,
+                                    label: t("table.button.bulkDelete"),
+                                    danger: true,
+                                  },
+                                ]
+                              : []),
+                            ...(isUpdate
+                              ? [
+                                  {
+                                    key: "cancel",
+                                    icon: <CloseCircleOutlined />,
+                                    label: t("table.button.confirmCancel"),
+                                    danger: true,
+                                    disabled: !hasCancellation,
+                                  },
+                                ]
+                              : []),
+                          ],
+                          onClick: ({ key }: { key: string }) =>
+                            key === "delete"
+                              ? onDeleteBulk()
+                              : onConfirmCancelBulk(),
+                        }}
                       >
-                        {t("table.button.bulkDelete")}
-                      </Button>
-                    )}
-                    {isUpdate && (
-                      <Button
-                        danger
-                        icon={<CloseCircleOutlined />}
-                        loading={bulkLoading === "cancel"}
-                        disabled={!selectedIds.length || !hasCancellation}
-                        onClick={onConfirmCancelBulk}
-                      >
-                        {t("table.button.confirmCancel")}
-                      </Button>
+                        <Button
+                          danger
+                          icon={<MoreOutlined />}
+                          loading={
+                            bulkLoading === "delete" || bulkLoading === "cancel"
+                          }
+                          disabled={!selectedIds.length}
+                        >
+                          {t("table.button.moreActions")} <DownOutlined />
+                        </Button>
+                      </Dropdown>
                     )}
                     {/* Create Actual feature hidden for now
                   {isUpdate && (

@@ -5,7 +5,10 @@ import {
   CloseCircleOutlined,
   DeleteOutlined,
   DownloadOutlined,
+  DownOutlined,
   FileExcelOutlined,
+  MoreOutlined,
+  PlusOutlined,
   ScanOutlined,
 } from "@ant-design/icons";
 import Button from "@sera-components/button";
@@ -23,13 +26,14 @@ import { BaseType } from "@sera-types/base.type";
 import { outstandingOutgoingTypes } from "@sera-types/outstanding-outgoing.type";
 import { ROUTE } from "@sera-utils/constants/routes";
 import useCheckPermission from "@sera-utils/hooks/useCheckPermission";
-import { Col, message, Modal, Row, Space, Tabs } from "antd";
+import { Col, Dropdown, Menu, message, Modal, Row, Space } from "antd";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import DnItemsTab from "./dn-items-tab";
+import styles from "./outstanding-outgoing.module.scss";
 import {
   DnListColumns,
   RowActionHandlers,
@@ -48,10 +52,13 @@ const OutstandingOutgoingInitialPage = () => {
   const { t } = useTranslation(undefined, {
     keyPrefix: "planOutgoing.outstandingOutgoing",
   });
+  const { t: tOpt } = useTranslation(undefined, {
+    keyPrefix: "planOutgoing.outstandingOutgoing.table.options",
+  });
   const router = useRouter();
   const { data: session } = useSession() as any;
 
-  const { isRead, isUpdate, isDelete } = useCheckPermission({
+  const { isCreate, isRead, isUpdate, isDelete } = useCheckPermission({
     menuLink: ROUTE.PLAN_OUTGOING.OUTSTANDING_OUTGOING,
   });
 
@@ -126,11 +133,12 @@ const OutstandingOutgoingInitialPage = () => {
     setListOptions((prev) => ({ ...prev, page: current, limit }));
 
   const onTableChangeListener = (_p: any, _f: any, sorter: any) => {
-    if (sorter) {
+    if (sorter?.field) {
       setListOptions((prev) => ({
         ...prev,
-        order: sorter.field,
+        order: sorter.field, // = dataIndex, map whitelist backend
         sort: sorter.order === "ascend" ? "asc" : "desc",
+        page: 1, // sort baru → mulai dari halaman 1
       }));
     }
   };
@@ -554,203 +562,254 @@ const OutstandingOutgoingInitialPage = () => {
   const dnListColumns = DnListColumns(rowHandlers);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-      <OutstandingOutgoingSummary />
-
-      <Card noShadow>
-        <Tabs
-          activeKey={activeTab}
-          onChange={(k) => setActiveTab(k as TabKey)}
-          items={[
-            {
-              key: "dnList",
-              label: t("tabs.dnList"),
-              children: (
-                <Table
-                  title={t("table.title")}
-                  columns={dnListColumns}
-                  dataSource={list.data}
-                  loading={loading[outstandingOutgoingTypes.GET_OUTGOING_LIST]}
-                  total={list.options?.totalData ?? 0}
-                  current={list.options?.page ?? 1}
-                  pageSize={list.options?.limit ?? 10}
-                  rowKey="id"
-                  scroll={{ x: "max-content" }}
-                  onPageChange={onPageChangeListener}
-                  onTableChange={onTableChangeListener}
-                  multipleSelect
-                  onSelectedRowsChange={(keys) =>
-                    setSelectedIds(keys as string[])
-                  }
-                  isCustomSearch
-                  customSearch={
-                    <Row align="middle" gutter={[8, 4]}>
-                      <Col flex="0 0 14rem">
-                        <Select
-                          style={{ width: "100%", minWidth: "14rem" }}
-                          id="outstanding-outgoing-search-by"
-                          defaultValue={INIT_SEARCH_BY}
-                          placeholder={t("table.search.placeholder")}
-                          onChange={(value) => handlerSelectSearchBy(value)}
-                          onClear={() => handlerSelectSearchBy("")}
-                          allowClear={false}
-                        >
-                          {SearchByOptions().map((opt) => (
-                            <Select.Option key={opt.value} value={opt.value}>
-                              {opt.label}
-                            </Select.Option>
-                          ))}
-                        </Select>
-                      </Col>
-                      <Col flex="auto">
-                        <Input.Search
-                          loading={false}
-                          style={{ width: "100%", minWidth: "18rem" }}
-                          placeholder={t("table.search.placeholder")}
-                          onSearch={(search?: string) =>
-                            setListOptions((prevState: any) => ({
-                              ...prevState,
-                              search: search || undefined,
-                              searchBy: search ? searchBy : undefined,
-                              page: 1,
-                            }))
-                          }
-                          onClear={() =>
-                            setListOptions((prevState: any) => ({
-                              ...prevState,
-                              search: null,
-                              searchBy: undefined,
-                            }))
-                          }
-                        />
-                      </Col>
-                    </Row>
-                  }
-                  actions={
-                    <Space wrap>
-                      {isUpdate && (
-                        <Button
-                          icon={<CheckOutlined />}
-                          loading={bulkLoading === "confirm"}
-                          disabled={!selectedIds.length || !hasDraft}
-                          onClick={() =>
-                            confirmProcess(
-                              "confirm",
-                              OutstandingOutgoingApi().confirmDraft,
-                            )
-                          }
-                        >
-                          {t("table.button.confirm")}
-                        </Button>
-                      )}
-                      {isDelete && (
-                        <Button
-                          danger
-                          icon={<DeleteOutlined />}
-                          loading={bulkLoading === "delete"}
-                          disabled={!selectedIds.length || !hasDraft}
-                          onClick={() =>
-                            confirmProcess(
+    // Parity LOGIS PageLayout: submenu Menu (folder-tab) + Card.Container
+    // radius bawah — menempel, tanpa gap
+    <>
+      <Menu
+        className="submenu-page"
+        mode="horizontal"
+        selectedKeys={[activeTab]}
+        onClick={({ key }: { key: string }) => setActiveTab(key as TabKey)}
+        items={[
+          { key: "dnList", label: t("tabs.dnList") },
+          { key: "dnItems", label: t("tabs.dnItems"), disabled: isSequential },
+          {
+            key: "packaging",
+            label: t("tabs.packaging"),
+            disabled: isSequential,
+          },
+          {
+            key: "shipment",
+            label: t("tabs.shipment"),
+            disabled: isSequential,
+          },
+        ]}
+      />
+      <Card.Container bordered={false} className={styles["tab-panel"]}>
+        {/* Semua pane tetap mounted (parity antd Tabs) — disembunyikan via
+            display:none; prop active mengatur fetch. Hindari unmount saat
+            pindah tab (state page/search/selection hilang + error mount ulang) */}
+        {/* Rhythm antar komponen 24px — parity LOGIS (<Flex gap={24} vertical>
+            di initial-page mereka; page-level 1.6rem hanya utk header/konten) */}
+        <div
+          style={{
+            display: activeTab === "dnList" ? "flex" : "none",
+            flexDirection: "column",
+            gap: 24,
+          }}
+        >
+          <OutstandingOutgoingSummary />
+          <Table
+            title={t("table.title")}
+            columns={dnListColumns}
+            dataSource={list.data}
+            loading={loading[outstandingOutgoingTypes.GET_OUTGOING_LIST]}
+            total={list.options?.totalData ?? 0}
+            current={list.options?.page ?? 1}
+            pageSize={list.options?.limit ?? 10}
+            rowKey="id"
+            scroll={{ x: "max-content" }}
+            onPageChange={onPageChangeListener}
+            onTableChange={onTableChangeListener}
+            multipleSelect
+            onSelectedRowsChange={(keys) => setSelectedIds(keys as string[])}
+            /* Checkbox hanya utk baris yang bisa diproses massal:
+                     Draft (Confirm/Delete), Cancellation (Cancel DO),
+                     + Quality Control saat sequential (bulk Ready To Ship) */
+            getCheckboxProps={(record: any) => ({
+              disabled: !(
+                record?.status === "Draft" ||
+                record?.status === "Cancellation" ||
+                (isSequential && record?.status === "Quality Control")
+              ),
+            })}
+            isCustomSearch
+            customSearch={
+              <Row align="middle" gutter={[8, 4]}>
+                <Col flex="0 0 14rem">
+                  <Select
+                    style={{ width: "100%", minWidth: "14rem" }}
+                    id="outstanding-outgoing-search-by"
+                    defaultValue={INIT_SEARCH_BY}
+                    placeholder={t("table.search.placeholder")}
+                    onChange={(value) => handlerSelectSearchBy(value)}
+                    onClear={() => handlerSelectSearchBy("")}
+                    allowClear={false}
+                  >
+                    {SearchByOptions(tOpt).map((opt) => (
+                      <Select.Option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Col>
+                <Col flex="auto">
+                  <Input.Search
+                    loading={false}
+                    style={{ width: "100%", minWidth: "18rem" }}
+                    placeholder={t("table.search.placeholder")}
+                    onSearch={(search?: string) =>
+                      setListOptions((prevState: any) => ({
+                        ...prevState,
+                        search: search || undefined,
+                        searchBy: search ? searchBy : undefined,
+                        page: 1,
+                      }))
+                    }
+                    onClear={() =>
+                      setListOptions((prevState: any) => ({
+                        ...prevState,
+                        search: null,
+                        searchBy: undefined,
+                      }))
+                    }
+                  />
+                </Col>
+              </Row>
+            }
+            actions={
+              <Space wrap>
+                {isCreate && (
+                  <Button
+                    type="primary"
+                    icon={<PlusOutlined />}
+                    onClick={() =>
+                      router.push(ROUTE.PLAN_OUTGOING.INPUT_OUTGOING)
+                    }
+                  >
+                    {t("table.button.inputOutgoing")}
+                  </Button>
+                )}
+                {isUpdate && (
+                  <Button
+                    icon={<CheckOutlined />}
+                    loading={bulkLoading === "confirm"}
+                    disabled={!selectedIds.length || !hasDraft}
+                    onClick={() =>
+                      confirmProcess(
+                        "confirm",
+                        OutstandingOutgoingApi().confirmDraft,
+                      )
+                    }
+                  >
+                    {t("table.button.confirm")}
+                  </Button>
+                )}
+                {(isDelete || isUpdate) && (
+                  <Dropdown
+                    menu={{
+                      items: [
+                        ...(isDelete
+                          ? [
+                              {
+                                key: "delete",
+                                icon: <DeleteOutlined />,
+                                label: t("table.button.delete"),
+                                danger: true,
+                                disabled: !hasDraft,
+                              },
+                            ]
+                          : []),
+                        ...(isUpdate
+                          ? [
+                              {
+                                key: "cancelDo",
+                                icon: <CloseCircleOutlined />,
+                                label: t("table.button.cancelDo"),
+                                danger: true,
+                                disabled: !hasCancellation,
+                              },
+                            ]
+                          : []),
+                      ],
+                      onClick: ({ key }: { key: string }) =>
+                        key === "delete"
+                          ? confirmProcess(
                               "delete",
                               OutstandingOutgoingApi().deleteOutgoing,
                             )
-                          }
-                        >
-                          {t("table.button.delete")}
-                        </Button>
-                      )}
-                      {isUpdate && (
-                        <Button
-                          danger
-                          icon={<CloseCircleOutlined />}
-                          loading={bulkLoading === "cancelDo"}
-                          disabled={!selectedIds.length || !hasCancellation}
-                          onClick={() =>
-                            confirmProcess(
+                          : confirmProcess(
                               "cancelDo",
                               OutstandingOutgoingApi().confirmCancellation,
-                            )
-                          }
-                        >
-                          {t("table.button.cancelDo")}
-                        </Button>
-                      )}
-                      {isUpdate && isSequential && (
-                        <Button
-                          type="primary"
-                          icon={<ScanOutlined />}
-                          loading={bulkLoading === "status"}
-                          disabled={!selectedIds.length}
-                          onClick={confirmReadyToShipBulk}
-                        >
-                          {t("table.button.readyToShip")}
-                        </Button>
-                      )}
-                      {isRead && (
-                        <>
-                          <Button
-                            icon={<DownloadOutlined />}
-                            loading={exporting}
-                            onClick={exportCsv}
-                          >
-                            {t("table.button.exportCsv")}
-                          </Button>
-                          <Button
-                            icon={<FileExcelOutlined />}
-                            loading={exporting}
-                            onClick={exportExcel}
-                          >
-                            {t("table.button.exportExcel")}
-                          </Button>
-                        </>
-                      )}
-                    </Space>
-                  }
-                />
-              ),
-            },
-            {
-              key: "dnItems",
-              label: t("tabs.dnItems"),
-              disabled: isSequential,
-              children: (
-                <DnItemsTab
-                  active={activeTab === "dnItems"}
-                  customerCode={customerCode}
-                  warehouseCode={tabWarehouse}
-                  onChanged={refreshAfterMutation}
-                />
-              ),
-            },
-            {
-              key: "packaging",
-              label: t("tabs.packaging"),
-              disabled: isSequential,
-              children: (
-                <PackagingTab
-                  active={activeTab === "packaging"}
-                  customerCode={customerCode}
-                  warehouseCode={tabWarehouse}
-                  onChanged={refreshAfterMutation}
-                />
-              ),
-            },
-            {
-              key: "shipment",
-              label: t("tabs.shipment"),
-              disabled: isSequential,
-              children: (
-                <ShipmentTab
-                  active={activeTab === "shipment"}
-                  customerCode={customerCode}
-                  warehouseCode={tabWarehouse}
-                />
-              ),
-            },
-          ]}
-        />
-      </Card>
-    </div>
+                            ),
+                    }}
+                  >
+                    <Button
+                      danger
+                      icon={<MoreOutlined />}
+                      loading={
+                        bulkLoading === "delete" || bulkLoading === "cancelDo"
+                      }
+                      disabled={!selectedIds.length}
+                    >
+                      {t("table.button.moreActions")} <DownOutlined />
+                    </Button>
+                  </Dropdown>
+                )}
+                {isUpdate && isSequential && (
+                  <Button
+                    type="primary"
+                    icon={<ScanOutlined />}
+                    loading={bulkLoading === "status"}
+                    disabled={!selectedIds.length}
+                    onClick={confirmReadyToShipBulk}
+                  >
+                    {t("table.button.readyToShip")}
+                  </Button>
+                )}
+                {isRead && (
+                  <Dropdown
+                    menu={{
+                      items: [
+                        {
+                          key: "csv",
+                          icon: <DownloadOutlined />,
+                          label: t("table.button.exportCsv"),
+                        },
+                        {
+                          key: "excel",
+                          icon: <FileExcelOutlined />,
+                          label: t("table.button.exportExcel"),
+                        },
+                      ],
+                      onClick: ({ key }: { key: string }) =>
+                        key === "csv" ? exportCsv() : exportExcel(),
+                    }}
+                  >
+                    <Button icon={<DownloadOutlined />} loading={exporting}>
+                      {t("table.button.export")} <DownOutlined />
+                    </Button>
+                  </Dropdown>
+                )}
+              </Space>
+            }
+          />
+        </div>
+        <div style={{ display: activeTab === "dnItems" ? "block" : "none" }}>
+          <DnItemsTab
+            active={activeTab === "dnItems"}
+            customerCode={customerCode}
+            warehouseCode={tabWarehouse}
+            onChanged={refreshAfterMutation}
+          />
+        </div>
+        <div style={{ display: activeTab === "packaging" ? "block" : "none" }}>
+          <PackagingTab
+            active={activeTab === "packaging"}
+            customerCode={customerCode}
+            warehouseCode={tabWarehouse}
+            onChanged={refreshAfterMutation}
+          />
+        </div>
+        <div style={{ display: activeTab === "shipment" ? "block" : "none" }}>
+          <ShipmentTab
+            active={activeTab === "shipment"}
+            customerCode={customerCode}
+            warehouseCode={tabWarehouse}
+          />
+        </div>
+      </Card.Container>
+    </>
   );
 };
 

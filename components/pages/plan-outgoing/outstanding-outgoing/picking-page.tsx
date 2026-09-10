@@ -3,6 +3,7 @@ import {
   AimOutlined,
   BarcodeOutlined,
   CameraOutlined,
+  CheckCircleOutlined,
   CheckSquareOutlined,
   CloseCircleOutlined,
   CloseOutlined,
@@ -27,7 +28,6 @@ import {
   Row,
   Space,
   Spin,
-  Tag,
 } from "antd";
 import { useRouter } from "next/router";
 import React, {
@@ -113,6 +113,8 @@ const PickingPage = () => {
     );
   }, [rows, filter]);
 
+  const doneCount = filtered.filter(isDone).length;
+
   // setelah selesai → fokus input material card berikutnya
   const focusNextMaterial = (currentId: string) => {
     const idx = filtered.findIndex((d: any) => d.id === currentId);
@@ -176,7 +178,7 @@ const PickingPage = () => {
             : (norm(locVal[d.id]) ?? d.materialLocationBarcode ?? undefined),
       });
       setDoneIds((prev) => new Set(prev).add(d.id));
-      message.success(`${d.materialCode} — ${t("success")}`);
+      message.success(`${d.materialCode}: ${t("success")}`);
       focusNextMaterial(d.id);
       return true;
     } catch (e: any) {
@@ -197,11 +199,10 @@ const PickingPage = () => {
       locationRefs.current[d.id]?.focus();
       return;
     }
-    if (
-      c !== "0" &&
-      d.materialLocationBarcode &&
-      c !== d.materialLocationBarcode
-    ) {
+    // Parity binning: wajib cocok dgn barcode lokasi yang diharapkan.
+    // Tanpa "d.materialLocationBarcode &&": input ngasal lolos saat DN tak
+    // punya lokasi preskrived — satu-satunya jalan bypass adalah "0".
+    if (c !== "0" && c !== (d.materialLocationBarcode ?? "")) {
       message.error(t("invalidLocationBarcode"));
       setLocErrIds((prev) => new Set(prev).add(d.id));
       setLocVal((prev) => ({ ...prev, [d.id]: "" }));
@@ -261,7 +262,7 @@ const PickingPage = () => {
       key,
       type: failed.length ? "warning" : "success",
       content: failed.length
-        ? `${t("allDone", { count: ok })} — ${t("allFailed")}: ${failed.join("; ")}`
+        ? `${t("allDone", { count: ok })}. ${t("allFailed")}: ${failed.join("; ")}`
         : t("allDone", { count: ok }),
       duration: failed.length ? 10 : 3,
     });
@@ -572,6 +573,23 @@ const PickingPage = () => {
             />
           </Space.Compact>
         </div>
+
+        {/* Progress real (turunan state): operator lihat sisa kerja */}
+        {filtered.length > 0 && (
+          <div className={styles["pick-progress"]}>
+            <span className={styles["pick-progress-count"]}>
+              {t("pickedCount", { done: doneCount, total: filtered.length })}
+            </span>
+            <span className={styles["pick-progress-track"]}>
+              <span
+                className={styles["pick-progress-fill"]}
+                style={{
+                  transform: `scaleX(${doneCount / filtered.length})`,
+                }}
+              />
+            </span>
+          </div>
+        )}
       </div>
 
       <Spin spinning={loading}>
@@ -589,6 +607,122 @@ const PickingPage = () => {
                   <div
                     className={`${styles["binning-card"]} ${done ? styles.completed : ""}`.trim()}
                   >
+                    {/* Ornamen scan-arc — echo motif viewfinder kamera: flow ini
+                        berbasis scan. Dekoratif, di bawah konten (aria-hidden). */}
+                    <svg
+                      className={styles["card-ornament"]}
+                      viewBox="0 0 140 140"
+                      fill="none"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <circle
+                        cx="140"
+                        cy="0"
+                        r="36"
+                        stroke="currentColor"
+                        strokeOpacity="0.16"
+                        strokeWidth="1"
+                      />
+                      <circle
+                        cx="140"
+                        cy="0"
+                        r="60"
+                        stroke="currentColor"
+                        strokeOpacity="0.12"
+                        strokeWidth="1"
+                      />
+                      <circle
+                        cx="140"
+                        cy="0"
+                        r="84"
+                        stroke="currentColor"
+                        strokeOpacity="0.08"
+                        strokeWidth="1"
+                      />
+                      <circle
+                        cx="140"
+                        cy="0"
+                        r="108"
+                        stroke="currentColor"
+                        strokeOpacity="0.06"
+                        strokeWidth="1"
+                      />
+                      <circle
+                        cx="129.6"
+                        cy="59.1"
+                        r="2"
+                        fill="currentColor"
+                        fillOpacity="0.2"
+                      />
+                      <circle
+                        cx="105.6"
+                        cy="49.1"
+                        r="2"
+                        fill="currentColor"
+                        fillOpacity="0.2"
+                      />
+                      <circle
+                        cx="88"
+                        cy="30"
+                        r="2"
+                        fill="currentColor"
+                        fillOpacity="0.2"
+                      />
+                      <circle
+                        cx="75.7"
+                        cy="54"
+                        r="2.5"
+                        fill="currentColor"
+                        fillOpacity="0.25"
+                      />
+                    </svg>
+                    {/* Klaster cermin kiri-bawah — keseimbangan diagonal, lebih lemah */}
+                    <svg
+                      className={styles["card-ornament-bl"]}
+                      viewBox="0 0 120 120"
+                      fill="none"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <circle
+                        cx="0"
+                        cy="120"
+                        r="44"
+                        stroke="currentColor"
+                        strokeOpacity="0.08"
+                        strokeWidth="1"
+                      />
+                      <circle
+                        cx="0"
+                        cy="120"
+                        r="72"
+                        stroke="currentColor"
+                        strokeOpacity="0.06"
+                        strokeWidth="1"
+                      />
+                      <circle
+                        cx="31.1"
+                        cy="88.9"
+                        r="1.8"
+                        fill="currentColor"
+                        fillOpacity="0.16"
+                      />
+                      <circle
+                        cx="42.5"
+                        cy="108.6"
+                        r="1.8"
+                        fill="currentColor"
+                        fillOpacity="0.16"
+                      />
+                      <circle
+                        cx="22"
+                        cy="81.9"
+                        r="1.8"
+                        fill="currentColor"
+                        fillOpacity="0.16"
+                      />
+                    </svg>
                     <div className={styles["step-bar"]}>
                       <Step
                         active
@@ -620,10 +754,22 @@ const PickingPage = () => {
                         label={t("stepDone")}
                       />
                     </div>
-                    <label>{t("materialName")}</label>
-                    <Input disabled value={d.materialName} />
-                    <label>{t("materialCode")}</label>
-                    <Input disabled value={d.materialCode} />
+                    <div className={styles["card-head"]}>
+                      <div className={styles["card-head-main"]}>
+                        <div
+                          className={styles["card-head-title"]}
+                          title={d.materialName}
+                        >
+                          {d.materialName}
+                        </div>
+                        <div className={styles["card-head-code"]}>
+                          {t("materialCode")}:{" "}
+                          <span className={styles["card-code-value"]}>
+                            {d.materialCode}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
                     <label>{t("materialBarcode")}</label>
                     {matOk || done ? (
                       <Input
@@ -681,7 +827,11 @@ const PickingPage = () => {
                     <Row gutter={8}>
                       <Col span={12}>
                         <label>{t("poQty")}</label>
-                        <Input disabled value={d.poQty ?? 0} />
+                        <Input
+                          disabled
+                          className={done ? styles["scan-ok"] : undefined}
+                          value={d.poQty ?? 0}
+                        />
                       </Col>
                       <Col span={12}>
                         <label>{t("pickingQty")}</label>
@@ -692,6 +842,7 @@ const PickingPage = () => {
                             }}
                             min={0}
                             style={{ width: "100%" }}
+                            className={done ? styles["scan-ok"] : undefined}
                             value={done ? d.pickingQty : qtyVal[d.id]}
                             disabled={done || busyId === d.id || allLoading}
                             onChange={(v) =>
@@ -769,9 +920,12 @@ const PickingPage = () => {
                       </Space.Compact>
                     )}
                     {done ? (
-                      <Tag color="success" style={{ marginTop: 12 }}>
-                        {t("completed")}
-                      </Tag>
+                      <div className={styles["card-done"]}>
+                        <span className={styles["card-done-pill"]}>
+                          <CheckCircleOutlined style={{ fontSize: 13 }} />
+                          {t("completed")}
+                        </span>
+                      </div>
                     ) : (
                       <Button
                         block

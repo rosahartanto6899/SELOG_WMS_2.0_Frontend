@@ -135,8 +135,15 @@ const NextAuthProvider = (props: NextAuthProviderProps) => {
   };
 
   const checkAccessRead = (pathName: any) => {
-    const isHaveAccess: any =
-      PermissionUtils().getAccessMenuPermission(pathName);
+    let isHaveAccess: any = PermissionUtils().getAccessMenuPermission(pathName);
+
+    // Sub-page worklist (binning/picking/dst) tidak punya menu sendiri →
+    // ikut izin read menu INDUK, paritas perilaku route [id] saat view
+    // (tanpa ini reload di sub-page → replace /404)
+    if (!isHaveAccess) {
+      const parent = pathName.split("/").slice(0, -1).join("/");
+      isHaveAccess = PermissionUtils().getAccessMenuPermission(parent);
+    }
 
     if (!isHaveAccess) {
       router.replace("/404");
