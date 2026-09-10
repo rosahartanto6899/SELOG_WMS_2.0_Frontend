@@ -172,7 +172,8 @@
           "label": "Tambah Material"
         },
         "print": {
-          "tooltip": "Cetak Barcode"
+          "tooltip": "Cetak Barcode",
+          "label": "Cetak Barcode"
         },
         "update": {
           "tooltip": "Ubah"
@@ -193,6 +194,7 @@
     },
     "form": {
       "title": "Input Master Material",
+      "cardTitle": "Master Material",
       "message": {
         "default": "Field ini wajib diisi"
       },
@@ -218,7 +220,7 @@
       },
       "uom": {
         "label": "UoM",
-        "placeholder": "Masukkan UoM"
+        "placeholder": "Pilih UoM"
       },
       "description": {
         "label": "Deskripsi",

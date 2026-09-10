@@ -36,8 +36,13 @@
       padding: 0 1.6rem;
     }
 
-    .ant-table-thead > tr > th:first-child,
-    .ant-table-tbody > tr > td:first-child {
+    // :not(.ant-table-selection-column) — saat rowSelection aktif, antd
+    // menyisipkan kolom checkbox SEBELUM kolom pertama kita sendiri, jadi
+    // :first-child jatuh ke situ. Padding besar ini dulu ditujukan untuk
+    // kolom data pertama (mis. "No."), bukan kolom checkbox yang sempit —
+    // tanpa pengecualian ini checkbox-nya kelihatan terpotong/kepepet.
+    .ant-table-thead > tr > th:first-child:not(.ant-table-selection-column),
+    .ant-table-tbody > tr > td:first-child:not(.ant-table-selection-column) {
       padding-left: 2rem !important;
     }
 
@@ -142,10 +147,10 @@
       }
     }
 
-    .ant-table-tbody > tr > td:first-child,
-    .ant-table-thead > tr > th:first-child,
-    .ant-table tfoot > tr > td:first-child,
-    .ant-table tfoot > tr > th:first-child {
+    .ant-table-tbody > tr > td:first-child:not(.ant-table-selection-column),
+    .ant-table-thead > tr > th:first-child:not(.ant-table-selection-column),
+    .ant-table tfoot > tr > td:first-child:not(.ant-table-selection-column),
+    .ant-table tfoot > tr > th:first-child:not(.ant-table-selection-column) {
       padding: 0 0.8rem 0 0;
     }
 

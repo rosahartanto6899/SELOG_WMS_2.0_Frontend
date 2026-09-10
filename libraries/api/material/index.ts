@@ -37,6 +37,12 @@ const MaterialApi = () => {
       .then((resp) => resp);
   }
 
+  async function retrieveUomDropdown() {
+    return httpService
+      .get(`${apiUrl.master}/materials/uom-dropdown`)
+      .then((resp) => resp);
+  }
+
   async function createMaterial(payload: {
     code: string;
     name: string;
@@ -89,6 +95,7 @@ const MaterialApi = () => {
     retrieveDropdownMaterials,
     retrieveMaterialDetail,
     retrieveAvailableBarcodes,
+    retrieveUomDropdown,
     createMaterial,
     updateMaterial,
     deleteMaterial,
