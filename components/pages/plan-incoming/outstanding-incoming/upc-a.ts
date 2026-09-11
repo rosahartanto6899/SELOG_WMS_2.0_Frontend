@@ -29,12 +29,13 @@ export function upcChecksum(eleven: string): number {
   return (10 - ((odd * 3 + even) % 10)) % 10;
 }
 
-/** 11 digit (atau 12 dgn checksum) → barcode penuh 12 digit */
+/** 11+ digit → barcode 12 digit. Parity BarcodeStandard UPCA: checksum
+ *  SELALU dihitung ulang dari 11 digit pertama (digit ke-12 salah diganti). */
 export function toUpcA(input: string): string | null {
   const digits = input.replace(/\D/g, "");
-  if (digits.length === 11) return digits + String(upcChecksum(digits));
-  if (digits.length === 12) return digits;
-  return null;
+  if (digits.length < 11) return null;
+  const eleven = digits.slice(0, 11);
+  return eleven + String(upcChecksum(eleven));
 }
 
 /** Barcode valid utk print (parity legacy: >= 11 digit & numerik) */
@@ -42,7 +43,10 @@ export function isValidBarcode(v?: string | null): boolean {
   return !!v && /^\d{11,}$/.test(v);
 }
 
-/** SVG inline 95 module (guard bars lebih tinggi), tinggi mengikuti rasio 290×150 legacy */
+/** SVG inline — pixel-parity BarcodeStandard (barcodelib) UpcA:
+ *  kanvas 290×150, iBarWidth = floor(W/95) = 3, alignment CENTER →
+ *  shift = (W − 95×3)/2 = 2, tiap bar = garis vertikal stroke 3px dari
+ *  y=0..H (tinggi seragam, tanpa quiet zone) — persis Encode(UpcA, 290, 150). */
 export function upcaSvg(input: string): string {
   const code = toUpcA(input);
   if (!code) return "";
@@ -66,15 +70,17 @@ export function upcaSvg(input: string): string {
       .join("") +
     "101";
 
-  const H = 100;
-  const HD = 90; // digit bars
+  const W = 290;
+  const H = 150;
+  const BW = Math.floor(W / bits.length); // 3 — integer division parity lib
+  const SHIFT = Math.floor((W - bits.length * BW) / 2); // 2 — alignment CENTER
+  const HALF = Math.floor(BW * 0.5); // 1
   let bars = "";
-  bits.split("").forEach((b, i) => {
+  bits.split("").forEach((b, pos) => {
     if (b !== "1") return;
-    const guard = i < 3 || (i >= 45 && i < 50) || i >= 92;
-    const h = guard ? H : HD;
-    bars += `<rect x="${i}" y="${H - h}" width="1" height="${h}" fill="#000"/>`;
+    // garis stroke BW px di x-center pos*BW+SHIFT+HALF → rect x = center − BW/2
+    bars += `<rect x="${(pos * BW + SHIFT + HALF - BW / 2).toFixed(2)}" y="0" width="${BW}" height="${H}" fill="#000"/>`;
   });
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 95 100" width="100%" preserveAspectRatio="none"><rect width="95" height="${H}" fill="#fff"/>${bars}</svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}"><rect width="${W}" height="${H}" fill="#fff"/>${bars}</svg>`;
 }

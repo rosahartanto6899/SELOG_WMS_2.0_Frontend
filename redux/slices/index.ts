@@ -1,6 +1,7 @@
 import { combineReducers } from "@reduxjs/toolkit";
 
 import actualIncomingReducer from "./actual-incoming.slice";
+import actualOutgoingReducer from "./actual-outgoing.slice";
 import { baseReducers } from "./base.slice";
 import businessAreaReducer from "./business-area.slice";
 import cityReducer from "./city.slice";
@@ -36,6 +37,7 @@ const rootReducer = combineReducers({
   districts: districtReducer,
   uploadIncomingAhm: uploadIncomingAhmReducer,
   actualIncoming: actualIncomingReducer,
+  actualOutgoing: actualOutgoingReducer,
   outstandingIncoming: outstandingIncomingReducer,
   outstandingOutgoing: outstandingOutgoingReducer,
   zones: zoneReducer,

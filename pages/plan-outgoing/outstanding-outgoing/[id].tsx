@@ -11,10 +11,14 @@ const OutstandingOutgoingDetailPage = () => {
 
   return (
     <PageLayout
-      title={t("outstandingTitle")}
+      title={t("outstandingDetailTitle")}
       breadcrumb={[
-        { title: t("outstandingBreadcrumb.0") },
-        { title: t("outstandingBreadcrumb.1") },
+        { title: t("outstandingDetailBreadcrumb.0") },
+        {
+          title: t("outstandingDetailBreadcrumb.1"),
+          url: ROUTE.PLAN_OUTGOING.OUTSTANDING_OUTGOING,
+        },
+        { title: t("outstandingDetailBreadcrumb.2") },
       ]}
       backUrl={ROUTE.PLAN_OUTGOING.OUTSTANDING_OUTGOING}
       isDirectToURL

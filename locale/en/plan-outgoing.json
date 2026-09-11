@@ -41,7 +41,21 @@
     "inputTitle": "Input Plan Outgoing",
     "breadcrumb": ["Plan Outgoing", "Input Plan Outgoing"],
     "outstandingTitle": "Outstanding Outgoing",
+    "outstandingDetailTitle": "Outstanding Outgoing Detail",
+    "outstandingDetailBreadcrumb": [
+      "Plan Outgoing",
+      "Outstanding Outgoing",
+      "Detail"
+    ],
     "outstandingBreadcrumb": ["Plan Outgoing", "Outstanding Outgoing"],
+    "actualOutgoingTitle": "Actual Outgoing",
+    "actualOutgoingDetailTitle": "Actual Outgoing Detail",
+    "actualOutgoingDetailBreadcrumb": [
+      "Plan Outgoing",
+      "Actual Outgoing",
+      "Detail"
+    ],
+    "outgoingBreadcrumb": ["Plan Outgoing", "Actual Outgoing"],
     "pickingTitle": "Picking"
   },
   "outstandingOutgoing": {
@@ -225,14 +239,15 @@
       "length": "L",
       "width": "W",
       "height": "H",
-      "destinationMismatch": "Selected data must share the same Customer Destination. Please adjust your selection.",
       "createdTitle": "Success!",
       "created": "Packaging No created : <br/>{{no}}"
     },
     "shipment": {
       "button": "Ready To Ship",
       "createdTitle": "Success!",
-      "created": "Shipment No created : <br/>{{no}}"
+      "created": "Shipment No created : <br/>{{no}}",
+      "printLetter": "Print Delivery Note",
+      "printFailed": "Failed to load shipment data"
     },
     "poPopup": {
       "title": "PO per Packaging",
@@ -315,5 +330,91 @@
     "doneAsk": "All materials picked. Back to Outstanding Outgoing list?",
     "doneBack": "Back to List",
     "doneStay": "Stay Here"
+  },
+  "actualOutgoing": {
+    "title": "Actual Outgoing",
+    "searchPlaceholder": "Search...",
+    "export": "Export",
+    "exportCsv": "Export CSV",
+    "exportExcel": "Export Excel",
+    "failed": "Failed to load data",
+    "detailTitle": "Detail — {{dn}}",
+    "historyTitle": "Status History",
+    "addInfoTitle": "Additional Information",
+    "column": {
+      "deliveryNoteNo": "Delivery Note No",
+      "outgoingDate": "Outgoing Date",
+      "poNo": "PO No",
+      "poType": "PO Type",
+      "poDate": "PO Date",
+      "customerDestination": "Customer Destination",
+      "description": "Description",
+      "status": "Status",
+      "addInfo": "Add Info",
+      "view": "View",
+      "createdDate": "Created Date",
+      "createdBy": "Created By"
+    },
+    "options": {
+      "0": "Delivery Note No",
+      "1": "PO No",
+      "2": "Customer Destination",
+      "3": "Reference No",
+      "4": "Description",
+      "5": "Status"
+    },
+    "detail": {
+      "shipmentNo": "Shipment No",
+      "packagingNo": "Packaging No",
+      "materialCode": "Material Code",
+      "materialName": "Material Name",
+      "materialBrand": "Brand",
+      "poQty": "PO Qty",
+      "pickingQty": "Picking Qty",
+      "uom": "UoM",
+      "pickingDate": "Picking Date",
+      "modifiedBy": "Modified By",
+      "description": "Description"
+    },
+    "history": {
+      "status": "Status",
+      "date": "Date",
+      "leadtime": "Leadtime",
+      "minutes": "minutes",
+      "pic": "PIC",
+      "createdBy": "By"
+    },
+    "addInfo": {
+      "name": "Name",
+      "value": "Value"
+    },
+    "view": {
+      "back": "Back",
+      "infoTitle": "Delivery Note Information",
+      "materialTitle": "Material Details",
+      "deliveryNoteNo": "Delivery Note No",
+      "outgoingDate": "Outgoing Date",
+      "referenceNo": "Reference No",
+      "materialCategory": "Material Category",
+      "poNo": "PO No",
+      "poType": "PO Type",
+      "poDate": "PO Date",
+      "description": "Description",
+      "status": "Status",
+      "customerDestination": "Customer Destination",
+      "picPicker": "PIC Picker",
+      "picLoading": "PIC Loading",
+      "detail": {
+        "shipmentNo": "Shipment No",
+        "packagingNo": "Packaging No",
+        "materialCode": "Material Code",
+        "materialName": "Material Name",
+        "materialBrand": "Brand",
+        "poQty": "PO Qty",
+        "pickingQty": "Picking Qty",
+        "uom": "UoM",
+        "pickingDate": "Picking Date"
+      }
+    }
   }
 }
