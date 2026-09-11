@@ -64,7 +64,7 @@ const OutstandingOutgoingApi = () => {
     warehouseCode: string;
     [key: string]: any;
   }) {
-    return httpService.get(base, { params }).then((resp) => resp);
+    return httpService.get(`${base}/items`, { params }).then((resp) => resp);
   }
 
   function retrievePackagings(params: {
@@ -225,6 +225,13 @@ const OutstandingOutgoingApi = () => {
       .then((resp) => resp);
   }
 
+  /** Q7 — distinct PO per shipment (print surat pengiriman) */
+  function retrievePosByShipment(shipmentNo: string) {
+    return httpService
+      .get(`${base}/shipments/${encodeURIComponent(shipmentNo)}/pos`)
+      .then((resp) => resp);
+  }
+
   // ===== Sequential AHM (spec 004 Fase 6) =====
 
   /** A10 — flag sequential per customer (env-driven svc) */
@@ -266,6 +273,7 @@ const OutstandingOutgoingApi = () => {
     readyToShip,
     retrievePosByPackaging,
     retrievePackagingsByShipment,
+    retrievePosByShipment,
     getSequentialConfig,
     updateStatuses,
   };

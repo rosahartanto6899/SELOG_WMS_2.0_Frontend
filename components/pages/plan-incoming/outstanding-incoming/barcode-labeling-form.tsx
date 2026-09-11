@@ -2,7 +2,7 @@
 import { PrinterOutlined } from "@ant-design/icons";
 import Table from "@sera-components/table";
 import { OutstandingIncomingDetail } from "@sera-types/outstanding-incoming.type";
-import { Button, Col, Input, message, Modal, Row, Select } from "antd";
+import { Button, Col, message, Modal, Row } from "antd";
 import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -135,17 +135,24 @@ const BarcodeLabelingForm = (props: Props) => {
       .join("");
     const win = window.open();
     if (!win) return;
-    win.document.write(`<!DOCTYPE html><html><head><title>Print Barcodes</title>
+    win.document.write(`<!DOCTYPE html><html><head><title>Print Preview</title>
 <style>
+  /* parity WMS_CoreApp printbarcode.css */
   body { margin: 0; padding: 0; background: #fff; }
   #printContent { display: grid; grid-template-columns: repeat(auto-fill, 7cm);
-    grid-auto-rows: 3cm; width: 100%; }
+    grid-auto-rows: 3cm; width: 100%; height: auto; }
   .label { margin: 4mm auto; width: 6cm; height: 2cm; display: flex;
     flex-direction: column; justify-content: center; align-items: center;
-    text-align: center; box-sizing: border-box; page-break-inside: avoid; }
-  .lblMaterialCode { margin-top: 1px; font: 9px sans-serif; }
-  .label img { width: 100%; height: 80%; object-fit: cover; margin: 0; padding: 0; }
-  @media print { #printContent { gap: 2mm; margin: 0; } }
+    text-align: center; box-sizing: border-box; }
+  .lblMaterialCode { margin-top: 1px; }
+  .label img { width: 100%; height: 100%; object-fit: cover;
+    margin: 10px 0 0 0; padding: 0; }
+  @media print {
+    body { margin: 0; padding: 0; width: 100%; height: 100%; background: #fff; }
+    #printContent { margin: 0; width: 100%; height: auto; display: grid;
+      grid-template-columns: repeat(auto-fill, 7cm); grid-auto-rows: 3cm; gap: 2mm; }
+    .label { page-break-inside: avoid; margin: 4mm auto; width: 6cm; height: 2cm; }
+  }
 </style></head><body><div id="printContent">${labels}</div>
 <script>setTimeout(function(){window.print();},300);window.onafterprint=function(){window.close();};</script>
 </body></html>`);

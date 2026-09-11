@@ -41,7 +41,21 @@
     "inputTitle": "Input Plan Outgoing",
     "breadcrumb": ["Plan Outgoing", "Input Plan Outgoing"],
     "outstandingTitle": "Outstanding Outgoing",
+    "outstandingDetailTitle": "Outstanding Outgoing Detail",
+    "outstandingDetailBreadcrumb": [
+      "Plan Outgoing",
+      "Outstanding Outgoing",
+      "Detail"
+    ],
     "outstandingBreadcrumb": ["Plan Outgoing", "Outstanding Outgoing"],
+    "actualOutgoingTitle": "Actual Outgoing",
+    "actualOutgoingDetailTitle": "Actual Outgoing Detail",
+    "actualOutgoingDetailBreadcrumb": [
+      "Plan Outgoing",
+      "Actual Outgoing",
+      "Detail"
+    ],
+    "outgoingBreadcrumb": ["Plan Outgoing", "Actual Outgoing"],
     "pickingTitle": "Picking"
   },
   "outstandingOutgoing": {
@@ -225,14 +239,15 @@
       "length": "P",
       "width": "L",
       "height": "T",
-      "destinationMismatch": "Data yang dipilih harus Customer Destination yang sama. Harap sesuaikan pilihan Anda.",
       "createdTitle": "Sukses!",
       "created": "Packaging No berhasil dibuat : <br/>{{no}}"
     },
     "shipment": {
       "button": "Ready To Ship",
       "createdTitle": "Sukses!",
-      "created": "Shipment No berhasil dibuat : <br/>{{no}}"
+      "created": "Shipment No berhasil dibuat : <br/>{{no}}",
+      "printLetter": "Cetak Surat Pengiriman",
+      "printFailed": "Gagal memuat data shipment"
     },
     "poPopup": {
       "title": "PO per Packaging",
@@ -315,5 +330,91 @@
     "doneAsk": "Semua material sudah dipicking. Kembali ke daftar Outstanding Outgoing?",
     "doneBack": "Kembali ke Daftar",
     "doneStay": "Tetap di Sini"
+  },
+  "actualOutgoing": {
+    "title": "Actual Outgoing",
+    "searchPlaceholder": "Cari...",
+    "export": "Export",
+    "exportCsv": "Export CSV",
+    "exportExcel": "Export Excel",
+    "failed": "Gagal memuat data",
+    "detailTitle": "Detail — {{dn}}",
+    "historyTitle": "History Status",
+    "addInfoTitle": "Informasi Tambahan",
+    "column": {
+      "deliveryNoteNo": "No. Surat Jalan",
+      "outgoingDate": "Tanggal Outgoing",
+      "poNo": "No. PO",
+      "poType": "Tipe PO",
+      "poDate": "Tanggal PO",
+      "customerDestination": "Customer Destination",
+      "description": "Deskripsi",
+      "status": "Status",
+      "addInfo": "Add Info",
+      "view": "Lihat",
+      "createdDate": "Tanggal Dibuat",
+      "createdBy": "Dibuat Oleh"
+    },
+    "options": {
+      "0": "No. Surat Jalan",
+      "1": "No. PO",
+      "2": "Customer Destination",
+      "3": "No. Referensi",
+      "4": "Deskripsi",
+      "5": "Status"
+    },
+    "detail": {
+      "shipmentNo": "No. Shipment",
+      "packagingNo": "No. Packaging",
+      "materialCode": "Kode Material",
+      "materialName": "Nama Material",
+      "materialBrand": "Merk",
+      "poQty": "Qty PO",
+      "pickingQty": "Qty Picking",
+      "uom": "Satuan",
+      "pickingDate": "Tanggal Picking",
+      "modifiedBy": "Diubah Oleh",
+      "description": "Deskripsi"
+    },
+    "history": {
+      "status": "Status",
+      "date": "Tanggal",
+      "leadtime": "Leadtime",
+      "minutes": "menit",
+      "pic": "PIC",
+      "createdBy": "Oleh"
+    },
+    "addInfo": {
+      "name": "Nama",
+      "value": "Nilai"
+    },
+    "view": {
+      "back": "Kembali",
+      "infoTitle": "Informasi Surat Jalan",
+      "materialTitle": "Detail Material",
+      "deliveryNoteNo": "No. Surat Jalan",
+      "outgoingDate": "Tanggal Outgoing",
+      "referenceNo": "No. Referensi",
+      "materialCategory": "Kategori Material",
+      "poNo": "No. PO",
+      "poType": "Tipe PO",
+      "poDate": "Tanggal PO",
+      "description": "Deskripsi",
+      "status": "Status",
+      "customerDestination": "Customer Destination",
+      "picPicker": "PIC Picker",
+      "picLoading": "PIC Loading",
+      "detail": {
+        "shipmentNo": "No. Shipment",
+        "packagingNo": "No. Packaging",
+        "materialCode": "Kode Material",
+        "materialName": "Nama Material",
+        "materialBrand": "Merk",
+        "poQty": "Qty PO",
+        "pickingQty": "Qty Picking",
+        "uom": "Satuan",
+        "pickingDate": "Tanggal Picking"
+      }
+    }
   }
 }

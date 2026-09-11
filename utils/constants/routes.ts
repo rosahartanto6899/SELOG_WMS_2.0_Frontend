@@ -9,6 +9,7 @@ export const ROUTE = {
   PLAN_OUTGOING: {
     INPUT_OUTGOING: "/plan-outgoing/input-outgoing",
     OUTSTANDING_OUTGOING: "/plan-outgoing/outstanding-outgoing",
+    ACTUAL_OUTGOING: "/plan-outgoing/actual-outgoing",
   },
   USER_MANAGEMENT: {
     ROLE: "/user-management/role-permissions",
