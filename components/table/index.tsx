@@ -79,6 +79,7 @@ export interface TableProps {
   onClearAutoComplete?: (state?: any, action?: any) => void;
   additionalHeader?: ReactNode;
   additionalInformation?: ReactNode;
+  footerNote?: ReactNode;
   getCheckboxProps?: (
     record: object,
   ) => Partial<Omit<CheckboxProps, "defaultChecked" | "checked">>;
@@ -152,6 +153,7 @@ const Table: React.FC<TableProps> = (props: TableProps) => {
     expandProps,
     showSizeChanger = true,
     additionalInformation,
+    footerNote,
     bordered = false,
     onRowClick = () => {},
     showLessItems,
@@ -360,7 +362,8 @@ const Table: React.FC<TableProps> = (props: TableProps) => {
 
       <div className={styles["sera-table-wrapper__footer"]}>
         {/* Footer */}
-        <Row>
+        <Row align="middle">
+          {footerNote && <Col flex="none">{footerNote}</Col>}
           <Col flex="auto">
             <Row justify="end">
               <Col id="table-pagination">

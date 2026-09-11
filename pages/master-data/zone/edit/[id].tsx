@@ -5,6 +5,7 @@ import { LayoutUserManagement } from "@sera-components/pages/user-management";
 import { RootState, zoneActions } from "@sera-redux";
 import { ZoneState } from "@sera-types/zone.type";
 import { Form } from "antd";
+import { omit } from "lodash";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -45,7 +46,10 @@ const ZoneEdit = ({
 
   const handleSubmit = () => {
     form.validateFields().then((values) => {
-      updateZone({ id: id as string, items: values });
+      updateZone({
+        id: id as string,
+        items: omit(values, ["code", "warehouseCode", "warehouseName"]),
+      });
     });
   };
 

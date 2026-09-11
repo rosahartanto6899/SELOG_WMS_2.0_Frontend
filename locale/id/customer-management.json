@@ -10,15 +10,16 @@
   },
   "form": {
     "title": "Customer",
+    "cardTitle": "Form of Customer",
     "message": {
       "default": "Mohon isi kolom ini"
     },
     "code": {
-      "label": "Kode",
+      "label": "Customer Code",
       "placeholder": "Kode customer"
     },
     "name": {
-      "label": "Nama",
+      "label": "Customer Name",
       "placeholder": "Nama customer"
     },
     "address": {
@@ -46,12 +47,12 @@
     }
   ],
   "table": {
-    "title": "Customer",
+    "title": "List of Customers",
     "searchPlaceholder": "Cari",
     "columns": {
       "no": "No",
-      "code": "Kode",
-      "name": "Nama",
+      "code": "Customer Code",
+      "name": "Customer Name",
       "customer": "Customer",
       "address": "Alamat",
       "phone": "Telepon",

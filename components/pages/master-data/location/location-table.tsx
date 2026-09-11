@@ -8,6 +8,7 @@ import Input from "@sera-components/input";
 import Modal from "@sera-components/modal";
 import Select from "@sera-components/select";
 import Table from "@sera-components/table";
+import CustomerApi from "@sera-libraries/api/customer";
 import LocationApi from "@sera-libraries/api/location";
 import { locationActions } from "@sera-redux";
 import { BaseType } from "@sera-types/base.type";
@@ -16,6 +17,7 @@ import FormatUtils from "@sera-utils/format";
 import useCheckPermission from "@sera-utils/hooks/useCheckPermission";
 import { Col, Flex, message, Row, Typography } from "antd";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -38,8 +40,8 @@ const ZoneTable = (props: Props) => {
   const [listOptions, setListOptions] = useState<BaseType>({
     page: 1,
     limit: 10,
-    order: "code",
-    sort: "asc",
+    order: "createdDate",
+    sort: "desc",
   });
   const [searchByOption, setSearchByOption] = useState("code");
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -47,10 +49,28 @@ const ZoneTable = (props: Props) => {
     id: "",
     name: "",
   });
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [bulkPrintLoading, setBulkPrintLoading] = useState(false);
+  const { data: session, status: sessionStatus } = useSession() as any;
+  const [customerName, setCustomerName] = useState<string>();
+  const warehouseCode = session?.user?.warehouseCode ?? undefined;
+  const warehouseName = session?.user?.warehouseName ?? undefined;
+
+  // Location list is scoped to the Warehouse selected via "Switch Warehouse"
+  // in the header (customer scoping is already enforced backend-side from the JWT).
+  useEffect(() => {
+    if (sessionStatus === "loading") return;
+    onFetch({ ...listOptions, warehouseCode });
+  }, [listOptions, warehouseCode, sessionStatus]);
 
   useEffect(() => {
-    onFetch(listOptions);
-  }, [listOptions]);
+    const customerId = session?.user?.customerId;
+    if (!customerId) return;
+    CustomerApi()
+      .retrieveCustomerDetail({ id: customerId })
+      .then((resp: any) => setCustomerName(resp?.data?.data?.name))
+      .catch(() => undefined);
+  }, [session?.user?.customerId]);
 
   const onPageChangeListener = (page: number, pageSize?: number) => {
     setListOptions((prevState: BaseType) => ({
@@ -84,20 +104,27 @@ const ZoneTable = (props: Props) => {
     setSelected(obj);
   };
 
-  // per-row label print (single) — multi-select print to follow if Table exposes rowSelection
-  const printLabel = async (record: Location) => {
-    if (!record?.barcode) {
+  // Cetak label barcode — dipakai untuk print per-baris (single) maupun bulk
+  // dari baris yang dicentang lewat checkbox.
+  const printLabels = async (
+    records: { barcode?: string | null; code?: string; name?: string }[],
+  ) => {
+    const withBarcode = records.filter(
+      (r): r is { barcode: string; code?: string; name?: string } =>
+        !!r.barcode,
+    );
+    if (!withBarcode.length) {
       message.warning(t("message.noBarcode"));
       return;
     }
     try {
-      const resp: any = await LocationApi().generateBarcodeLabels([
-        {
-          barcode: record.barcode,
-          code: record.code,
-          name: record.name,
-        },
-      ]);
+      const resp: any = await LocationApi().generateBarcodeLabels(
+        withBarcode.map((r) => ({
+          barcode: r.barcode,
+          code: r.code,
+          name: r.name,
+        })),
+      );
       const items = resp?.data?.data ?? [];
       if (!items.length) {
         message.warning(t("message.noBarcode"));
@@ -124,6 +151,17 @@ const ZoneTable = (props: Props) => {
     } catch {
       message.error(t("message.printFailed"));
     }
+  };
+
+  const printLabel = (record: Location) => printLabels([record]);
+
+  const printSelectedLabels = async () => {
+    const records = (dataSource ?? []).filter((r) =>
+      selectedIds.includes(r.id ?? ""),
+    );
+    setBulkPrintLoading(true);
+    await printLabels(records);
+    setBulkPrintLoading(false);
   };
 
   const COLUMNS = [
@@ -253,29 +291,46 @@ const ZoneTable = (props: Props) => {
             current={Number(options?.page)}
             pageSize={options?.limit}
             total={options?.totalData ?? 0}
-            rowKey={(row: Location) => `${row.no}`}
+            rowKey={(row: Location) => row.id ?? `${row.no}`}
             loading={loading}
             title={t("table.title")}
             scroll={{ x: 1100 }}
             onPageChange={onPageChangeListener}
             onTableChange={onTableChangeListener}
             isCustomSearch
+            multipleSelect
             multipleDelete={false}
+            onSelectedRowsChange={(keys) => setSelectedIds(keys as string[])}
+            footerNote={
+              customerName &&
+              warehouseName && (
+                <Typography.Text type="secondary">
+                  {t("table.note.prefix")} <strong>{customerName}</strong> -{" "}
+                  <strong>{warehouseName}</strong>.
+                </Typography.Text>
+              )
+            }
             actions={
               <Row gutter={8}>
+                <Col>
+                  <Button
+                    id="action-bulk-print"
+                    icon={<PrinterOutlined />}
+                    loading={bulkPrintLoading}
+                    disabled={!selectedIds.length}
+                    onClick={printSelectedLabels}
+                  >
+                    {t("table.button.print.label")}
+                  </Button>
+                </Col>
                 {isCreate ? (
-                  <Col span={24}>
+                  <Col>
                     <Link
                       id="link-add-location"
                       href={`${baseLink}/add`}
                       passHref
                     >
-                      <Button
-                        id="action-add"
-                        type="primary"
-                        icon={<Plus />}
-                        style={{ width: "100%" }}
-                      >
+                      <Button id="action-add" type="primary" icon={<Plus />}>
                         {t("table.button.add.label")}
                       </Button>
                     </Link>
@@ -344,7 +399,7 @@ const ZoneTable = (props: Props) => {
           onDelete({
             id: selected.id,
             name: selected.name,
-            options: listOptions,
+            options: { ...listOptions, warehouseCode },
           });
           setShowDeleteConfirm(false);
         }}

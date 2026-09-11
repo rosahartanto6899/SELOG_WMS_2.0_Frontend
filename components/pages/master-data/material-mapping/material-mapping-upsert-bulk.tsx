@@ -9,22 +9,12 @@ import Button from "@sera-components/button";
 import Card from "@sera-components/card";
 import TableEditable from "@sera-components/table-editable";
 import UploadDnD from "@sera-components/upload-dnd";
-import WmsWarehouseApi from "@sera-libraries/api/wms-warehouse";
 import { materialLocationMappingActions, RootState } from "@sera-redux";
 import type { UploadMaterialLocationMappingRow } from "@sera-types/material-location-mapping.type";
-import {
-  Alert,
-  Col,
-  message,
-  Modal,
-  Row,
-  Select,
-  Space,
-  Tag,
-  Typography,
-} from "antd";
+import { Alert, Col, message, Modal, Row, Space, Tag, Typography } from "antd";
 import { RcFile } from "antd/lib/upload";
 import { cloneDeep } from "lodash";
+import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
@@ -56,19 +46,17 @@ function MaterialMappingUpsertBulk(props: any) {
   );
   const [cellErrors, setCellErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [warehouses, setWarehouses] = useState<any[]>([]);
-  const [warehouse, setWarehouse] = useState<{
-    code: string;
-    name: string;
-  } | null>(null);
   const lastErrorRef = useRef<unknown>(null);
 
-  useEffect(() => {
-    WmsWarehouseApi()
-      .retrieveDropdownWarehouses()
-      .then((resp: any) => setWarehouses(resp?.data?.data ?? []))
-      .catch(() => undefined);
-  }, []);
+  // Target warehouse follows the header's "Switch Warehouse" selection,
+  // same as Upload Incoming AHM — no more manual picker here.
+  const { data: session } = useSession() as any;
+  const warehouse = session?.user?.warehouseCode
+    ? {
+        code: session.user.warehouseCode,
+        name: session.user.warehouseName ?? "",
+      }
+    : null;
 
   const withWarehouse = (
     row: UploadMaterialLocationMappingRow,
@@ -278,23 +266,12 @@ function MaterialMappingUpsertBulk(props: any) {
             </Typography.Text>
           </Col>
           <Col xs={24} md={12} style={{ textAlign: "right" }}>
-            <Space>
-              <Select
-                showSearch
-                optionFilterProp="label"
-                placeholder={t("selectWarehouse")}
-                style={{ minWidth: 220, textAlign: "left" }}
-                disabled={isSubmitting}
-                options={warehouses.map((w: any) => ({
-                  value: w.id,
-                  label: w.name,
-                  code: w.code,
-                  name: w.name,
-                }))}
-                onChange={(_v: any, opt: any) =>
-                  setWarehouse({ code: opt.code, name: opt.name })
-                }
-              />
+            <Space align="start" wrap style={{ justifyContent: "flex-end" }}>
+              {!warehouse && (
+                <Typography.Text type="danger" style={{ fontSize: 12 }}>
+                  {t("noActiveWarehouse")}
+                </Typography.Text>
+              )}
               <Button
                 icon={<CloudDownloadOutlined />}
                 loading={isLoading}

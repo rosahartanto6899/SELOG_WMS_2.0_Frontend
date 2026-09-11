@@ -8,6 +8,7 @@ import Input from "@sera-components/input";
 import Modal from "@sera-components/modal";
 import Select from "@sera-components/select";
 import Table from "@sera-components/table";
+import CustomerApi from "@sera-libraries/api/customer";
 import MaterialApi from "@sera-libraries/api/material";
 import { materialActions } from "@sera-redux";
 import { BaseType } from "@sera-types/base.type";
@@ -16,6 +17,7 @@ import FormatUtils from "@sera-utils/format";
 import useCheckPermission from "@sera-utils/hooks/useCheckPermission";
 import { Col, Flex, message, Row, Typography } from "antd";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -49,10 +51,21 @@ const MaterialTable = (props: Props) => {
   });
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [bulkPrintLoading, setBulkPrintLoading] = useState(false);
+  const { data: session } = useSession() as any;
+  const [customerName, setCustomerName] = useState<string>();
 
   useEffect(() => {
     onFetch(listOptions);
   }, [listOptions]);
+
+  useEffect(() => {
+    const customerId = session?.user?.customerId;
+    if (!customerId) return;
+    CustomerApi()
+      .retrieveCustomerDetail({ id: customerId })
+      .then((resp: any) => setCustomerName(resp?.data?.data?.name))
+      .catch(() => undefined);
+  }, [session?.user?.customerId]);
 
   const onPageChangeListener = (page: number, pageSize?: number) => {
     setListOptions((prevState: BaseType) => ({
@@ -289,6 +302,13 @@ const MaterialTable = (props: Props) => {
             multipleSelect
             multipleDelete={false}
             onSelectedRowsChange={(keys) => setSelectedIds(keys as string[])}
+            footerNote={
+              customerName && (
+                <Typography.Text type="secondary">
+                  {t("table.note.prefix")} <strong>{customerName}</strong>.
+                </Typography.Text>
+              )
+            }
             actions={
               <Row gutter={8}>
                 <Col>

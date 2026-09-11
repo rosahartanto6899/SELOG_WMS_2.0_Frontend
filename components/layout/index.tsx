@@ -299,10 +299,26 @@ const Layout = (props: LayoutProps) => {
                     fontSize={13}
                     fontWeight={500}
                   >
-                    {selectedWarehouseName
-                      ? `${selectedCustomerName} | ${selectedWarehouseName}`
-                      : selectedCustomerName}
+                    {selectedCustomerName}
                   </Typography.Text>
+                  {selectedWarehouseName ? (
+                    <>
+                      <Typography.Text
+                        fontSize={13}
+                        fontWeight={500}
+                        style={{ color: "#8C8C8C", margin: "0 6px" }}
+                      >
+                        |
+                      </Typography.Text>
+                      <Typography.Text
+                        fontSize={13}
+                        fontWeight={600}
+                        style={{ color: "#FA8C16" }}
+                      >
+                        {selectedWarehouseName}
+                      </Typography.Text>
+                    </>
+                  ) : null}
                 </div>
               ) : null}
 

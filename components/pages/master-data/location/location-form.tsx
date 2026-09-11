@@ -11,6 +11,7 @@ import Utils from "@sera-utils/utils";
 import { Card, Col, Form, FormInstance, Row } from "antd";
 import { Input as AntdInput } from "antd";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -35,6 +36,9 @@ const ActionForm = ({
   const { t } = useTranslation(undefined, {
     keyPrefix: "masterData.location.form",
   });
+  const { data: session } = useSession() as any;
+  const sessionWarehouseCode = session?.user?.warehouseCode ?? undefined;
+  const sessionWarehouseName = session?.user?.warehouseName ?? undefined;
 
   const [warehouses, setWarehouses] = useState<any[]>([]);
   const [zones, setZones] = useState<any[]>([]);
@@ -49,6 +53,14 @@ const ActionForm = ({
       .then((resp: any) => setWarehouses(resp?.data?.data ?? []))
       .catch(() => undefined);
   }, []);
+
+  // Add mode: warehouse follows the header's "Switch Warehouse" selection
+  useEffect(() => {
+    if (type === "update" || !sessionWarehouseCode) return;
+    form.setFieldValue("warehouseCode", sessionWarehouseCode);
+    form.setFieldValue("warehouseName", sessionWarehouseName);
+    setSelectedWarehouse(sessionWarehouseCode);
+  }, [type, sessionWarehouseCode, sessionWarehouseName]);
 
   useEffect(() => {
     LocationApi()
@@ -73,7 +85,7 @@ const ActionForm = ({
 
   return (
     <Form form={form} layout="vertical" disabled={loading} autoComplete="off">
-      <Card title={t("title")}>
+      <Card title={t("cardTitle")}>
         <Row gutter={16}>
           <Col xs={24} sm={24} md={12}>
             <Form.Item
@@ -86,7 +98,7 @@ const ActionForm = ({
                 placeholder={t("warehouse.placeholder")}
                 showSearch
                 optionFilterProp="label"
-                disabled={type === "update"}
+                disabled={type === "update" || !!sessionWarehouseCode}
                 options={warehouses.map((w: any) => ({
                   value: w.code,
                   label: w.name,

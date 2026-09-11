@@ -25,7 +25,7 @@ const ActionForm = ({ form, loading, onSubmit, isDetail }: ActionFormProps) => {
 
   return (
     <Form form={form} layout="vertical" disabled={loading} autoComplete="off">
-      <Card title={t("title")}>
+      <Card title={t("cardTitle")}>
         <Row gutter={16}>
           <Col xs={24} sm={24} md={12}>
             <Form.Item

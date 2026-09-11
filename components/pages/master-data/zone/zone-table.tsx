@@ -1,15 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 import Button from "@sera-components/button";
-import Card from "@sera-components/card";
-import FilterDropdown from "@sera-components/filter-dropdown";
 // eslint-disable-next-line import/no-named-as-default
 import { DeleteOutlined, EditOutlined, Plus } from "@sera-components/icons";
 import Input from "@sera-components/input";
 import Modal from "@sera-components/modal";
 import Select from "@sera-components/select";
 import Table from "@sera-components/table";
-import WmsWarehouseApi from "@sera-libraries/api/wms-warehouse";
+import CustomerApi from "@sera-libraries/api/customer";
 import { zoneActions } from "@sera-redux";
 import { BaseType } from "@sera-types/base.type";
 import { Zone } from "@sera-types/zone.type";
@@ -17,6 +15,7 @@ import FormatUtils from "@sera-utils/format";
 import useCheckPermission from "@sera-utils/hooks/useCheckPermission";
 import { Col, Flex, Row, Typography } from "antd";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -36,13 +35,11 @@ const ZoneTable = (props: Props) => {
     menuLink: baseLink,
   });
 
-  const [warehouses, setWarehouses] = useState<any[]>([]);
-  const [warehouseCodes, setWarehouseCodes] = useState<string[]>([]);
   const [listOptions, setListOptions] = useState<BaseType>({
     page: 1,
     limit: 10,
-    order: "code",
-    sort: "asc",
+    order: "createdDate",
+    sort: "desc",
   });
   const [searchByOption, setSearchByOption] = useState("code");
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -50,22 +47,27 @@ const ZoneTable = (props: Props) => {
     id: "",
     name: "",
   });
+  const { data: session, status: sessionStatus } = useSession() as any;
+  const [customerName, setCustomerName] = useState<string>();
+  const warehouseCode = session?.user?.warehouseCode ?? undefined;
+  const warehouseName = session?.user?.warehouseName ?? undefined;
+
+  // Zone list is scoped to the Customer/Warehouse selected via "Switch
+  // Customer"/"Switch Warehouse" in the header (customer scoping is already
+  // enforced backend-side from the JWT).
+  useEffect(() => {
+    if (sessionStatus === "loading") return;
+    onFetch({ ...listOptions, warehouseCode });
+  }, [listOptions, warehouseCode, sessionStatus]);
 
   useEffect(() => {
-    WmsWarehouseApi()
-      .retrieveDropdownWarehouses()
-      .then((resp: any) => setWarehouses(resp?.data?.data ?? []))
+    const customerId = session?.user?.customerId;
+    if (!customerId) return;
+    CustomerApi()
+      .retrieveCustomerDetail({ id: customerId })
+      .then((resp: any) => setCustomerName(resp?.data?.data?.name))
       .catch(() => undefined);
-  }, []);
-
-  useEffect(() => {
-    onFetch({
-      ...listOptions,
-      warehouseCode: warehouseCodes.length
-        ? warehouseCodes.join(",")
-        : undefined,
-    });
-  }, [listOptions, warehouseCodes]);
+  }, [session?.user?.customerId]);
 
   const onPageChangeListener = (page: number, pageSize?: number) => {
     setListOptions((prevState: BaseType) => ({
@@ -190,24 +192,6 @@ const ZoneTable = (props: Props) => {
   return (
     <>
       <Flex vertical gap={24}>
-        <Card.Filter>
-          <Row gutter={[8, 4]}>
-            <Col>
-              <FilterDropdown
-                buttonLabel={t("table.selectWarehouse")}
-                options={warehouses.map((w: any) => ({
-                  label: w.name,
-                  value: w.code,
-                }))}
-                selectedValues={warehouseCodes}
-                onChange={(values) => setWarehouseCodes(values ?? [])}
-                loading={false}
-                disabled={false}
-              />
-            </Col>
-          </Row>
-        </Card.Filter>
-
         {dataSource && (
           <Table
             dataSource={dataSource}
@@ -215,7 +199,7 @@ const ZoneTable = (props: Props) => {
             current={Number(options?.page)}
             pageSize={options?.limit}
             total={options?.totalData ?? 0}
-            rowKey={(row: Zone) => `${row.no}`}
+            rowKey={(row: Zone) => row.id ?? `${row.no}`}
             loading={loading}
             title={t("table.title")}
             scroll={{ x: 1000 }}
@@ -223,6 +207,15 @@ const ZoneTable = (props: Props) => {
             onTableChange={onTableChangeListener}
             isCustomSearch
             multipleDelete={false}
+            footerNote={
+              customerName &&
+              warehouseName && (
+                <Typography.Text type="secondary">
+                  {t("table.note.prefix")} <strong>{customerName}</strong> -{" "}
+                  <strong>{warehouseName}</strong>.
+                </Typography.Text>
+              )
+            }
             actions={
               <Row gutter={8}>
                 {isCreate ? (
@@ -302,10 +295,7 @@ const ZoneTable = (props: Props) => {
           onDelete({
             id: selected.id,
             name: selected.name,
-            options: {
-              ...listOptions,
-              warehouseCode: warehouseCodes.join(",") || undefined,
-            },
+            options: { ...listOptions, warehouseCode },
           });
           setShowDeleteConfirm(false);
         }}

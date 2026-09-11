@@ -82,26 +82,34 @@ function UploadIncomingAhmUpsertBulk(props: any) {
   // warehouse aktif diambil dari BACKEND via warehouseId session (parity
   // customer aktif: customerId → CustomerApi().retrieveCustomerDetail) —
   // guard FE tetap: tanpa warehouse aktif, submit disabled
-  const { data: session } = useSession() as any;
+  const { data: session, status: sessionStatus } = useSession() as any;
   const [warehouse, setWarehouse] = useState<{
     code: string;
     name: string;
   } | null>(null);
+  // Guards the "No active warehouse" message below from flashing red on
+  // mount — session/API lookup is async, so `warehouse` briefly reads null
+  // before it resolves; only show the message once the lookup has settled.
+  const [isWarehouseLoading, setIsWarehouseLoading] = useState(true);
 
   useEffect(() => {
+    if (sessionStatus === "loading") return;
     const warehouseId = session?.user?.warehouseId;
     if (!warehouseId) {
       setWarehouse(null);
+      setIsWarehouseLoading(false);
       return;
     }
+    setIsWarehouseLoading(true);
     WmsWarehouseApi()
       .retrieveWarehouseDetail({ id: warehouseId })
       .then((resp: any) => {
         const d = resp?.data?.data;
         setWarehouse(d?.code ? { code: d.code, name: d.name ?? "" } : null);
       })
-      .catch(() => setWarehouse(null));
-  }, [session?.user?.warehouseId]);
+      .catch(() => setWarehouse(null))
+      .finally(() => setIsWarehouseLoading(false));
+  }, [session?.user?.warehouseId, sessionStatus]);
 
   // Memo — array 22 kolom ini sebelumnya dibuat ulang (reference baru) di
   // SETIAP render, memicu TableEditable membangun ulang seluruh definisi
@@ -460,7 +468,7 @@ function UploadIncomingAhmUpsertBulk(props: any) {
               wrap
               style={{ justifyContent: "flex-end", width: "100%" }}
             >
-              {!warehouse && (
+              {!isWarehouseLoading && !warehouse && (
                 <Typography.Text type="danger" style={{ fontSize: 12 }}>
                   {t("noActiveWarehouse")}
                 </Typography.Text>

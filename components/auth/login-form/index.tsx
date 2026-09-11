@@ -8,7 +8,6 @@ import Utils from "@sera-utils/utils";
 import { Alert, Button, Col, Divider, Form, Input, Row } from "antd";
 import moment from "moment";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { getCsrfToken, signIn } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -224,15 +223,14 @@ const LoginForm = () => {
               </Form.Item>
 
               <Form.Item style={{ textAlign: "right" }}>
-                <Link
+                <Typography.Text
                   id="forgotPassword"
-                  href="/auth/recover-password"
-                  passHref
+                  fontWeight={600}
+                  disabled
+                  style={{ cursor: "not-allowed" }}
                 >
-                  <Typography.Text variant="link" fontWeight={600}>
-                    {t("auth.login.input.forgot")}
-                  </Typography.Text>
-                </Link>
+                  {t("auth.login.input.forgot")}
+                </Typography.Text>
               </Form.Item>
 
               <Form.Item>

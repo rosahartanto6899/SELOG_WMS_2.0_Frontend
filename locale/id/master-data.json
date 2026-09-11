@@ -25,7 +25,10 @@
         }
       },
       "searchBy": "Cari berdasarkan",
-      "selectWarehouseFirst": "Pilih warehouse terlebih dahulu untuk melihat data"
+      "selectWarehouseFirst": "Pilih warehouse terlebih dahulu untuk melihat data",
+      "note": {
+        "prefix": "Note: data zone di atas adalah semua zone yang digunakan di customer"
+      }
     },
     "modal": {
       "delete": {
@@ -36,7 +39,8 @@
       }
     },
     "form": {
-      "title": "Form Zone",
+      "title": "Input Master Zone",
+      "cardTitle": "Form of Master Zone",
       "message": {
         "default": "Field ini wajib diisi"
       },
@@ -84,7 +88,8 @@
           "label": "Tambah Location"
         },
         "print": {
-          "tooltip": "Cetak Barcode"
+          "tooltip": "Cetak Barcode",
+          "label": "Cetak Barcode"
         },
         "update": {
           "tooltip": "Ubah"
@@ -94,7 +99,10 @@
         }
       },
       "searchBy": "Cari berdasarkan",
-      "selectWarehouseFirst": "Pilih warehouse terlebih dahulu untuk melihat data"
+      "selectWarehouseFirst": "Pilih warehouse terlebih dahulu untuk melihat data",
+      "note": {
+        "prefix": "Note: data location di atas adalah semua location yang digunakan di customer"
+      }
     },
     "modal": {
       "delete": {
@@ -105,7 +113,8 @@
       }
     },
     "form": {
-      "title": "Form Location",
+      "title": "Input Master Location",
+      "cardTitle": "Form of Master Location",
       "message": {
         "default": "Field ini wajib diisi"
       },
@@ -126,7 +135,7 @@
         "placeholder": "Pilih zone"
       },
       "barcode": {
-        "label": "Barcode (pool UPCA)",
+        "label": "Barcode",
         "placeholder": "Pilih barcode"
       },
       "category": {
@@ -182,7 +191,10 @@
           "tooltip": "Hapus"
         }
       },
-      "searchBy": "Cari berdasarkan"
+      "searchBy": "Cari berdasarkan",
+      "note": {
+        "prefix": "Note: data material di atas adalah semua material yang digunakan di customer"
+      }
     },
     "modal": {
       "delete": {
@@ -194,7 +206,7 @@
     },
     "form": {
       "title": "Input Master Material",
-      "cardTitle": "Master Material",
+      "cardTitle": "Form of Master Material",
       "message": {
         "default": "Field ini wajib diisi"
       },
@@ -247,6 +259,7 @@
       "subtitle": "Petakan material ke location secara massal via Excel (maks {{max}} baris)."
     },
     "selectWarehouse": "Pilih warehouse",
+    "noActiveWarehouse": "Tidak ada warehouse aktif — pilih dulu di Switch Warehouse",
     "downloadTemplate": "Download Template",
     "stepUpload": "Upload File Excel",
     "hintUpload": "Unduh template, isi kolom dropdown (material & location), lalu unggah di sini. Kolom kuning opsional.",

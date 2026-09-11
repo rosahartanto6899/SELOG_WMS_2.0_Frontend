@@ -9,6 +9,7 @@ import Utils from "@sera-utils/utils";
 import { Card, Col, Form, FormInstance, Row } from "antd";
 import { Input as AntdInput } from "antd";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -24,6 +25,9 @@ const ActionForm = ({ form, loading, onSubmit, type }: ActionFormProps) => {
   const { t } = useTranslation(undefined, {
     keyPrefix: "masterData.zone.form",
   });
+  const { data: session } = useSession() as any;
+  const sessionWarehouseCode = session?.user?.warehouseCode ?? undefined;
+  const sessionWarehouseName = session?.user?.warehouseName ?? undefined;
 
   const [warehouses, setWarehouses] = useState<any[]>([]);
 
@@ -34,11 +38,18 @@ const ActionForm = ({ form, loading, onSubmit, type }: ActionFormProps) => {
       .catch(() => undefined);
   }, []);
 
+  // Add mode: warehouse follows the header's "Switch Warehouse" selection
+  useEffect(() => {
+    if (type === "update" || !sessionWarehouseCode) return;
+    form.setFieldValue("warehouseCode", sessionWarehouseCode);
+    form.setFieldValue("warehouseName", sessionWarehouseName);
+  }, [type, sessionWarehouseCode, sessionWarehouseName]);
+
   const requiredMessage = t("message.default");
 
   return (
     <Form form={form} layout="vertical" disabled={loading} autoComplete="off">
-      <Card title={t("title")}>
+      <Card title={t("cardTitle")}>
         <Row gutter={16}>
           <Col xs={24} sm={24} md={12}>
             <Form.Item
@@ -51,7 +62,7 @@ const ActionForm = ({ form, loading, onSubmit, type }: ActionFormProps) => {
                 placeholder={t("warehouse.placeholder")}
                 showSearch
                 optionFilterProp="label"
-                disabled={type === "update"}
+                disabled={type === "update" || !!sessionWarehouseCode}
                 options={warehouses.map((w: any) => ({
                   value: w.code,
                   label: w.name,

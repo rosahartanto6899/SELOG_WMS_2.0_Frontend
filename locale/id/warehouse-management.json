@@ -7,6 +7,7 @@
   "confirmDelete": "Yakin hapus",
   "form": {
     "title": "Gudang",
+    "cardTitle": "Form of Warehouse",
     "message": {
       "default": "Mohon isi kolom ini"
     },
@@ -15,11 +16,11 @@
       "placeholder": "Pilih customer"
     },
     "code": {
-      "label": "Kode",
+      "label": "Warehouse Code",
       "placeholder": "Kode gudang"
     },
     "name": {
-      "label": "Nama",
+      "label": "Warehouse Name",
       "placeholder": "Nama gudang"
     },
     "address": {
@@ -44,12 +45,12 @@
     }
   ],
   "table": {
-    "title": "Gudang",
+    "title": "List of Warehouses",
     "searchPlaceholder": "Cari",
     "columns": {
       "no": "No",
-      "code": "Kode",
-      "name": "Nama",
+      "code": "Warehouse Code",
+      "name": "Warehouse Name",
       "customer": "Customer",
       "address": "Alamat",
       "phone": "Telepon",

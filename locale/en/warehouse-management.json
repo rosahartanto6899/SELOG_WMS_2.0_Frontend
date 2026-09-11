@@ -7,6 +7,7 @@
   "confirmDelete": "Are you sure to delete",
   "form": {
     "title": "Warehouse",
+    "cardTitle": "Form of Warehouse",
     "message": {
       "default": "Please fill this field"
     },
@@ -15,11 +16,11 @@
       "placeholder": "Select customer"
     },
     "code": {
-      "label": "Code",
+      "label": "Warehouse Code",
       "placeholder": "Warehouse code"
     },
     "name": {
-      "label": "Name",
+      "label": "Warehouse Name",
       "placeholder": "Warehouse name"
     },
     "address": {
@@ -44,12 +45,12 @@
     }
   ],
   "table": {
-    "title": "Warehouse",
+    "title": "List of Warehouses",
     "searchPlaceholder": "Search",
     "columns": {
       "no": "No",
-      "code": "Code",
-      "name": "Name",
+      "code": "Warehouse Code",
+      "name": "Warehouse Name",
       "customer": "Customer",
       "address": "Address",
       "phone": "Phone",

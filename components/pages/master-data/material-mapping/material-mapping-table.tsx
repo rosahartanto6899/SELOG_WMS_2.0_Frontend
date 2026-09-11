@@ -1,16 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
-import Card from "@sera-components/card";
-import FilterDropdown from "@sera-components/filter-dropdown";
 import Input from "@sera-components/input";
 import Select from "@sera-components/select";
 import Table from "@sera-components/table";
-import WmsWarehouseApi from "@sera-libraries/api/wms-warehouse";
 import { materialLocationMappingActions } from "@sera-redux";
 import { BaseType } from "@sera-types/base.type";
 import { MaterialLocationMapping } from "@sera-types/material-location-mapping.type";
 import FormatUtils from "@sera-utils/format";
 import { Col, Flex, Row } from "antd";
+import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -28,8 +26,6 @@ const MaterialMappingTable = (props: Props) => {
     keyPrefix: "masterData.materialMapping.list",
   });
 
-  const [warehouses, setWarehouses] = useState<any[]>([]);
-  const [warehouseCodes, setWarehouseCodes] = useState<string[]>([]);
   const [listOptions, setListOptions] = useState<BaseType>({
     page: 1,
     limit: 10,
@@ -37,22 +33,15 @@ const MaterialMappingTable = (props: Props) => {
     sort: "desc",
   });
   const [searchByOption, setSearchByOption] = useState("materialCode");
+  const { data: session, status: sessionStatus } = useSession() as any;
+  const warehouseCode = session?.user?.warehouseCode ?? undefined;
 
+  // Mapping list is scoped to the Warehouse selected via "Switch Warehouse"
+  // in the header (customer scoping is already enforced backend-side from the JWT).
   useEffect(() => {
-    WmsWarehouseApi()
-      .retrieveDropdownWarehouses()
-      .then((resp: any) => setWarehouses(resp?.data?.data ?? []))
-      .catch(() => undefined);
-  }, []);
-
-  useEffect(() => {
-    onFetch({
-      ...listOptions,
-      warehouseCode: warehouseCodes.length
-        ? warehouseCodes.join(",")
-        : undefined,
-    });
-  }, [listOptions, warehouseCodes]);
+    if (sessionStatus === "loading") return;
+    onFetch({ ...listOptions, warehouseCode });
+  }, [listOptions, warehouseCode, sessionStatus]);
 
   const onPageChangeListener = (page: number, pageSize?: number) => {
     setListOptions((prevState: BaseType) => ({
@@ -121,24 +110,6 @@ const MaterialMappingTable = (props: Props) => {
   return (
     <>
       <Flex vertical gap={24}>
-        <Card.Filter>
-          <Row gutter={[8, 4]}>
-            <Col>
-              <FilterDropdown
-                buttonLabel={t("selectWarehouse")}
-                options={warehouses.map((w: any) => ({
-                  label: w.name,
-                  value: w.code,
-                }))}
-                selectedValues={warehouseCodes}
-                onChange={(values) => setWarehouseCodes(values ?? [])}
-                loading={false}
-                disabled={false}
-              />
-            </Col>
-          </Row>
-        </Card.Filter>
-
         {dataSource && (
           <Table
             dataSource={dataSource}

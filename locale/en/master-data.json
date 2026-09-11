@@ -25,7 +25,10 @@
         }
       },
       "searchBy": "Search by",
-      "selectWarehouseFirst": "Select a warehouse first to view data"
+      "selectWarehouseFirst": "Select a warehouse first to view data",
+      "note": {
+        "prefix": "Note: the zone data above shows all zones used by customer"
+      }
     },
     "modal": {
       "delete": {
@@ -36,7 +39,8 @@
       }
     },
     "form": {
-      "title": "Zone Form",
+      "title": "Input Master Zone",
+      "cardTitle": "Form of Master Zone",
       "message": {
         "default": "This field is required"
       },
@@ -84,7 +88,8 @@
           "label": "Add Location"
         },
         "print": {
-          "tooltip": "Print Barcode"
+          "tooltip": "Print Barcode",
+          "label": "Print Barcode"
         },
         "update": {
           "tooltip": "Edit"
@@ -94,7 +99,10 @@
         }
       },
       "searchBy": "Search by",
-      "selectWarehouseFirst": "Select a warehouse first to view data"
+      "selectWarehouseFirst": "Select a warehouse first to view data",
+      "note": {
+        "prefix": "Note: the location data above shows all locations used by customer"
+      }
     },
     "modal": {
       "delete": {
@@ -105,7 +113,8 @@
       }
     },
     "form": {
-      "title": "Location Form",
+      "title": "Input Master Location",
+      "cardTitle": "Form of Master Location",
       "message": {
         "default": "This field is required"
       },
@@ -126,7 +135,7 @@
         "placeholder": "Select zone"
       },
       "barcode": {
-        "label": "Barcode (UPCA pool)",
+        "label": "Barcode",
         "placeholder": "Select barcode"
       },
       "category": {
@@ -182,7 +191,10 @@
           "tooltip": "Delete"
         }
       },
-      "searchBy": "Search by"
+      "searchBy": "Search by",
+      "note": {
+        "prefix": "Note: the material data above shows all materials used by customer"
+      }
     },
     "modal": {
       "delete": {
@@ -194,7 +206,7 @@
     },
     "form": {
       "title": "Input Master Material",
-      "cardTitle": "Master Material",
+      "cardTitle": "Form of Master Material",
       "message": {
         "default": "This field is required"
       },
@@ -247,6 +259,7 @@
       "subtitle": "Bulk map material to location from Excel (max {{max}} rows)."
     },
     "selectWarehouse": "Select warehouse",
+    "noActiveWarehouse": "No active warehouse — pick one in the warehouse switch first",
     "downloadTemplate": "Download Template",
     "stepUpload": "Upload Excel File",
     "hintUpload": "Download the template, fill the dropdowns (material & location), then upload here. Yellow columns are optional.",
