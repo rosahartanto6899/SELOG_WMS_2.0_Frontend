@@ -93,6 +93,15 @@
       "placeholder": "Please enter Email",
       "message": "Please input valid email format"
     },
+    "password": {
+      "label": "Password",
+      "placeholder": "Password",
+      "toggleTooltip": "Show/hide password",
+      "regenerateTooltip": "Generate new password",
+      "messages": {
+        "min": "Password must be at least 16 characters"
+      }
+    },
     "phoneNumber": {
       "label": "Phone Number",
       "placeholder": "Please enter Phone Number",

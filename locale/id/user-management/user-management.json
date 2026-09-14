@@ -93,6 +93,15 @@
       "placeholder": "Silakan masukkan Email",
       "message": "Silakan masukkan format email yang valid"
     },
+    "password": {
+      "label": "Password",
+      "placeholder": "Password",
+      "toggleTooltip": "Tampilkan/sembunyikan password",
+      "regenerateTooltip": "Generate password baru",
+      "messages": {
+        "min": "Password minimal 16 karakter"
+      }
+    },
     "phoneNumber": {
       "label": "Nomor Telepon",
       "placeholder": "Silakan masukkan Nomor Telepon",

@@ -75,6 +75,7 @@ export interface UserState {
 export interface CreateNewUserPayload {
   name?: string;
   email?: string;
+  password?: string;
   phone?: string;
   nrp?: string;
   roles?: { id: number; warehouses: string[] }[];
@@ -87,6 +88,7 @@ export interface UpdateUserPayload {
   id?: string;
   name?: string;
   email?: string;
+  password?: string;
   phone?: string;
   nrp?: string;
   roles?: { id: number; warehouses: string[] }[];

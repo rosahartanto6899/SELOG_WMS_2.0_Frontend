@@ -66,6 +66,7 @@ const UserManagementAdd = ({
           name: values.newName,
           nrp: values.nrp,
           email: values.newEmail,
+          password: values.newPassword,
           ...(values.phoneNumber ? { phone: values.phoneNumber } : {}),
           isActive: values.isActive,
           roles: toRolesPayload(values.accessRows),
@@ -105,6 +106,7 @@ const UserManagementAdd = ({
         form={form}
         loading={loading[userTypes.CREATE_USER]}
         onSubmit={handleCreateUser}
+        type="create"
       />
     </LayoutUserManagement>
   );

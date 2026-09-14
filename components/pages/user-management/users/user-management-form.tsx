@@ -1,6 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { DeleteTwoTone, PlusOutlined } from "@ant-design/icons";
+import {
+  DeleteTwoTone,
+  EyeInvisibleOutlined,
+  EyeOutlined,
+  PlusOutlined,
+  ReloadOutlined,
+} from "@ant-design/icons";
 import Button from "@sera-components/button";
 import FormActions from "@sera-components/hocs/form-actions";
 import Input from "@sera-components/input";
@@ -16,11 +22,29 @@ import { LoadingState } from "@sera-types/loading.type";
 import { Role, RoleState, roleTypes } from "@sera-types/role.type";
 import { UserState } from "@sera-types/user.type";
 import Utils from "@sera-utils/utils";
-import { Card, Col, Flex, Form, FormInstance, Row, Switch } from "antd";
+import { Card, Col, Flex, Form, FormInstance, Row, Space, Switch } from "antd";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
+
+const generatePassword = (length = 16) => {
+  const upper = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+  const lower = "abcdefghijkmnpqrstuvwxyz";
+  const digits = "23456789";
+  const special = "!@#$%^&*()-_=+";
+  const all = upper + lower + digits + special;
+  const pick = (set: string) => set[Math.floor(Math.random() * set.length)];
+
+  const chars = [pick(upper), pick(lower), pick(digits), pick(special)];
+  while (chars.length < length) chars.push(pick(all));
+
+  for (let i = chars.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [chars[i], chars[j]] = [chars[j], chars[i]];
+  }
+  return chars.join("");
+};
 
 interface ActionFormProps {
   businessAreas: BusinessAreaState;
@@ -33,6 +57,7 @@ interface ActionFormProps {
   loading: boolean;
   onSubmit: () => void;
   isDetail?: boolean;
+  type?: "create" | "update";
 }
 
 const ActionForm = ({
@@ -46,6 +71,7 @@ const ActionForm = ({
   loading,
   onSubmit,
   isDetail,
+  type,
 }: ActionFormProps) => {
   const router = useRouter();
   const { t } = useTranslation(undefined, { keyPrefix: "userManagement.form" });
@@ -57,6 +83,10 @@ const ActionForm = ({
   const [dataDropdownBusinessAreas, setDataDropdownBusinessAreas] = useState<
     BusinessArea[]
   >([]);
+  const [passwordVisible, setPasswordVisible] = useState(false);
+
+  const regeneratePassword = () =>
+    form.setFieldValue("newPassword", generatePassword());
 
   // Customer list derived from warehouse dropdown (each warehouse has customer)
   const dataDropdownCustomers: { id?: string; name?: string }[] = Array.from(
@@ -79,6 +109,9 @@ const ActionForm = ({
     getDropdownBusinessAreas({ show: "all" });
 
     form.setFieldValue("isActive", status);
+    if (type === "create") {
+      form.setFieldValue("newPassword", generatePassword());
+    }
   }, []);
 
   useEffect(() => {
@@ -223,6 +256,56 @@ const ActionForm = ({
 
           <Col xs={24} sm={24} md={12}>
             <Form.Item
+              label={t("password.label")}
+              name="newPassword"
+              rules={[
+                { min: 16, message: t("password.messages.min") },
+                ...(type === "create"
+                  ? [{ required: true, message: requiredMessage }]
+                  : []),
+              ]}
+            >
+              <Input
+                id="newPassword"
+                type={passwordVisible ? "text" : "password"}
+                placeholder={t("password.placeholder")}
+                disabled={isDetail}
+                autoComplete="new-password"
+                maxLength={64}
+                suffix={
+                  <Space size={4}>
+                    <Button
+                      id="toggle-password-visibility"
+                      type="text"
+                      size="small"
+                      tooltip={t("password.toggleTooltip")}
+                      icon={
+                        passwordVisible ? (
+                          <EyeInvisibleOutlined />
+                        ) : (
+                          <EyeOutlined />
+                        )
+                      }
+                      onClick={() => setPasswordVisible((v) => !v)}
+                    />
+                    {!isDetail && (
+                      <Button
+                        id="regenerate-password"
+                        type="text"
+                        size="small"
+                        tooltip={t("password.regenerateTooltip")}
+                        icon={<ReloadOutlined />}
+                        onClick={regeneratePassword}
+                      />
+                    )}
+                  </Space>
+                }
+              />
+            </Form.Item>
+          </Col>
+
+          <Col xs={24} sm={24} md={12}>
+            <Form.Item
               label={t("phoneNumber.label")}
               rules={[
                 { message: requiredMessage },
@@ -244,8 +327,12 @@ const ActionForm = ({
               />
             </Form.Item>
           </Col>
+        </Row>
+      </Card>
 
-          <Col xs={24} sm={24} md={24} style={{ marginTop: 16 }}>
+      <Card title={t("roleBranch")} style={{ marginTop: 16 }}>
+        <Row gutter={16}>
+          <Col xs={24} sm={24} md={24}>
             <Form.List name="accessRows">
               {(fields, { add, remove }) => {
                 return (
@@ -260,11 +347,7 @@ const ActionForm = ({
                         (c: any) => c.id === customerId,
                       );
                       return (
-                        <Form.Item
-                          label={name === 0 ? t("roleBranch") : ""}
-                          required={false}
-                          key={key}
-                        >
+                        <Form.Item required={false} key={key}>
                           <Col xs={24} sm={24} md={24}>
                             <Row gutter={16}>
                               <Col xs={24} sm={24} md={12}>

@@ -78,6 +78,7 @@ const UserManagementAdd = ({
             name: values.newName,
             nrp: values.nrp,
             email: values.newEmail,
+            ...(values.newPassword ? { password: values.newPassword } : {}),
             ...(values.phoneNumber ? { phone: values.phoneNumber } : {}),
             isActive: values.isActive,
             roles: toRolesPayload(values.accessRows),
@@ -153,6 +154,7 @@ const UserManagementAdd = ({
         form={form}
         loading={loading[userTypes.UPDATE_USER]}
         onSubmit={handleUpdateUser}
+        type="update"
       />
     </LayoutUserManagement>
   );
