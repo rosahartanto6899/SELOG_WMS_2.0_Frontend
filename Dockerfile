@@ -1,7 +1,7 @@
 # ========================
 # STAGE 1: Build
 # ========================
-FROM node:20.11-alpine AS build
+FROM node:26.8-alpine AS build
 
 # Install build dependencies
 RUN apk add --no-cache \
@@ -61,7 +61,7 @@ RUN npm run build
 # ========================
 # STAGE 2: Production
 # ========================
-FROM node:20.11-alpine
+FROM node:26.8-alpine
 
 ENV NODE_ENV=production
 
