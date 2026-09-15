@@ -1,3 +1,67 @@
 {
-  "welcome": "Selamat datang di"
+  "welcome": "Selamat datang di",
+  "stockAvailability": {
+    "page": {
+      "title": "Dashboard - Stock Availability",
+      "breadcrumb": ["Dashboard", "Stock Availability"]
+    },
+    "table": {
+      "title": "Stock Availability",
+      "lastUpdated": "Terakhir diperbarui",
+      "search": {
+        "placeholder": "Cari material"
+      },
+      "options": {
+        "0": "Kode Material",
+        "1": "Nama Material",
+        "2": "Merk Material",
+        "3": "Customer",
+        "4": "Gudang"
+      },
+      "column": {
+        "materialCode": "Kode Material",
+        "materialName": "Nama Material",
+        "materialBrand": "Merk Material",
+        "uom": "Satuan",
+        "qtySOH": "Stock on Hand",
+        "qtyPlanIncoming": "Plan Incoming",
+        "qtyPlanOutgoing": "Plan Outgoing",
+        "qtyAvailable": "Tersedia",
+        "action": "Aksi"
+      },
+      "button": {
+        "refresh": "Refresh",
+        "export": "Ekspor",
+        "view": "Lihat Detail"
+      }
+    },
+    "detail": {
+      "title": "Detail Stock Availability",
+      "materialCode": "Kode Material",
+      "materialName": "Nama Material",
+      "materialBrand": "Merk Material",
+      "qtySOH": "Stock on Hand",
+      "tab": {
+        "incoming": "Plan Incoming",
+        "outgoing": "Plan Outgoing",
+        "history": "Riwayat Stock on Hand"
+      },
+      "planQty": {
+        "deliveryNoteNo": "No Delivery Note",
+        "qty": "Qty",
+        "createdAt": "Tanggal Dibuat",
+        "total": "Total Qty"
+      },
+      "history": {
+        "category": "Kategori",
+        "transactionType": "Tipe Transaksi",
+        "deliveryNoteNo": "No Delivery Note",
+        "qty": "Qty",
+        "qtySOHBefore": "SOH Sebelum",
+        "qtySOHAfter": "SOH Sesudah",
+        "poDate": "Tanggal PO",
+        "createdAt": "Tanggal Dibuat"
+      }
+    }
+  }
 }

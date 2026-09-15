@@ -5,7 +5,12 @@ import { materialActions, RootState } from "@sera-redux";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 
-const MaterialPage = ({ materials, loading, getMaterials }: any) => {
+const MaterialPage = ({
+  materials,
+  loading,
+  getMaterials,
+  deleteMaterial,
+}: any) => {
   const { t } = useTranslation(undefined, { keyPrefix: "masterData.material" });
 
   return (
@@ -18,7 +23,7 @@ const MaterialPage = ({ materials, loading, getMaterials }: any) => {
           options={materials.options}
           loading={loading[materialActions.getMaterialsFetch.type]}
           onFetch={getMaterials}
-          onDelete={materialActions.deleteMaterialFetch}
+          onDelete={deleteMaterial}
         />
       }
     />
@@ -31,6 +36,7 @@ const mapStateToProps = (state: RootState) => ({
 });
 const mapDispatchToProps = {
   getMaterials: materialActions.getMaterialsFetch,
+  deleteMaterial: materialActions.deleteMaterialFetch,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MaterialPage);

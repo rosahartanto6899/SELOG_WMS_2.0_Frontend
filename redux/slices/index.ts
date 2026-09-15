@@ -17,7 +17,9 @@ import outstandingOutgoingReducer from "./outstanding-outgoing.slice";
 import provinceReducer from "./province.slice";
 import rolesReducer from "./role.slice";
 import rolesMenuReducer from "./role-menu.slice";
+import stockAvailabilityReducer from "./stock-availability.slice";
 import uploadIncomingAhmReducer from "./upload-incoming-ahm.slice";
+import uploadStockAdjustmentReducer from "./upload-stock-adjustment.slice";
 import userReducer from "./user.slice";
 import wmsWarehousesReducer from "./wms-warehouse.slice";
 import zoneReducer from "./zone.slice";
@@ -36,10 +38,12 @@ const rootReducer = combineReducers({
   cities: cityReducer,
   districts: districtReducer,
   uploadIncomingAhm: uploadIncomingAhmReducer,
+  uploadStockAdjustment: uploadStockAdjustmentReducer,
   actualIncoming: actualIncomingReducer,
   actualOutgoing: actualOutgoingReducer,
   outstandingIncoming: outstandingIncomingReducer,
   outstandingOutgoing: outstandingOutgoingReducer,
+  stockAvailability: stockAvailabilityReducer,
   zones: zoneReducer,
   locations: locationReducer,
   materials: materialReducer,

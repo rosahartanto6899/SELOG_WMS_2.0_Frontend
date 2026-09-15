@@ -16,7 +16,7 @@ export default function InputNumberShell({
     <InputNumber
       type="number"
       id="table-editable-input-number"
-      style={{ width: 200, border: "1px solid #3A8DDB" }}
+      style={{ width: 200 }}
       value={value}
       controls={false}
       prefix={isCurrency ? "Rp." : undefined}

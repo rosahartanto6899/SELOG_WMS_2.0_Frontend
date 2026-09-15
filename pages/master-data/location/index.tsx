@@ -5,7 +5,12 @@ import { locationActions, RootState } from "@sera-redux";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 
-const LocationPage = ({ locations, loading, getLocations }: any) => {
+const LocationPage = ({
+  locations,
+  loading,
+  getLocations,
+  deleteLocation,
+}: any) => {
   const { t } = useTranslation(undefined, { keyPrefix: "masterData.location" });
 
   return (
@@ -18,7 +23,7 @@ const LocationPage = ({ locations, loading, getLocations }: any) => {
           options={locations.options}
           loading={loading[locationActions.getLocationsFetch.type]}
           onFetch={getLocations}
-          onDelete={locationActions.deleteLocationFetch}
+          onDelete={deleteLocation}
         />
       }
     />
@@ -31,6 +36,7 @@ const mapStateToProps = (state: RootState) => ({
 });
 const mapDispatchToProps = {
   getLocations: locationActions.getLocationsFetch,
+  deleteLocation: locationActions.deleteLocationFetch,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LocationPage);
