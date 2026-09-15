@@ -47,6 +47,18 @@ const OutstandingIncomingApi = () => {
     return httpService.get(`${base}/plan-qty`, { params }).then((resp) => resp);
   }
 
+  /** Q5 — sisa qty satu material per DN (dashboard stock availability;
+   *  tenant dari session aktif di BE) */
+  function retrievePlanQtyByMaterial(
+    materialCode: string,
+  ): Promise<
+    Array<{ deliveryNoteNo: string; qty: number; createdAt?: string | null }>
+  > {
+    return httpService
+      .get(`${base}/plan-qty/${encodeURIComponent(materialCode)}`)
+      .then((resp: any) => resp?.data?.data ?? []) as any;
+  }
+
   function retrieveTotals(payload: {
     customerCode?: string;
     warehouseCodes: string[];
@@ -332,6 +344,7 @@ const OutstandingIncomingApi = () => {
     retrieveDetailTyped,
     retrieveByMaterial,
     retrievePlanQty,
+    retrievePlanQtyByMaterial,
     retrieveTotals,
     retrieveTotalsTyped,
     retrieveTotalsByWarehouse,

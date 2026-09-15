@@ -296,12 +296,6 @@ const SharedLayout = (props: SharedLibrariesProps) => {
         ]
       : []),
 
-    {
-      key: "switch-role",
-      label: <Space size={14}>{t("global.header.menu.witchRole")}</Space>,
-      children: roleMenu,
-      icon: <SyncOutlined />,
-    },
     ...(tenantMenu.length
       ? [
           {
@@ -314,6 +308,12 @@ const SharedLayout = (props: SharedLibrariesProps) => {
           },
         ]
       : []),
+    {
+      key: "switch-role",
+      label: <Space size={14}>{t("global.header.menu.witchRole")}</Space>,
+      children: roleMenu,
+      icon: <SyncOutlined />,
+    },
     ...(warehouseMenu.length
       ? [
           {

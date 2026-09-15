@@ -1,5 +1,6 @@
 export const ROUTE = {
   DASHBOARD: "/",
+  DASHBOARD_STOCK_AVAILABILITY: "/dashboard/stock-availability",
   PLAN_INCOMING: {
     OUTSTANDING_INCOMING: "/plan-incoming/outstanding-incoming",
     ACTUAL_INCOMING: "/plan-incoming/actual-incoming",

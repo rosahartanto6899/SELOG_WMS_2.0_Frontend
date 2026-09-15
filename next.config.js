@@ -52,6 +52,7 @@ const nextConfig = {
     SERVICE_MASTER: encryptData(process.env.SERVICE_MASTER),
     SERVICE_INCOMING: encryptData(process.env.SERVICE_INCOMING),
     SERVICE_OUTGOING: encryptData(process.env.SERVICE_OUTGOING),
+    SERVICE_INVENTORY_STOCK: encryptData(process.env.SERVICE_INVENTORY_STOCK),
     AUTH_URL: encryptData(process.env.AUTH_URL),
 
     API_BASE_URL: encryptData(process.env.API_BASE_URL),

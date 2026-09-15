@@ -16,7 +16,9 @@ import outstandingOutgoingSaga from "./outstanding-outgoing.saga";
 import provinceSaga from "./province.saga";
 import roleSaga from "./role.saga";
 import roleMenuSaga from "./role-menu.saga";
+import stockAvailabilitySaga from "./stock-availability.saga";
 import uploadIncomingAhmSaga from "./upload-incoming-ahm.saga";
+import uploadStockAdjustmentSaga from "./upload-stock-adjustment.saga";
 import userSaga from "./user.saga";
 import wmsWarehouseSaga from "./wms-warehouse.saga";
 import zoneSaga from "./zone.saga";
@@ -35,10 +37,12 @@ export default function* rootSaga() {
     roleMenuSaga(),
     userSaga(),
     uploadIncomingAhmSaga(),
+    uploadStockAdjustmentSaga(),
     actualIncomingSaga(),
     actualOutgoingSaga(),
     outstandingIncomingSaga(),
     outstandingOutgoingSaga(),
+    stockAvailabilitySaga(),
     zoneSaga(),
     locationSaga(),
     materialSaga(),

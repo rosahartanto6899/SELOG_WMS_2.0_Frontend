@@ -5,7 +5,6 @@ import Button from "@sera-components/button";
 // eslint-disable-next-line import/no-named-as-default
 import { DeleteOutlined, EditOutlined, Plus } from "@sera-components/icons";
 import Input from "@sera-components/input";
-import Modal from "@sera-components/modal";
 import Select from "@sera-components/select";
 import Table from "@sera-components/table";
 import CustomerApi from "@sera-libraries/api/customer";
@@ -15,7 +14,7 @@ import { BaseType } from "@sera-types/base.type";
 import { Location } from "@sera-types/location.type";
 import FormatUtils from "@sera-utils/format";
 import useCheckPermission from "@sera-utils/hooks/useCheckPermission";
-import { Col, Flex, message, Row, Typography } from "antd";
+import { Col, Flex, message, Modal, Row, Typography } from "antd";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
@@ -44,11 +43,6 @@ const ZoneTable = (props: Props) => {
     sort: "desc",
   });
   const [searchByOption, setSearchByOption] = useState("code");
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [selected, setSelected] = useState<{ id: string; name: string }>({
-    id: "",
-    name: "",
-  });
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [bulkPrintLoading, setBulkPrintLoading] = useState(false);
   const { data: session, status: sessionStatus } = useSession() as any;
@@ -100,8 +94,20 @@ const ZoneTable = (props: Props) => {
   };
 
   const showDeleteModal = (obj: { id: string; name: string }) => {
-    setShowDeleteConfirm(true);
-    setSelected(obj);
+    Modal.confirm({
+      title: t("modal.delete.title"),
+      content: `${t("modal.delete.subtitle")} "${obj.name}"?`,
+      okButtonProps: { danger: true },
+      okText: t("modal.delete.okText"),
+      cancelText: t("modal.delete.cancelText"),
+      onOk: () => {
+        onDelete({
+          id: obj.id,
+          name: obj.name,
+          options: { ...listOptions, warehouseCode },
+        });
+      },
+    });
   };
 
   // Cetak label barcode — dipakai untuk print per-baris (single) maupun bulk
@@ -387,26 +393,6 @@ const ZoneTable = (props: Props) => {
           />
         )}
       </Flex>
-
-      <Modal.Confirm
-        title={t("modal.delete.title")}
-        type="danger"
-        open={showDeleteConfirm}
-        okText={t("modal.delete.okText")}
-        cancelText={t("modal.delete.cancelText")}
-        onCancel={() => setShowDeleteConfirm(false)}
-        onOk={() => {
-          onDelete({
-            id: selected.id,
-            name: selected.name,
-            options: { ...listOptions, warehouseCode },
-          });
-          setShowDeleteConfirm(false);
-        }}
-      >
-        <Typography.Text>{t("modal.delete.subtitle")} </Typography.Text>
-        <Typography.Text strong>{selected.name}</Typography.Text>
-      </Modal.Confirm>
     </>
   );
 };

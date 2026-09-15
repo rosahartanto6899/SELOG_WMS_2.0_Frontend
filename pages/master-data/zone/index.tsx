@@ -5,7 +5,7 @@ import { RootState, zoneActions } from "@sera-redux";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 
-const ZonePage = ({ zones, loading, getZones }: any) => {
+const ZonePage = ({ zones, loading, getZones, deleteZone }: any) => {
   const { t } = useTranslation(undefined, { keyPrefix: "masterData.zone" });
 
   return (
@@ -18,7 +18,7 @@ const ZonePage = ({ zones, loading, getZones }: any) => {
           options={zones.options}
           loading={loading[zoneActions.getZonesFetch.type]}
           onFetch={getZones}
-          onDelete={zoneActions.deleteZoneFetch}
+          onDelete={deleteZone}
         />
       }
     />
@@ -31,6 +31,7 @@ const mapStateToProps = (state: RootState) => ({
 });
 const mapDispatchToProps = {
   getZones: zoneActions.getZonesFetch,
+  deleteZone: zoneActions.deleteZoneFetch,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ZonePage);

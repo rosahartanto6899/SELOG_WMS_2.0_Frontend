@@ -1,3 +1,67 @@
 {
-  "welcome": "Welcome to"
+  "welcome": "Welcome to",
+  "stockAvailability": {
+    "page": {
+      "title": "Dashboard - Stock Availability",
+      "breadcrumb": ["Dashboard", "Stock Availability"]
+    },
+    "table": {
+      "title": "Stock Availability",
+      "lastUpdated": "Last Updated",
+      "search": {
+        "placeholder": "Search material"
+      },
+      "options": {
+        "0": "Material Code",
+        "1": "Material Name",
+        "2": "Material Brand",
+        "3": "Customer",
+        "4": "Warehouse"
+      },
+      "column": {
+        "materialCode": "Material Code",
+        "materialName": "Material Name",
+        "materialBrand": "Material Brand",
+        "uom": "UoM",
+        "qtySOH": "Stock on Hand",
+        "qtyPlanIncoming": "Plan Incoming",
+        "qtyPlanOutgoing": "Plan Outgoing",
+        "qtyAvailable": "Available",
+        "action": "Action"
+      },
+      "button": {
+        "refresh": "Refresh",
+        "export": "Export",
+        "view": "View Detail"
+      }
+    },
+    "detail": {
+      "title": "Stock Availability Detail",
+      "materialCode": "Material Code",
+      "materialName": "Material Name",
+      "materialBrand": "Material Brand",
+      "qtySOH": "Stock on Hand",
+      "tab": {
+        "incoming": "Plan Incoming",
+        "outgoing": "Plan Outgoing",
+        "history": "Stock on Hand History"
+      },
+      "planQty": {
+        "deliveryNoteNo": "Delivery Note No",
+        "qty": "Qty",
+        "createdAt": "Created Date",
+        "total": "Total Qty"
+      },
+      "history": {
+        "category": "Category",
+        "transactionType": "Transaction Type",
+        "deliveryNoteNo": "Delivery Note No",
+        "qty": "Qty",
+        "qtySOHBefore": "SOH Before",
+        "qtySOHAfter": "SOH After",
+        "poDate": "PO Date",
+        "createdAt": "Created Date"
+      }
+    }
+  }
 }

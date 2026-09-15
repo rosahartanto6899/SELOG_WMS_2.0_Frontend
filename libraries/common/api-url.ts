@@ -7,6 +7,7 @@ const apiUrl = {
   vehicle: decryptData(process.env.SERVICE_VEHICLE),
   incoming: decryptData(process.env.SERVICE_INCOMING),
   outgoing: decryptData(process.env.SERVICE_OUTGOING),
+  inventoryStock: decryptData(process.env.SERVICE_INVENTORY_STOCK),
   export: "",
   image: "",
 };

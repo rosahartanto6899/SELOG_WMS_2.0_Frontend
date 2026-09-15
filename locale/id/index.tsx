@@ -3,6 +3,7 @@ import auth from "./auth.json";
 import customerManagement from "./customer-management.json";
 import dashboard from "./dashboard.json";
 import global from "./global.json";
+import inventoryStock from "./inventory-stock.json";
 import masterData from "./master-data.json";
 import planIncoming from "./plan-incoming.json";
 import planOutgoing from "./plan-outgoing.json";
@@ -16,6 +17,7 @@ export default {
   translation: {
     dashboard,
     global,
+    inventoryStock,
     auth,
     menuConfiguration,
     roles,

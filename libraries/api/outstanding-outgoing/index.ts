@@ -5,6 +5,7 @@ import {
   OutstandingOutgoingAddInfo,
   OutstandingOutgoingListPayload,
 } from "@sera-types/outstanding-outgoing.type";
+import { PlanQtyRow } from "@sera-types/stock-availability.type";
 
 /**
  * API untuk Outstanding Outgoing (SELOG_WMS_2.0_ServiceOutgoing §contracts 003).
@@ -65,6 +66,17 @@ const OutstandingOutgoingApi = () => {
     [key: string]: any;
   }) {
     return httpService.get(`${base}/items`, { params }).then((resp) => resp);
+  }
+
+  /** Q-planQty — sisa qty satu material per DN (dashboard stock
+   *  availability, parity usp_GetPlanOutgoingQtyByMaterialCode; tenant dari
+   *  session aktif di BE — tidak ada param customer/warehouse) */
+  function retrievePlanQtyByMaterial(
+    materialCode: string,
+  ): Promise<PlanQtyRow[]> {
+    return httpService
+      .get(`${base}/plan-qty/${encodeURIComponent(materialCode)}`)
+      .then((resp: any) => resp?.data?.data ?? []) as any;
   }
 
   function retrievePackagings(params: {
@@ -256,6 +268,7 @@ const OutstandingOutgoingApi = () => {
     retrieveEdit,
     retrieveList,
     retrieveItems,
+    retrievePlanQtyByMaterial,
     retrievePackagings,
     retrieveShipments,
     retrieveTotals,
