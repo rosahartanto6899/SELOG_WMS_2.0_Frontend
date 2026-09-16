@@ -61,7 +61,7 @@ function* getLocationDetail(
 function* getDropdownLocations(
   params: PayloadAction<{
     customerCode?: string;
-    warehouseCode?: string;
+    warehouseCode: string;
     zoneId?: string;
   }>,
 ): Generator<unknown, void, AxiosResponse> {

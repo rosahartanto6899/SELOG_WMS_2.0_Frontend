@@ -14,10 +14,7 @@ function* downloadTemplate(
   params: PayloadAction<DownloadTemplatePayload>,
 ): Generator<unknown, void, AxiosResponse<Blob>> {
   try {
-    const result = yield call(
-      MaterialLocationMappingApi().downloadTemplate,
-      params.payload.warehouseCode,
-    );
+    const result = yield call(MaterialLocationMappingApi().downloadTemplate);
     if (result?.status === 200) {
       const url = window.URL.createObjectURL(
         new Blob([result.data], {
@@ -56,15 +53,11 @@ function* upsertRow(
     materialName,
     materialBrand,
     locationName,
-    warehouseCode,
-    warehouseName,
   }) => ({
     materialCode,
     materialName,
     materialBrand,
     locationName,
-    warehouseCode,
-    warehouseName,
   }))(row as any);
   try {
     const result = yield call(MaterialLocationMappingApi().upsertRow, payload);

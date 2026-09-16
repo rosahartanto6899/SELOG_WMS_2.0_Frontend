@@ -64,6 +64,10 @@ const WarehouseEdit = ({
         form={form}
         loading={!!loading.isLoading}
         onSubmit={handleSubmit}
+        currentCustomerId={warehouses.warehouseDetail.data?.customerId ?? null}
+        currentCustomerName={
+          warehouses.warehouseDetail.data?.customer?.name ?? null
+        }
       />
     </LayoutUserManagement>
   );

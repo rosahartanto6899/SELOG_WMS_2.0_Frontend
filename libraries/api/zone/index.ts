@@ -7,7 +7,6 @@ import { Zone, ZoneDropdown } from "@sera-types/zone.type";
  */
 const ZoneApi = () => {
   async function retrieveZones(payload: {
-    warehouseCode?: string;
     page?: number;
     limit?: number;
     search?: string | null;
@@ -20,12 +19,9 @@ const ZoneApi = () => {
       .then((resp) => resp);
   }
 
-  async function retrieveDropdownZones(payload: {
-    customerCode?: string;
-    warehouseCode?: string;
-  }) {
+  async function retrieveDropdownZones() {
     return httpService
-      .get(`${apiUrl.master}/zones/dropdown`, { params: payload })
+      .get(`${apiUrl.master}/zones/dropdown`)
       .then((resp) => resp);
   }
 
@@ -36,8 +32,6 @@ const ZoneApi = () => {
   }
 
   async function createZone(payload: {
-    warehouseCode: string;
-    warehouseName?: string;
     code: string;
     name: string;
     description?: string;

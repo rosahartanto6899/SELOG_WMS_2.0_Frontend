@@ -52,7 +52,7 @@ const QualityInspectionSection = (props: {
   useEffect(() => {
     if (customerCode && warehouseCodes.length) {
       OutstandingIncomingApi()
-        .retrieveFilterResult({ customerCode, warehouseCodes, searchParam })
+        .retrieveFilterResult({ searchParam })
         .then((data) => setDnRows(data ?? []))
         .catch(() => setDnRows([]));
     }

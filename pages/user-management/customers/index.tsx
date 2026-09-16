@@ -19,7 +19,9 @@ const CustomersPage = ({ customers, loading, getCustomers }: any) => {
         <CustomerTable
           dataSource={customers.data}
           options={customers.options}
-          loading={loading[customerActions.getCustomersFetch.type]}
+          loading={
+            loading[customerActions.getCustomersFetch.type.replace("Fetch", "")]
+          }
           onFetch={getCustomers}
           onDelete={customerActions.deleteCustomerFetch}
         />

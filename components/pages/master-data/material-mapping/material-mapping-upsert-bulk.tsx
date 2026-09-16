@@ -58,14 +58,6 @@ function MaterialMappingUpsertBulk(props: any) {
       }
     : null;
 
-  const withWarehouse = (
-    row: UploadMaterialLocationMappingRow,
-  ): UploadMaterialLocationMappingRow => ({
-    ...row,
-    warehouseCode: warehouse?.code,
-    warehouseName: warehouse?.name,
-  });
-
   const columns = [
     {
       title: "#",
@@ -133,7 +125,7 @@ function MaterialMappingUpsertBulk(props: any) {
         dispatch(
           materialLocationMappingActions.upsertRowFetch({
             index: pending,
-            row: withWarehouse(next[pending]),
+            row: next[pending],
           }),
         );
       } else {
@@ -219,7 +211,7 @@ function MaterialMappingUpsertBulk(props: any) {
       dispatch(
         materialLocationMappingActions.upsertRowFetch({
           index: first,
-          row: withWarehouse(next[first]),
+          row: next[first],
         }),
       );
       return next;
@@ -279,7 +271,6 @@ function MaterialMappingUpsertBulk(props: any) {
                 onClick={() =>
                   dispatch(
                     materialLocationMappingActions.downloadTemplateFetch({
-                      warehouseCode: warehouse!.code,
                       fileName: "Template-UploadMaterialLocationMapping.xlsx",
                     }),
                   )

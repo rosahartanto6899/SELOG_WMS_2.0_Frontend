@@ -164,10 +164,6 @@ export interface OutstandingOutgoingHeader {
 
 /** Payload input manual C1 */
 export interface InputOutgoingPayload {
-  customerCode: string;
-  customerName: string;
-  warehouseCode: string;
-  warehouseName: string;
   poNo: string;
   poType?: string;
   poDate?: string;

@@ -19,7 +19,11 @@ const WarehousesPage = ({ warehouses, loading, getWarehouses }: any) => {
         <WarehouseTable
           dataSource={warehouses.data}
           options={warehouses.options}
-          loading={loading[wmsWarehouseActions.getWarehousesFetch.type]}
+          loading={
+            loading[
+              wmsWarehouseActions.getWarehousesFetch.type.replace("Fetch", "")
+            ]
+          }
           onFetch={getWarehouses}
           onDelete={wmsWarehouseActions.deleteWarehouseFetch}
         />

@@ -65,10 +65,7 @@ export const materialLocationMappingState = createSlice({
     },
 
     // === List final ===
-    getMappingsFetch: (
-      state,
-      _action: PayloadAction<BaseType & { warehouseCode?: string }>,
-    ) => {
+    getMappingsFetch: (state, _action: PayloadAction<BaseType>) => {
       state.error = null;
       state.isLoading = true;
     },

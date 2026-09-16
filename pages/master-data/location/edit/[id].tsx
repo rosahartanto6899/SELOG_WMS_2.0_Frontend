@@ -34,8 +34,6 @@ const LocationEdit = ({
     const d = locations.locationDetail.data;
     if (d?.id) {
       form.setFieldsValue({
-        warehouseCode: d.warehouseCode,
-        warehouseName: d.warehouseName,
         code: d.code,
         name: d.name,
         barcode: d.barcode,
@@ -48,7 +46,9 @@ const LocationEdit = ({
 
   const handleSubmit = () => {
     form.validateFields().then((values) => {
-      updateLocation({ id: id as string, items: values });
+      // code & barcode immutable di update — dibuang dari payload
+      const { code: _code, barcode: _barcode, ...items } = values; // eslint-disable-line @typescript-eslint/no-unused-vars
+      updateLocation({ id: id as string, items });
     });
   };
 
@@ -65,6 +65,8 @@ const LocationEdit = ({
         form={form}
         type="update"
         warehouseCode={locations.locationDetail.data?.warehouseCode ?? null}
+        currentZoneId={locations.locationDetail.data?.zoneId ?? null}
+        currentZoneName={locations.locationDetail.data?.zoneName ?? null}
         loading={!!loading.isLoading}
         onSubmit={handleSubmit}
       />

@@ -6,7 +6,6 @@ import { httpService } from "@sera-libraries/http-service";
  */
 const LocationApi = () => {
   async function retrieveLocations(payload: {
-    warehouseCode?: string;
     zoneId?: string;
     page?: number;
     limit?: number;
@@ -20,11 +19,7 @@ const LocationApi = () => {
       .then((resp) => resp);
   }
 
-  async function retrieveDropdownLocations(payload: {
-    customerCode?: string;
-    warehouseCode?: string;
-    zoneId?: string;
-  }) {
+  async function retrieveDropdownLocations(payload: { zoneId?: string }) {
     return httpService
       .get(`${apiUrl.master}/locations/dropdown`, { params: payload })
       .then((resp) => resp);
@@ -43,8 +38,6 @@ const LocationApi = () => {
   }
 
   async function createLocation(payload: {
-    warehouseCode: string;
-    warehouseName?: string;
     code: string;
     name: string;
     barcode: string;

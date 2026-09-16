@@ -7,6 +7,7 @@ import inventoryStock from "./inventory-stock.json";
 import masterData from "./master-data.json";
 import planIncoming from "./plan-incoming.json";
 import planOutgoing from "./plan-outgoing.json";
+import report from "./report.json";
 import menuConfiguration from "./user-management/menu-configuration.json";
 import rolePermission from "./user-management/role-permission.json";
 import roles from "./user-management/roles.json";
@@ -27,6 +28,7 @@ export default {
     warehouseManagement,
     planIncoming,
     planOutgoing,
+    report,
     masterData,
   },
 };

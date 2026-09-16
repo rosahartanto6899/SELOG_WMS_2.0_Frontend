@@ -224,19 +224,15 @@ const InputOutgoingForm = (props: Props) => {
     );
 
   const submit = (values: any) => {
-    // customerCode/Name dari sesi auth (Redis), bukan input
+    // guard sesi: customer dari sesi auth (Redis), warehouse dari Switch
+    // Warehouse — atribusi keduanya diambil BE dari token, bukan payload FE
     const customerCode = customer.code ?? editData?.customerCode;
     const customerName = customer.name ?? editData?.customerName;
-    if (!customerCode || !customerName) {
+    const warehouseCode = session?.user?.warehouseCode as string | undefined;
+    if (!customerCode || !customerName || !warehouseCode) {
       message.error(t("noCustomerSession"));
       return;
     }
-    // warehouse dari session switch (aktif warehouse) — bukan input form
-    // (getFieldsValue tidak mengembalikan field tanpa Form.Item ter-mount)
-    const warehouseCode =
-      (session?.user?.warehouseCode as string) ?? editData?.warehouseCode;
-    const warehouseName =
-      (session?.user?.warehouseName as string) ?? editData?.warehouseName;
     const rows = materials.filter((m) => m.materialCode && m.qty != null);
     if (!rows.length) {
       message.warning(t("noMaterial"));
@@ -264,13 +260,10 @@ const InputOutgoingForm = (props: Props) => {
 
     if (editId && editData) {
       // C3 header + add-info replace; qty changes via C4; new materials via C2
+      // customer/warehouse dari token aktif di BE — tidak dikirim FE
       const payload: UpdateOutgoingPayload = {
         id: editId,
         ...values,
-        warehouseCode,
-        customerCode,
-        customerName,
-        warehouseName,
         additionalInformation,
         updateDetails: rows
           .filter((r) => r.detailId && r.canEdit)
@@ -285,12 +278,9 @@ const InputOutgoingForm = (props: Props) => {
       };
       dispatch(outstandingOutgoingActions.submitOutgoingFetch(payload));
     } else {
+      // customer/warehouse dari token aktif di BE — tidak dikirim FE
       const payload: InputOutgoingPayload = {
         ...values,
-        warehouseCode,
-        customerCode,
-        customerName,
-        warehouseName,
         additionalInformation,
         details: rows.map(detailPayload),
       };

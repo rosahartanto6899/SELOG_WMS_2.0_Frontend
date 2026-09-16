@@ -1,0 +1,80 @@
+{
+  "incomingReport": {
+    "page": {
+      "title": "Report - Incoming Report",
+      "breadcrumb": ["Report", "Incoming Report"]
+    },
+    "table": {
+      "title": "Incoming Report",
+      "search": {
+        "placeholder": "Search"
+      },
+      "options": {
+        "0": "PO Date",
+        "1": "Material Code",
+        "2": "Material Name",
+        "3": "Material Brand",
+        "4": "Delivery Note No"
+      },
+      "column": {
+        "materialCode": "Material Code",
+        "materialName": "Material Name",
+        "materialBrand": "Material Brand",
+        "actualQty": "Actual Qty",
+        "uom": "UoM",
+        "deliveryNoteNo": "Delivery Note No",
+        "poDate": "PO Date"
+      },
+      "button": {
+        "export": "Export"
+      },
+      "date": {
+        "range": "Date Range"
+      },
+      "warning": {
+        "required": "Start Date and End Date are required",
+        "order": "End Date must be greater than or equal to Start Date",
+        "max": "Maximum date range is 31 days"
+      }
+    }
+  },
+  "outgoingReport": {
+    "page": {
+      "title": "Report - Outgoing Report",
+      "breadcrumb": ["Report", "Outgoing Report"]
+    },
+    "table": {
+      "title": "Outgoing Report",
+      "search": {
+        "placeholder": "Search"
+      },
+      "options": {
+        "0": "PO Date",
+        "1": "Material Code",
+        "2": "Material Name",
+        "3": "Material Brand",
+        "4": "Delivery Note No"
+      },
+      "column": {
+        "materialCode": "Material Code",
+        "materialName": "Material Name",
+        "materialBrand": "Material Brand",
+        "actualQty": "Actual Qty",
+        "uom": "UoM",
+        "deliveryNoteNo": "Delivery Note No",
+        "poDate": "PO Date"
+      },
+      "button": {
+        "export": "Export"
+      },
+      "date": {
+        "range": "Date Range"
+      },
+      "warning": {
+        "required": "Start Date and End Date are required",
+        "order": "End Date must be greater than or equal to Start Date",
+        "max": "Maximum date range is 31 days"
+      }
+    }
+  }
+}

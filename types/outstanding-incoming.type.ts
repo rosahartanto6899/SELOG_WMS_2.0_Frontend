@@ -197,10 +197,6 @@ export interface FilterResultRow {
 
 /** Payload input manual C1 */
 export interface InputIncomingPayload {
-  customerCode: string;
-  customerName: string;
-  warehouseCode: string;
-  warehouseName: string;
   poNo: string;
   poType?: string;
   poDate?: string;

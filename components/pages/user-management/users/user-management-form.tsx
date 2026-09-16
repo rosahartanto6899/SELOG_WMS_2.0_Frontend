@@ -100,6 +100,14 @@ const ActionForm = ({
   const warehousesByCustomer = (customerId?: string) =>
     dataDropdownBusinessAreas.filter((w: any) => w.customer?.id === customerId);
 
+  // ponytail: fallback nama role dari detail user — dropdown roles redux bisa
+  // datang setelah accessRows terisi / role lama di luar scope list, tanpa ini
+  // select render UUID mentah
+  const detailRoleNameById: Record<string, string> = {};
+  (users.userDetail.data?.roles || []).forEach((r: any) => {
+    if (r?.id) detailRoleNameById[r.id] = r.name ?? r.id;
+  });
+
   const onGoBack = () => {
     Utils().onGoBack(router, "/user-management/users");
   };
@@ -436,6 +444,17 @@ const ActionForm = ({
                                           },
                                           roleIndex,
                                         ) => {
+                                          // role terpilih saat ini — untuk
+                                          // fallback option saat dropdown
+                                          // belum memuatnya
+                                          const currentRoleId =
+                                            form.getFieldValue([
+                                              "accessRows",
+                                              index,
+                                              "roles",
+                                              roleIndex,
+                                              "roleId",
+                                            ]);
                                           return (
                                             <Row
                                               gutter={16}
@@ -505,6 +524,25 @@ const ActionForm = ({
                                                       isDetail || !customerId
                                                     }
                                                   >
+                                                    {currentRoleId &&
+                                                      !dataDropdownRoles.some(
+                                                        (r: any) =>
+                                                          r.id ===
+                                                          currentRoleId,
+                                                      ) && (
+                                                        <Select.Option
+                                                          value={currentRoleId}
+                                                          label={
+                                                            detailRoleNameById[
+                                                              currentRoleId
+                                                            ] ?? currentRoleId
+                                                          }
+                                                        >
+                                                          {detailRoleNameById[
+                                                            currentRoleId
+                                                          ] ?? currentRoleId}
+                                                        </Select.Option>
+                                                      )}
                                                     {dataDropdownRoles.map(
                                                       (r: any) => {
                                                         const taken = (

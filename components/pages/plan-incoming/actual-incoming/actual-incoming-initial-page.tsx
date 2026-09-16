@@ -24,9 +24,7 @@ import { Col, message, Row, Space } from "antd";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import ActualIncomingFilter, {
-  FilterStateProps,
-} from "./actual-incoming-filter";
+import { FilterStateProps } from "./actual-incoming-filter";
 import { Columns, SearchByOptions } from "./actual-incoming-props-table";
 import { DeleteActualForm } from "./delete-actual-form";
 
@@ -93,15 +91,9 @@ const ActualIncomingInitialPage = () => {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [deleteOpen, setDeleteOpen] = useState(false);
 
+  // scope customer/warehouse dari token aktif di BE — tidak ada param FE
   const refresh = () =>
-    dispatch(
-      actualIncomingActions.getActualIncomingFetch({
-        ...listOptions,
-        warehouseCode: filter.warehouseCodes?.length
-          ? filter.warehouseCodes.join(",")
-          : undefined,
-      }),
-    );
+    dispatch(actualIncomingActions.getActualIncomingFetch({ ...listOptions }));
 
   useEffect(() => {
     refresh();
@@ -138,13 +130,6 @@ const ActualIncomingInitialPage = () => {
   return (
     <>
       <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-        <Card.Filter>
-          <ActualIncomingFilter
-            filter={filter}
-            onChangeFilter={onChangeFilter}
-          />
-        </Card.Filter>
-
         <Card noShadow>
           <Table
             title={t("table.title")}

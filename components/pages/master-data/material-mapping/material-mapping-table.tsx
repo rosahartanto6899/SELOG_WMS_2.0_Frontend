@@ -40,7 +40,7 @@ const MaterialMappingTable = (props: Props) => {
   // in the header (customer scoping is already enforced backend-side from the JWT).
   useEffect(() => {
     if (sessionStatus === "loading") return;
-    onFetch({ ...listOptions, warehouseCode });
+    onFetch(listOptions);
   }, [listOptions, warehouseCode, sessionStatus]);
 
   const onPageChangeListener = (page: number, pageSize?: number) => {
