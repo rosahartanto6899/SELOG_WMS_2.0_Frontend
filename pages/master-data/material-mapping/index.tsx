@@ -23,7 +23,12 @@ const MaterialMappingPage = ({ mappings, loading, getMappings }: any) => {
             dataSource={mappings.data}
             options={mappings.options}
             loading={
-              loading[materialLocationMappingActions.getMappingsFetch.type]
+              loading[
+                materialLocationMappingActions.getMappingsFetch.type.replace(
+                  "Fetch",
+                  "",
+                )
+              ]
             }
             onFetch={getMappings}
           />

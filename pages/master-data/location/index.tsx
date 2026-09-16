@@ -21,7 +21,9 @@ const LocationPage = ({
         <LocationTable
           dataSource={locations.data}
           options={locations.options}
-          loading={loading[locationActions.getLocationsFetch.type]}
+          loading={
+            loading[locationActions.getLocationsFetch.type.replace("Fetch", "")]
+          }
           onFetch={getLocations}
           onDelete={deleteLocation}
         />

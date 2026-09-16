@@ -30,11 +30,7 @@ const OutstandingIncomingApi = () => {
     return httpService.get(`${base}/${id}/details`).then((resp) => resp);
   }
 
-  function retrieveByMaterial(params: {
-    customerCode: string;
-    warehouseCode: string;
-    materialCode: string;
-  }) {
+  function retrieveByMaterial(params: { materialCode: string }) {
     return httpService
       .get(`${base}/by-material`, { params })
       .then((resp) => resp);
@@ -88,11 +84,8 @@ const OutstandingIncomingApi = () => {
     return httpService.get(`${base}/${id}/history`).then((resp) => resp);
   }
 
-  function checkIndicator(payload: {
-    customerCode: string;
-    warehouseCode: string;
-  }) {
-    return httpService.post(`${base}/indicator`, payload).then((resp) => resp);
+  function checkIndicator() {
+    return httpService.post(`${base}/indicator`).then((resp) => resp);
   }
 
   // ===== Aksi A =====
@@ -202,8 +195,6 @@ const OutstandingIncomingApi = () => {
   }
 
   function retrieveFilterResult(payload: {
-    customerCode: string;
-    warehouseCodes: string[];
     searchParam: string;
   }): Promise<FilterResultRow[]> {
     return httpService

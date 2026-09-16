@@ -48,13 +48,9 @@ function* getZoneDetail(
   }
 }
 
-function* getDropdownZones(
-  params: PayloadAction<{ customerCode?: string; warehouseCode?: string }>,
-): Generator<unknown, void, AxiosResponse> {
+function* getDropdownZones(): Generator<unknown, void, AxiosResponse> {
   try {
-    const result = yield call(ZoneApi().retrieveDropdownZones, {
-      ...params.payload,
-    });
+    const result = yield call(ZoneApi().retrieveDropdownZones);
     if (result?.status === 200)
       yield put(zoneActions.getDropdownZonesSuccess(result.data));
   } catch (error: any) {

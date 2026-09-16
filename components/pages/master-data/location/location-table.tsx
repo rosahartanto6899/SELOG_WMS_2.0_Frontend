@@ -47,15 +47,14 @@ const ZoneTable = (props: Props) => {
   const [bulkPrintLoading, setBulkPrintLoading] = useState(false);
   const { data: session, status: sessionStatus } = useSession() as any;
   const [customerName, setCustomerName] = useState<string>();
-  const warehouseCode = session?.user?.warehouseCode ?? undefined;
   const warehouseName = session?.user?.warehouseName ?? undefined;
 
-  // Location list is scoped to the Warehouse selected via "Switch Warehouse"
-  // in the header (customer scoping is already enforced backend-side from the JWT).
+  // Customer & warehouse scoping di-enforce penuh backend-side dari JWT
+  // (klaim tokenCustomerCode / tokenWarehouseCode) — FE tidak perlu kirim apa pun.
   useEffect(() => {
     if (sessionStatus === "loading") return;
-    onFetch({ ...listOptions, warehouseCode });
-  }, [listOptions, warehouseCode, sessionStatus]);
+    onFetch({ ...listOptions });
+  }, [listOptions, sessionStatus]);
 
   useEffect(() => {
     const customerId = session?.user?.customerId;
@@ -104,7 +103,7 @@ const ZoneTable = (props: Props) => {
         onDelete({
           id: obj.id,
           name: obj.name,
-          options: { ...listOptions, warehouseCode },
+          options: { ...listOptions },
         });
       },
     });

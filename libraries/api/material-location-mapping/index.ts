@@ -6,10 +6,9 @@ import { UploadMaterialLocationMappingRow } from "@sera-types/material-location-
  * API Material–Location Mapping (SELOG_WMS_2.0_ServiceMasterData).
  */
 const MaterialLocationMappingApi = () => {
-  async function downloadTemplate(warehouseCode: string) {
+  async function downloadTemplate() {
     return httpService
       .get(`${apiUrl.master}/upload-material-location-mapping/template`, {
-        params: { warehouseCode },
         responseType: "blob",
       } as any)
       .then((resp) => resp);
@@ -22,7 +21,6 @@ const MaterialLocationMappingApi = () => {
   }
 
   async function retrieveMappings(payload: {
-    warehouseCode?: string;
     page?: number;
     limit?: number;
     search?: string | null;

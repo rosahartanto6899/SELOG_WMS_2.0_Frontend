@@ -51,7 +51,7 @@ const ZoneTable = (props: Props) => {
   // enforced backend-side from the JWT).
   useEffect(() => {
     if (sessionStatus === "loading") return;
-    onFetch({ ...listOptions, warehouseCode });
+    onFetch(listOptions);
   }, [listOptions, warehouseCode, sessionStatus]);
 
   useEffect(() => {
@@ -101,7 +101,7 @@ const ZoneTable = (props: Props) => {
         onDelete({
           id: obj.id,
           name: obj.name,
-          options: { ...listOptions, warehouseCode },
+          options: listOptions,
         });
       },
     });

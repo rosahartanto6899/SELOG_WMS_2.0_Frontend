@@ -16,9 +16,18 @@ interface ActionFormProps {
   loading: boolean;
   onSubmit: () => void;
   isDetail?: boolean;
+  currentCustomerId?: string | null;
+  currentCustomerName?: string | null;
 }
 
-const ActionForm = ({ form, loading, onSubmit, isDetail }: ActionFormProps) => {
+const ActionForm = ({
+  form,
+  loading,
+  onSubmit,
+  isDetail,
+  currentCustomerId,
+  currentCustomerName,
+}: ActionFormProps) => {
   const router = useRouter();
   const { t } = useTranslation(undefined, {
     keyPrefix: "warehouseManagement.form",
@@ -34,6 +43,23 @@ const ActionForm = ({ form, loading, onSubmit, isDetail }: ActionFormProps) => {
       })
       .catch(() => undefined);
   }, []);
+
+  // ponytail: merge customer lama dari detail ke options — value ter-set
+  // sebelum fetch selesai / customer di luar scope list, tanpa ini antd
+  // render UUID mentah
+  const customerOptions = dataCustomers.map((c: any) => ({
+    value: c.id,
+    label: c.name,
+  }));
+  if (
+    currentCustomerId &&
+    !dataCustomers.some((c: any) => c.id === currentCustomerId)
+  ) {
+    customerOptions.unshift({
+      value: currentCustomerId,
+      label: currentCustomerName ?? currentCustomerId,
+    });
+  }
 
   const requiredMessage = t("message.default");
 
@@ -53,10 +79,7 @@ const ActionForm = ({ form, loading, onSubmit, isDetail }: ActionFormProps) => {
                 showSearch
                 optionFilterProp="label"
                 disabled={isDetail}
-                options={dataCustomers.map((c: any) => ({
-                  value: c.id,
-                  label: c.name,
-                }))}
+                options={customerOptions}
               />
             </Form.Item>
           </Col>

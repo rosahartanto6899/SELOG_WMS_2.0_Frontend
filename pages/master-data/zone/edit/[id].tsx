@@ -35,8 +35,6 @@ const ZoneEdit = ({
     const d = zones.zoneDetail.data;
     if (d?.id) {
       form.setFieldsValue({
-        warehouseCode: d.warehouseCode,
-        warehouseName: d.warehouseName,
         code: d.code,
         name: d.name,
         description: d.description,
@@ -48,7 +46,7 @@ const ZoneEdit = ({
     form.validateFields().then((values) => {
       updateZone({
         id: id as string,
-        items: omit(values, ["code", "warehouseCode", "warehouseName"]),
+        items: omit(values, ["code"]),
       });
     });
   };

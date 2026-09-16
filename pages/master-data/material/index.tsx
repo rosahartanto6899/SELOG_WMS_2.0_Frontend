@@ -21,7 +21,9 @@ const MaterialPage = ({
         <MaterialTable
           dataSource={materials.data}
           options={materials.options}
-          loading={loading[materialActions.getMaterialsFetch.type]}
+          loading={
+            loading[materialActions.getMaterialsFetch.type.replace("Fetch", "")]
+          }
           onFetch={getMaterials}
           onDelete={deleteMaterial}
         />

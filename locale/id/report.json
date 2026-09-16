@@ -1,0 +1,80 @@
+{
+  "incomingReport": {
+    "page": {
+      "title": "Laporan - Laporan Barang Masuk",
+      "breadcrumb": ["Laporan", "Barang Masuk"]
+    },
+    "table": {
+      "title": "Laporan Barang Masuk",
+      "search": {
+        "placeholder": "Cari"
+      },
+      "options": {
+        "0": "Tanggal PO",
+        "1": "Kode Material",
+        "2": "Nama Material",
+        "3": "Merk Material",
+        "4": "No. Surat Jalan"
+      },
+      "column": {
+        "materialCode": "Kode Material",
+        "materialName": "Nama Material",
+        "materialBrand": "Merk Material",
+        "actualQty": "Qty Aktual",
+        "uom": "Satuan",
+        "deliveryNoteNo": "No. Surat Jalan",
+        "poDate": "Tanggal PO"
+      },
+      "button": {
+        "export": "Ekspor"
+      },
+      "date": {
+        "range": "Rentang Tanggal"
+      },
+      "warning": {
+        "required": "Tanggal Mulai dan Tanggal Akhir wajib diisi",
+        "order": "Tanggal Akhir harus lebih besar atau sama dengan Tanggal Mulai",
+        "max": "Rentang tanggal maksimal 31 hari"
+      }
+    }
+  },
+  "outgoingReport": {
+    "page": {
+      "title": "Laporan - Laporan Barang Keluar",
+      "breadcrumb": ["Laporan", "Barang Keluar"]
+    },
+    "table": {
+      "title": "Laporan Barang Keluar",
+      "search": {
+        "placeholder": "Cari"
+      },
+      "options": {
+        "0": "Tanggal PO",
+        "1": "Kode Material",
+        "2": "Nama Material",
+        "3": "Merk Material",
+        "4": "No. Surat Jalan"
+      },
+      "column": {
+        "materialCode": "Kode Material",
+        "materialName": "Nama Material",
+        "materialBrand": "Merk Material",
+        "actualQty": "Qty Aktual",
+        "uom": "Satuan",
+        "deliveryNoteNo": "No. Surat Jalan",
+        "poDate": "Tanggal PO"
+      },
+      "button": {
+        "export": "Ekspor"
+      },
+      "date": {
+        "range": "Rentang Tanggal"
+      },
+      "warning": {
+        "required": "Tanggal Mulai dan Tanggal Akhir wajib diisi",
+        "order": "Tanggal Akhir harus lebih besar atau sama dengan Tanggal Mulai",
+        "max": "Rentang tanggal maksimal 31 hari"
+      }
+    }
+  }
+}

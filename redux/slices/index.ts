@@ -7,11 +7,13 @@ import businessAreaReducer from "./business-area.slice";
 import cityReducer from "./city.slice";
 import customersReducer from "./customer.slice";
 import districtReducer from "./district.slice";
+import incomingReportReducer from "./incoming-report.slice";
 import locationReducer from "./location.slice";
 import materialReducer from "./material.slice";
 import materialLocationMappingReducer from "./material-location-mapping.slice";
 import menuReducer from "./menu.slice";
 import notificationReducer from "./notification.slice";
+import outgoingReportReducer from "./outgoing-report.slice";
 import outstandingIncomingReducer from "./outstanding-incoming.slice";
 import outstandingOutgoingReducer from "./outstanding-outgoing.slice";
 import provinceReducer from "./province.slice";
@@ -40,6 +42,8 @@ const rootReducer = combineReducers({
   uploadIncomingAhm: uploadIncomingAhmReducer,
   uploadStockAdjustment: uploadStockAdjustmentReducer,
   actualIncoming: actualIncomingReducer,
+  incomingReport: incomingReportReducer,
+  outgoingReport: outgoingReportReducer,
   actualOutgoing: actualOutgoingReducer,
   outstandingIncoming: outstandingIncomingReducer,
   outstandingOutgoing: outstandingOutgoingReducer,

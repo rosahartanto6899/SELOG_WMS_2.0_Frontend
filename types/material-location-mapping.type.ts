@@ -48,7 +48,6 @@ export interface MaterialLocationMappingState {
 }
 
 export interface DownloadTemplatePayload {
-  warehouseCode: string;
   fileName: string;
 }
 

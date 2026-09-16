@@ -16,7 +16,7 @@ const ZonePage = ({ zones, loading, getZones, deleteZone }: any) => {
         <ZoneTable
           dataSource={zones.data}
           options={zones.options}
-          loading={loading[zoneActions.getZonesFetch.type]}
+          loading={loading[zoneActions.getZonesFetch.type.replace("Fetch", "")]}
           onFetch={getZones}
           onDelete={deleteZone}
         />

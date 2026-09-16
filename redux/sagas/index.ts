@@ -6,11 +6,13 @@ import businessAreaSaga from "./business-area.saga";
 import city from "./city.saga";
 import customerSaga from "./customer.saga";
 import district from "./district.saga";
+import incomingReportSaga from "./incoming-report.saga";
 import locationSaga from "./location.saga";
 import materialSaga from "./material.saga";
 import materialLocationMappingSaga from "./material-location-mapping.saga";
 import menusSaga from "./menu.saga";
 import notificationSaga from "./notification.saga";
+import outgoingReportSaga from "./outgoing-report.saga";
 import outstandingIncomingSaga from "./outstanding-incoming.saga";
 import outstandingOutgoingSaga from "./outstanding-outgoing.saga";
 import provinceSaga from "./province.saga";
@@ -39,6 +41,8 @@ export default function* rootSaga() {
     uploadIncomingAhmSaga(),
     uploadStockAdjustmentSaga(),
     actualIncomingSaga(),
+    incomingReportSaga(),
+    outgoingReportSaga(),
     actualOutgoingSaga(),
     outstandingIncomingSaga(),
     outstandingOutgoingSaga(),
