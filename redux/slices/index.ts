@@ -19,6 +19,7 @@ import outstandingOutgoingReducer from "./outstanding-outgoing.slice";
 import provinceReducer from "./province.slice";
 import rolesReducer from "./role.slice";
 import rolesMenuReducer from "./role-menu.slice";
+import sohAllSlocReportReducer from "./soh-all-sloc-report.slice";
 import stockAvailabilityReducer from "./stock-availability.slice";
 import uploadIncomingAhmReducer from "./upload-incoming-ahm.slice";
 import uploadStockAdjustmentReducer from "./upload-stock-adjustment.slice";
@@ -48,6 +49,7 @@ const rootReducer = combineReducers({
   outstandingIncoming: outstandingIncomingReducer,
   outstandingOutgoing: outstandingOutgoingReducer,
   stockAvailability: stockAvailabilityReducer,
+  sohAllSlocReport: sohAllSlocReportReducer,
   zones: zoneReducer,
   locations: locationReducer,
   materials: materialReducer,

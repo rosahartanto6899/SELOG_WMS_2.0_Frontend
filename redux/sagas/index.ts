@@ -18,6 +18,7 @@ import outstandingOutgoingSaga from "./outstanding-outgoing.saga";
 import provinceSaga from "./province.saga";
 import roleSaga from "./role.saga";
 import roleMenuSaga from "./role-menu.saga";
+import sohAllSlocReportSaga from "./soh-all-sloc-report.saga";
 import stockAvailabilitySaga from "./stock-availability.saga";
 import uploadIncomingAhmSaga from "./upload-incoming-ahm.saga";
 import uploadStockAdjustmentSaga from "./upload-stock-adjustment.saga";
@@ -47,6 +48,7 @@ export default function* rootSaga() {
     outstandingIncomingSaga(),
     outstandingOutgoingSaga(),
     stockAvailabilitySaga(),
+    sohAllSlocReportSaga(),
     zoneSaga(),
     locationSaga(),
     materialSaga(),
