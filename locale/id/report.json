@@ -76,5 +76,34 @@
         "max": "Rentang tanggal maksimal 31 hari"
       }
     }
+  },
+  "sohAllSlocReport": {
+    "page": {
+      "title": "Laporan - SOH Semua SLOC",
+      "breadcrumb": ["Laporan", "SOH Semua SLOC"]
+    },
+    "table": {
+      "title": "SOH Semua SLOC",
+      "search": {
+        "placeholder": "Cari"
+      },
+      "options": {
+        "0": "Kode Material",
+        "1": "Nama Material",
+        "2": "Merk Material"
+      },
+      "column": {
+        "materialCode": "Kode Material",
+        "materialName": "Nama Material",
+        "materialBrand": "Merk Material",
+        "totalQty": "Total"
+      },
+      "button": {
+        "export": "Ekspor"
+      },
+      "total": {
+        "materials": "Total material"
+      }
+    }
   }
 }

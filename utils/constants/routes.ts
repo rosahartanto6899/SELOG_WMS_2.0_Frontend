@@ -4,6 +4,7 @@ export const ROUTE = {
   REPORT: {
     INCOMING_REPORT: "/report/incoming-report",
     OUTGOING_REPORT: "/report/outgoing-report",
+    SOH_ALL_SLOC_REPORT: "/report/soh-all-sloc-report",
   },
   PLAN_INCOMING: {
     OUTSTANDING_INCOMING: "/plan-incoming/outstanding-incoming",

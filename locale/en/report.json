@@ -76,5 +76,34 @@
         "max": "Maximum date range is 31 days"
       }
     }
+  },
+  "sohAllSlocReport": {
+    "page": {
+      "title": "Report - SOH All SLOC",
+      "breadcrumb": ["Report", "SOH All SLOC"]
+    },
+    "table": {
+      "title": "SOH All SLOC",
+      "search": {
+        "placeholder": "Search"
+      },
+      "options": {
+        "0": "Material Code",
+        "1": "Material Name",
+        "2": "Material Brand"
+      },
+      "column": {
+        "materialCode": "Material Code",
+        "materialName": "Material Name",
+        "materialBrand": "Material Brand",
+        "totalQty": "Total"
+      },
+      "button": {
+        "export": "Export"
+      },
+      "total": {
+        "materials": "Total materials"
+      }
+    }
   }
 }
