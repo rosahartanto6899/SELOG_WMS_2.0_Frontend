@@ -2,15 +2,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   CaretDownOutlined,
-  // GlobalOutlined,
-  LeftCircleOutlined,
-  RightCircleOutlined,
+  CloseOutlined,
+  LeftOutlined,
+  MenuOutlined,
+  RightOutlined,
 } from "@ant-design/icons";
 // import NotificationList from "@sera-components/notification-list";
 import Typography from "@sera-components/typography";
 import {
   Avatar,
-  Button,
   Dropdown,
   Flex,
   Grid,
@@ -62,9 +62,10 @@ const { useBreakpoint } = Grid;
 const Layout = (props: LayoutProps) => {
   // const [lang, setLang] = useState<string>(localStorage.getItem("i18nextLng")!);
   const router = useRouter();
-  const { xs } = useBreakpoint();
+  const { xs, lg } = useBreakpoint();
 
   const [collapsed, setCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   // const [mobileCollapsed, setMobileCollapsed] = useState(false);
   const [lastUpdate, setLastUpdate] = useState<any>();
   const {
@@ -142,14 +143,69 @@ const Layout = (props: LayoutProps) => {
   // const collapsedIcon: JSX.Element | null = collapsed ? <CaretDownOutlined /> : null;
   const { isHidden } = useContext(VisibilityContext);
 
+  useEffect(() => {
+    if (lg) setMobileOpen(false);
+  }, [lg]);
+
   // useEffect(() => {
   //   setLang(router.locale as string);
   // }, [router]);
+
+  const siderContent = (showRail: boolean) => (
+    <main className={styles["sider-container"]}>
+      <div className={styles["header-wrapper"]}>
+        <div className={styles["image-wrapper"]}>
+          <Image
+            id="sera-header-logo"
+            src="/images/logo-white.svg"
+            alt="SELOG"
+            style={{ objectFit: "contain" }}
+            fill
+            priority
+            sizes="206px"
+          />
+        </div>
+      </div>
+
+      <div className={styles["body-wrapper"]}>
+        {lastUpdate ? (
+          <Menu
+            className={styles["sider-menu"]}
+            defaultOpenKeys={defaultOpenKeys}
+            theme="light"
+            defaultSelectedKeys={selectedKeys}
+            mode="inline"
+            items={sideMenu}
+            onClick={(_e: any) => {
+              onMenuChange({ ..._e });
+              setMobileOpen(false);
+            }}
+            selectedKeys={selectedKeys}
+          />
+        ) : null}
+      </div>
+
+      {showRail && (
+        <button
+          id="button-collapse"
+          type="button"
+          className={styles["sider-rail"]}
+          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+          onClick={() => setCollapsed((prev) => !prev)}
+        >
+          <span className={styles["sider-rail-icon"]}>
+            {collapsed ? <RightOutlined /> : <LeftOutlined />}
+          </span>
+        </button>
+      )}
+    </main>
+  );
 
   return (
     <AntdLayout className={styles["layout-container"]}>
       {!isHidden && (
         <Sider
+          className={styles["sider"]}
           width={256}
           breakpoint="lg"
           collapsible
@@ -157,56 +213,7 @@ const Layout = (props: LayoutProps) => {
           onCollapse={(value) => setCollapsed(value)}
           trigger={null}
         >
-          <main className={styles["sider-container"]}>
-            <div className={styles["header-wrapper"]}>
-              <div className={styles["image-wrapper"]}>
-                <Image
-                  id="sera-header-logo"
-                  src="/images/logo-white.svg"
-                  alt="SELOG"
-                  style={{ objectFit: "contain" }}
-                  fill
-                  priority
-                  sizes="206px"
-                />
-              </div>
-            </div>
-
-            <div className={styles["body-wrapper"]}>
-              {lastUpdate ? (
-                <Menu
-                  className={styles["sider-menu"]}
-                  defaultOpenKeys={defaultOpenKeys}
-                  theme="light"
-                  defaultSelectedKeys={selectedKeys}
-                  mode="inline"
-                  items={sideMenu}
-                  onClick={(_e: any) => {
-                    onMenuChange({ ..._e });
-                  }}
-                  selectedKeys={selectedKeys}
-                />
-              ) : null}
-            </div>
-
-            <div className={styles["footer-wrapper"]}>
-              <Button
-                id="button-collapse"
-                className={styles["footer-button"]}
-                onClick={() => setCollapsed((prev) => !prev)}
-              >
-                <div
-                  className={
-                    collapsed
-                      ? styles["footer-button-collapsed"]
-                      : styles["footer-button-expanded"]
-                  }
-                >
-                  {collapsed ? <RightCircleOutlined /> : <LeftCircleOutlined />}
-                </div>
-              </Button>
-            </div>
-          </main>
+          {siderContent(true)}
         </Sider>
       )}
 
@@ -275,6 +282,27 @@ const Layout = (props: LayoutProps) => {
         {!isHidden && (
           <Header className={styles["header-container"]}>
             <div className={styles["navbar-wrapper"]}>
+              <div className={styles["navbar-left"]}>
+                <button
+                  id="button-mobile-menu"
+                  type="button"
+                  className={styles["navbar-burger"]}
+                  aria-label={mobileOpen ? "Close menu" : "Open menu"}
+                  onClick={() => setMobileOpen((prev) => !prev)}
+                >
+                  {mobileOpen ? <CloseOutlined /> : <MenuOutlined />}
+                </button>
+                <div className={styles["navbar-logo"]}>
+                  <Image
+                    src="/images/logo-white.svg"
+                    alt="SELOG"
+                    width={96}
+                    height={26}
+                    style={{ objectFit: "contain" }}
+                    priority
+                  />
+                </div>
+              </div>
               {/* {!xs ? (
                 <Dropdown
                   className={styles["navbar-dropdown"]}
@@ -361,15 +389,38 @@ const Layout = (props: LayoutProps) => {
           </Header>
         )}
 
-        <Content
-          className={
-            router.pathname === "/"
-              ? styles["report-content-container"]
-              : styles["content-container"]
-          }
-        >
-          {children}
-        </Content>
+        <div className={styles["below-header"]}>
+          {!isHidden && (
+            <>
+              <div
+                className={`${styles["mobile-sider"]}${
+                  mobileOpen ? ` ${styles["mobile-sider-open"]}` : ""
+                }`}
+              >
+                {siderContent(false)}
+              </div>
+              <div
+                className={`${styles["mobile-backdrop"]}${
+                  mobileOpen ? ` ${styles["mobile-backdrop-visible"]}` : ""
+                }`}
+                onClick={() => setMobileOpen(false)}
+                onKeyDown={(e) => {
+                  if (e.key === "Escape") setMobileOpen(false);
+                }}
+              />
+            </>
+          )}
+
+          <Content
+            className={
+              router.pathname === "/"
+                ? styles["report-content-container"]
+                : styles["content-container"]
+            }
+          >
+            {children}
+          </Content>
+        </div>
         <div id="cta-container" />
       </AntdLayout>
     </AntdLayout>

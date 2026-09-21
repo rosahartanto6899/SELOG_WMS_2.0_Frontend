@@ -43,7 +43,7 @@ const SharedLayout = (props: SharedLibrariesProps) => {
   const { t } = useTranslation();
 
   const { /* showNotificationHandler, */ children } = props;
-  const { xs } = useBreakpoint();
+  const { xs, lg } = useBreakpoint();
   const router = useRouter();
   const { pathname } = router;
   // const { data } = useSession() as CustomUseSession;
@@ -96,7 +96,7 @@ const SharedLayout = (props: SharedLibrariesProps) => {
         );
         const submenu = child.map((_c: any) => ({
           label: (
-            <Tooltip title={_c.menuName} placement="right">
+            <Tooltip title={lg ? _c.menuName : undefined} placement="right">
               <Link
                 id={`link-level2-${Utils().titleToKebabCase(_c.menuName)}`}
                 href={_c.menuLink}

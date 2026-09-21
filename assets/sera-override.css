@@ -505,16 +505,41 @@ html {
   position: relative;
 }
 
-.ant-menu-submenu.ant-menu-submenu-selected div.ant-menu-submenu-title::before,
-.ant-menu.ant-menu-root > .ant-menu-item.ant-menu-item-selected::before {
-  background: linear-gradient(180deg, #22d3ee 0%, #6366f1 100%);
-  border-radius: 4px;
-  bottom: 8px;
-  content: "";
-  left: 4px;
-  position: absolute;
-  top: 8px;
-  width: 3px;
+/* Collapsed: center all top-level menu icons uniformly */
+.ant-menu.ant-menu-inline-collapsed > .ant-menu-item,
+.ant-menu.ant-menu-inline-collapsed
+  > .ant-menu-submenu
+  > .ant-menu-submenu-title {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  padding-inline: 0;
+}
+
+.ant-menu.ant-menu-inline-collapsed > .ant-menu-item.ant-menu-item-selected,
+.ant-menu.ant-menu-inline-collapsed
+  > .ant-menu-submenu.ant-menu-submenu-selected
+  > .ant-menu-submenu-title {
+  border-radius: 0.8rem;
+  padding-inline: 0;
+}
+
+.ant-menu.ant-menu-inline-collapsed > .ant-menu-item .ant-menu-title-content,
+.ant-menu.ant-menu-inline-collapsed
+  > .ant-menu-submenu
+  > .ant-menu-submenu-title
+  .ant-menu-title-content {
+  display: none;
+}
+
+.ant-menu.ant-menu-inline-collapsed .ant-menu-item-icon {
+  align-items: center;
+  display: inline-flex;
+  height: 2rem;
+  justify-content: center;
+  line-height: 1;
+  margin: 0;
+  width: 2rem;
 }
 
 .submenu-page.ant-menu-horizontal {
