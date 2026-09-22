@@ -4,6 +4,7 @@ import Button from "@sera-components/button";
 import { Plus } from "@sera-components/icons";
 import Input from "@sera-components/input";
 import Modal from "@sera-components/modal";
+import MobileTableHeader from "@sera-components/pages/plan-outgoing/outstanding-outgoing/mobile-table-header";
 import {
   actionUser,
   Columns,
@@ -19,8 +20,10 @@ import { userActions } from "@sera-redux/slices/user.slice";
 import { BaseType } from "@sera-types/base.type";
 import { LoadingState } from "@sera-types/loading.type";
 import { User, UserState, userTypes } from "@sera-types/user.type";
+import { useIsMobileView } from "@sera-utils/hooks/useIsMobileView";
 import { Col, Row } from "antd";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
@@ -51,6 +54,8 @@ const UserManagement = ({
   deleteUserClear,
 }: UserManagementProps) => {
   const { t } = useTranslation(undefined, { keyPrefix: "userManagement" });
+  const isMobile = useIsMobileView();
+  const router = useRouter();
 
   const onResendVerification = UserApi().resendVerification;
 
@@ -238,7 +243,7 @@ const UserManagement = ({
   return (
     <>
       <Table
-        title={t("table.title")}
+        title={isMobile ? undefined : t("table.title")}
         dataSource={users.data}
         columns={Columns({
           onDeleteAction: (record) =>
@@ -247,7 +252,13 @@ const UserManagement = ({
               name: record.name,
               email: record.email,
             }),
-        }).filter((item) => item.key)}
+        })
+          .filter((item) => item.key)
+          .filter((item: any) =>
+            isMobile
+              ? ["no", "name", "email", "operation"].includes(String(item.key))
+              : true,
+          )}
         current={users.options?.page}
         pageSize={users.options?.limit}
         total={users.options?.totalData ?? 0}
@@ -263,80 +274,114 @@ const UserManagement = ({
         onClearSearch={onClearSearchListener}
         isCustomSearch
         customSearch={
-          <Row align="middle" gutter={[8, 4]}>
-            <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-              <Select
-                id="user-management-user-search"
-                defaultValue="name"
-                placeholder={t("table.search.default.placeholder")}
-                onChange={(value) => handlerSelectSearchBy(value)}
-                onClear={() => handlerSelectSearchBy("")}
-                allowClear={false}
-              >
-                {SearchByOptions().map((opt) => (
-                  <Select.Option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Col>
-
-            <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-              {usersListOptions.searchBy !== "isInternal" && (
-                <Input.Search
-                  loading={loading[userTypes.GET_USERS]}
-                  placeholder={t("table.search.internal.placeholder")}
-                  autoCompleteItems={users.autoComplete?.data}
-                  onSearching={onSearchingChangeListener}
-                  onSearch={(search) =>
-                    onSearchChangeListener(
-                      search,
-                      usersListOptions.searchBy ?? "name",
-                    )
-                  }
-                  onClear={onClearSearchListener}
-                  value={usersListOptions.search ?? ""}
-                />
-              )}
-
-              {usersListOptions.searchBy === "isInternal" && (
+          isMobile ? (
+            <MobileTableHeader
+              title={t("table.title")}
+              selectId="user-management-user-search-mobile"
+              searchFilterLabel={t("table.searchFilter")}
+              placeholder={t("table.search.internal.placeholder")}
+              searchBy={searchBy}
+              searchByOptions={SearchByOptions()}
+              currentSearch={(usersListOptions as any).search}
+              onSelectSearchBy={handlerSelectSearchBy}
+              onSearch={(v?: string) =>
+                v
+                  ? onSearchChangeListener(v, searchBy)
+                  : onClearSearchListener()
+              }
+              enumKey="isInternal"
+              enumOptions={[
+                { value: "1", label: "Internal" },
+                { value: "0", label: "External" },
+              ]}
+              action={
+                actionUser.isCreate
+                  ? {
+                      label: t("table.columns.button.add.label"),
+                      icon: <Plus />,
+                      onClick: () => router.push("/user-management/users/add"),
+                    }
+                  : undefined
+              }
+            />
+          ) : (
+            <Row align="middle" gutter={[8, 4]}>
+              <Col xs={24} sm={24} md={12} lg={12} xl={12}>
                 <Select
-                  id="user-management-user-search-internal"
-                  placeholder={t("table.search.internal.placeholder")}
-                  onChange={(value) =>
-                    onSearchChangeListener(value, "isInternal")
-                  }
-                  showSearch={false}
+                  id="user-management-user-search"
+                  defaultValue="name"
+                  placeholder={t("table.search.default.placeholder")}
+                  onChange={(value) => handlerSelectSearchBy(value)}
+                  onClear={() => handlerSelectSearchBy("")}
+                  allowClear={false}
                 >
-                  <Select.Option value="1">Internal</Select.Option>
-                  <Select.Option value="0">External</Select.Option>
+                  {SearchByOptions().map((opt) => (
+                    <Select.Option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </Select.Option>
+                  ))}
                 </Select>
-              )}
-            </Col>
-          </Row>
+              </Col>
+
+              <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+                {usersListOptions.searchBy !== "isInternal" && (
+                  <Input.Search
+                    loading={loading[userTypes.GET_USERS]}
+                    placeholder={t("table.search.internal.placeholder")}
+                    autoCompleteItems={users.autoComplete?.data}
+                    onSearching={onSearchingChangeListener}
+                    onSearch={(search) =>
+                      onSearchChangeListener(
+                        search,
+                        usersListOptions.searchBy ?? "name",
+                      )
+                    }
+                    onClear={onClearSearchListener}
+                    value={usersListOptions.search ?? ""}
+                  />
+                )}
+
+                {usersListOptions.searchBy === "isInternal" && (
+                  <Select
+                    id="user-management-user-search-internal"
+                    placeholder={t("table.search.internal.placeholder")}
+                    onChange={(value) =>
+                      onSearchChangeListener(value, "isInternal")
+                    }
+                    showSearch={false}
+                  >
+                    <Select.Option value="1">Internal</Select.Option>
+                    <Select.Option value="0">External</Select.Option>
+                  </Select>
+                )}
+              </Col>
+            </Row>
+          )
         }
         actions={
-          <Row gutter={8}>
-            {actionUser.isCreate ? (
-              <Col span={24}>
-                <Link
-                  id="link-add-user"
-                  href="/user-management/users/add"
-                  passHref
-                >
-                  <Button
-                    id="action-add"
-                    type="primary"
-                    disabled={false}
-                    icon={<Plus />}
-                    style={{ width: "100%" }}
+          isMobile ? null : (
+            <Row gutter={8}>
+              {actionUser.isCreate ? (
+                <Col span={24}>
+                  <Link
+                    id="link-add-user"
+                    href="/user-management/users/add"
+                    passHref
                   >
-                    {t("table.columns.button.add.label")}
-                  </Button>
-                </Link>
-              </Col>
-            ) : null}
-          </Row>
+                    <Button
+                      id="action-add"
+                      type="primary"
+                      disabled={false}
+                      icon={<Plus />}
+                      style={{ width: "100%" }}
+                    >
+                      {t("table.columns.button.add.label")}
+                    </Button>
+                  </Link>
+                </Col>
+              ) : null}
+            </Row>
+          )
         }
       />
 

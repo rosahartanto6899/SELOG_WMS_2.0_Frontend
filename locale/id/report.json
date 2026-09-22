@@ -9,6 +9,7 @@
       "search": {
         "placeholder": "Cari"
       },
+      "searchFilter": "Cari & Filter",
       "options": {
         "0": "Tanggal PO",
         "1": "Kode Material",
@@ -48,6 +49,7 @@
       "search": {
         "placeholder": "Cari"
       },
+      "searchFilter": "Cari & Filter",
       "options": {
         "0": "Tanggal PO",
         "1": "Kode Material",
@@ -87,6 +89,7 @@
       "search": {
         "placeholder": "Cari"
       },
+      "searchFilter": "Cari & Filter",
       "options": {
         "0": "Kode Material",
         "1": "Nama Material",

@@ -35,8 +35,8 @@ $navbar-height: 68px;
 
 .mobile-backdrop {
   background: rgb(0 0 0 / 45%);
-  inset: 0;
   display: none;
+  inset: 0;
   opacity: 0;
   pointer-events: none;
   position: absolute;
@@ -136,7 +136,7 @@ $navbar-height: 68px;
       position: absolute;
       right: 0;
       top: 50%;
-      transform: translate(1.1rem, -50%);
+      transform: translate(1.3rem, -50%);
       transition:
         background-color 0.28s cubic-bezier(0.22, 1, 0.36, 1),
         box-shadow 0.28s cubic-bezier(0.22, 1, 0.36, 1),

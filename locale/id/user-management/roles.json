@@ -26,7 +26,8 @@
       "items": "item",
       "page": "halaman"
     },
-    "searchPlaceholder": "Cari di Tabel"
+    "searchPlaceholder": "Cari di Tabel",
+    "searchFilter": "Cari & Filter"
   },
   "modal": {
     "delete": {

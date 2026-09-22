@@ -7,9 +7,11 @@ import {
   DownloadOutlined,
   DownOutlined,
   FileExcelOutlined,
+  InsertRowAboveOutlined,
   MoreOutlined,
   PlusOutlined,
   ScanOutlined,
+  SearchOutlined,
 } from "@ant-design/icons";
 import Button from "@sera-components/button";
 import Card from "@sera-components/card";
@@ -26,7 +28,19 @@ import { BaseType } from "@sera-types/base.type";
 import { outstandingOutgoingTypes } from "@sera-types/outstanding-outgoing.type";
 import { ROUTE } from "@sera-utils/constants/routes";
 import useCheckPermission from "@sera-utils/hooks/useCheckPermission";
-import { Col, Dropdown, Menu, message, Modal, Row, Space } from "antd";
+import { useIsMobileView } from "@sera-utils/hooks/useIsMobileView";
+import {
+  Checkbox,
+  Col,
+  Drawer,
+  Dropdown,
+  Input as AntdInput,
+  Menu,
+  message,
+  Modal,
+  Row,
+  Space,
+} from "antd";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
@@ -76,6 +90,13 @@ const OutstandingOutgoingInitialPage = () => {
   const [exporting, setExporting] = useState(false);
   const [bulkLoading, setBulkLoading] = useState<string | null>(null);
   const [isSequential, setIsSequential] = useState(false);
+
+  // mobile: search & actions pindah ke bottom drawer, header tetap ringkas
+  const isMobile = useIsMobileView();
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [filterDraft, setFilterDraft] = useState("");
+  const [columnsOpen, setColumnsOpen] = useState(false);
+  const [columnsQuery, setColumnsQuery] = useState("");
 
   useEffect(() => {
     dispatch(
@@ -560,30 +581,185 @@ const OutstandingOutgoingInitialPage = () => {
 
   // kolom dihitung langsung di render (hook useTranslation di dalam Columns)
   const dnListColumns = DnListColumns(rowHandlers);
+  const COLUMN_KEYS = (dnListColumns ?? []).filter((_c: any) => !_c?.exception);
+  const [showColumns, setShowColumns] = useState<string[]>(
+    COLUMN_KEYS.map((_c: any) => _c?.key),
+  );
+
+  // ---- mobile drawer handlers (reuse existing search/action logic) ----
+  const applyFilter = () => {
+    setListOptions((prevState: any) => ({
+      ...prevState,
+      search: filterDraft || undefined,
+      searchBy: filterDraft ? searchBy : undefined,
+      page: 1,
+    }));
+    setFilterOpen(false);
+  };
+
+  const resetFilter = () => {
+    setFilterDraft("");
+    setSearchBy(INIT_SEARCH_BY);
+    setListOptions((prevState: any) => ({
+      ...prevState,
+      search: null,
+      searchBy: undefined,
+      page: 1,
+    }));
+    setFilterOpen(false);
+  };
+
+  // seluruh aksi toolbar desktop — item & disabled-logic sama
+  const toggleColumn = (key: string, checked: boolean) =>
+    setShowColumns((prev) =>
+      checked ? [...prev, key] : prev.filter((k) => k !== key),
+    );
+
+  const columnOptions = COLUMN_KEYS.filter((_item: any) =>
+    String(_item?.title ?? "")
+      .toLowerCase()
+      .includes(columnsQuery.toLowerCase()),
+  );
+
+  const mobileActionItems = [
+    ...(isUpdate
+      ? [
+          {
+            key: "confirm",
+            icon: <CheckOutlined />,
+            label: t("table.button.confirm"),
+            disabled: !selectedIds.length || !hasDraft,
+          },
+        ]
+      : []),
+    ...(isDelete
+      ? [
+          {
+            key: "delete",
+            icon: <DeleteOutlined />,
+            label: t("table.button.delete"),
+            danger: true,
+            disabled: !hasDraft,
+          },
+        ]
+      : []),
+    ...(isUpdate
+      ? [
+          {
+            key: "cancelDo",
+            icon: <CloseCircleOutlined />,
+            label: t("table.button.cancelDo"),
+            danger: true,
+            disabled: !hasCancellation,
+          },
+        ]
+      : []),
+    ...(isUpdate && isSequential
+      ? [
+          {
+            key: "rts",
+            icon: <ScanOutlined />,
+            label: t("table.button.readyToShip"),
+            disabled: !selectedIds.length,
+          },
+        ]
+      : []),
+    ...(isRead
+      ? [
+          {
+            key: "csv",
+            icon: <DownloadOutlined />,
+            label: t("table.button.exportCsv"),
+          },
+          {
+            key: "excel",
+            icon: <FileExcelOutlined />,
+            label: t("table.button.exportExcel"),
+          },
+        ]
+      : []),
+  ];
+
+  const onMobileActionClick = ({ key }: { key: string }) => {
+    if (key === "confirm") {
+      confirmProcess("confirm", OutstandingOutgoingApi().confirmDraft);
+    } else if (key === "delete") {
+      confirmProcess("delete", OutstandingOutgoingApi().deleteOutgoing);
+    } else if (key === "cancelDo") {
+      confirmProcess("cancelDo", OutstandingOutgoingApi().confirmCancellation);
+    } else if (key === "rts") {
+      confirmReadyToShipBulk();
+    } else if (key === "csv") {
+      exportCsv();
+    } else {
+      exportExcel();
+    }
+  };
 
   return (
     // Parity LOGIS PageLayout: submenu Menu (folder-tab) + Card.Container
     // radius bawah — menempel, tanpa gap
     <>
+      {/* Mobile: bentuk tab tetap (submenu-page) — hanya tab AKTIF yang
+          tampil + satu tab dropdown (chevron) utk memilih tiga lainnya */}
       <Menu
         className="submenu-page"
         mode="horizontal"
         selectedKeys={[activeTab]}
-        onClick={({ key }: { key: string }) => setActiveTab(key as TabKey)}
-        items={[
-          { key: "dnList", label: t("tabs.dnList") },
-          { key: "dnItems", label: t("tabs.dnItems"), disabled: isSequential },
-          {
-            key: "packaging",
-            label: t("tabs.packaging"),
-            disabled: isSequential,
-          },
-          {
-            key: "shipment",
-            label: t("tabs.shipment"),
-            disabled: isSequential,
-          },
-        ]}
+        onClick={({ key }: { key: string }) => {
+          if (key !== "__tabs__") setActiveTab(key as TabKey);
+        }}
+        items={
+          isMobile
+            ? [
+                { key: activeTab, label: t(`tabs.${activeTab}`) },
+                {
+                  key: "__tabs__",
+                  label: (
+                    <Dropdown
+                      menu={{
+                        items: (
+                          [
+                            "dnList",
+                            "dnItems",
+                            "packaging",
+                            "shipment",
+                          ] as TabKey[]
+                        )
+                          .filter((k) => k !== activeTab)
+                          .map((k) => ({
+                            key: k,
+                            label: t(`tabs.${k}`),
+                            disabled: k !== "dnList" && isSequential,
+                          })),
+                        onClick: ({ key }: { key: string }) =>
+                          setActiveTab(key as TabKey),
+                      }}
+                    >
+                      <DownOutlined />
+                    </Dropdown>
+                  ),
+                },
+              ]
+            : [
+                { key: "dnList", label: t("tabs.dnList") },
+                {
+                  key: "dnItems",
+                  label: t("tabs.dnItems"),
+                  disabled: isSequential,
+                },
+                {
+                  key: "packaging",
+                  label: t("tabs.packaging"),
+                  disabled: isSequential,
+                },
+                {
+                  key: "shipment",
+                  label: t("tabs.shipment"),
+                  disabled: isSequential,
+                },
+              ]
+        }
       />
       <Card.Container bordered={false} className={styles["tab-panel"]}>
         {/* Semua pane tetap mounted (parity antd Tabs) — disembunyikan via
@@ -600,8 +776,11 @@ const OutstandingOutgoingInitialPage = () => {
         >
           <OutstandingOutgoingSummary />
           <Table
-            title={t("table.title")}
-            columns={dnListColumns}
+            title={isMobile ? undefined : t("table.title")}
+            columns={(dnListColumns ?? []).filter(
+              (_item: any) =>
+                _item?.exception || showColumns?.includes(_item?.key),
+            )}
             dataSource={list.data}
             loading={loading[outstandingOutgoingTypes.GET_OUTGOING_LIST]}
             total={list.options?.totalData ?? 0}
@@ -625,163 +804,245 @@ const OutstandingOutgoingInitialPage = () => {
             })}
             isCustomSearch
             customSearch={
-              <Row align="middle" gutter={[8, 4]}>
-                <Col flex="0 0 14rem">
-                  <Select
-                    style={{ width: "100%", minWidth: "14rem" }}
-                    id="outstanding-outgoing-search-by"
-                    defaultValue={INIT_SEARCH_BY}
-                    placeholder={t("table.search.placeholder")}
-                    onChange={(value) => handlerSelectSearchBy(value)}
-                    onClear={() => handlerSelectSearchBy("")}
-                    allowClear={false}
+              isMobile ? (
+                // mobile-only header: title + ⋯ (row 1), Search & Filter (row 2)
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 12,
+                    width: "100%",
+                  }}
+                >
+                  <div
+                    style={{
+                      alignItems: "center",
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
                   >
-                    {SearchByOptions(tOpt).map((opt) => (
-                      <Select.Option key={opt.value} value={opt.value}>
-                        {opt.label}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Col>
-                <Col flex="auto">
-                  <Input.Search
-                    loading={false}
-                    style={{ width: "100%", minWidth: "18rem" }}
-                    placeholder={t("table.search.placeholder")}
-                    onSearch={(search?: string) =>
-                      setListOptions((prevState: any) => ({
-                        ...prevState,
-                        search: search || undefined,
-                        searchBy: search ? searchBy : undefined,
-                        page: 1,
-                      }))
-                    }
-                    onClear={() =>
-                      setListOptions((prevState: any) => ({
-                        ...prevState,
-                        search: null,
-                        searchBy: undefined,
-                      }))
-                    }
-                  />
-                </Col>
-              </Row>
+                    <h3
+                      style={{
+                        fontSize: "1.7rem",
+                        fontWeight: 600,
+                        margin: 0,
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {t("table.title")}
+                    </h3>
+                    <Dropdown
+                      menu={{
+                        items: mobileActionItems,
+                        onClick: onMobileActionClick,
+                      }}
+                    >
+                      <Button
+                        aria-label={t("table.button.moreActions")}
+                        icon={<MoreOutlined />}
+                        loading={bulkLoading != null}
+                      />
+                    </Dropdown>
+                  </div>
+
+                  <div style={{ display: "flex", gap: 8 }}>
+                    <Button
+                      block
+                      icon={<SearchOutlined />}
+                      onClick={() => {
+                        setFilterDraft(
+                          ((listOptions as any)?.search as string) ?? "",
+                        );
+                        setFilterOpen(true);
+                      }}
+                    >
+                      {t("table.button.searchFilter")}
+                    </Button>
+                    <Button
+                      block
+                      icon={<InsertRowAboveOutlined />}
+                      onClick={() => setColumnsOpen(true)}
+                    >
+                      Columns
+                    </Button>
+                  </div>
+
+                  {isCreate && (
+                    <Button
+                      block
+                      type="primary"
+                      icon={<PlusOutlined />}
+                      onClick={() =>
+                        router.push(ROUTE.PLAN_OUTGOING.INPUT_OUTGOING)
+                      }
+                    >
+                      {t("table.button.inputOutgoing")}
+                    </Button>
+                  )}
+                </div>
+              ) : (
+                <Row align="middle" gutter={[8, 4]}>
+                  <Col flex="0 0 14rem">
+                    <Select
+                      style={{ width: "100%", minWidth: "14rem" }}
+                      id="outstanding-outgoing-search-by"
+                      defaultValue={INIT_SEARCH_BY}
+                      placeholder={t("table.search.placeholder")}
+                      onChange={(value) => handlerSelectSearchBy(value)}
+                      onClear={() => handlerSelectSearchBy("")}
+                      allowClear={false}
+                    >
+                      {SearchByOptions(tOpt).map((opt) => (
+                        <Select.Option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </Select.Option>
+                      ))}
+                    </Select>
+                  </Col>
+                  <Col flex="auto">
+                    <Input.Search
+                      loading={false}
+                      style={{ width: "100%", minWidth: "18rem" }}
+                      placeholder={t("table.search.placeholder")}
+                      onSearch={(search?: string) =>
+                        setListOptions((prevState: any) => ({
+                          ...prevState,
+                          search: search || undefined,
+                          searchBy: search ? searchBy : undefined,
+                          page: 1,
+                        }))
+                      }
+                      onClear={() =>
+                        setListOptions((prevState: any) => ({
+                          ...prevState,
+                          search: null,
+                          searchBy: undefined,
+                        }))
+                      }
+                    />
+                  </Col>
+                </Row>
+              )
             }
             actions={
-              <Space wrap>
-                {isCreate && (
-                  <Button
-                    type="primary"
-                    icon={<PlusOutlined />}
-                    onClick={() =>
-                      router.push(ROUTE.PLAN_OUTGOING.INPUT_OUTGOING)
-                    }
-                  >
-                    {t("table.button.inputOutgoing")}
-                  </Button>
-                )}
-                {isUpdate && (
-                  <Button
-                    icon={<CheckOutlined />}
-                    loading={bulkLoading === "confirm"}
-                    disabled={!selectedIds.length || !hasDraft}
-                    onClick={() =>
-                      confirmProcess(
-                        "confirm",
-                        OutstandingOutgoingApi().confirmDraft,
-                      )
-                    }
-                  >
-                    {t("table.button.confirm")}
-                  </Button>
-                )}
-                {(isDelete || isUpdate) && (
-                  <Dropdown
-                    menu={{
-                      items: [
-                        ...(isDelete
-                          ? [
-                              {
-                                key: "delete",
-                                icon: <DeleteOutlined />,
-                                label: t("table.button.delete"),
-                                danger: true,
-                                disabled: !hasDraft,
-                              },
-                            ]
-                          : []),
-                        ...(isUpdate
-                          ? [
-                              {
-                                key: "cancelDo",
-                                icon: <CloseCircleOutlined />,
-                                label: t("table.button.cancelDo"),
-                                danger: true,
-                                disabled: !hasCancellation,
-                              },
-                            ]
-                          : []),
-                      ],
-                      onClick: ({ key }: { key: string }) =>
-                        key === "delete"
-                          ? confirmProcess(
-                              "delete",
-                              OutstandingOutgoingApi().deleteOutgoing,
-                            )
-                          : confirmProcess(
-                              "cancelDo",
-                              OutstandingOutgoingApi().confirmCancellation,
-                            ),
-                    }}
-                  >
+              isMobile ? null : (
+                <Space wrap>
+                  {isCreate && (
                     <Button
-                      danger
-                      icon={<MoreOutlined />}
-                      loading={
-                        bulkLoading === "delete" || bulkLoading === "cancelDo"
+                      type="primary"
+                      icon={<PlusOutlined />}
+                      onClick={() =>
+                        router.push(ROUTE.PLAN_OUTGOING.INPUT_OUTGOING)
                       }
-                      disabled={!selectedIds.length}
                     >
-                      {t("table.button.moreActions")} <DownOutlined />
+                      {t("table.button.inputOutgoing")}
                     </Button>
-                  </Dropdown>
-                )}
-                {isUpdate && isSequential && (
-                  <Button
-                    type="primary"
-                    icon={<ScanOutlined />}
-                    loading={bulkLoading === "status"}
-                    disabled={!selectedIds.length}
-                    onClick={confirmReadyToShipBulk}
-                  >
-                    {t("table.button.readyToShip")}
-                  </Button>
-                )}
-                {isRead && (
-                  <Dropdown
-                    menu={{
-                      items: [
-                        {
-                          key: "csv",
-                          icon: <DownloadOutlined />,
-                          label: t("table.button.exportCsv"),
-                        },
-                        {
-                          key: "excel",
-                          icon: <FileExcelOutlined />,
-                          label: t("table.button.exportExcel"),
-                        },
-                      ],
-                      onClick: ({ key }: { key: string }) =>
-                        key === "csv" ? exportCsv() : exportExcel(),
-                    }}
-                  >
-                    <Button icon={<DownloadOutlined />} loading={exporting}>
-                      {t("table.button.export")} <DownOutlined />
+                  )}
+                  {isUpdate && (
+                    <Button
+                      icon={<CheckOutlined />}
+                      loading={bulkLoading === "confirm"}
+                      disabled={!selectedIds.length || !hasDraft}
+                      onClick={() =>
+                        confirmProcess(
+                          "confirm",
+                          OutstandingOutgoingApi().confirmDraft,
+                        )
+                      }
+                    >
+                      {t("table.button.confirm")}
                     </Button>
-                  </Dropdown>
-                )}
-              </Space>
+                  )}
+                  {(isDelete || isUpdate) && (
+                    <Dropdown
+                      menu={{
+                        items: [
+                          ...(isDelete
+                            ? [
+                                {
+                                  key: "delete",
+                                  icon: <DeleteOutlined />,
+                                  label: t("table.button.delete"),
+                                  danger: true,
+                                  disabled: !hasDraft,
+                                },
+                              ]
+                            : []),
+                          ...(isUpdate
+                            ? [
+                                {
+                                  key: "cancelDo",
+                                  icon: <CloseCircleOutlined />,
+                                  label: t("table.button.cancelDo"),
+                                  danger: true,
+                                  disabled: !hasCancellation,
+                                },
+                              ]
+                            : []),
+                        ],
+                        onClick: ({ key }: { key: string }) =>
+                          key === "delete"
+                            ? confirmProcess(
+                                "delete",
+                                OutstandingOutgoingApi().deleteOutgoing,
+                              )
+                            : confirmProcess(
+                                "cancelDo",
+                                OutstandingOutgoingApi().confirmCancellation,
+                              ),
+                      }}
+                    >
+                      <Button
+                        danger
+                        icon={<MoreOutlined />}
+                        loading={
+                          bulkLoading === "delete" || bulkLoading === "cancelDo"
+                        }
+                        disabled={!selectedIds.length}
+                      >
+                        {t("table.button.moreActions")} <DownOutlined />
+                      </Button>
+                    </Dropdown>
+                  )}
+                  {isUpdate && isSequential && (
+                    <Button
+                      type="primary"
+                      icon={<ScanOutlined />}
+                      loading={bulkLoading === "status"}
+                      disabled={!selectedIds.length}
+                      onClick={confirmReadyToShipBulk}
+                    >
+                      {t("table.button.readyToShip")}
+                    </Button>
+                  )}
+                  {isRead && (
+                    <Dropdown
+                      menu={{
+                        items: [
+                          {
+                            key: "csv",
+                            icon: <DownloadOutlined />,
+                            label: t("table.button.exportCsv"),
+                          },
+                          {
+                            key: "excel",
+                            icon: <FileExcelOutlined />,
+                            label: t("table.button.exportExcel"),
+                          },
+                        ],
+                        onClick: ({ key }: { key: string }) =>
+                          key === "csv" ? exportCsv() : exportExcel(),
+                      }}
+                    >
+                      <Button icon={<DownloadOutlined />} loading={exporting}>
+                        {t("table.button.export")} <DownOutlined />
+                      </Button>
+                    </Dropdown>
+                  )}
+                </Space>
+              )
             }
           />
         </div>
@@ -809,6 +1070,157 @@ const OutstandingOutgoingInitialPage = () => {
           />
         </div>
       </Card.Container>
+
+      {/* Mobile bottom sheet — reuse search state di atas */}
+      <Drawer
+        title={t("table.button.searchFilter")}
+        placement="bottom"
+        height="auto"
+        open={filterOpen}
+        onClose={() => setFilterOpen(false)}
+        styles={{
+          content: {
+            borderTopLeftRadius: 16,
+            borderTopRightRadius: 16,
+          },
+        }}
+        footer={
+          <Space style={{ display: "flex", justifyContent: "flex-end" }}>
+            <Button onClick={resetFilter}>Reset</Button>
+            <Button type="primary" onClick={applyFilter}>
+              Search
+            </Button>
+          </Space>
+        }
+      >
+        <div
+          aria-hidden
+          style={{
+            background: "#d0d5dd",
+            borderRadius: 999,
+            height: 4,
+            margin: "0 auto 12px",
+            width: 36,
+          }}
+        />
+        <Space direction="vertical" size={16} style={{ width: "100%" }}>
+          <Select
+            style={{ width: "100%" }}
+            id="outstanding-outgoing-search-by-mobile"
+            value={searchBy}
+            placeholder={t("table.search.placeholder")}
+            onChange={(value) => {
+              handlerSelectSearchBy(value);
+              setFilterDraft("");
+            }}
+            onClear={() => handlerSelectSearchBy("")}
+            allowClear={false}
+          >
+            {SearchByOptions(tOpt).map((opt) => (
+              <Select.Option key={opt.value} value={opt.value}>
+                {opt.label}
+              </Select.Option>
+            ))}
+          </Select>
+          {/* sera Input tidak sinkron saat value direset ke "" — pakai antd
+              Input mentah; submit via tombol Search di footer drawer */}
+          <AntdInput
+            allowClear
+            prefix={<SearchOutlined />}
+            style={{ width: "100%" }}
+            placeholder={t("table.search.placeholder")}
+            value={filterDraft}
+            onChange={(e) => setFilterDraft(e.target.value)}
+            onPressEnter={applyFilter}
+          />
+        </Space>
+      </Drawer>
+
+      <Drawer
+        title="Columns"
+        placement="bottom"
+        height="min(75vh, 560px)"
+        open={columnsOpen}
+        onClose={() => setColumnsOpen(false)}
+        styles={{
+          body: {
+            // hanya list checkbox yang scroll — body drawer tidak
+            overflowY: "hidden",
+          },
+          content: {
+            borderTopLeftRadius: 16,
+            borderTopRightRadius: 16,
+          },
+        }}
+        footer={
+          <Space style={{ display: "flex", justifyContent: "flex-end" }}>
+            <Button
+              onClick={() =>
+                setShowColumns(COLUMN_KEYS.map((_i: any) => _i?.key))
+              }
+            >
+              Reset
+            </Button>
+            <Button type="primary" onClick={() => setColumnsOpen(false)}>
+              Apply
+            </Button>
+          </Space>
+        }
+      >
+        <div
+          aria-hidden
+          style={{
+            background: "#d0d5dd",
+            borderRadius: 999,
+            height: 4,
+            margin: "0 auto 12px",
+            width: 36,
+          }}
+        />
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 16,
+            height: "100%",
+          }}
+        >
+          <AntdInput
+            allowClear
+            prefix={<SearchOutlined />}
+            placeholder="Search..."
+            value={columnsQuery}
+            onChange={(e) => setColumnsQuery(e.target.value)}
+          />
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              flex: 1,
+              gap: 8,
+              minHeight: 0,
+              overflowY: "auto",
+              paddingBottom: 4,
+            }}
+          >
+            {columnOptions.length > 0 ? (
+              columnOptions.map((_item: any) => (
+                <Checkbox
+                  key={_item?.key}
+                  checked={showColumns.includes(_item?.key)}
+                  onChange={(e) => toggleColumn(_item?.key, e.target.checked)}
+                >
+                  {_item?.title}
+                </Checkbox>
+              ))
+            ) : (
+              <div style={{ color: "#999", fontSize: 12, textAlign: "center" }}>
+                No results found
+              </div>
+            )}
+          </div>
+        </div>
+      </Drawer>
     </>
   );
 };

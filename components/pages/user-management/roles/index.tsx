@@ -3,6 +3,7 @@ import Button from "@sera-components/button";
 import { DeleteOutlined, EditOutlined, Plus } from "@sera-components/icons";
 import Input from "@sera-components/input";
 import Modal from "@sera-components/modal";
+import MobileTableHeader from "@sera-components/pages/plan-outgoing/outstanding-outgoing/mobile-table-header";
 import Select from "@sera-components/select";
 import Table from "@sera-components/table";
 import Typography from "@sera-components/typography";
@@ -18,8 +19,10 @@ import { ROUTE } from "@sera-utils/constants/routes";
 import FormatUtils from "@sera-utils/format";
 import useCheckPermission from "@sera-utils/hooks/useCheckPermission";
 import useErrorHandler from "@sera-utils/hooks/useErrorHandler";
+import { useIsMobileView } from "@sera-utils/hooks/useIsMobileView";
 import { Col, Row } from "antd";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -47,6 +50,8 @@ const Roles = (props: RolesProps) => {
   const { t } = useTranslation(undefined, { keyPrefix: "roles" });
   const menuLink = ROUTE.USER_MANAGEMENT.ROLES;
   const { isCreate, isUpdate, isDelete } = useCheckPermission({ menuLink });
+  const isMobile = useIsMobileView();
+  const router = useRouter();
 
   const { isApiResponse, sendErrorHandlerApi, sendErrorHandler } =
     useErrorHandler("/components/user-management/roles/index");
@@ -247,72 +252,109 @@ const Roles = (props: RolesProps) => {
       {dataSource && (
         <Table
           dataSource={dataSource}
-          columns={COLUMNS}
           current={Number(roleOptions?.page)}
           pageSize={roleOptions?.limit}
           total={roleOptions?.totalData ?? 0}
           rowKey={(row: Role) => `${row.no}`}
           loading={loading[roleTypes.GET_ROLES]}
-          title={t("table.title")}
-          scroll={{ x: 1000 }}
+          title={isMobile ? undefined : t("table.title")}
+          scroll={isMobile ? { x: 420 } : { x: 1000 }}
+          columns={
+            isMobile
+              ? (COLUMNS.filter((c) =>
+                  ["no", "roleName", "operation"].includes(String(c.key)),
+                ) as any)
+              : (COLUMNS as any)
+          }
           onPageChange={onPageChangeListener}
           onTableChange={onTableChangeListener}
           isCustomSearch
           multipleDelete={false}
           actions={
-            <Row gutter={8}>
-              {isCreate ? (
-                <Col span={24}>
-                  <Link id="link-add-role" href={`${menuLink}/add`} passHref>
-                    <Button
-                      id="action-add"
-                      type="primary"
-                      disabled={false}
-                      icon={<Plus />}
-                      style={{ width: "100%" }}
-                    >
-                      {t("table.button.add.label")}
-                    </Button>
-                  </Link>
-                </Col>
-              ) : null}
-            </Row>
+            isMobile ? null : (
+              <Row gutter={8}>
+                {isCreate ? (
+                  <Col span={24}>
+                    <Link id="link-add-role" href={`${menuLink}/add`} passHref>
+                      <Button
+                        id="action-add"
+                        type="primary"
+                        disabled={false}
+                        icon={<Plus />}
+                        style={{ width: "100%" }}
+                      >
+                        {t("table.button.add.label")}
+                      </Button>
+                    </Link>
+                  </Col>
+                ) : null}
+              </Row>
+            )
           }
           customSearch={
-            <Row align="middle" gutter={[8, 4]}>
-              <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-                <Select
-                  id="table-select"
-                  placeholder={t("table.searchPlaceholder")}
-                  allowClear={false}
-                  defaultValue={searchByOption}
-                  onChange={(value) => onChangeSelect(value)}
-                >
-                  {SEARCH_OPTIONS.map((opt) => (
-                    <Select.Option key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Col>
+            isMobile ? (
+              <MobileTableHeader
+                title={t("table.title")}
+                selectId="table-select-mobile"
+                searchFilterLabel={t("table.searchFilter")}
+                placeholder={t("table.searchPlaceholder")}
+                searchBy={searchByOption}
+                searchByOptions={SEARCH_OPTIONS}
+                currentSearch={(rolesListOptions as any).search}
+                onSelectSearchBy={(v) =>
+                  onChangeSelect(v ?? SEARCH_OPTIONS[0].value)
+                }
+                onSearch={(search?: string) =>
+                  search
+                    ? onSearchChangeListener(search, searchByOption)
+                    : onClearSearchListener()
+                }
+                action={
+                  isCreate
+                    ? {
+                        label: t("table.button.add.label"),
+                        icon: <Plus />,
+                        onClick: () => router.push(`${menuLink}/add`),
+                      }
+                    : undefined
+                }
+              />
+            ) : (
+              <Row align="middle" gutter={[8, 4]}>
+                <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+                  <Select
+                    id="table-select"
+                    placeholder={t("table.searchPlaceholder")}
+                    allowClear={false}
+                    defaultValue={searchByOption}
+                    onChange={(value) => onChangeSelect(value)}
+                  >
+                    {SEARCH_OPTIONS.map((opt) => (
+                      <Select.Option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Col>
 
-              <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-                <Input.Search
-                  loading={false}
-                  placeholder={t("table.searchPlaceholder")}
-                  autoCompleteItems={autoComplete}
-                  onClearAutoComplete={onClearSearchListener}
-                  onSearching={(searchingVal) =>
-                    onSearchingChangeListener(searchingVal, searchByOption)
-                  }
-                  onSearch={(search) =>
-                    onSearchChangeListener(search, searchByOption)
-                  }
-                  onClear={onClearSearchListener}
-                  value={rolesAutoCompleteOptions.search ?? ""}
-                />
-              </Col>
-            </Row>
+                <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+                  <Input.Search
+                    loading={false}
+                    placeholder={t("table.searchPlaceholder")}
+                    autoCompleteItems={autoComplete}
+                    onClearAutoComplete={onClearSearchListener}
+                    onSearching={(searchingVal) =>
+                      onSearchingChangeListener(searchingVal, searchByOption)
+                    }
+                    onSearch={(search) =>
+                      onSearchChangeListener(search, searchByOption)
+                    }
+                    onClear={onClearSearchListener}
+                    value={rolesAutoCompleteOptions.search ?? ""}
+                  />
+                </Col>
+              </Row>
+            )
           }
         />
       )}

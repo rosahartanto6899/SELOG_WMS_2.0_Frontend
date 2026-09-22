@@ -27,6 +27,7 @@
     ]
   },
   "searchBar": {
+    "searchFilter": "Search & Filter",
     "placeholder": "Search",
     "dropdownOption": {
       "title": "Menu",

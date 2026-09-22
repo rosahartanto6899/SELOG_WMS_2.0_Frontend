@@ -19,12 +19,14 @@ import {
 import { BaseType } from "@sera-types/base.type";
 import { incomingReportTypes } from "@sera-types/incoming-report.type";
 import { IncomingReportListPayload } from "@sera-types/incoming-report.type";
+import { useIsMobileView } from "@sera-utils/hooks/useIsMobileView";
 import { Col, DatePicker, Dropdown, message, Row } from "antd";
 import dayjs, { Dayjs } from "dayjs";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import * as XLSX from "xlsx-js-style";
 
+import MobileTableHeader from "../../plan-outgoing/outstanding-outgoing/mobile-table-header";
 import { Columns, SearchByOptions } from "./incoming-report-props-table";
 
 const INIT_SEARCH_BY = "poDate";
@@ -162,6 +164,7 @@ const IncomingReportInitialPage = () => {
   );
 
   const [searchBy, setSearchBy] = useState(INIT_SEARCH_BY);
+  const isMobile = useIsMobileView();
   const [listOptions, setListOptions] = useState<
     BaseType & { [key: string]: any }
   >(DEFAULT_LIST_OPTIONS);
@@ -238,8 +241,16 @@ const IncomingReportInitialPage = () => {
   return (
     <Card noShadow>
       <Table
-        title={t("table.title")}
-        columns={columns}
+        title={isMobile ? undefined : t("table.title")}
+        columns={
+          isMobile
+            ? columns.filter((c: any) =>
+                ["materialCode", "materialName", "actualQty"].includes(
+                  String(c.key),
+                ),
+              )
+            : columns
+        }
         dataSource={data}
         loading={loading}
         total={options?.totalData ?? 0}
@@ -251,82 +262,127 @@ const IncomingReportInitialPage = () => {
         onTableChange={onTableChangeListener}
         isCustomSearch
         customSearch={
-          <Row align="middle" gutter={[8, 8]}>
-            <Col flex="0 0 14rem">
-              <Select
-                style={{ width: "100%" }}
-                id="incoming-report-search-by"
-                defaultValue={INIT_SEARCH_BY}
-                placeholder={t("table.search.placeholder")}
-                onChange={(value: any) => handlerSelectSearchBy(value)}
-                onClear={() => handlerSelectSearchBy("")}
-                allowClear={false}
-              >
-                {SearchByOptions().map((opt) => (
-                  <Select.Option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Col>
-            <Col flex="auto">
-              {searchBy === "poDate" ? (
-                <DatePicker.RangePicker
-                  style={{ width: "100%", minWidth: "18rem" }}
-                  value={dateRange}
-                  allowEmpty={[false, false]}
-                  onChange={onRangeChange}
-                />
-              ) : (
-                <Input.Search
-                  loading={false}
-                  style={{ width: "100%", minWidth: "18rem" }}
+          isMobile ? (
+            <MobileTableHeader
+              title={t("table.title")}
+              selectId="incoming-report-search-by-mobile"
+              searchFilterLabel={t("table.searchFilter")}
+              placeholder={t("table.search.placeholder")}
+              searchBy={searchBy}
+              searchByOptions={SearchByOptions()}
+              currentSearch={(listOptions as any).search}
+              onSelectSearchBy={handlerSelectSearchBy}
+              onSearch={(search?: string) =>
+                setListOptions((prevState: any) => ({
+                  ...prevState,
+                  search: search || undefined,
+                  searchBy: search ? searchBy : undefined,
+                  page: 1,
+                }))
+              }
+              rangeKey="poDate"
+              rangeValue={dateRange}
+              onRangeChange={onRangeChange}
+              menu={{
+                ariaLabel: t("table.button.export"),
+                items: [
+                  {
+                    key: "xlsx",
+                    icon: <FileExcelOutlined />,
+                    label: "Excel (.xlsx)",
+                  },
+                  {
+                    key: "csv",
+                    icon: <FileTextOutlined />,
+                    label: "CSV (.csv)",
+                  },
+                ],
+                onClick: ({ key }) => {
+                  if (key === "xlsx") exportExcel(data, t, subtitle);
+                  else exportCsv(data, t);
+                },
+              }}
+            />
+          ) : (
+            <Row align="middle" gutter={[8, 8]}>
+              <Col flex="0 0 14rem">
+                <Select
+                  style={{ width: "100%" }}
+                  id="incoming-report-search-by"
+                  defaultValue={INIT_SEARCH_BY}
                   placeholder={t("table.search.placeholder")}
-                  onSearch={(search?: string) =>
-                    setListOptions((prevState: any) => ({
-                      ...prevState,
-                      search: search || undefined,
-                      searchBy: search ? searchBy : undefined,
-                      page: 1,
-                    }))
-                  }
-                  onClear={() =>
-                    setListOptions((prevState: any) => ({
-                      ...prevState,
-                      search: null,
-                      searchBy: undefined,
-                    }))
-                  }
-                />
-              )}
-            </Col>
-          </Row>
+                  onChange={(value: any) => handlerSelectSearchBy(value)}
+                  onClear={() => handlerSelectSearchBy("")}
+                  allowClear={false}
+                >
+                  {SearchByOptions().map((opt) => (
+                    <Select.Option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Col>
+              <Col flex="auto">
+                {searchBy === "poDate" ? (
+                  <DatePicker.RangePicker
+                    style={{ width: "100%", minWidth: "18rem" }}
+                    value={dateRange}
+                    allowEmpty={[false, false]}
+                    onChange={onRangeChange}
+                  />
+                ) : (
+                  <Input.Search
+                    loading={false}
+                    style={{ width: "100%", minWidth: "18rem" }}
+                    placeholder={t("table.search.placeholder")}
+                    onSearch={(search?: string) =>
+                      setListOptions((prevState: any) => ({
+                        ...prevState,
+                        search: search || undefined,
+                        searchBy: search ? searchBy : undefined,
+                        page: 1,
+                      }))
+                    }
+                    onClear={() =>
+                      setListOptions((prevState: any) => ({
+                        ...prevState,
+                        search: null,
+                        searchBy: undefined,
+                      }))
+                    }
+                  />
+                )}
+              </Col>
+            </Row>
+          )
         }
         actions={
-          <Dropdown
-            menu={{
-              items: [
-                {
-                  key: "xlsx",
-                  icon: <FileExcelOutlined />,
-                  label: "Excel (.xlsx)",
+          isMobile ? null : (
+            <Dropdown
+              menu={{
+                items: [
+                  {
+                    key: "xlsx",
+                    icon: <FileExcelOutlined />,
+                    label: "Excel (.xlsx)",
+                  },
+                  {
+                    key: "csv",
+                    icon: <FileTextOutlined />,
+                    label: "CSV (.csv)",
+                  },
+                ],
+                onClick: ({ key }) => {
+                  if (key === "xlsx") exportExcel(data, t, subtitle);
+                  else exportCsv(data, t);
                 },
-                {
-                  key: "csv",
-                  icon: <FileTextOutlined />,
-                  label: "CSV (.csv)",
-                },
-              ],
-              onClick: ({ key }) => {
-                if (key === "xlsx") exportExcel(data, t, subtitle);
-                else exportCsv(data, t);
-              },
-            }}
-          >
-            <Button icon={<DownloadOutlined />}>
-              {t("table.button.export")}
-            </Button>
-          </Dropdown>
+              }}
+            >
+              <Button icon={<DownloadOutlined />}>
+                {t("table.button.export")}
+              </Button>
+            </Dropdown>
+          )
         }
       />
     </Card>

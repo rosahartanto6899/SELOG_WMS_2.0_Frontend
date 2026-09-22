@@ -14,5 +14,11 @@
 
   .header-title {
     margin: 0;
+
+    // satu baris — lebar sempit mobile: potong dgn ellipsis, bukan wrap
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }

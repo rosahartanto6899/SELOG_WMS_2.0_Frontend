@@ -973,4 +973,10 @@ svg.ant-menu-item-icon {
   .ant-modal-wrap {
     top: unset;
   }
+
+  // Form label (layout vertical) satu baris — bila terpotong sempit,
+  // label memanjang, tidak turun ke baris kedua (input/edit material, dll.)
+  .ant-form-vertical .ant-form-item-label > label {
+    white-space: nowrap;
+  }
 }

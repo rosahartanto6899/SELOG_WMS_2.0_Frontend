@@ -9,6 +9,7 @@ import {
   InsertRowAboveOutlined,
   MoreOutlined,
   PlusOutlined,
+  SearchOutlined,
 } from "@ant-design/icons";
 import Button from "@sera-components/button";
 import Card from "@sera-components/card";
@@ -30,7 +31,18 @@ import {
 } from "@sera-types/outstanding-incoming.type";
 import { ROUTE } from "@sera-utils/constants/routes";
 import useCheckPermission from "@sera-utils/hooks/useCheckPermission";
-import { Col, Dropdown, message, Modal, Row, Space } from "antd";
+import { useIsMobileView } from "@sera-utils/hooks/useIsMobileView";
+import {
+  Checkbox,
+  Col,
+  Drawer,
+  Dropdown,
+  Input as AntdInput,
+  message,
+  Modal,
+  Row,
+  Space,
+} from "antd";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useMemo, useState } from "react";
@@ -81,6 +93,13 @@ const OutstandingIncomingInitialPage = () => {
   >({ page: 1, limit: 10, order: "createdAt", sort: "desc" });
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [bulkLoading, setBulkLoading] = useState<string | null>(null);
+
+  // mobile: search & columns live in drawers, header stays compact
+  const isMobile = useIsMobileView();
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [filterDraft, setFilterDraft] = useState("");
+  const [columnsOpen, setColumnsOpen] = useState(false);
+  const [columnsQuery, setColumnsQuery] = useState("");
 
   // parity outgoing hasCancellation — Cancel PO hanya aktif bila ada baris
   // terpilih ber-status Cancellation
@@ -389,6 +408,84 @@ const OutstandingIncomingInitialPage = () => {
     });
   };
 
+  // ---- mobile drawer handlers (reuse existing search/columns state) ----
+  const applyFilter = () => {
+    setListOptions((prevState: any) => ({
+      ...prevState,
+      search: filterDraft || undefined,
+      searchBy: filterDraft ? searchBy : undefined,
+      page: 1,
+    }));
+    setFilterOpen(false);
+  };
+
+  const resetFilter = () => {
+    setFilterDraft("");
+    setSearchBy(INIT_SEARCH_BY);
+    setListOptions((prevState: any) => ({
+      ...prevState,
+      search: null,
+      searchBy: undefined,
+      page: 1,
+    }));
+    setFilterOpen(false);
+  };
+
+  const toggleColumn = (key: string, checked: boolean) =>
+    setShowColumns((prev) =>
+      checked ? [...prev, key] : prev.filter((k) => k !== key),
+    );
+
+  const mobileActionItems = [
+    ...(isUpdate
+      ? [
+          {
+            key: "confirm",
+            icon: <CheckOutlined />,
+            label: t("table.button.bulkConfirm"),
+            disabled: !selectedIds.length,
+          },
+        ]
+      : []),
+    ...(isDelete
+      ? [
+          {
+            key: "delete",
+            icon: <DeleteOutlined />,
+            label: t("table.button.bulkDelete"),
+            danger: true,
+            disabled: !selectedIds.length,
+          },
+        ]
+      : []),
+    ...(isUpdate
+      ? [
+          {
+            key: "cancel",
+            icon: <CloseCircleOutlined />,
+            label: t("table.button.confirmCancel"),
+            danger: true,
+            disabled: !hasCancellation,
+          },
+        ]
+      : []),
+  ];
+
+  const onMobileActionClick = ({ key }: { key: string }) =>
+    key === "confirm"
+      ? onConfirmDraft()
+      : key === "delete"
+        ? onDeleteBulk()
+        : onConfirmCancelBulk();
+
+  const searchByOptions = SearchByOptions();
+
+  const columnOptions = COLUMN_KEYS.filter((_item: any) =>
+    String(_item?.title ?? "")
+      .toLowerCase()
+      .includes(columnsQuery.toLowerCase()),
+  );
+
   return (
     <>
       {/* one shadow from Card.Container is enough — inner cards shadowless like other pages */}
@@ -397,7 +494,6 @@ const OutstandingIncomingInitialPage = () => {
 
         <Card noShadow>
           <Table
-            title={t("table.title")}
             columns={(Columns(handlers) ?? []).filter(
               (_item: any) =>
                 _item?.exception || showColumns?.includes(_item?.key),
@@ -417,65 +513,154 @@ const OutstandingIncomingInitialPage = () => {
               disabled: record?.status !== "Draft",
             })}
             isCustomSearch
+            title={isMobile ? undefined : t("table.title")}
             customSearch={
-              <Row align="middle" gutter={[8, 4]}>
-                <Col flex="0 0 14rem">
-                  <Select
-                    style={{ width: "100%", minWidth: "14rem" }}
-                    id="outstanding-incoming-search-by"
-                    defaultValue={INIT_SEARCH_BY}
-                    placeholder={t("table.search.placeholder")}
-                    onChange={(value) => handlerSelectSearchBy(value)}
-                    onClear={() => handlerSelectSearchBy("")}
-                    allowClear={false}
+              isMobile ? (
+                // mobile-only header: title + ⋯ (row 1), utilities (row 2),
+                // primary CTA (row 3) — hierarchy jelas, slot actions dikosongkan
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 12,
+                    width: "100%",
+                  }}
+                >
+                  <div
+                    style={{
+                      alignItems: "center",
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
                   >
-                    {SearchByOptions().map((opt) => (
-                      <Select.Option key={opt.value} value={opt.value}>
-                        {opt.label}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Col>
-                <Col flex="auto">
-                  <Input.Search
-                    loading={false}
-                    style={{ width: "100%", minWidth: "18rem" }}
-                    placeholder={t("table.search.placeholder")}
-                    onSearch={(search?: string) =>
-                      setListOptions((prevState: any) => ({
-                        ...prevState,
-                        search: search || undefined,
-                        searchBy: search ? searchBy : undefined,
-                        page: 1,
-                      }))
-                    }
-                    onClear={() =>
-                      setListOptions((prevState: any) => ({
-                        ...prevState,
-                        search: null,
-                        searchBy: undefined,
-                      }))
-                    }
-                  />
-                </Col>
-              </Row>
+                    <h3
+                      style={{
+                        fontSize: "1.7rem",
+                        fontWeight: 600,
+                        margin: 0,
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {t("table.title")}
+                    </h3>
+                    {(isUpdate || isDelete) && (
+                      <Dropdown
+                        menu={{
+                          items: mobileActionItems,
+                          onClick: onMobileActionClick,
+                        }}
+                      >
+                        <Button
+                          aria-label={t("table.button.moreActions")}
+                          icon={<MoreOutlined />}
+                          loading={
+                            bulkLoading === "confirm" ||
+                            bulkLoading === "delete" ||
+                            bulkLoading === "cancel"
+                          }
+                        />
+                      </Dropdown>
+                    )}
+                  </div>
+
+                  <div style={{ display: "flex", gap: 8 }}>
+                    <Button
+                      block
+                      icon={<SearchOutlined />}
+                      onClick={() => {
+                        setFilterDraft(
+                          ((listOptions as any)?.search as string) ?? "",
+                        );
+                        setFilterOpen(true);
+                      }}
+                    >
+                      {t("table.button.searchFilter")}
+                    </Button>
+                    <Button
+                      block
+                      icon={<InsertRowAboveOutlined />}
+                      onClick={() => setColumnsOpen(true)}
+                    >
+                      Columns
+                    </Button>
+                  </div>
+
+                  {isCreate && (
+                    <Button
+                      block
+                      type="primary"
+                      icon={<PlusOutlined />}
+                      onClick={() =>
+                        router.push(ROUTE.PLAN_INCOMING.INPUT_INCOMING)
+                      }
+                    >
+                      {t("table.button.inputIncoming")}
+                    </Button>
+                  )}
+                </div>
+              ) : (
+                <Row align="middle" gutter={[8, 4]}>
+                  <Col flex="0 0 14rem">
+                    <Select
+                      style={{ width: "100%", minWidth: "14rem" }}
+                      id="outstanding-incoming-search-by"
+                      defaultValue={INIT_SEARCH_BY}
+                      placeholder={t("table.search.placeholder")}
+                      onChange={(value) => handlerSelectSearchBy(value)}
+                      onClear={() => handlerSelectSearchBy("")}
+                      allowClear={false}
+                    >
+                      {searchByOptions.map((opt) => (
+                        <Select.Option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </Select.Option>
+                      ))}
+                    </Select>
+                  </Col>
+                  <Col flex="auto">
+                    <Input.Search
+                      loading={false}
+                      style={{ width: "100%", minWidth: "18rem" }}
+                      placeholder={t("table.search.placeholder")}
+                      onSearch={(search?: string) =>
+                        setListOptions((prevState: any) => ({
+                          ...prevState,
+                          search: search || undefined,
+                          searchBy: search ? searchBy : undefined,
+                          page: 1,
+                        }))
+                      }
+                      onClear={() =>
+                        setListOptions((prevState: any) => ({
+                          ...prevState,
+                          search: null,
+                          searchBy: undefined,
+                        }))
+                      }
+                    />
+                  </Col>
+                </Row>
+              )
             }
             actions={
-              <Row gutter={[16, 4]}>
-                <Col>
-                  <Space wrap>
-                    {isCreate && (
-                      <Button
-                        type="primary"
-                        icon={<PlusOutlined />}
-                        onClick={() =>
-                          router.push(ROUTE.PLAN_INCOMING.INPUT_INCOMING)
-                        }
-                      >
-                        {t("table.button.inputIncoming")}
-                      </Button>
-                    )}
-                    {/* Hold feature hidden for now
+              isMobile ? null : (
+                <Row gutter={[16, 4]}>
+                  <Col>
+                    <Space wrap>
+                      {isCreate && (
+                        <Button
+                          type="primary"
+                          icon={<PlusOutlined />}
+                          onClick={() =>
+                            router.push(ROUTE.PLAN_INCOMING.INPUT_INCOMING)
+                          }
+                        >
+                          {t("table.button.inputIncoming")}
+                        </Button>
+                      )}
+                      {/* Hold feature hidden for now
                   <Button
                     icon={<HolderOutlined />}
                     onClick={() => setHoldListOpen(true)}
@@ -483,61 +668,62 @@ const OutstandingIncomingInitialPage = () => {
                     {t("table.button.holdList")}
                   </Button>
                   */}
-                    {isUpdate && (
-                      <Button
-                        icon={<CheckOutlined />}
-                        loading={bulkLoading === "confirm"}
-                        disabled={!selectedIds.length}
-                        onClick={onConfirmDraft}
-                      >
-                        {t("table.button.bulkConfirm")}
-                      </Button>
-                    )}
-                    {(isDelete || isUpdate) && (
-                      <Dropdown
-                        menu={{
-                          items: [
-                            ...(isDelete
-                              ? [
-                                  {
-                                    key: "delete",
-                                    icon: <DeleteOutlined />,
-                                    label: t("table.button.bulkDelete"),
-                                    danger: true,
-                                  },
-                                ]
-                              : []),
-                            ...(isUpdate
-                              ? [
-                                  {
-                                    key: "cancel",
-                                    icon: <CloseCircleOutlined />,
-                                    label: t("table.button.confirmCancel"),
-                                    danger: true,
-                                    disabled: !hasCancellation,
-                                  },
-                                ]
-                              : []),
-                          ],
-                          onClick: ({ key }: { key: string }) =>
-                            key === "delete"
-                              ? onDeleteBulk()
-                              : onConfirmCancelBulk(),
-                        }}
-                      >
+                      {isUpdate && (
                         <Button
-                          danger
-                          icon={<MoreOutlined />}
-                          loading={
-                            bulkLoading === "delete" || bulkLoading === "cancel"
-                          }
+                          icon={<CheckOutlined />}
+                          loading={bulkLoading === "confirm"}
                           disabled={!selectedIds.length}
+                          onClick={onConfirmDraft}
                         >
-                          {t("table.button.moreActions")} <DownOutlined />
+                          {t("table.button.bulkConfirm")}
                         </Button>
-                      </Dropdown>
-                    )}
-                    {/* Create Actual feature hidden for now
+                      )}
+                      {(isDelete || isUpdate) && (
+                        <Dropdown
+                          menu={{
+                            items: [
+                              ...(isDelete
+                                ? [
+                                    {
+                                      key: "delete",
+                                      icon: <DeleteOutlined />,
+                                      label: t("table.button.bulkDelete"),
+                                      danger: true,
+                                    },
+                                  ]
+                                : []),
+                              ...(isUpdate
+                                ? [
+                                    {
+                                      key: "cancel",
+                                      icon: <CloseCircleOutlined />,
+                                      label: t("table.button.confirmCancel"),
+                                      danger: true,
+                                      disabled: !hasCancellation,
+                                    },
+                                  ]
+                                : []),
+                            ],
+                            onClick: ({ key }: { key: string }) =>
+                              key === "delete"
+                                ? onDeleteBulk()
+                                : onConfirmCancelBulk(),
+                          }}
+                        >
+                          <Button
+                            danger
+                            icon={<MoreOutlined />}
+                            loading={
+                              bulkLoading === "delete" ||
+                              bulkLoading === "cancel"
+                            }
+                            disabled={!selectedIds.length}
+                          >
+                            {t("table.button.moreActions")} <DownOutlined />
+                          </Button>
+                        </Dropdown>
+                      )}
+                      {/* Create Actual feature hidden for now
                   {isUpdate && (
                     <Button
                       type="primary"
@@ -548,32 +734,184 @@ const OutstandingIncomingInitialPage = () => {
                     </Button>
                   )}
                   */}
-                  </Space>
-                </Col>
-                <Col>
-                  <FilterDropdown
-                    options={
-                      (COLUMN_KEYS?.map((_item: any) => ({
-                        label: _item?.title,
-                        value: _item?.key,
-                      })) as AutoCompleteType[]) ?? []
-                    }
-                    selectedValues={showColumns}
-                    onChange={(_value: string[]) => setShowColumns(_value)}
-                    onReset={() =>
-                      setShowColumns(
-                        COLUMN_KEYS?.map((_item: any) => _item?.key),
-                      )
-                    }
-                    buttonLabel="Columns"
-                    icon={<InsertRowAboveOutlined />}
-                  />
-                </Col>
-              </Row>
+                    </Space>
+                  </Col>
+                  <Col>
+                    <FilterDropdown
+                      options={
+                        (COLUMN_KEYS?.map((_item: any) => ({
+                          label: _item?.title,
+                          value: _item?.key,
+                        })) as AutoCompleteType[]) ?? []
+                      }
+                      selectedValues={showColumns}
+                      onChange={(_value: string[]) => setShowColumns(_value)}
+                      onReset={() =>
+                        setShowColumns(
+                          COLUMN_KEYS?.map((_item: any) => _item?.key),
+                        )
+                      }
+                      buttonLabel="Columns"
+                      icon={<InsertRowAboveOutlined />}
+                    />
+                  </Col>
+                </Row>
+              )
             }
           />
         </Card>
       </div>
+
+      {/* Mobile bottom sheets — reuse search/columns state di atas */}
+      <Drawer
+        title={t("table.button.searchFilter")}
+        placement="bottom"
+        height="auto"
+        open={filterOpen}
+        onClose={() => setFilterOpen(false)}
+        styles={{
+          content: {
+            borderTopLeftRadius: 16,
+            borderTopRightRadius: 16,
+          },
+        }}
+        footer={
+          <Space style={{ display: "flex", justifyContent: "flex-end" }}>
+            <Button onClick={resetFilter}>Reset</Button>
+            <Button type="primary" onClick={applyFilter}>
+              Search
+            </Button>
+          </Space>
+        }
+      >
+        <div
+          aria-hidden
+          style={{
+            background: "#d0d5dd",
+            borderRadius: 999,
+            height: 4,
+            margin: "0 auto 12px",
+            width: 36,
+          }}
+        />
+        <Space direction="vertical" size={16} style={{ width: "100%" }}>
+          <Select
+            style={{ width: "100%" }}
+            id="outstanding-incoming-search-by-mobile"
+            value={searchBy}
+            placeholder={t("table.search.placeholder")}
+            onChange={(value) => {
+              handlerSelectSearchBy(value);
+              setFilterDraft("");
+            }}
+            onClear={() => handlerSelectSearchBy("")}
+            allowClear={false}
+          >
+            {searchByOptions.map((opt) => (
+              <Select.Option key={opt.value} value={opt.value}>
+                {opt.label}
+              </Select.Option>
+            ))}
+          </Select>
+          {/* sera Input tidak sinkron saat value direset ke "" — pakai antd
+              Input mentah; submit via tombol Search di footer drawer */}
+          <AntdInput
+            allowClear
+            prefix={<SearchOutlined />}
+            style={{ width: "100%" }}
+            placeholder={t("table.search.placeholder")}
+            value={filterDraft}
+            onChange={(e) => setFilterDraft(e.target.value)}
+            onPressEnter={applyFilter}
+          />
+        </Space>
+      </Drawer>
+
+      <Drawer
+        title="Columns"
+        placement="bottom"
+        height="min(75vh, 560px)"
+        open={columnsOpen}
+        onClose={() => setColumnsOpen(false)}
+        styles={{
+          body: {
+            // hanya list checkbox yang scroll — body drawer tidak
+            overflowY: "hidden",
+          },
+          content: {
+            borderTopLeftRadius: 16,
+            borderTopRightRadius: 16,
+          },
+        }}
+        footer={
+          <Space style={{ display: "flex", justifyContent: "flex-end" }}>
+            <Button
+              onClick={() =>
+                setShowColumns(COLUMN_KEYS.map((_i: any) => _i?.key))
+              }
+            >
+              Reset
+            </Button>
+            <Button type="primary" onClick={() => setColumnsOpen(false)}>
+              Apply
+            </Button>
+          </Space>
+        }
+      >
+        <div
+          aria-hidden
+          style={{
+            background: "#d0d5dd",
+            borderRadius: 999,
+            height: 4,
+            margin: "0 auto 12px",
+            width: 36,
+          }}
+        />
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 16,
+            height: "100%",
+          }}
+        >
+          <Input
+            allowClear
+            prefix={<SearchOutlined />}
+            placeholder="Search..."
+            value={columnsQuery}
+            onChange={(e) => setColumnsQuery(e.target.value)}
+          />
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 8,
+              flex: 1,
+              minHeight: 0,
+              overflowY: "auto",
+              paddingBottom: 4,
+            }}
+          >
+            {columnOptions.length > 0 ? (
+              columnOptions.map((_item: any) => (
+                <Checkbox
+                  key={_item?.key}
+                  checked={showColumns.includes(_item?.key)}
+                  onChange={(e) => toggleColumn(_item?.key, e.target.checked)}
+                >
+                  {_item?.title}
+                </Checkbox>
+              ))
+            ) : (
+              <div style={{ color: "#999", fontSize: 12, textAlign: "center" }}>
+                No results found
+              </div>
+            )}
+          </div>
+        </div>
+      </Drawer>
 
       {/* Aksi & form */}
       {holdOpen && (

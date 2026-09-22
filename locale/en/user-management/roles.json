@@ -26,7 +26,8 @@
       "items": "items",
       "page": "page"
     },
-    "searchPlaceholder": "Search in table"
+    "searchPlaceholder": "Search in table",
+    "searchFilter": "Search & Filter"
   },
   "modal": {
     "delete": {

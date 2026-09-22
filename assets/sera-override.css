@@ -641,10 +641,17 @@ html {
 }
 
 .ant-menu.ant-menu-sub > .ant-menu-item.ant-menu-item-selected {
-  background: #e3f4ff;
-  border-radius: 0.4rem 0 0 0.4rem;
-  box-shadow: inset -0.3rem 0 0 #3a8ddb;
-  height: 3.8rem;
+  background: linear-gradient(90deg, #e3f1fb 0%, #fff 100%);
+  border-radius: 0.4rem;
+  box-shadow: inset 0.25rem 0 0 #3a8ddb;
+  color: #1b507a;
+  font-weight: 600;
+}
+
+/* align non-active submenu text weight so active state reads as emphasis,
+   not size/height change (keeps antd item height + vertical rhythm intact) */
+.ant-menu.ant-menu-sub > .ant-menu-item {
+  font-weight: 400;
 }
 
 .ant-menu-inline .ant-menu-item::after,
@@ -1240,12 +1247,13 @@ html {
   }
 
   .ant-modal-wrap .ant-modal-content .ant-modal-close {
-    background-color: #fff;
     border-radius: 50%;
     box-shadow: 0 0 4px 0 rgb(128 128 128 / 19.3%);
     position: absolute;
-    right: -16px;
-    top: -20px;
+
+    /* di dalam modal — nyaris full-width di mobile, posisi luar jatuh ke luar viewport */
+    right: 8px;
+    top: 8px;
 
     @media screen and (width <= 720px) {
       align-items: center !important;

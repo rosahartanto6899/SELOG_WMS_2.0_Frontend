@@ -421,7 +421,7 @@ const InputOutgoingForm = (props: Props) => {
             <Form.Item label={t("addInfos")}>
               {addInfos.map((row, i) => (
                 <Row key={i} gutter={8} className="mb-2" align="middle">
-                  <Col span={11}>
+                  <Col xs={10} md={11}>
                     <Input
                       placeholder={t("name")}
                       maxLength={20} // batas kolom DB PlanOutgoingHeaderAddInfo.Name
@@ -435,7 +435,7 @@ const InputOutgoingForm = (props: Props) => {
                       }
                     />
                   </Col>
-                  <Col span={11}>
+                  <Col xs={10} md={11}>
                     <Input
                       placeholder={t("value")}
                       value={row.value}
@@ -448,7 +448,7 @@ const InputOutgoingForm = (props: Props) => {
                       }
                     />
                   </Col>
-                  <Col span={2}>
+                  <Col xs={4} md={2}>
                     <Button
                       type="text"
                       danger
@@ -501,6 +501,7 @@ const InputOutgoingForm = (props: Props) => {
             dataSource={materials}
             columns={materialColumns}
             pagination={false}
+            scroll={{ x: 700 }}
             locale={{ emptyText: <Empty /> }}
             expandable={{
               // Add-info LEVEL DETAIL — expand baris material
@@ -528,7 +529,7 @@ const InputOutgoingForm = (props: Props) => {
                 >
                   {(row.additionalInformation ?? [{}]).map((a, i) => (
                     <Row key={i} gutter={8} className="mb-2">
-                      <Col span={10}>
+                      <Col xs={10} md={10}>
                         <Input
                           placeholder={t("name")}
                           value={a.name}
@@ -543,7 +544,7 @@ const InputOutgoingForm = (props: Props) => {
                           }
                         />
                       </Col>
-                      <Col span={10}>
+                      <Col xs={10} md={10}>
                         <Input
                           placeholder={t("value")}
                           value={a.value}
@@ -558,7 +559,7 @@ const InputOutgoingForm = (props: Props) => {
                           }
                         />
                       </Col>
-                      <Col span={4}>
+                      <Col xs={4} md={4}>
                         <Button
                           type="text"
                           danger
@@ -603,7 +604,7 @@ const InputOutgoingForm = (props: Props) => {
       <Modal
         open={matOpen}
         title={t("pickMaterial")}
-        width={1180}
+        width="min(94vw, 1180px)"
         style={{ top: 20 }}
         okText={`${t("addMaterial")} (${matSel.length})`}
         okButtonProps={{ disabled: !matSel.length }}
@@ -682,7 +683,7 @@ const InputOutgoingForm = (props: Props) => {
             showSizeChanger: false,
             onChange: (p) => loadMat(p, matQ),
           }}
-          scroll={{ y: 420 }}
+          scroll={{ x: 520, y: 420 }}
           locale={{
             emptyText: <Empty description={t("noMaterialFound")} />,
           }}

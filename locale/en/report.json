@@ -9,6 +9,7 @@
       "search": {
         "placeholder": "Search"
       },
+      "searchFilter": "Search & Filter",
       "options": {
         "0": "PO Date",
         "1": "Material Code",
@@ -48,6 +49,7 @@
       "search": {
         "placeholder": "Search"
       },
+      "searchFilter": "Search & Filter",
       "options": {
         "0": "PO Date",
         "1": "Material Code",
@@ -87,6 +89,7 @@
       "search": {
         "placeholder": "Search"
       },
+      "searchFilter": "Search & Filter",
       "options": {
         "0": "Material Code",
         "1": "Material Name",

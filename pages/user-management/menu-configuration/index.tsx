@@ -5,6 +5,7 @@ import { Plus } from "@sera-components/icons";
 import Input from "@sera-components/input";
 import PageLayout from "@sera-components/layout/page-layout";
 import Modal from "@sera-components/modal";
+import MobileTableHeader from "@sera-components/pages/plan-outgoing/outstanding-outgoing/mobile-table-header";
 import {
   Columns,
   SearchByOptions,
@@ -21,8 +22,10 @@ import { Menu, MenuState, menuTypes } from "@sera-types/menu.type";
 import { ROUTE } from "@sera-utils/constants/routes";
 import useCheckPermission from "@sera-utils/hooks/useCheckPermission";
 import useErrorHandler from "@sera-utils/hooks/useErrorHandler";
+import { useIsMobileView } from "@sera-utils/hooks/useIsMobileView";
 import { Col, Row } from "antd";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
@@ -51,6 +54,8 @@ const MenuConfiguration = ({
   deleteMenuClear,
 }: MenuConfigurationProps) => {
   const { t } = useTranslation(undefined, { keyPrefix: "menuConfiguration" });
+  const isMobile = useIsMobileView();
+  const router = useRouter();
 
   const menuLink = ROUTE.USER_MANAGEMENT.MENU_CONFIGURATION;
   const { isCreate, isUpdate, isDelete } = useCheckPermission({ menuLink });
@@ -205,7 +210,7 @@ const MenuConfiguration = ({
       content={
         <>
           <Table
-            title={t("table.title")}
+            title={isMobile ? undefined : t("table.title")}
             searchByPlaceholder="Actions"
             className="table-secondary"
             multipleDelete={false}
@@ -234,67 +239,96 @@ const MenuConfiguration = ({
             onSearchChange={onSearchChangeListener}
             defaultExpandAllRows
             actions={
-              <Row gutter={8}>
-                {isCreate ? (
-                  <Col span={24}>
-                    <Link
-                      id="link-add-menu-configuration"
-                      href={`${menuLink}/add`}
-                      passHref
-                    >
-                      <Button
-                        id="action-add"
-                        type="primary"
-                        disabled={false}
-                        icon={<Plus />}
-                        style={{ width: "100%" }}
+              isMobile ? null : (
+                <Row gutter={8}>
+                  {isCreate ? (
+                    <Col span={24}>
+                      <Link
+                        id="link-add-menu-configuration"
+                        href={`${menuLink}/add`}
+                        passHref
                       >
-                        {t("table.button.add.label")}
-                      </Button>
-                    </Link>
-                  </Col>
-                ) : null}
-              </Row>
+                        <Button
+                          id="action-add"
+                          type="primary"
+                          disabled={false}
+                          icon={<Plus />}
+                          style={{ width: "100%" }}
+                        >
+                          {t("table.button.add.label")}
+                        </Button>
+                      </Link>
+                    </Col>
+                  ) : null}
+                </Row>
+              )
             }
             isCustomSearch
             customSearch={
-              <Row align="middle" gutter={[8, 4]}>
-                <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-                  <Select
-                    id="table-select-menu"
-                    placeholder={t("table.searchPlaceholder")}
-                    allowClear={false}
-                    value={searchByOption}
-                    onChange={(value) => onChangeSelect(value)}
-                  >
-                    {SearchByOptions().map((opt) => (
-                      <Select.Option key={opt.value} value={opt.value}>
-                        {opt.label}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Col>
+              isMobile ? (
+                <MobileTableHeader
+                  title={t("table.title")}
+                  selectId="table-select-menu-mobile"
+                  searchFilterLabel={t("table.searchFilter")}
+                  placeholder={t("table.searchPlaceholder")}
+                  searchBy={searchByOption}
+                  searchByOptions={SearchByOptions()}
+                  currentSearch={(menusListOptions as any).search}
+                  onSelectSearchBy={(v) =>
+                    onChangeSelect(v ?? SearchByOptions()[0].value)
+                  }
+                  onSearch={(search?: string) =>
+                    onSearchChangeListener(search, searchByRef.current)
+                  }
+                  action={
+                    isCreate
+                      ? {
+                          label: t("table.button.add.label"),
+                          icon: <Plus />,
+                          onClick: () => router.push(`${menuLink}/add`),
+                        }
+                      : undefined
+                  }
+                />
+              ) : (
+                <Row align="middle" gutter={[8, 4]}>
+                  <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+                    <Select
+                      id="table-select-menu"
+                      placeholder={t("table.searchPlaceholder")}
+                      allowClear={false}
+                      value={searchByOption}
+                      onChange={(value) => onChangeSelect(value)}
+                    >
+                      {SearchByOptions().map((opt) => (
+                        <Select.Option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </Select.Option>
+                      ))}
+                    </Select>
+                  </Col>
 
-                <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-                  <Input.Search
-                    loading={menus.isLoading ?? false}
-                    placeholder={t("table.searchPlaceholder")}
-                    autoCompleteItems={menus.autoComplete?.data}
-                    onClearAutoComplete={onClearSearchListener}
-                    onSearching={(searchingVal) =>
-                      onSearchingChangeListener(
-                        searchingVal,
-                        searchByRef.current,
-                      )
-                    }
-                    onSearch={(search) => {
-                      onSearchChangeListener(search, searchByRef.current);
-                    }}
-                    onClear={onClearSearchListener}
-                    value={menusAutoCompleteOptions.search ?? ""}
-                  />
-                </Col>
-              </Row>
+                  <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+                    <Input.Search
+                      loading={menus.isLoading ?? false}
+                      placeholder={t("table.searchPlaceholder")}
+                      autoCompleteItems={menus.autoComplete?.data}
+                      onClearAutoComplete={onClearSearchListener}
+                      onSearching={(searchingVal) =>
+                        onSearchingChangeListener(
+                          searchingVal,
+                          searchByRef.current,
+                        )
+                      }
+                      onSearch={(search) => {
+                        onSearchChangeListener(search, searchByRef.current);
+                      }}
+                      onClear={onClearSearchListener}
+                      value={menusAutoCompleteOptions.search ?? ""}
+                    />
+                  </Col>
+                </Row>
+              )
             }
           />
           <Modal.Confirm

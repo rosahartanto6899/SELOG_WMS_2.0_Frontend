@@ -11,6 +11,7 @@
       "search": {
         "placeholder": "Search material"
       },
+      "searchFilter": "Search & Filter",
       "options": {
         "0": "Material Code",
         "1": "Material Name",

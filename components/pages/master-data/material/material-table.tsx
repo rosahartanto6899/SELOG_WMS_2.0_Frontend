@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { PrinterOutlined } from "@ant-design/icons";
+import { MoreOutlined, PrinterOutlined } from "@ant-design/icons";
 import Button from "@sera-components/button";
 // eslint-disable-next-line import/no-named-as-default
 import { DeleteOutlined, EditOutlined, Plus } from "@sera-components/icons";
@@ -14,11 +14,27 @@ import { BaseType } from "@sera-types/base.type";
 import { Material } from "@sera-types/material.type";
 import FormatUtils from "@sera-utils/format";
 import useCheckPermission from "@sera-utils/hooks/useCheckPermission";
-import { Col, Flex, message, Modal, Row, Typography } from "antd";
+import { useIsMobileView } from "@sera-utils/hooks/useIsMobileView";
+import {
+  Checkbox,
+  Col,
+  Drawer,
+  Flex,
+  message,
+  Modal,
+  Pagination,
+  Row,
+  Space,
+  Spin,
+  Typography,
+} from "antd";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+
+import MobileTableHeader from "../../plan-outgoing/outstanding-outgoing/mobile-table-header";
 
 interface Props {
   dataSource?: Material[];
@@ -35,6 +51,8 @@ const MaterialTable = (props: Props) => {
   const { isCreate, isUpdate, isDelete } = useCheckPermission({
     menuLink: baseLink,
   });
+  const isMobile = useIsMobileView();
+  const router = useRouter();
 
   const [listOptions, setListOptions] = useState<BaseType>({
     page: 1,
@@ -45,6 +63,7 @@ const MaterialTable = (props: Props) => {
   const [searchByOption, setSearchByOption] = useState("code");
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [bulkPrintLoading, setBulkPrintLoading] = useState(false);
+  const [actionRow, setActionRow] = useState<Material | null>(null);
   const { data: session } = useSession() as any;
   const [customerName, setCustomerName] = useState<string>();
 
@@ -316,116 +335,361 @@ const MaterialTable = (props: Props) => {
     },
   ];
 
+  const toggleSelect = (id: string, checked: boolean) =>
+    setSelectedIds((prev) =>
+      checked ? [...prev, id] : prev.filter((x) => x !== id),
+    );
+
   return (
     <>
       <Flex vertical gap={24}>
-        {dataSource && (
-          <Table
-            dataSource={dataSource}
-            columns={COLUMNS}
-            current={Number(options?.page)}
-            pageSize={options?.limit}
-            total={options?.totalData ?? 0}
-            rowKey={(row: Material) => row.id ?? `${row.no}`}
-            loading={loading}
-            title={t("table.title")}
-            scroll={{ x: 1200 }}
-            onPageChange={onPageChangeListener}
-            onTableChange={onTableChangeListener}
-            isCustomSearch
-            multipleSelect
-            multipleDelete={false}
-            onSelectedRowsChange={(keys) => setSelectedIds(keys as string[])}
-            footerNote={
-              customerName && (
-                <Typography.Text type="secondary">
-                  {t("table.note.prefix")} <strong>{customerName}</strong>.
-                </Typography.Text>
-              )
-            }
-            actions={
-              <Row gutter={8}>
-                <Col>
-                  <Button
-                    id="action-bulk-print"
-                    icon={<PrinterOutlined />}
-                    loading={bulkPrintLoading}
-                    disabled={!selectedIds.length}
-                    onClick={printSelectedLabels}
-                  >
-                    {t("table.button.print.label")}
-                  </Button>
-                </Col>
-                {isCreate ? (
-                  <Col>
-                    <Link
-                      id="link-add-material"
-                      href={`${baseLink}/add`}
-                      passHref
+        {dataSource &&
+          (isMobile ? (
+            // mobile: card list per material — table 9 kolom tidak muat;
+            // tap kartu → drawer aksi, checkbox → bulk print
+            <Spin spinning={!!loading}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 16,
+                }}
+              >
+                <MobileTableHeader
+                  title={t("table.title")}
+                  selectId="table-select-mobile"
+                  searchFilterLabel={t("table.searchFilter")}
+                  placeholder={t("table.searchPlaceholder")}
+                  searchBy={searchByOption}
+                  searchByOptions={["code", "name", "brand", "category"].map(
+                    (k) => ({ value: k, label: t(`table.columns.${k}`) }),
+                  )}
+                  currentSearch={(listOptions as any).search}
+                  onSelectSearchBy={handlerSelectSearchBy}
+                  onSearch={(value?: string) =>
+                    setListOptions((prevState: BaseType) => ({
+                      ...prevState,
+                      search: value || null,
+                      searchBy: value ? searchByOption : undefined,
+                      page: 1,
+                    }))
+                  }
+                  menu={{
+                    ariaLabel: t("table.button.print.label"),
+                    items: [
+                      {
+                        key: "print",
+                        icon: <PrinterOutlined />,
+                        label: t("table.button.print.label"),
+                        disabled: !selectedIds.length,
+                      },
+                    ],
+                    onClick: () => printSelectedLabels(),
+                  }}
+                  action={
+                    isCreate
+                      ? {
+                          label: t("table.button.add.label"),
+                          icon: <Plus />,
+                          onClick: () => router.push(`${baseLink}/add`),
+                        }
+                      : undefined
+                  }
+                />
+
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 12,
+                  }}
+                >
+                  {dataSource.map((m: Material) => (
+                    <div
+                      key={m.id ?? m.code}
+                      style={{
+                        background: "#fff",
+                        border: "1px solid #f0f0f0",
+                        borderRadius: 12,
+                        display: "flex",
+                        gap: 12,
+                        padding: "12px 14px",
+                      }}
                     >
-                      <Button id="action-add" type="primary" icon={<Plus />}>
-                        {t("table.button.add.label")}
-                      </Button>
-                    </Link>
-                  </Col>
-                ) : null}
-              </Row>
-            }
-            customSearch={
-              <Row align="middle" gutter={[8, 8]}>
-                <Col xs={24} md={{ flex: "0 1 auto" }}>
-                  <Select
-                    id="table-select"
-                    className="table-search-select"
-                    style={{ width: "20rem", maxWidth: "100%" }}
-                    placeholder={t("table.searchBy")}
-                    allowClear={false}
-                    defaultValue={searchByOption}
-                    onChange={(value) => handlerSelectSearchBy(value)}
-                    onClear={() => handlerSelectSearchBy("")}
-                  >
-                    <Select.Option value="code">
-                      {t("table.columns.code")}
-                    </Select.Option>
-                    <Select.Option value="name">
-                      {t("table.columns.name")}
-                    </Select.Option>
-                    <Select.Option value="brand">
-                      {t("table.columns.brand")}
-                    </Select.Option>
-                    <Select.Option value="category">
-                      {t("table.columns.category")}
-                    </Select.Option>
-                  </Select>
-                </Col>
-                <Col xs={24} md={{ flex: "0 1 auto" }}>
-                  <Input.Search
-                    loading={!!loading}
-                    id="table-search"
-                    style={{ width: "28rem", maxWidth: "100%" }}
-                    placeholder={t("table.searchPlaceholder")}
-                    value={listOptions.search ?? ""}
-                    onClear={() =>
-                      setListOptions((prevState: BaseType) => ({
-                        ...prevState,
-                        search: null,
-                      }))
-                    }
-                    onSearch={(value) =>
-                      setListOptions((prevState: BaseType) => ({
-                        ...prevState,
-                        search: value || null,
-                        searchBy: searchByOption,
-                        page: 1,
-                      }))
-                    }
+                      <Checkbox
+                        style={{ marginTop: 4 }}
+                        checked={!!m.id && selectedIds.includes(m.id)}
+                        onChange={(e) =>
+                          m.id && toggleSelect(m.id, e.target.checked)
+                        }
+                      />
+                      <div
+                        onClick={() => setActionRow(m)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault();
+                            setActionRow(m);
+                          }
+                        }}
+                        role="button"
+                        tabIndex={0}
+                        style={{
+                          cursor: "pointer",
+                          display: "flex",
+                          flexDirection: "column",
+                          flex: 1,
+                          gap: 4,
+                          minWidth: 0,
+                        }}
+                      >
+                        <div
+                          style={{
+                            alignItems: "baseline",
+                            display: "flex",
+                            gap: 8,
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <strong
+                            style={{
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                            }}
+                          >
+                            {m.code}
+                          </strong>
+                          <MoreOutlined style={{ color: "#98a2b3" }} />
+                        </div>
+                        <div
+                          style={{
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          {m.name}
+                        </div>
+                        <div
+                          style={{
+                            color: "#667085",
+                            fontSize: 12,
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          {[m.brand, m.category, m.uoM]
+                            .filter(Boolean)
+                            .join(" · ") || "-"}
+                        </div>
+                        {(m.barcode || m.createdDate) && (
+                          <div style={{ color: "#98a2b3", fontSize: 12 }}>
+                            {[
+                              m.barcode,
+                              FormatUtils().dateTimeTransform(
+                                m.createdDate ?? "",
+                              ),
+                            ]
+                              .filter(Boolean)
+                              .join(" · ")}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {(options?.totalData ?? 0) > (options?.limit ?? 10) && (
+                  <Pagination
+                    simple
+                    size="small"
+                    style={{ textAlign: "center" }}
+                    current={Number(options?.page)}
+                    pageSize={options?.limit}
+                    total={options?.totalData ?? 0}
+                    onChange={onPageChangeListener}
                   />
-                </Col>
-              </Row>
-            }
-          />
-        )}
+                )}
+              </div>
+            </Spin>
+          ) : (
+            <Table
+              dataSource={dataSource}
+              columns={COLUMNS as any}
+              current={Number(options?.page)}
+              pageSize={options?.limit}
+              total={options?.totalData ?? 0}
+              rowKey={(row: Material) => row.id ?? `${row.no}`}
+              loading={loading}
+              title={t("table.title")}
+              scroll={{ x: 1200 }}
+              onPageChange={onPageChangeListener}
+              onTableChange={onTableChangeListener}
+              isCustomSearch
+              multipleSelect
+              multipleDelete={false}
+              onSelectedRowsChange={(keys) => setSelectedIds(keys as string[])}
+              footerNote={
+                customerName && (
+                  <Typography.Text type="secondary">
+                    {t("table.note.prefix")} <strong>{customerName}</strong>.
+                  </Typography.Text>
+                )
+              }
+              actions={
+                <Row gutter={8}>
+                  <Col>
+                    <Button
+                      id="action-bulk-print"
+                      icon={<PrinterOutlined />}
+                      loading={bulkPrintLoading}
+                      disabled={!selectedIds.length}
+                      onClick={printSelectedLabels}
+                    >
+                      {t("table.button.print.label")}
+                    </Button>
+                  </Col>
+                  {isCreate ? (
+                    <Col>
+                      <Link
+                        id="link-add-material"
+                        href={`${baseLink}/add`}
+                        passHref
+                      >
+                        <Button id="action-add" type="primary" icon={<Plus />}>
+                          {t("table.button.add.label")}
+                        </Button>
+                      </Link>
+                    </Col>
+                  ) : null}
+                </Row>
+              }
+              customSearch={
+                <Row align="middle" gutter={[8, 8]}>
+                  <Col xs={24} md={{ flex: "0 1 auto" }}>
+                    <Select
+                      id="table-select"
+                      className="table-search-select"
+                      style={{ width: "20rem", maxWidth: "100%" }}
+                      placeholder={t("table.searchBy")}
+                      allowClear={false}
+                      defaultValue={searchByOption}
+                      onChange={(value) => handlerSelectSearchBy(value)}
+                      onClear={() => handlerSelectSearchBy("")}
+                    >
+                      <Select.Option value="code">
+                        {t("table.columns.code")}
+                      </Select.Option>
+                      <Select.Option value="name">
+                        {t("table.columns.name")}
+                      </Select.Option>
+                      <Select.Option value="brand">
+                        {t("table.columns.brand")}
+                      </Select.Option>
+                      <Select.Option value="category">
+                        {t("table.columns.category")}
+                      </Select.Option>
+                    </Select>
+                  </Col>
+                  <Col xs={24} md={{ flex: "0 1 auto" }}>
+                    <Input.Search
+                      loading={!!loading}
+                      id="table-search"
+                      style={{ width: "28rem", maxWidth: "100%" }}
+                      placeholder={t("table.searchPlaceholder")}
+                      value={listOptions.search ?? ""}
+                      onClear={() =>
+                        setListOptions((prevState: BaseType) => ({
+                          ...prevState,
+                          search: null,
+                        }))
+                      }
+                      onSearch={(value) =>
+                        setListOptions((prevState: BaseType) => ({
+                          ...prevState,
+                          search: value || null,
+                          searchBy: searchByOption,
+                          page: 1,
+                        }))
+                      }
+                    />
+                  </Col>
+                </Row>
+              }
+            />
+          ))}
       </Flex>
+
+      {/* Mobile: aksi per baris via bottom sheet */}
+      <Drawer
+        open={!!actionRow}
+        placement="bottom"
+        height="auto"
+        title={actionRow?.code}
+        onClose={() => setActionRow(null)}
+        styles={{
+          content: {
+            borderTopLeftRadius: 16,
+            borderTopRightRadius: 16,
+          },
+        }}
+      >
+        <div
+          aria-hidden
+          style={{
+            background: "#d0d5dd",
+            borderRadius: 999,
+            height: 4,
+            margin: "0 auto 12px",
+            width: 36,
+          }}
+        />
+        <Space direction="vertical" size={12} style={{ width: "100%" }}>
+          <Button
+            block
+            icon={<PrinterOutlined />}
+            onClick={() => {
+              const row = actionRow;
+              setActionRow(null);
+              if (row) printLabel(row);
+            }}
+          >
+            {t("table.button.print.label")}
+          </Button>
+          {isUpdate ? (
+            <Button
+              block
+              icon={<EditOutlined />}
+              onClick={() => {
+                const row = actionRow;
+                setActionRow(null);
+                if (row?.id) router.push(`${baseLink}/edit/${row.id}`);
+              }}
+            >
+              {t("table.button.update.tooltip")}
+            </Button>
+          ) : null}
+          {isDelete ? (
+            <Button
+              block
+              danger
+              icon={<DeleteOutlined />}
+              onClick={() => {
+                const row = actionRow;
+                setActionRow(null);
+                if (row)
+                  showDeleteModal({
+                    id: row.id ?? "",
+                    name: row.name ?? "",
+                  });
+              }}
+            >
+              {t("table.button.delete.tooltip")}
+            </Button>
+          ) : null}
+        </Space>
+      </Drawer>
     </>
   );
 };

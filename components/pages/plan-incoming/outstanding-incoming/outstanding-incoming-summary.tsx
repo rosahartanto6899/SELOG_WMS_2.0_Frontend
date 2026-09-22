@@ -83,40 +83,46 @@ const OutstandingIncomingSummary = () => {
   );
 
   return (
-    <Row gutter={[16, 16]}>
-      {CARDS.map((card) => (
-        <Col key={card.key} xs={24} sm={12} md={6}>
-          <div
-            className={styles.card}
-            style={
-              {
-                "--accent-bar": card.gradient,
-                "--accent-color": card.color,
-                "--accent-tint": card.tint,
-              } as React.CSSProperties
-            }
-          >
-            <div className={styles["icon-badge"]}>{card.icon}</div>
+    // ponytail: wrapper div cuma untuk horizontal swipe di mobile (lihat .cards-scroll di scss)
+    <div className={styles["cards-scroll"]}>
+      <Row gutter={[16, 16]}>
+        {CARDS.map((card) => (
+          <Col key={card.key} xs={24} sm={12} md={6}>
+            <div
+              className={styles.card}
+              style={
+                {
+                  "--accent-bar": card.gradient,
+                  "--accent-color": card.color,
+                  "--accent-tint": card.tint,
+                } as React.CSSProperties
+              }
+            >
+              {/* struktur mengikuti docs/sample.html: header (dot + label | icon)
+                  lalu value + caption sejajar baseline, accent line 2px di bawah */}
+              <div className={styles["card-header"]}>
+                <span className={styles.label}>
+                  <span className={styles.dot} />
+                  {card.label}
+                </span>
+                <div className={styles["icon-badge"]}>{card.icon}</div>
+              </div>
 
-            <div className={styles.body}>
-              <span className={styles.label}>{card.label}</span>
-              {loading ? (
-                <Skeleton.Button
-                  active
-                  size="small"
-                  style={{ marginTop: 6, width: 48 }}
-                />
-              ) : (
-                <>
-                  <span className={styles.value}>{card.value}</span>
-                  <span className={styles.caption}>{t("deliveryNote")}</span>
-                </>
-              )}
+              <div className={styles["card-value-row"]}>
+                {loading ? (
+                  <Skeleton.Button active size="small" style={{ width: 48 }} />
+                ) : (
+                  <>
+                    <span className={styles.value}>{card.value}</span>
+                    <span className={styles.caption}>{t("deliveryNote")}</span>
+                  </>
+                )}
+              </div>
             </div>
-          </div>
-        </Col>
-      ))}
-    </Row>
+          </Col>
+        ))}
+      </Row>
+    </div>
   );
 };
 
