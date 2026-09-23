@@ -2,7 +2,7 @@
 import { PrinterOutlined } from "@ant-design/icons";
 import Table from "@sera-components/table";
 import { OutstandingIncomingDetail } from "@sera-types/outstanding-incoming.type";
-import { Button, Col, message, Modal, Row } from "antd";
+import { Button, message, Modal } from "antd";
 import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -50,6 +50,14 @@ const BarcodeLabelingForm = (props: Props) => {
   const paged = useMemo(
     () => filtered.slice((page - 1) * pageSize, page * pageSize),
     [filtered, page, pageSize],
+  );
+
+  // Referensi stabil wajib — sera Table me-reset selection tiap dataSource
+  // berubah reference, jadi map inline di JSX (array baru tiap render)
+  // membuat checkbox tidak pernah ter-centang.
+  const tableData = useMemo(
+    () => paged.map((d, i) => ({ ...d, no: (page - 1) * pageSize + i + 1 })),
+    [paged, page, pageSize],
   );
 
   const columns = useMemo(
@@ -133,7 +141,7 @@ const BarcodeLabelingForm = (props: Props) => {
           }</label></div>`,
       )
       .join("");
-    const win = window.open();
+    const win = window.open("", "_blank");
     if (!win) return;
     win.document.write(`<!DOCTYPE html><html><head><title>Print Preview</title>
 <style>
@@ -154,10 +162,32 @@ const BarcodeLabelingForm = (props: Props) => {
     .label { page-break-inside: avoid; margin: 4mm auto; width: 6cm; height: 2cm; }
   }
 </style></head><body><div id="printContent">${labels}</div>
-<script>setTimeout(function(){window.print();},300);window.onafterprint=function(){window.close();};</script>
+<script>
+  (function () {
+    var images = document.querySelectorAll("#printContent img");
+    var imagePromises = Array.from(images).map(function (img) {
+      return new Promise(function (resolve) {
+        if (img.complete) {
+          resolve();
+        } else {
+          img.onload = resolve;
+          img.onerror = resolve;
+        }
+      });
+    });
+    Promise.race([
+      Promise.all(imagePromises),
+      new Promise(function (resolve) { setTimeout(resolve, 3000); }),
+    ]).then(function () {
+      setTimeout(function () { window.print(); }, 500);
+    });
+    window.onafterprint = function () { window.close(); };
+  })();
+</script>
 </body></html>`);
     win.document.close();
-    setSelectedKeys([]);
+    // Seleksi sengaja tidak di-reset: sera Table punya state checkbox internal
+    // sendiri — reset di sini cuma mendisable button tanpa meng-uncheck box.
   };
 
   return (
@@ -170,28 +200,11 @@ const BarcodeLabelingForm = (props: Props) => {
       styles={{ body: { paddingTop: 16 } }}
       destroyOnClose
     >
-      <Row justify="end" gutter={[8, 8]} wrap style={{ marginBottom: 12 }}>
-        <Col>
-          <Button
-            type="primary"
-            icon={<PrinterOutlined />}
-            disabled={selectedKeys.length === 0}
-            onClick={print}
-          >
-            {t("print", { count: selectedKeys.length })}
-          </Button>
-        </Col>
-      </Row>
-
       <Table
         rowKey="id"
         showTitle={false}
-        showActions={false}
         columns={columns as any}
-        dataSource={paged.map((d, i) => ({
-          ...d,
-          no: (page - 1) * pageSize + i + 1,
-        }))}
+        dataSource={tableData}
         loading={loading}
         scroll={{ x: "max-content" }}
         total={filtered.length}
@@ -203,6 +216,16 @@ const BarcodeLabelingForm = (props: Props) => {
           setPage(1);
         }}
         multipleSelect
+        actions={
+          <Button
+            type="primary"
+            icon={<PrinterOutlined />}
+            disabled={selectedKeys.length === 0}
+            onClick={print}
+          >
+            {t("print", { count: selectedKeys.length })}
+          </Button>
+        }
         onSelectedRowsChange={setSelectedKeys}
         getCheckboxProps={(record: any) => ({
           disabled: !isValidBarcode(record?.materialBarcode),

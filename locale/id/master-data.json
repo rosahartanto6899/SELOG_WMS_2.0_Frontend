@@ -6,6 +6,7 @@
       "title": "Daftar Zone",
       "selectWarehouse": "Pilih warehouse",
       "searchPlaceholder": "Cari zone",
+      "searchFilter": "Cari & Filter",
       "columns": {
         "code": "Kode Zone",
         "name": "Nama Zone",
@@ -73,6 +74,7 @@
       "title": "Daftar Location",
       "selectWarehouse": "Pilih warehouse",
       "searchPlaceholder": "Cari location",
+      "searchFilter": "Cari & Filter",
       "columns": {
         "code": "Kode Location",
         "name": "Nama Location",
@@ -165,6 +167,7 @@
     "table": {
       "title": "Daftar Material",
       "searchPlaceholder": "Cari material",
+      "searchFilter": "Cari & Filter",
       "columns": {
         "code": "Kode Material",
         "name": "Nama Material",
@@ -296,6 +299,7 @@
       "title": "Daftar Material Mapping",
       "selectWarehouse": "Pilih warehouse",
       "searchPlaceholder": "Cari mapping",
+      "searchFilter": "Cari & Filter",
       "columns": {
         "materialCode": "Kode Material",
         "materialName": "Nama Material",

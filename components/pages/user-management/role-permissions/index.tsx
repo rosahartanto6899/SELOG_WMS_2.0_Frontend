@@ -3,6 +3,7 @@ import Button from "@sera-components/button";
 import { DeleteOutlined, EditOutlined, Plus } from "@sera-components/icons";
 import Input from "@sera-components/input";
 import Modal from "@sera-components/modal";
+import MobileTableHeader from "@sera-components/pages/plan-outgoing/outstanding-outgoing/mobile-table-header";
 import Select from "@sera-components/select";
 import Table from "@sera-components/table";
 import Typography from "@sera-components/typography";
@@ -21,8 +22,10 @@ import {
 import { ROUTE } from "@sera-utils/constants/routes";
 import FormatUtils from "@sera-utils/format";
 import useCheckPermission from "@sera-utils/hooks/useCheckPermission";
+import { useIsMobileView } from "@sera-utils/hooks/useIsMobileView";
 import { Col, Row } from "antd";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
@@ -145,6 +148,8 @@ const RoleMenus = ({
   const { isUpdate, isDelete, isCreate } = useCheckPermission({
     menuLink: ROUTE.USER_MANAGEMENT.ROLE,
   });
+  const isMobile = useIsMobileView();
+  const router = useRouter();
 
   const COLUMNS = [
     {
@@ -349,74 +354,112 @@ const RoleMenus = ({
       {dataSource && (
         <Table
           dataSource={dataSource}
-          columns={COLUMNS}
           current={Number(roleMenuOptions?.page)}
           pageSize={roleMenuOptions?.limit}
           total={roleMenuOptions?.totalData ?? 0}
           rowKey={(row: RoleMenu) => `${row.no}`}
           loading={loading[roleMenuTypes.GET_ROLE_MENUS] || isInitiate}
-          title={t("table.title")}
-          scroll={{ x: 1000 }}
+          title={isMobile ? undefined : t("table.title")}
+          scroll={isMobile ? { x: 480 } : { x: 1000 }}
+          columns={
+            isMobile
+              ? (COLUMNS.filter((c) =>
+                  ["no", "menuId", "operation"].includes(String(c.key)),
+                ) as any)
+              : (COLUMNS as any)
+          }
           onPageChange={onPageChangeListener}
           onTableChange={onTableChangeListener}
           isCustomSearch
           showActions
           actions={
-            <Row gutter={8}>
-              {isCreate ? (
-                <Col span={24}>
-                  <Link
-                    id="link-add-permission"
-                    href={`/user-management/role-permissions/add/${roleId}`}
-                    passHref
-                  >
-                    <Button
-                      id="action-add"
-                      type="primary"
-                      disabled={false}
-                      icon={<Plus />}
-                      style={{ width: "100%" }}
+            isMobile ? null : (
+              <Row gutter={8}>
+                {isCreate ? (
+                  <Col span={24}>
+                    <Link
+                      id="link-add-permission"
+                      href={`/user-management/role-permissions/add/${roleId}`}
+                      passHref
                     >
-                      {t("button.title")}
-                    </Button>
-                  </Link>
-                </Col>
-              ) : null}
-            </Row>
+                      <Button
+                        id="action-add"
+                        type="primary"
+                        disabled={false}
+                        icon={<Plus />}
+                        style={{ width: "100%" }}
+                      >
+                        {t("button.title")}
+                      </Button>
+                    </Link>
+                  </Col>
+                ) : null}
+              </Row>
+            )
           }
           customSearch={
-            <Row align="middle" gutter={[8, 4]}>
-              <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-                <Select
-                  id="role-permission-category"
-                  defaultValue="menu"
-                  placeholder={t("searchBar.dropdownOption.placeholder")}
-                  allowClear={false}
-                >
-                  {SEARCH_OPTIONS.map((opt) => (
-                    <Select.Option key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Col>
+            isMobile ? (
+              <MobileTableHeader
+                title={t("table.title")}
+                selectId="role-permission-category-mobile"
+                searchFilterLabel={t("searchBar.searchFilter")}
+                placeholder={t("searchBar.placeholder")}
+                searchBy="menu"
+                searchByOptions={SEARCH_OPTIONS}
+                currentSearch={roleMenusListOptions.search || undefined}
+                onSelectSearchBy={() => undefined}
+                onSearch={(search?: string) =>
+                  search
+                    ? onSearchChangeListener(search, "menu")
+                    : onClearSearchListener()
+                }
+                action={
+                  isCreate && roleId
+                    ? {
+                        label: t("button.title"),
+                        icon: <Plus />,
+                        onClick: () =>
+                          router.push(
+                            `/user-management/role-permissions/add/${roleId}`,
+                          ),
+                      }
+                    : undefined
+                }
+              />
+            ) : (
+              <Row align="middle" gutter={[8, 4]}>
+                <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+                  <Select
+                    id="role-permission-category"
+                    defaultValue="menu"
+                    placeholder={t("searchBar.dropdownOption.placeholder")}
+                    allowClear={false}
+                  >
+                    {SEARCH_OPTIONS.map((opt) => (
+                      <Select.Option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Col>
 
-              <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-                <Input.Search
-                  loading={false}
-                  placeholder={t("searchBar.placeholder")}
-                  autoCompleteItems={autoComplete}
-                  onClearAutoComplete={onClearAutoComplete}
-                  onSearching={(searchingVal) =>
-                    onSearchingChangeListener(searchingVal, "menu")
-                  }
-                  onSearch={(search) => {
-                    onSearchChangeListener(search, "menu");
-                  }}
-                  onClear={onClearSearchListener}
-                />
-              </Col>
-            </Row>
+                <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+                  <Input.Search
+                    loading={false}
+                    placeholder={t("searchBar.placeholder")}
+                    autoCompleteItems={autoComplete}
+                    onClearAutoComplete={onClearAutoComplete}
+                    onSearching={(searchingVal) =>
+                      onSearchingChangeListener(searchingVal, "menu")
+                    }
+                    onSearch={(search) => {
+                      onSearchChangeListener(search, "menu");
+                    }}
+                    onClear={onClearSearchListener}
+                  />
+                </Col>
+              </Row>
+            )
           }
           multipleDelete={false}
         />

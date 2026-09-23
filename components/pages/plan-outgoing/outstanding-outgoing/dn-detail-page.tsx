@@ -3,6 +3,7 @@
 import { EditOutlined } from "@ant-design/icons";
 import Button from "@sera-components/button";
 import Card from "@sera-components/card";
+import TimelineDot from "@sera-components/icons/TimelineDot";
 import Input from "@sera-components/input";
 import MaterialSearch from "@sera-components/pages/plan-incoming/outstanding-incoming/material-search";
 import Table from "@sera-components/table";
@@ -16,12 +17,21 @@ import { outstandingOutgoingTypes } from "@sera-types/outstanding-outgoing.type"
 import { ROUTE } from "@sera-utils/constants/routes";
 import FormatUtils from "@sera-utils/format";
 import useCheckPermission from "@sera-utils/hooks/useCheckPermission";
-import { Input as AntdInput, InputNumber, message, Modal, Space } from "antd";
+import { useIsMobileView } from "@sera-utils/hooks/useIsMobileView";
+import {
+  Input as AntdInput,
+  InputNumber,
+  message,
+  Modal,
+  Pagination,
+  Space,
+} from "antd";
 import { Col, Form, Row } from "antd";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import MobileTableHeader from "./mobile-table-header";
 import styles from "./outstanding-outgoing.module.scss";
 
 /** View detail DN — header info + material (+add-info kolom dinamis) +
@@ -36,6 +46,10 @@ const DnDetailPage = () => {
   const { t: tc } = useTranslation(undefined, {
     keyPrefix: "planOutgoing.outstandingOutgoing.confirm",
   });
+  const { t: tp } = useTranslation(undefined, {
+    keyPrefix: "planOutgoing.outstandingOutgoing",
+  });
+  const isMobile = useIsMobileView();
 
   const { isUpdate } = useCheckPermission({
     menuLink: ROUTE.PLAN_OUTGOING.OUTSTANDING_OUTGOING,
@@ -218,6 +232,10 @@ const DnDetailPage = () => {
   const historyRows = [...(history ?? [])].sort((a: any, b: any) =>
     (b.date ?? "").localeCompare(a.date ?? ""),
   );
+  const histPageRows = historyRows.slice(
+    (histPage - 1) * histPageSize,
+    histPage * histPageSize,
+  );
 
   /* Filter material utk search by + keyword (pola qi-form / detail incoming). */
   const matNeedle = matSearch.trim().toLowerCase();
@@ -313,47 +331,147 @@ const DnDetailPage = () => {
           showTitle={false}
           showActions={false}
           customSearch={
-            <MaterialSearch
-              id="dn-detail-material"
-              searchBy={matSearchBy}
-              onSearchBy={(value) => {
-                setMatSearchBy(value);
-                setMatSearch("");
-                setMatPage(1);
-              }}
-              placeholder={t("searchPlaceholder")}
-              onSearchValue={(v) => {
-                setMatSearch(v);
-                setMatPage(1);
-              }}
-              options={["materialCode", "materialName", "materialBrand"].map(
-                (k) => ({ value: k, label: t(k) }),
-              )}
-            />
+            isMobile ? (
+              <MobileTableHeader
+                selectId="dn-detail-material-mobile"
+                searchFilterLabel={tp("table.button.searchFilter")}
+                placeholder={t("searchPlaceholder")}
+                searchBy={matSearchBy}
+                searchByOptions={[
+                  "materialCode",
+                  "materialName",
+                  "materialBrand",
+                ].map((k) => ({ value: k, label: t(k) }))}
+                currentSearch={matSearch || undefined}
+                onSelectSearchBy={(value) => {
+                  setMatSearchBy(value ?? "materialCode");
+                  setMatSearch("");
+                  setMatPage(1);
+                }}
+                onSearch={(v) => {
+                  setMatSearch(v ?? "");
+                  setMatPage(1);
+                }}
+              />
+            ) : (
+              <MaterialSearch
+                id="dn-detail-material"
+                searchBy={matSearchBy}
+                onSearchBy={(value) => {
+                  setMatSearchBy(value);
+                  setMatSearch("");
+                  setMatPage(1);
+                }}
+                placeholder={t("searchPlaceholder")}
+                onSearchValue={(v) => {
+                  setMatSearch(v);
+                  setMatPage(1);
+                }}
+                options={["materialCode", "materialName", "materialBrand"].map(
+                  (k) => ({ value: k, label: t(k) }),
+                )}
+              />
+            )
           }
         />
       </Card>
 
       <Card title={t("historyTitle")}>
-        <Table
-          rowKey="id"
-          loading={loading}
-          dataSource={historyRows.slice(
-            (histPage - 1) * histPageSize,
-            histPage * histPageSize,
-          )}
-          columns={historyColumns as any}
-          total={historyRows.length}
-          current={histPage}
-          pageSize={histPageSize}
-          onPageChange={(p) => setHistPage(p)}
-          onShowSizeChange={(_, s) => {
-            setHistPageSize(s);
-            setHistPage(1);
-          }}
-          showTitle={false}
-          showActions={false}
-        />
+        {isMobile ? (
+          // timeline vertikal — 5 kolom table tidak muat di layar sempit
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            {histPageRows.map((h: any, i: number) => (
+              <div
+                key={h.id ?? i}
+                style={{
+                  display: "flex",
+                  gap: 12,
+                  padding: "12px 0",
+                  borderBottom:
+                    i < histPageRows.length - 1
+                      ? "1px solid #f0f0f0"
+                      : undefined,
+                }}
+              >
+                <div style={{ paddingTop: 6 }}>
+                  <TimelineDot />
+                </div>
+                <div
+                  style={{
+                    flex: 1,
+                    minWidth: 0,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 4,
+                  }}
+                >
+                  <div
+                    style={{
+                      alignItems: "baseline",
+                      display: "flex",
+                      gap: 8,
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <strong style={{ overflowWrap: "anywhere" }}>
+                      {h.status ?? "-"}
+                    </strong>
+                    <span
+                      className={styles["tabular-nums"]}
+                      style={{ fontSize: 12, whiteSpace: "nowrap" }}
+                    >
+                      {toDate(h.date)}
+                    </span>
+                  </div>
+                  <div style={{ color: "#667085", fontSize: 12 }}>
+                    {t("history.pic")}: {h.pic ?? "-"} ·{" "}
+                    {t("history.createdBy")}: {h.createdBy ?? "-"}
+                    {h.leadtime != null && (
+                      <>
+                        {" · "}
+                        {h.leadtime} {t("history.minutes")}
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+            {historyRows.length > histPageSize && (
+              <Pagination
+                simple
+                size="small"
+                style={{ marginTop: 12, textAlign: "center" }}
+                current={histPage}
+                pageSize={histPageSize}
+                total={historyRows.length}
+                onChange={(p, s) => {
+                  setHistPage(p);
+                  setHistPageSize(s);
+                }}
+              />
+            )}
+          </div>
+        ) : (
+          <Table
+            rowKey="id"
+            loading={loading}
+            dataSource={historyRows.slice(
+              (histPage - 1) * histPageSize,
+              histPage * histPageSize,
+            )}
+            columns={historyColumns as any}
+            total={historyRows.length}
+            current={histPage}
+            pageSize={histPageSize}
+            onPageChange={(p) => setHistPage(p)}
+            onShowSizeChange={(_, s) => {
+              setHistPageSize(s);
+              setHistPage(1);
+            }}
+            showTitle={false}
+            showActions={false}
+          />
+        )}
       </Card>
 
       <Modal

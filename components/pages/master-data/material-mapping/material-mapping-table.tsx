@@ -7,10 +7,13 @@ import { materialLocationMappingActions } from "@sera-redux";
 import { BaseType } from "@sera-types/base.type";
 import { MaterialLocationMapping } from "@sera-types/material-location-mapping.type";
 import FormatUtils from "@sera-utils/format";
+import { useIsMobileView } from "@sera-utils/hooks/useIsMobileView";
 import { Col, Flex, Row } from "antd";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+
+import MobileTableHeader from "../../plan-outgoing/outstanding-outgoing/mobile-table-header";
 
 interface Props {
   dataSource?: MaterialLocationMapping[];
@@ -33,6 +36,7 @@ const MaterialMappingTable = (props: Props) => {
     sort: "desc",
   });
   const [searchByOption, setSearchByOption] = useState("materialCode");
+  const isMobile = useIsMobileView();
   const { data: session, status: sessionStatus } = useSession() as any;
   const warehouseCode = session?.user?.warehouseCode ?? undefined;
 
@@ -110,68 +114,109 @@ const MaterialMappingTable = (props: Props) => {
   return (
     <>
       <Flex vertical gap={24}>
-        {dataSource && (
-          <Table
-            dataSource={dataSource}
-            columns={COLUMNS}
-            current={Number(options?.page)}
-            pageSize={options?.limit}
-            total={options?.totalData ?? 0}
-            rowKey={(row: MaterialLocationMapping) => `${row.no}`}
-            loading={loading}
-            title={t("title")}
-            scroll={{ x: 1100 }}
-            onPageChange={onPageChangeListener}
-            isCustomSearch
-            multipleDelete={false}
-            customSearch={
-              <Row align="middle" gutter={[8, 8]}>
-                <Col xs={24} md={{ flex: "0 1 auto" }}>
-                  <Select
-                    id="table-select"
-                    className="table-search-select"
-                    style={{ width: "20rem", maxWidth: "100%" }}
-                    placeholder={t("searchBy")}
-                    allowClear={false}
-                    defaultValue={searchByOption}
-                    onChange={(value) => handlerSelectSearchBy(value)}
-                    onClear={() => handlerSelectSearchBy("")}
-                  >
-                    <Select.Option value="materialCode">
-                      {t("columns.materialCode")}
-                    </Select.Option>
-                    <Select.Option value="locationName">
-                      {t("columns.locationName")}
-                    </Select.Option>
-                  </Select>
-                </Col>
-                <Col xs={24} md={{ flex: "0 1 auto" }}>
-                  <Input.Search
-                    loading={!!loading}
-                    id="table-search"
-                    style={{ width: "28rem", maxWidth: "100%" }}
-                    placeholder={t("searchPlaceholder")}
-                    value={listOptions.search ?? ""}
-                    onClear={() =>
-                      setListOptions((prevState: BaseType) => ({
-                        ...prevState,
-                        search: null,
-                      }))
-                    }
-                    onSearch={(value) =>
-                      setListOptions((prevState: BaseType) => ({
-                        ...prevState,
-                        search: value || null,
-                        searchBy: searchByOption,
-                        page: 1,
-                      }))
-                    }
-                  />
-                </Col>
-              </Row>
-            }
-          />
-        )}
+        {dataSource &&
+          (isMobile ? (
+            // mobile: tabel tetap ada, kolom dipadatkan (No + code +
+            // location) + search via drawer — 5 kolom 1100px tidak muat
+            <Table
+              dataSource={dataSource}
+              columns={COLUMNS.filter((c) =>
+                ["no", "materialCode", "locationName"].includes(String(c.key)),
+              )}
+              current={Number(options?.page)}
+              pageSize={options?.limit}
+              total={options?.totalData ?? 0}
+              rowKey={(row: MaterialLocationMapping) => `${row.no}`}
+              loading={loading}
+              scroll={{ x: 480 }}
+              onPageChange={onPageChangeListener}
+              isCustomSearch
+              multipleDelete={false}
+              customSearch={
+                <MobileTableHeader
+                  title={t("title")}
+                  selectId="material-mapping-search-mobile"
+                  searchFilterLabel={t("searchFilter")}
+                  placeholder={t("searchPlaceholder")}
+                  searchBy={searchByOption}
+                  searchByOptions={["materialCode", "locationName"].map(
+                    (k) => ({ value: k, label: t(`columns.${k}`) }),
+                  )}
+                  currentSearch={(listOptions as any).search}
+                  onSelectSearchBy={handlerSelectSearchBy}
+                  onSearch={(value?: string) =>
+                    setListOptions((prevState: BaseType) => ({
+                      ...prevState,
+                      search: value || null,
+                      searchBy: value ? searchByOption : undefined,
+                      page: 1,
+                    }))
+                  }
+                />
+              }
+            />
+          ) : (
+            <Table
+              dataSource={dataSource}
+              columns={COLUMNS}
+              current={Number(options?.page)}
+              pageSize={options?.limit}
+              total={options?.totalData ?? 0}
+              rowKey={(row: MaterialLocationMapping) => `${row.no}`}
+              loading={loading}
+              title={t("title")}
+              scroll={{ x: 1100 }}
+              onPageChange={onPageChangeListener}
+              isCustomSearch
+              multipleDelete={false}
+              customSearch={
+                <Row align="middle" gutter={[8, 8]}>
+                  <Col xs={24} md={{ flex: "0 1 auto" }}>
+                    <Select
+                      id="table-select"
+                      className="table-search-select"
+                      style={{ width: "20rem", maxWidth: "100%" }}
+                      placeholder={t("searchBy")}
+                      allowClear={false}
+                      defaultValue={searchByOption}
+                      onChange={(value) => handlerSelectSearchBy(value)}
+                      onClear={() => handlerSelectSearchBy("")}
+                    >
+                      <Select.Option value="materialCode">
+                        {t("columns.materialCode")}
+                      </Select.Option>
+                      <Select.Option value="locationName">
+                        {t("columns.locationName")}
+                      </Select.Option>
+                    </Select>
+                  </Col>
+                  <Col xs={24} md={{ flex: "0 1 auto" }}>
+                    <Input.Search
+                      loading={!!loading}
+                      id="table-search"
+                      style={{ width: "28rem", maxWidth: "100%" }}
+                      placeholder={t("searchPlaceholder")}
+                      value={listOptions.search ?? ""}
+                      onClear={() =>
+                        setListOptions((prevState: BaseType) => ({
+                          ...prevState,
+                          search: null,
+                        }))
+                      }
+                      onSearch={(value) =>
+                        setListOptions((prevState: BaseType) => ({
+                          ...prevState,
+                          search: value || null,
+                          searchBy: searchByOption,
+                          page: 1,
+                        }))
+                      }
+                    />
+                  </Col>
+                </Row>
+              }
+            />
+          ))}
       </Flex>
     </>
   );

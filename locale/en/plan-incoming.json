@@ -103,6 +103,7 @@
         "cancel": "Cancel",
         "confirmCancel": "Cancel PO",
         "inputIncoming": "Input Plan Incoming",
+        "searchFilter": "Search & Filter",
         "holdList": "Hold List",
         "bulkConfirm": "Confirm",
         "bulkDelete": "Delete",
@@ -422,7 +423,8 @@
       "button": {
         "view": "Detail",
         "bulkDelete": "Delete",
-        "export": "Export CSV"
+        "export": "Export CSV",
+        "searchFilter": "Search & Filter"
       },
       "column": {
         "status": "Status",

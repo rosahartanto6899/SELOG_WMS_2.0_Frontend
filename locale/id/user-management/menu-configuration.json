@@ -21,7 +21,8 @@
       "update": { "tooltip": "Edit" },
       "delete": { "tooltip": "Hapus" }
     },
-    "searchPlaceholder": "Cari di Tabel"
+    "searchPlaceholder": "Cari di Tabel",
+    "searchFilter": "Cari & Filter"
   },
   "modal": {
     "delete": {

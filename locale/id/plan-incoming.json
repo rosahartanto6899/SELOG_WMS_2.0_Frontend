@@ -103,6 +103,7 @@
         "cancel": "Cancel",
         "confirmCancel": "Cancel PO",
         "inputIncoming": "Input Plan Incoming",
+        "searchFilter": "Cari & Filter",
         "holdList": "Daftar Hold",
         "bulkConfirm": "Confirm",
         "bulkDelete": "Delete",
@@ -422,7 +423,8 @@
       "button": {
         "view": "Detail",
         "bulkDelete": "Hapus",
-        "export": "Ekspor CSV"
+        "export": "Ekspor CSV",
+        "searchFilter": "Cari & Filter"
       },
       "column": {
         "status": "Status",

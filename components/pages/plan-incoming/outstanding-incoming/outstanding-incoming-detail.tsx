@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Card from "@sera-components/card";
+import TimelineDot from "@sera-components/icons/TimelineDot";
 import Input from "@sera-components/input";
 import Table from "@sera-components/table";
 import {
@@ -9,12 +10,14 @@ import {
 } from "@sera-redux";
 import { outstandingIncomingTypes } from "@sera-types/outstanding-incoming.type";
 import FormatUtils from "@sera-utils/format";
-import { Input as AntdInput } from "antd";
+import { useIsMobileView } from "@sera-utils/hooks/useIsMobileView";
+import { Input as AntdInput, Pagination } from "antd";
 import { Col, Form, Row, Space } from "antd";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import MobileTableHeader from "../../plan-outgoing/outstanding-outgoing/mobile-table-header";
 import MaterialSearch from "./material-search";
 import styles from "./outstanding-incoming.module.scss";
 
@@ -25,6 +28,10 @@ const OutstandingIncomingDetail = () => {
   const { t } = useTranslation(undefined, {
     keyPrefix: "planIncoming.outstandingIncoming.detail",
   });
+  const { t: tp } = useTranslation(undefined, {
+    keyPrefix: "planIncoming.outstandingIncoming",
+  });
+  const isMobile = useIsMobileView();
 
   const {
     detail: { data: header, history },
@@ -157,6 +164,10 @@ const OutstandingIncomingDetail = () => {
   const historyRows = [...(history ?? [])].sort((a, b) =>
     (b.date ?? "").localeCompare(a.date ?? ""),
   );
+  const histPageRows = historyRows.slice(
+    (histPage - 1) * histPageSize,
+    histPage * histPageSize,
+  );
 
   /* Filter material utk search by + keyword (pola qi-form). */
   const matNeedle = matSearch.trim().toLowerCase();
@@ -246,46 +257,143 @@ const OutstandingIncomingDetail = () => {
           showTitle={false}
           showActions={false}
           customSearch={
-            <MaterialSearch
-              id="detail-material"
-              searchBy={matSearchBy}
-              onSearchBy={(value) => {
-                setMatSearchBy(value);
-                setMatSearch("");
-                setMatPage(1);
-              }}
-              placeholder={t("detail.searchPlaceholder")}
-              onSearchValue={(v) => {
-                setMatSearch(v);
-                setMatPage(1);
-              }}
-              options={["materialCode", "materialName", "materialBrand"].map(
-                (k) => ({ value: k, label: t(`detail.${k}`) }),
-              )}
-            />
+            isMobile ? (
+              <MobileTableHeader
+                selectId="detail-material-mobile"
+                searchFilterLabel={tp("table.button.searchFilter")}
+                placeholder={t("detail.searchPlaceholder")}
+                searchBy={matSearchBy}
+                searchByOptions={[
+                  "materialCode",
+                  "materialName",
+                  "materialBrand",
+                ].map((k) => ({ value: k, label: t(`detail.${k}`) }))}
+                currentSearch={matSearch || undefined}
+                onSelectSearchBy={(value) => {
+                  setMatSearchBy(value ?? "materialCode");
+                  setMatSearch("");
+                  setMatPage(1);
+                }}
+                onSearch={(v) => {
+                  setMatSearch(v ?? "");
+                  setMatPage(1);
+                }}
+              />
+            ) : (
+              <MaterialSearch
+                id="detail-material"
+                searchBy={matSearchBy}
+                onSearchBy={(value) => {
+                  setMatSearchBy(value);
+                  setMatSearch("");
+                  setMatPage(1);
+                }}
+                placeholder={t("detail.searchPlaceholder")}
+                onSearchValue={(v) => {
+                  setMatSearch(v);
+                  setMatPage(1);
+                }}
+                options={["materialCode", "materialName", "materialBrand"].map(
+                  (k) => ({ value: k, label: t(`detail.${k}`) }),
+                )}
+              />
+            )
           }
         />
       </Card>
       <Card title={t("detail.historyTitle")}>
-        <Table
-          rowKey="id"
-          loading={loading}
-          dataSource={historyRows.slice(
-            (histPage - 1) * histPageSize,
-            histPage * histPageSize,
-          )}
-          columns={historyColumns as any}
-          total={historyRows.length}
-          current={histPage}
-          pageSize={histPageSize}
-          onPageChange={(p) => setHistPage(p)}
-          onShowSizeChange={(_, s) => {
-            setHistPageSize(s);
-            setHistPage(1);
-          }}
-          showTitle={false}
-          showActions={false}
-        />
+        {isMobile ? (
+          // timeline vertikal — 5 kolom table tidak muat di layar sempit
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            {histPageRows.map((h: any, i: number) => (
+              <div
+                key={h.id ?? i}
+                style={{
+                  display: "flex",
+                  gap: 12,
+                  padding: "12px 0",
+                  borderBottom:
+                    i < histPageRows.length - 1
+                      ? "1px solid #f0f0f0"
+                      : undefined,
+                }}
+              >
+                <div style={{ paddingTop: 6 }}>
+                  <TimelineDot />
+                </div>
+                <div
+                  style={{
+                    flex: 1,
+                    minWidth: 0,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 4,
+                  }}
+                >
+                  <div
+                    style={{
+                      alignItems: "baseline",
+                      display: "flex",
+                      gap: 8,
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <strong style={{ overflowWrap: "anywhere" }}>
+                      {h.status ?? "-"}
+                    </strong>
+                    <span
+                      className={styles["tabular-nums"]}
+                      style={{ fontSize: 12, whiteSpace: "nowrap" }}
+                    >
+                      {toDate(h.date)}
+                    </span>
+                  </div>
+                  <div style={{ color: "#667085", fontSize: 12 }}>
+                    {t("history.pic")}: {h.pic ?? "-"} ·{" "}
+                    {t("history.createdBy")} {h.createdBy ?? "-"}
+                    {h.leadtime != null && (
+                      <>
+                        {" · "}
+                        {h.leadtime} {t("history.minutes")}
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+            {historyRows.length > histPageSize && (
+              <Pagination
+                simple
+                size="small"
+                style={{ marginTop: 12, textAlign: "center" }}
+                current={histPage}
+                pageSize={histPageSize}
+                total={historyRows.length}
+                onChange={(p, s) => {
+                  setHistPage(p);
+                  setHistPageSize(s);
+                }}
+              />
+            )}
+          </div>
+        ) : (
+          <Table
+            rowKey="id"
+            loading={loading}
+            dataSource={histPageRows}
+            columns={historyColumns as any}
+            total={historyRows.length}
+            current={histPage}
+            pageSize={histPageSize}
+            onPageChange={(p) => setHistPage(p)}
+            onShowSizeChange={(_, s) => {
+              setHistPageSize(s);
+              setHistPage(1);
+            }}
+            showTitle={false}
+            showActions={false}
+          />
+        )}
       </Card>
     </Space>
   );

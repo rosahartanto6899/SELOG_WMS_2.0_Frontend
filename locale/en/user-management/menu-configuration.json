@@ -21,7 +21,8 @@
       "update": { "tooltip": "Edit" },
       "delete": { "tooltip": "Delete" }
     },
-    "searchPlaceholder": "Search in table"
+    "searchPlaceholder": "Search in table",
+    "searchFilter": "Search & Filter"
   },
   "modal": {
     "delete": {

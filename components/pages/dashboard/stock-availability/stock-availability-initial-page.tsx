@@ -19,6 +19,7 @@ import {
 import { BaseType } from "@sera-types/base.type";
 import { stockAvailabilityTypes } from "@sera-types/stock-availability.type";
 import { ROUTE } from "@sera-utils/constants/routes";
+import { useIsMobileView } from "@sera-utils/hooks/useIsMobileView";
 import { Col, Dropdown, Row, Space, Typography } from "antd";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
@@ -26,6 +27,7 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import * as XLSX from "xlsx-js-style";
 
+import MobileTableHeader from "../../plan-outgoing/outstanding-outgoing/mobile-table-header";
 import styles from "./stock-availability.module.scss";
 import { Columns, SearchByOptions } from "./stock-availability-props-table";
 
@@ -161,6 +163,7 @@ const StockAvailabilityInitialPage = () => {
 
   const { data: session } = useSession() as any;
   const router = useRouter();
+  const isMobile = useIsMobileView();
   // parity legacy: dashboard ter-filter customer + warehouse aktif session
   const customerCode = (session?.user?.customerCode ?? "") as string;
   const warehouseCode = (session?.user?.warehouseCode ?? "") as string;
@@ -270,8 +273,17 @@ const StockAvailabilityInitialPage = () => {
 
         <Card noShadow>
           <Table
-            title={t("table.title")}
-            columns={columns}
+            title={isMobile ? undefined : t("table.title")}
+            columns={
+              isMobile
+                ? columns.filter(
+                    (c: any) =>
+                      ["materialCode", "materialName", "qtySOH"].includes(
+                        String(c.key),
+                      ) || c?.exception,
+                  )
+                : columns
+            }
             dataSource={data}
             loading={loading}
             total={options?.totalData ?? 0}
@@ -283,79 +295,124 @@ const StockAvailabilityInitialPage = () => {
             onTableChange={onTableChangeListener}
             isCustomSearch
             customSearch={
-              <Row align="middle" gutter={[8, 8]}>
-                <Col flex="0 0 12rem">
-                  <Select
-                    style={{ width: "100%" }}
-                    id="stock-availability-search-by"
-                    defaultValue={
-                      (cached?.searchBy as string) ?? INIT_SEARCH_BY
-                    }
-                    placeholder={t("table.search.placeholder")}
-                    onChange={(value: any) => handlerSelectSearchBy(value)}
-                    onClear={() => handlerSelectSearchBy("")}
-                    allowClear={false}
-                  >
-                    {SearchByOptions().map((opt) => (
-                      <Select.Option key={opt.value} value={opt.value}>
-                        {opt.label}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Col>
-                <Col flex="auto">
-                  <Input.Search
-                    loading={false}
-                    defaultValue={(cached?.search as string) ?? undefined}
-                    style={{ width: "100%", minWidth: "18rem" }}
-                    placeholder={t("table.search.placeholder")}
-                    onSearch={(search?: string) =>
-                      setListOptions((prevState: any) => ({
-                        ...prevState,
-                        search: search || undefined,
-                        searchBy: search ? searchBy : undefined,
-                        page: 1,
-                      }))
-                    }
-                    onClear={() =>
-                      setListOptions((prevState: any) => ({
-                        ...prevState,
-                        search: null,
-                        searchBy: undefined,
-                      }))
-                    }
-                  />
-                </Col>
-              </Row>
+              isMobile ? (
+                <MobileTableHeader
+                  title={t("table.title")}
+                  selectId="stock-availability-search-by-mobile"
+                  searchFilterLabel={t("table.searchFilter")}
+                  placeholder={t("table.search.placeholder")}
+                  searchBy={searchBy}
+                  searchByOptions={SearchByOptions()}
+                  currentSearch={(listOptions as any).search}
+                  onSelectSearchBy={handlerSelectSearchBy}
+                  onSearch={(search?: string) =>
+                    setListOptions((prevState: any) => ({
+                      ...prevState,
+                      search: search || undefined,
+                      searchBy: search ? searchBy : undefined,
+                      page: 1,
+                    }))
+                  }
+                  menu={{
+                    ariaLabel: t("table.button.export"),
+                    items: [
+                      {
+                        key: "xlsx",
+                        icon: <FileExcelOutlined />,
+                        label: "Excel (.xlsx)",
+                      },
+                      { key: "csv", label: "CSV (.csv)" },
+                    ],
+                    onClick: ({ key }) => {
+                      const subtitle = `${t("table.lastUpdated")}: ${
+                        options?.lastUpdated
+                          ? new Date(options.lastUpdated).toLocaleString()
+                          : "-"
+                      }${customerCode ? ` | ${customerCode}` : ""}${
+                        warehouseCode ? ` | ${warehouseCode}` : ""
+                      }`;
+                      if (key === "xlsx") exportExcel(data, t, subtitle);
+                      else exportCsv(data, t);
+                    },
+                  }}
+                />
+              ) : (
+                <Row align="middle" gutter={[8, 8]}>
+                  <Col flex="0 0 12rem">
+                    <Select
+                      style={{ width: "100%" }}
+                      id="stock-availability-search-by"
+                      defaultValue={
+                        (cached?.searchBy as string) ?? INIT_SEARCH_BY
+                      }
+                      placeholder={t("table.search.placeholder")}
+                      onChange={(value: any) => handlerSelectSearchBy(value)}
+                      onClear={() => handlerSelectSearchBy("")}
+                      allowClear={false}
+                    >
+                      {SearchByOptions().map((opt) => (
+                        <Select.Option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </Select.Option>
+                      ))}
+                    </Select>
+                  </Col>
+                  <Col flex="auto">
+                    <Input.Search
+                      loading={false}
+                      defaultValue={(cached?.search as string) ?? undefined}
+                      style={{ width: "100%", minWidth: "18rem" }}
+                      placeholder={t("table.search.placeholder")}
+                      onSearch={(search?: string) =>
+                        setListOptions((prevState: any) => ({
+                          ...prevState,
+                          search: search || undefined,
+                          searchBy: search ? searchBy : undefined,
+                          page: 1,
+                        }))
+                      }
+                      onClear={() =>
+                        setListOptions((prevState: any) => ({
+                          ...prevState,
+                          search: null,
+                          searchBy: undefined,
+                        }))
+                      }
+                    />
+                  </Col>
+                </Row>
+              )
             }
             actions={
-              <Dropdown
-                menu={{
-                  items: [
-                    {
-                      key: "xlsx",
-                      icon: <FileExcelOutlined />,
-                      label: "Excel (.xlsx)",
+              isMobile ? null : (
+                <Dropdown
+                  menu={{
+                    items: [
+                      {
+                        key: "xlsx",
+                        icon: <FileExcelOutlined />,
+                        label: "Excel (.xlsx)",
+                      },
+                      { key: "csv", label: "CSV (.csv)" },
+                    ],
+                    onClick: ({ key }) => {
+                      const subtitle = `${t("table.lastUpdated")}: ${
+                        options?.lastUpdated
+                          ? new Date(options.lastUpdated).toLocaleString()
+                          : "-"
+                      }${customerCode ? ` | ${customerCode}` : ""}${
+                        warehouseCode ? ` | ${warehouseCode}` : ""
+                      }`;
+                      if (key === "xlsx") exportExcel(data, t, subtitle);
+                      else exportCsv(data, t);
                     },
-                    { key: "csv", label: "CSV (.csv)" },
-                  ],
-                  onClick: ({ key }) => {
-                    const subtitle = `${t("table.lastUpdated")}: ${
-                      options?.lastUpdated
-                        ? new Date(options.lastUpdated).toLocaleString()
-                        : "-"
-                    }${customerCode ? ` | ${customerCode}` : ""}${
-                      warehouseCode ? ` | ${warehouseCode}` : ""
-                    }`;
-                    if (key === "xlsx") exportExcel(data, t, subtitle);
-                    else exportCsv(data, t);
-                  },
-                }}
-              >
-                <Button icon={<DownloadOutlined />}>
-                  {t("table.button.export")}
-                </Button>
-              </Dropdown>
+                  }}
+                >
+                  <Button icon={<DownloadOutlined />}>
+                    {t("table.button.export")}
+                  </Button>
+                </Dropdown>
+              )
             }
             // parity legacy createdRow: qtySOH < 0 → merah, 0 → abu-abu
             rowClassName={(record: any) =>

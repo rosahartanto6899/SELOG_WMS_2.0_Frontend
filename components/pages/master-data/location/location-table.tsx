@@ -14,11 +14,15 @@ import { BaseType } from "@sera-types/base.type";
 import { Location } from "@sera-types/location.type";
 import FormatUtils from "@sera-utils/format";
 import useCheckPermission from "@sera-utils/hooks/useCheckPermission";
+import { useIsMobileView } from "@sera-utils/hooks/useIsMobileView";
 import { Col, Flex, message, Modal, Row, Typography } from "antd";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+
+import MobileTableHeader from "../../plan-outgoing/outstanding-outgoing/mobile-table-header";
 
 interface Props {
   dataSource?: Location[];
@@ -35,6 +39,8 @@ const ZoneTable = (props: Props) => {
   const { isCreate, isUpdate, isDelete } = useCheckPermission({
     menuLink: baseLink,
   });
+  const isMobile = useIsMobileView();
+  const router = useRouter();
 
   const [listOptions, setListOptions] = useState<BaseType>({
     page: 1,
@@ -109,8 +115,10 @@ const ZoneTable = (props: Props) => {
     });
   };
 
-  // Cetak label barcode — dipakai untuk print per-baris (single) maupun bulk
-  // dari baris yang dicentang lewat checkbox.
+  // Cetak label barcode — hasil print disamakan dengan halaman material
+  // (material-table.tsx printLabels): grid label 7cm×3cm, label efektif
+  // 6cm×2cm berisi barcode di atas + kode location di bawah, lalu auto-print
+  // setelah gambar termuat dan tab tertutup sendiri.
   const printLabels = async (
     records: { barcode?: string | null; code?: string; name?: string }[],
   ) => {
@@ -138,21 +146,47 @@ const ZoneTable = (props: Props) => {
       const html = items
         .map(
           (i: any) =>
-            `<div class="label"><label class="lblCode">${i.code ?? ""}</label><img src="${i.image}"/><label class="lblName">${i.name ?? ""}</label></div>`,
+            `<div class="label"><img src="${i.image}"/><label class="lblMaterialCode">${i.code ?? ""}</label></div>`,
         )
         .join("");
       const win = window.open("", "_blank");
       win?.document.write(`<html><head><title>${t("print.title")}</title>
         <style>
-          @media print { @page { size: 62mm 40mm; margin: 0; } }
-          .label { width: 62mm; height: 40mm; text-align: center; page-break-after: always; font-family: monospace; }
-          .lblCode { font-weight: bold; font-size: 11pt; display: block; }
-          .lblName { font-size: 8pt; display: block; }
-          img { max-width: 54mm; }
-        </style></head><body>${html}</body></html>`);
+          body { margin: 0; padding: 0; background: white; }
+          #printContent { display: grid; grid-template-columns: repeat(auto-fill, 7cm); grid-auto-rows: 3cm; width: 100%; height: auto; }
+          .label { margin: 4mm auto; width: 6cm; height: 2cm; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; box-sizing: border-box; }
+          .lblMaterialCode { margin-top: 1px; }
+          .label img { width: 100%; height: 100%; object-fit: cover; margin: 10px 0 0 0; padding: 0; }
+          @media print {
+            body { margin: 0; padding: 0; width: 100%; height: 100%; background: white; }
+            #printContent { margin: 0; width: 100%; height: auto; display: grid; grid-template-columns: repeat(auto-fill, 7cm); grid-auto-rows: 3cm; gap: 2mm; }
+            .label { page-break-inside: avoid; margin: 4mm auto; width: 6cm; height: 2cm; }
+          }
+        </style></head><body>
+        <div id="printContent">${html}</div>
+        <script>
+          (function () {
+            var images = document.querySelectorAll("#printContent img");
+            var imagePromises = Array.from(images).map(function (img) {
+              return new Promise(function (resolve) {
+                if (img.complete) {
+                  resolve();
+                } else {
+                  img.onload = resolve;
+                  img.onerror = resolve;
+                }
+              });
+            });
+            Promise.race([
+              Promise.all(imagePromises),
+              new Promise(function (resolve) { setTimeout(resolve, 3000); }),
+            ]).then(function () {
+              setTimeout(function () { window.print(); }, 500);
+            });
+            window.onafterprint = function () { window.close(); };
+          })();
+        </script></body></html>`);
       win?.document.close();
-      win?.focus();
-      win?.print();
     } catch {
       message.error(t("message.printFailed"));
     }
@@ -287,35 +321,35 @@ const ZoneTable = (props: Props) => {
   ];
 
   return (
-    <>
-      <Flex vertical gap={24}>
-        {dataSource && (
-          <Table
-            dataSource={dataSource}
-            columns={COLUMNS}
-            current={Number(options?.page)}
-            pageSize={options?.limit}
-            total={options?.totalData ?? 0}
-            rowKey={(row: Location) => row.id ?? `${row.no}`}
-            loading={loading}
-            title={t("table.title")}
-            scroll={{ x: 1100 }}
-            onPageChange={onPageChangeListener}
-            onTableChange={onTableChangeListener}
-            isCustomSearch
-            multipleSelect
-            multipleDelete={false}
-            onSelectedRowsChange={(keys) => setSelectedIds(keys as string[])}
-            footerNote={
-              customerName &&
-              warehouseName && (
-                <Typography.Text type="secondary">
-                  {t("table.note.prefix")} <strong>{customerName}</strong> -{" "}
-                  <strong>{warehouseName}</strong>.
-                </Typography.Text>
-              )
-            }
-            actions={
+    <Flex vertical gap={24}>
+      {dataSource && (
+        <Table
+          dataSource={dataSource}
+          columns={COLUMNS as any}
+          current={Number(options?.page)}
+          pageSize={options?.limit}
+          total={options?.totalData ?? 0}
+          rowKey={(row: Location) => row.id ?? `${row.no}`}
+          loading={loading}
+          title={isMobile ? undefined : t("table.title")}
+          scroll={{ x: 1100 }}
+          onPageChange={onPageChangeListener}
+          onTableChange={onTableChangeListener}
+          isCustomSearch
+          multipleSelect
+          multipleDelete={false}
+          onSelectedRowsChange={(keys) => setSelectedIds(keys as string[])}
+          footerNote={
+            customerName &&
+            warehouseName && (
+              <Typography.Text type="secondary">
+                {t("table.note.prefix")} <strong>{customerName}</strong> -{" "}
+                <strong>{warehouseName}</strong>.
+              </Typography.Text>
+            )
+          }
+          actions={
+            isMobile ? null : (
               <Row gutter={8}>
                 <Col>
                   <Button
@@ -342,8 +376,53 @@ const ZoneTable = (props: Props) => {
                   </Col>
                 ) : null}
               </Row>
-            }
-            customSearch={
+            )
+          }
+          customSearch={
+            isMobile ? (
+              <MobileTableHeader
+                title={t("table.title")}
+                selectId="table-select-mobile"
+                searchFilterLabel={t("table.searchFilter")}
+                placeholder={t("table.searchPlaceholder")}
+                searchBy={searchByOption}
+                searchByOptions={["code", "name"].map((k) => ({
+                  value: k,
+                  label: t(`table.columns.${k}`),
+                }))}
+                currentSearch={(listOptions as any).search}
+                onSelectSearchBy={handlerSelectSearchBy}
+                onSearch={(value?: string) =>
+                  setListOptions((prevState: BaseType) => ({
+                    ...prevState,
+                    search: value || null,
+                    searchBy: value ? searchByOption : undefined,
+                    page: 1,
+                  }))
+                }
+                menu={{
+                  ariaLabel: t("table.button.print.label"),
+                  items: [
+                    {
+                      key: "print",
+                      icon: <PrinterOutlined />,
+                      label: t("table.button.print.label"),
+                      disabled: !selectedIds.length,
+                    },
+                  ],
+                  onClick: () => printSelectedLabels(),
+                }}
+                action={
+                  isCreate
+                    ? {
+                        label: t("table.button.add.label"),
+                        icon: <Plus />,
+                        onClick: () => router.push(`${baseLink}/add`),
+                      }
+                    : undefined
+                }
+              />
+            ) : (
               <Row align="middle" gutter={[8, 8]}>
                 <Col xs={24} md={{ flex: "0 1 auto" }}>
                   <Select
@@ -388,11 +467,11 @@ const ZoneTable = (props: Props) => {
                   />
                 </Col>
               </Row>
-            }
-          />
-        )}
-      </Flex>
-    </>
+            )
+          }
+        />
+      )}
+    </Flex>
   );
 };
 

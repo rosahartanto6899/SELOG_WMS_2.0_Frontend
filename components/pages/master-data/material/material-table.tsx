@@ -14,11 +14,15 @@ import { BaseType } from "@sera-types/base.type";
 import { Material } from "@sera-types/material.type";
 import FormatUtils from "@sera-utils/format";
 import useCheckPermission from "@sera-utils/hooks/useCheckPermission";
+import { useIsMobileView } from "@sera-utils/hooks/useIsMobileView";
 import { Col, Flex, message, Modal, Row, Typography } from "antd";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+
+import MobileTableHeader from "../../plan-outgoing/outstanding-outgoing/mobile-table-header";
 
 interface Props {
   dataSource?: Material[];
@@ -35,6 +39,8 @@ const MaterialTable = (props: Props) => {
   const { isCreate, isUpdate, isDelete } = useCheckPermission({
     menuLink: baseLink,
   });
+  const isMobile = useIsMobileView();
+  const router = useRouter();
 
   const [listOptions, setListOptions] = useState<BaseType>({
     page: 1,
@@ -105,8 +111,10 @@ const MaterialTable = (props: Props) => {
     });
   };
 
-  // Cetak label barcode — dipakai untuk print per-baris (single) maupun bulk
-  // dari baris yang dicentang lewat checkbox.
+  // Cetak label barcode — hasil print disamakan dengan CoreApp (MstMaterial.js
+  // #printBarcode + printbarcode.css/printbarcode.js): grid label 7cm×3cm,
+  // label efektif 6cm×2cm berisi barcode di atas + kode material di bawah,
+  // lalu auto-print setelah gambar termuat dan tab tertutup sendiri.
   const printLabels = async (
     records: { barcode?: string | null; code?: string; name?: string }[],
   ) => {
@@ -134,21 +142,47 @@ const MaterialTable = (props: Props) => {
       const html = items
         .map(
           (i: any) =>
-            `<div class="label"><label class="lblCode">${i.code ?? ""}</label><img src="${i.image}"/><label class="lblName">${i.name ?? ""}</label></div>`,
+            `<div class="label"><img src="${i.image}"/><label class="lblMaterialCode">${i.code ?? ""}</label></div>`,
         )
         .join("");
       const win = window.open("", "_blank");
       win?.document.write(`<html><head><title>${t("print.title")}</title>
         <style>
-          @media print { @page { size: 62mm 40mm; margin: 0; } }
-          .label { width: 62mm; height: 40mm; text-align: center; page-break-after: always; font-family: monospace; }
-          .lblCode { font-weight: bold; font-size: 11pt; display: block; }
-          .lblName { font-size: 8pt; display: block; }
-          img { max-width: 54mm; }
-        </style></head><body>${html}</body></html>`);
+          body { margin: 0; padding: 0; background: white; }
+          #printContent { display: grid; grid-template-columns: repeat(auto-fill, 7cm); grid-auto-rows: 3cm; width: 100%; height: auto; }
+          .label { margin: 4mm auto; width: 6cm; height: 2cm; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; box-sizing: border-box; }
+          .lblMaterialCode { margin-top: 1px; }
+          .label img { width: 100%; height: 100%; object-fit: cover; margin: 10px 0 0 0; padding: 0; }
+          @media print {
+            body { margin: 0; padding: 0; width: 100%; height: 100%; background: white; }
+            #printContent { margin: 0; width: 100%; height: auto; display: grid; grid-template-columns: repeat(auto-fill, 7cm); grid-auto-rows: 3cm; gap: 2mm; }
+            .label { page-break-inside: avoid; margin: 4mm auto; width: 6cm; height: 2cm; }
+          }
+        </style></head><body>
+        <div id="printContent">${html}</div>
+        <script>
+          (function () {
+            var images = document.querySelectorAll("#printContent img");
+            var imagePromises = Array.from(images).map(function (img) {
+              return new Promise(function (resolve) {
+                if (img.complete) {
+                  resolve();
+                } else {
+                  img.onload = resolve;
+                  img.onerror = resolve;
+                }
+              });
+            });
+            Promise.race([
+              Promise.all(imagePromises),
+              new Promise(function (resolve) { setTimeout(resolve, 3000); }),
+            ]).then(function () {
+              setTimeout(function () { window.print(); }, 500);
+            });
+            window.onafterprint = function () { window.close(); };
+          })();
+        </script></body></html>`);
       win?.document.close();
-      win?.focus();
-      win?.print();
     } catch {
       message.error(t("message.printFailed"));
     }
@@ -300,7 +334,7 @@ const MaterialTable = (props: Props) => {
             total={options?.totalData ?? 0}
             rowKey={(row: Material) => row.id ?? `${row.no}`}
             loading={loading}
-            title={t("table.title")}
+            title={isMobile ? undefined : t("table.title")}
             scroll={{ x: 1200 }}
             onPageChange={onPageChangeListener}
             onTableChange={onTableChangeListener}
@@ -316,84 +350,130 @@ const MaterialTable = (props: Props) => {
               )
             }
             actions={
-              <Row gutter={8}>
-                <Col>
-                  <Button
-                    id="action-bulk-print"
-                    icon={<PrinterOutlined />}
-                    loading={bulkPrintLoading}
-                    disabled={!selectedIds.length}
-                    onClick={printSelectedLabels}
-                  >
-                    {t("table.button.print.label")}
-                  </Button>
-                </Col>
-                {isCreate ? (
+              isMobile ? null : (
+                <Row gutter={8}>
                   <Col>
-                    <Link
-                      id="link-add-material"
-                      href={`${baseLink}/add`}
-                      passHref
+                    <Button
+                      id="action-bulk-print"
+                      icon={<PrinterOutlined />}
+                      loading={bulkPrintLoading}
+                      disabled={!selectedIds.length}
+                      onClick={printSelectedLabels}
                     >
-                      <Button id="action-add" type="primary" icon={<Plus />}>
-                        {t("table.button.add.label")}
-                      </Button>
-                    </Link>
+                      {t("table.button.print.label")}
+                    </Button>
                   </Col>
-                ) : null}
-              </Row>
+                  {isCreate ? (
+                    <Col>
+                      <Link
+                        id="link-add-material"
+                        href={`${baseLink}/add`}
+                        passHref
+                      >
+                        <Button id="action-add" type="primary" icon={<Plus />}>
+                          {t("table.button.add.label")}
+                        </Button>
+                      </Link>
+                    </Col>
+                  ) : null}
+                </Row>
+              )
             }
             customSearch={
-              <Row align="middle" gutter={[8, 8]}>
-                <Col xs={24} md={{ flex: "0 1 auto" }}>
-                  <Select
-                    id="table-select"
-                    className="table-search-select"
-                    style={{ width: "20rem", maxWidth: "100%" }}
-                    placeholder={t("table.searchBy")}
-                    allowClear={false}
-                    defaultValue={searchByOption}
-                    onChange={(value) => handlerSelectSearchBy(value)}
-                    onClear={() => handlerSelectSearchBy("")}
-                  >
-                    <Select.Option value="code">
-                      {t("table.columns.code")}
-                    </Select.Option>
-                    <Select.Option value="name">
-                      {t("table.columns.name")}
-                    </Select.Option>
-                    <Select.Option value="brand">
-                      {t("table.columns.brand")}
-                    </Select.Option>
-                    <Select.Option value="category">
-                      {t("table.columns.category")}
-                    </Select.Option>
-                  </Select>
-                </Col>
-                <Col xs={24} md={{ flex: "0 1 auto" }}>
-                  <Input.Search
-                    loading={!!loading}
-                    id="table-search"
-                    style={{ width: "28rem", maxWidth: "100%" }}
-                    placeholder={t("table.searchPlaceholder")}
-                    value={listOptions.search ?? ""}
-                    onClear={() =>
-                      setListOptions((prevState: BaseType) => ({
-                        ...prevState,
-                        search: null,
-                      }))
-                    }
-                    onSearch={(value) =>
-                      setListOptions((prevState: BaseType) => ({
-                        ...prevState,
-                        search: value || null,
-                        searchBy: searchByOption,
-                        page: 1,
-                      }))
-                    }
-                  />
-                </Col>
-              </Row>
+              isMobile ? (
+                <MobileTableHeader
+                  title={t("table.title")}
+                  selectId="table-select-mobile"
+                  searchFilterLabel={t("table.searchFilter")}
+                  placeholder={t("table.searchPlaceholder")}
+                  searchBy={searchByOption}
+                  searchByOptions={["code", "name", "brand", "category"].map(
+                    (k) => ({ value: k, label: t(`table.columns.${k}`) }),
+                  )}
+                  currentSearch={(listOptions as any).search}
+                  onSelectSearchBy={handlerSelectSearchBy}
+                  onSearch={(value?: string) =>
+                    setListOptions((prevState: BaseType) => ({
+                      ...prevState,
+                      search: value || null,
+                      searchBy: value ? searchByOption : undefined,
+                      page: 1,
+                    }))
+                  }
+                  menu={{
+                    ariaLabel: t("table.button.print.label"),
+                    items: [
+                      {
+                        key: "print",
+                        icon: <PrinterOutlined />,
+                        label: t("table.button.print.label"),
+                        disabled: !selectedIds.length,
+                      },
+                    ],
+                    onClick: () => printSelectedLabels(),
+                  }}
+                  action={
+                    isCreate
+                      ? {
+                          label: t("table.button.add.label"),
+                          icon: <Plus />,
+                          onClick: () => router.push(`${baseLink}/add`),
+                        }
+                      : undefined
+                  }
+                />
+              ) : (
+                <Row align="middle" gutter={[8, 8]}>
+                  <Col xs={24} md={{ flex: "0 1 auto" }}>
+                    <Select
+                      id="table-select"
+                      className="table-search-select"
+                      style={{ width: "20rem", maxWidth: "100%" }}
+                      placeholder={t("table.searchBy")}
+                      allowClear={false}
+                      defaultValue={searchByOption}
+                      onChange={(value) => handlerSelectSearchBy(value)}
+                      onClear={() => handlerSelectSearchBy("")}
+                    >
+                      <Select.Option value="code">
+                        {t("table.columns.code")}
+                      </Select.Option>
+                      <Select.Option value="name">
+                        {t("table.columns.name")}
+                      </Select.Option>
+                      <Select.Option value="brand">
+                        {t("table.columns.brand")}
+                      </Select.Option>
+                      <Select.Option value="category">
+                        {t("table.columns.category")}
+                      </Select.Option>
+                    </Select>
+                  </Col>
+                  <Col xs={24} md={{ flex: "0 1 auto" }}>
+                    <Input.Search
+                      loading={!!loading}
+                      id="table-search"
+                      style={{ width: "28rem", maxWidth: "100%" }}
+                      placeholder={t("table.searchPlaceholder")}
+                      value={listOptions.search ?? ""}
+                      onClear={() =>
+                        setListOptions((prevState: BaseType) => ({
+                          ...prevState,
+                          search: null,
+                        }))
+                      }
+                      onSearch={(value) =>
+                        setListOptions((prevState: BaseType) => ({
+                          ...prevState,
+                          search: value || null,
+                          searchBy: searchByOption,
+                          page: 1,
+                        }))
+                      }
+                    />
+                  </Col>
+                </Row>
+              )
             }
           />
         )}

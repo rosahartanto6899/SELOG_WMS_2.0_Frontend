@@ -12,11 +12,15 @@ import { BaseType } from "@sera-types/base.type";
 import { Zone } from "@sera-types/zone.type";
 import FormatUtils from "@sera-utils/format";
 import useCheckPermission from "@sera-utils/hooks/useCheckPermission";
+import { useIsMobileView } from "@sera-utils/hooks/useIsMobileView";
 import { Col, Flex, Modal, Row, Typography } from "antd";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+
+import MobileTableHeader from "../../plan-outgoing/outstanding-outgoing/mobile-table-header";
 
 interface Props {
   dataSource?: Zone[];
@@ -33,6 +37,8 @@ const ZoneTable = (props: Props) => {
   const { isCreate, isUpdate, isDelete } = useCheckPermission({
     menuLink: baseLink,
   });
+  const isMobile = useIsMobileView();
+  const router = useRouter();
 
   const [listOptions, setListOptions] = useState<BaseType>({
     page: 1,
@@ -196,33 +202,33 @@ const ZoneTable = (props: Props) => {
   ];
 
   return (
-    <>
-      <Flex vertical gap={24}>
-        {dataSource && (
-          <Table
-            dataSource={dataSource}
-            columns={COLUMNS}
-            current={Number(options?.page)}
-            pageSize={options?.limit}
-            total={options?.totalData ?? 0}
-            rowKey={(row: Zone) => row.id ?? `${row.no}`}
-            loading={loading}
-            title={t("table.title")}
-            scroll={{ x: 1000 }}
-            onPageChange={onPageChangeListener}
-            onTableChange={onTableChangeListener}
-            isCustomSearch
-            multipleDelete={false}
-            footerNote={
-              customerName &&
-              warehouseName && (
-                <Typography.Text type="secondary">
-                  {t("table.note.prefix")} <strong>{customerName}</strong> -{" "}
-                  <strong>{warehouseName}</strong>.
-                </Typography.Text>
-              )
-            }
-            actions={
+    <Flex vertical gap={24}>
+      {dataSource && (
+        <Table
+          dataSource={dataSource}
+          columns={COLUMNS}
+          current={Number(options?.page)}
+          pageSize={options?.limit}
+          total={options?.totalData ?? 0}
+          rowKey={(row: Zone) => row.id ?? `${row.no}`}
+          loading={loading}
+          title={isMobile ? undefined : t("table.title")}
+          scroll={{ x: 1000 }}
+          onPageChange={onPageChangeListener}
+          onTableChange={onTableChangeListener}
+          isCustomSearch
+          multipleDelete={false}
+          footerNote={
+            customerName &&
+            warehouseName && (
+              <Typography.Text type="secondary">
+                {t("table.note.prefix")} <strong>{customerName}</strong> -{" "}
+                <strong>{warehouseName}</strong>.
+              </Typography.Text>
+            )
+          }
+          actions={
+            isMobile ? null : (
               <Row gutter={8}>
                 {isCreate ? (
                   <Col span={24}>
@@ -239,8 +245,41 @@ const ZoneTable = (props: Props) => {
                   </Col>
                 ) : null}
               </Row>
-            }
-            customSearch={
+            )
+          }
+          customSearch={
+            isMobile ? (
+              <MobileTableHeader
+                title={t("table.title")}
+                selectId="table-select-mobile"
+                searchFilterLabel={t("table.searchFilter")}
+                placeholder={t("table.searchPlaceholder")}
+                searchBy={searchByOption}
+                searchByOptions={["code", "name"].map((k) => ({
+                  value: k,
+                  label: t(`table.columns.${k}`),
+                }))}
+                currentSearch={(listOptions as any).search}
+                onSelectSearchBy={handlerSelectSearchBy}
+                onSearch={(value?: string) =>
+                  setListOptions((prevState: BaseType) => ({
+                    ...prevState,
+                    search: value || null,
+                    searchBy: value ? searchByOption : undefined,
+                    page: 1,
+                  }))
+                }
+                action={
+                  isCreate
+                    ? {
+                        label: t("table.button.add.label"),
+                        icon: <Plus />,
+                        onClick: () => router.push(`${baseLink}/add`),
+                      }
+                    : undefined
+                }
+              />
+            ) : (
               <Row align="middle" gutter={[8, 8]}>
                 <Col xs={24} md={{ flex: "0 1 auto" }}>
                   <Select
@@ -285,11 +324,11 @@ const ZoneTable = (props: Props) => {
                   />
                 </Col>
               </Row>
-            }
-          />
-        )}
-      </Flex>
-    </>
+            )
+          }
+        />
+      )}
+    </Flex>
   );
 };
 

@@ -11,6 +11,7 @@
       "search": {
         "placeholder": "Cari material"
       },
+      "searchFilter": "Cari & Filter",
       "options": {
         "0": "Kode Material",
         "1": "Nama Material",

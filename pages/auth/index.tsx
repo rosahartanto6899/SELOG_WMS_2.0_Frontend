@@ -87,14 +87,27 @@ const Login = () => {
       <section className={styles["body-wrapper"]}>
         <div className={styles["image-wrapper"]}>
           <Image
-            src="/images/slider/wms-login-bg-v2.svg"
-            alt="SELOG"
+            src="/images/wms-drawer-banner.jpg"
+            alt="SELOG Smart WMS"
             fill
             priority
             unoptimized
-            style={{ objectFit: "cover", objectPosition: "center" }}
+            style={{ objectFit: "cover", objectPosition: "center top" }}
           />
           <div className={styles["image-overlay"]} />
+          <div className={styles["hero-text"]}>
+            <div className={styles["hero-badge"]}>WMS 2.0</div>
+            <h1 className={styles["hero-headline"]}>
+              Faster scanning.
+              <br />
+              Smarter tracking.
+              <br />
+              <span className={styles["hero-accent"]}>
+                One connected warehouse.
+              </span>
+            </h1>
+            <div className={styles["hero-divider"]} />
+          </div>
         </div>
 
         <div className={styles["form-wrapper"]}>

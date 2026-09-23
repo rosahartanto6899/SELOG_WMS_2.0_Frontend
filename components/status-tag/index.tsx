@@ -1,5 +1,6 @@
 import styles from "@sera-components/status-tag/status-tag.module.scss";
-import { Tag } from "antd";
+import { Tag, Tooltip } from "antd";
+import type { CSSProperties } from "react";
 
 import { STATUS } from "./status";
 
@@ -10,6 +11,8 @@ interface StatusTagProps {
   fallback?: string;
   label?: string;
   color?: string;
+  indicatorColor?: string;
+  indicatorTooltip?: string;
 }
 
 const StatusTag = ({
@@ -19,6 +22,8 @@ const StatusTag = ({
   label,
   fallback = "",
   color,
+  indicatorColor,
+  indicatorTooltip,
 }: StatusTagProps) => {
   if (!value) return null;
 
@@ -27,22 +32,45 @@ const StatusTag = ({
       val[1].includes(value.toUpperCase()),
     )?.[0] ?? fallback;
 
-  return (
+  const content = (
+    <span className={styles["tag-inner"]}>
+      {indicatorColor && (
+        <span
+          className={styles["tag-indicator-dot"]}
+          style={{ "--dot-c": indicatorColor } as CSSProperties}
+        />
+      )}
+      <span className={styles["tag-text"]}>{label || value}</span>
+    </span>
+  );
+
+  const tagNode = (
     <Tag
       bordered
       className={`
         ${styles["status-tag"]}
-        ${COLOR === "grey2" && styles["grey-tag"]}
-        ${COLOR === "white" && styles["white-tag"]}
-        ${COLOR === "whiteDashed" && styles["dashed-tag"]}
-        ${block && styles["full-width"]}
-        ${className}
+        ${COLOR === "grey2" ? styles["grey-tag"] : ""}
+        ${COLOR === "white" ? styles["white-tag"] : ""}
+        ${COLOR === "whiteDashed" ? styles["dashed-tag"] : ""}
+        ${block ? styles["full-width"] : ""}
+        ${indicatorColor ? styles["has-indicator"] : ""}
+        ${className ?? ""}
       `}
       color={color ? (color !== "white" ? color : undefined) : COLOR}
     >
-      {label || value}
+      {content}
     </Tag>
   );
+
+  if (indicatorTooltip) {
+    return (
+      <Tooltip title={indicatorTooltip} placement="top">
+        {tagNode}
+      </Tooltip>
+    );
+  }
+
+  return tagNode;
 };
 
 export default StatusTag;

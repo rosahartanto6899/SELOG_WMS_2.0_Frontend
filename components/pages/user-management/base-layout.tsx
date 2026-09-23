@@ -37,7 +37,9 @@ const Layout = ({
 
       {/* {Page Header} */}
       <Row className={styles["header-container"]}>
-        <Col span={isActionHeader ? 6 : 12}>
+        {/* xs=24: judul + tombol back dapat baris penuh di mobile —
+            span 12 (setengah lebar) membuat h4 wrap 2 baris */}
+        <Col xs={24} md={isActionHeader ? 6 : 12}>
           <Flex gap="small" align="center">
             <Button
               id={`${titlePage} back button`}
@@ -55,7 +57,7 @@ const Layout = ({
         </Col>
 
         {isActionHeader ? (
-          <Col span={12} offset={6}>
+          <Col xs={24} md={{ span: 12, offset: 6 }}>
             {actionHeader}
           </Col>
         ) : null}

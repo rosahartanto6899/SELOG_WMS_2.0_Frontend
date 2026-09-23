@@ -5,6 +5,7 @@ import Button from "@sera-components/button";
 import { DeleteOutlined, EditOutlined, Plus } from "@sera-components/icons";
 import Input from "@sera-components/input";
 import Modal from "@sera-components/modal";
+import MobileTableHeader from "@sera-components/pages/plan-outgoing/outstanding-outgoing/mobile-table-header";
 import Select from "@sera-components/select";
 import Table from "@sera-components/table";
 import { wmsWarehouseActions } from "@sera-redux/slices/wms-warehouse.slice";
@@ -12,8 +13,10 @@ import { BaseType } from "@sera-types/base.type";
 import { WmsWarehouse } from "@sera-types/customer.type";
 import FormatUtils from "@sera-utils/format";
 import useCheckPermission from "@sera-utils/hooks/useCheckPermission";
+import { useIsMobileView } from "@sera-utils/hooks/useIsMobileView";
 import { Col, Row } from "antd";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -32,6 +35,8 @@ const WarehouseTable = (props: Props) => {
   const { isCreate, isUpdate, isDelete } = useCheckPermission({
     menuLink: baseLink,
   });
+  const isMobile = useIsMobileView();
+  const router = useRouter();
 
   const [listOptions, setListOptions] = useState<BaseType>({
     page: 1,
@@ -180,74 +185,117 @@ const WarehouseTable = (props: Props) => {
       {dataSource && (
         <Table
           dataSource={dataSource}
-          columns={COLUMNS}
           current={Number(options?.page)}
           pageSize={options?.limit}
           total={options?.totalData ?? 0}
           rowKey={(row: WmsWarehouse) => `${row.no}`}
           loading={loading}
-          title={t("table.title")}
-          scroll={{ x: 1000 }}
+          title={isMobile ? undefined : t("table.title")}
+          scroll={isMobile ? { x: 480 } : { x: 1000 }}
+          columns={
+            isMobile
+              ? (COLUMNS.filter((c) =>
+                  ["no", "customer", "code", "name", "operation"].includes(
+                    String(c.key),
+                  ),
+                ) as any)
+              : (COLUMNS as any)
+          }
           onPageChange={onPageChangeListener}
           onTableChange={onTableChangeListener}
           isCustomSearch
           multipleDelete={false}
           actions={
-            <Row gutter={8}>
-              {isCreate ? (
-                <Col span={24}>
-                  <Link
-                    id="link-add-warehouse"
-                    href={`${baseLink}/add`}
-                    passHref
-                  >
-                    <Button
-                      id="action-add"
-                      type="primary"
-                      icon={<Plus />}
-                      style={{ width: "100%" }}
+            isMobile ? null : (
+              <Row gutter={8}>
+                {isCreate ? (
+                  <Col span={24}>
+                    <Link
+                      id="link-add-warehouse"
+                      href={`${baseLink}/add`}
+                      passHref
                     >
-                      {t("table.button.add.label")}
-                    </Button>
-                  </Link>
-                </Col>
-              ) : null}
-            </Row>
+                      <Button
+                        id="action-add"
+                        type="primary"
+                        icon={<Plus />}
+                        style={{ width: "100%" }}
+                      >
+                        {t("table.button.add.label")}
+                      </Button>
+                    </Link>
+                  </Col>
+                ) : null}
+              </Row>
+            )
           }
           customSearch={
-            <Row align="middle" gutter={[8, 4]}>
-              <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-                <Select
-                  id="table-select"
-                  placeholder={t("table.searchPlaceholder")}
-                  allowClear={false}
-                  defaultValue={searchByOption}
-                  onChange={(value) => setSearchByOption(value)}
-                >
-                  <Select.Option value="code">
-                    {t("table.columns.code")}
-                  </Select.Option>
-                  <Select.Option value="name">
-                    {t("table.columns.name")}
-                  </Select.Option>
-                </Select>
-              </Col>
-              <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-                <Input.Search
-                  loading={false}
-                  id="table-search"
-                  placeholder={t("table.searchPlaceholder")}
-                  onSearch={(value) =>
-                    setListOptions((prevState: BaseType) => ({
-                      ...prevState,
-                      search: value || null,
-                      searchBy: searchByOption,
-                      page: 1,
-                    }))
-                  }
-                />
-              </Col>
-            </Row>
+            isMobile ? (
+              <MobileTableHeader
+                title={t("table.title")}
+                selectId="table-select-mobile"
+                searchFilterLabel={t("table.searchFilter")}
+                placeholder={t("table.searchPlaceholder")}
+                searchBy={searchByOption}
+                searchByOptions={[
+                  { value: "code", label: t("table.columns.code") },
+                  { value: "name", label: t("table.columns.name") },
+                ]}
+                currentSearch={(listOptions as any).search}
+                onSelectSearchBy={(v) => setSearchByOption(v ?? "name")}
+                onSearch={(value?: string) =>
+                  setListOptions((prevState: BaseType) => ({
+                    ...prevState,
+                    search: value || null,
+                    searchBy: value ? searchByOption : undefined,
+                    page: 1,
+                  }))
+                }
+                action={
+                  isCreate
+                    ? {
+                        label: t("table.button.add.label"),
+                        icon: <Plus />,
+                        onClick: () => router.push(`${baseLink}/add`),
+                      }
+                    : undefined
+                }
+              />
+            ) : (
+              <Row align="middle" gutter={[8, 4]}>
+                <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+                  <Select
+                    id="table-select"
+                    placeholder={t("table.searchPlaceholder")}
+                    allowClear={false}
+                    defaultValue={searchByOption}
+                    onChange={(value) => setSearchByOption(value)}
+                  >
+                    <Select.Option value="code">
+                      {t("table.columns.code")}
+                    </Select.Option>
+                    <Select.Option value="name">
+                      {t("table.columns.name")}
+                    </Select.Option>
+                  </Select>
+                </Col>
+                <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+                  <Input.Search
+                    loading={false}
+                    id="table-search"
+                    placeholder={t("table.searchPlaceholder")}
+                    onSearch={(value) =>
+                      setListOptions((prevState: BaseType) => ({
+                        ...prevState,
+                        search: value || null,
+                        searchBy: searchByOption,
+                        page: 1,
+                      }))
+                    }
+                  />
+                </Col>
+              </Row>
+            )
           }
         />
       )}

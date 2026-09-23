@@ -9,6 +9,7 @@
       "search": {
         "placeholder": "Cari"
       },
+      "searchFilter": "Cari & Filter",
       "options": {
         "0": "Tanggal PO",
         "1": "Kode Material",
@@ -29,7 +30,9 @@
         "export": "Ekspor"
       },
       "date": {
-        "range": "Rentang Tanggal"
+        "range": "Rentang Tanggal",
+        "start": "Tanggal Mulai",
+        "end": "Tanggal Akhir"
       },
       "warning": {
         "required": "Tanggal Mulai dan Tanggal Akhir wajib diisi",
@@ -48,6 +51,7 @@
       "search": {
         "placeholder": "Cari"
       },
+      "searchFilter": "Cari & Filter",
       "options": {
         "0": "Tanggal PO",
         "1": "Kode Material",
@@ -68,7 +72,9 @@
         "export": "Ekspor"
       },
       "date": {
-        "range": "Rentang Tanggal"
+        "range": "Rentang Tanggal",
+        "start": "Tanggal Mulai",
+        "end": "Tanggal Akhir"
       },
       "warning": {
         "required": "Tanggal Mulai dan Tanggal Akhir wajib diisi",
@@ -87,6 +93,7 @@
       "search": {
         "placeholder": "Cari"
       },
+      "searchFilter": "Cari & Filter",
       "options": {
         "0": "Kode Material",
         "1": "Nama Material",

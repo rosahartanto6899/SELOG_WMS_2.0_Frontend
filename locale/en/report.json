@@ -9,6 +9,7 @@
       "search": {
         "placeholder": "Search"
       },
+      "searchFilter": "Search & Filter",
       "options": {
         "0": "PO Date",
         "1": "Material Code",
@@ -29,7 +30,9 @@
         "export": "Export"
       },
       "date": {
-        "range": "Date Range"
+        "range": "Date Range",
+        "start": "Start Date",
+        "end": "End Date"
       },
       "warning": {
         "required": "Start Date and End Date are required",
@@ -48,6 +51,7 @@
       "search": {
         "placeholder": "Search"
       },
+      "searchFilter": "Search & Filter",
       "options": {
         "0": "PO Date",
         "1": "Material Code",
@@ -68,7 +72,9 @@
         "export": "Export"
       },
       "date": {
-        "range": "Date Range"
+        "range": "Date Range",
+        "start": "Start Date",
+        "end": "End Date"
       },
       "warning": {
         "required": "Start Date and End Date are required",
@@ -87,6 +93,7 @@
       "search": {
         "placeholder": "Search"
       },
+      "searchFilter": "Search & Filter",
       "options": {
         "0": "Material Code",
         "1": "Material Name",

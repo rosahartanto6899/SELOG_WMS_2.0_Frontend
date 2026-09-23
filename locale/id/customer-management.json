@@ -49,6 +49,7 @@
   "table": {
     "title": "List of Customers",
     "searchPlaceholder": "Cari",
+    "searchFilter": "Cari & Filter",
     "columns": {
       "no": "No",
       "code": "Customer Code",

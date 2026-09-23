@@ -1,70 +1,266 @@
+// Mobile (<576px): cards jadi satu baris horizontal yang bisa di-swipe.
+.cards-scroll {
+  @media (width <= 575px) {
+    -webkit-overflow-scrolling: touch;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    :global {
+      .ant-row {
+        flex-wrap: nowrap;
+        margin-inline: 0;
+      }
+
+      .ant-col {
+        flex: 0 0 80%;
+        max-width: 80%;
+        scroll-snap-align: start;
+      }
+    }
+  }
+}
+
+// Card Neo-Fintech / Apple Card Style (Konsep 1 Asli yang disempurnakan)
 .card {
-  background: #fff;
-  border: 1px solid rgb(16 24 40 / 6%);
-  border-radius: 14px;
-  box-shadow: 0 1px 2px rgb(16 24 40 / 4%);
+  background: linear-gradient(180deg, #fff 0%, #fafbfe 100%);
+  border: 1px solid rgb(226 232 240 / 85%);
+  border-radius: 16px;
+  box-shadow:
+    0 1px 3px 0 rgb(15 23 42 / 3%),
+    0 4px 6px -2px rgb(15 23 42 / 2%);
   display: flex;
+  flex-direction: column;
   gap: 14px;
   overflow: hidden;
-  padding: 20px;
+  padding: 18px 20px;
   position: relative;
-  transition:
-    box-shadow 0.2s ease,
-    transform 0.2s ease;
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
 
+  // Ambient radial glow di pojok kanan atas
   &::before {
-    background: var(--accent-bar);
+    background: var(--ambient-glow);
+    border-radius: 50%;
     content: "";
-    height: 4px;
-    inset: 0 0 auto;
+    height: 130px;
+    opacity: 0.9;
+    pointer-events: none;
     position: absolute;
+    right: -25px;
+    top: -25px;
+    transition:
+      transform 0.4s ease,
+      opacity 0.4s ease;
+    width: 130px;
+  }
+
+  // Accent line di tepi atas (frame aksen status di header)
+  &::after {
+    background: var(--accent-bar);
+    border-radius: 16px 16px 0 0;
+    content: "";
+    height: 3.5px;
+    inset: 0 0 auto;
+    opacity: 0.9;
+    position: absolute;
+    transition: all 0.25s ease;
+    z-index: 2;
   }
 
   &:hover {
-    box-shadow: 0 10px 24px -6px rgb(16 24 40 / 12%);
+    border-color: var(--accent-color);
+    box-shadow:
+      0 12px 24px -6px var(--card-glow-shadow),
+      0 4px 10px -2px rgb(15 23 42 / 4%);
     transform: translateY(-3px);
+
+    &::before {
+      opacity: 1;
+      transform: scale(1.2);
+    }
+
+    &::after {
+      height: 4.5px;
+      opacity: 1;
+    }
+
+    .icon-badge {
+      box-shadow: 0 4px 12px var(--card-glow-shadow);
+      transform: scale(1.08);
+    }
+
+    .segment-active {
+      box-shadow: 0 0 8px var(--card-glow-shadow);
+    }
   }
+}
+
+.card-header {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
+}
+
+.label-group {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  min-width: 0;
+}
+
+.dot-wrapper {
+  align-items: center;
+  display: inline-flex;
+  height: 10px;
+  justify-content: center;
+  position: relative;
+  width: 10px;
+}
+
+.dot {
+  background: var(--accent-color);
+  border-radius: 999px;
+  flex-shrink: 0;
+  height: 7px;
+  width: 7px;
+}
+
+// Efek pulsing radar untuk status darurat/aktif (misal Carry Over)
+.dot-pulse {
+  animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  background: var(--accent-color);
+  border-radius: 999px;
+  height: 100%;
+  opacity: 0.6;
+  position: absolute;
+  width: 100%;
+}
+
+@keyframes pulse-glow {
+  0% {
+    opacity: 0.75;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0;
+    transform: scale(2.6);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(2.6);
+  }
+}
+
+.label {
+  color: #475569;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  text-transform: uppercase;
 }
 
 .icon-badge {
   align-items: center;
   background: var(--accent-tint);
-  border-radius: 12px;
+  border: 1px solid rgb(255 255 255 / 80%);
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgb(0 0 0 / 2%);
   color: var(--accent-color);
   display: flex;
   flex-shrink: 0;
-  font-size: 20px;
-  height: 44px;
+  font-size: 16px;
+  height: 34px;
   justify-content: center;
-  width: 44px;
+  position: relative;
+  transition:
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.25s ease;
+  width: 34px;
+  z-index: 1;
 }
 
-.body {
+.card-value-row {
+  align-items: flex-end;
   display: flex;
-  flex-direction: column;
-  min-width: 0;
+  gap: 10px;
+  justify-content: space-between;
+  margin-top: 2px;
+  position: relative;
+  z-index: 1;
 }
 
-.label {
-  color: var(--accent-color);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  line-height: 1.3;
-  text-transform: uppercase;
+.value-group {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
 .value {
-  color: #101828;
-  font-size: 30px;
-  font-weight: 700;
-  line-height: 1.2;
-  margin-top: 2px;
+  color: #0f172a;
+  font-size: 32px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
 }
 
 .caption {
-  color: #667085;
-  font-size: 13px;
+  color: #64748b;
+  font-size: 12px;
   font-weight: 500;
-  margin-top: 2px;
+  white-space: nowrap;
+}
+
+.ratio-badge {
+  background: var(--accent-tint);
+  border: 1px solid rgb(255 255 255 / 60%);
+  border-radius: 6px;
+  color: var(--accent-color);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 3px 7px;
+  white-space: nowrap;
+}
+
+// Segmented Telemetry Meter (Pill cells telemetry style)
+.progress-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+  z-index: 1;
+}
+
+.segments-track {
+  align-items: center;
+  display: flex;
+  gap: 4px;
+  width: 100%;
+}
+
+.segment {
+  background: rgb(15 23 42 / 6%);
+  border-radius: 999px;
+  flex: 1;
+  height: 4.5px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.segment-active {
+  background: var(--accent-bar);
+  box-shadow: 0 0 5px var(--card-glow-shadow);
 }

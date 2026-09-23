@@ -7,10 +7,12 @@ import Select from "@sera-components/select";
 import Table from "@sera-components/table";
 import OutstandingOutgoingApi from "@sera-libraries/api/outstanding-outgoing";
 import { BaseType } from "@sera-types/base.type";
+import { useIsMobileView } from "@sera-utils/hooks/useIsMobileView";
 import { Col, message, Modal, Row } from "antd";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import MobileTableHeader from "./mobile-table-header";
 import {
   DnItemsColumns,
   ItemsSearchByOptions,
@@ -52,6 +54,7 @@ const DnItemsTab = ({
   });
 
   const [rows, setRows] = useState<any[] | null>(null);
+  const isMobile = useIsMobileView();
   const [total, setTotal] = useState(0);
   const [listOptions, setListOptions] = useState<
     BaseType & { [key: string]: any }
@@ -202,17 +205,19 @@ const DnItemsTab = ({
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
       <Table
-        title={t("itemsTable.title")}
+        title={isMobile ? undefined : t("itemsTable.title")}
         actions={
-          <Button
-            type="primary"
-            icon={<SelectOutlined />}
-            disabled={!selectedRows.length}
-            onClick={openPackaging}
-            loading={submitting}
-          >
-            {t("packaging.button")}
-          </Button>
+          isMobile ? null : (
+            <Button
+              type="primary"
+              icon={<SelectOutlined />}
+              disabled={!selectedRows.length}
+              onClick={openPackaging}
+              loading={submitting}
+            >
+              {t("packaging.button")}
+            </Button>
+          )
         }
         columns={columns}
         dataSource={rows ?? []}
@@ -239,47 +244,75 @@ const DnItemsTab = ({
         }}
         isCustomSearch
         customSearch={
-          <Row align="middle" gutter={[8, 4]}>
-            <Col flex="0 0 14rem">
-              <Select
-                style={{ width: "100%", minWidth: "14rem" }}
-                id="dn-items-search-by"
-                defaultValue={INIT_SEARCH_BY}
-                placeholder={t("table.search.placeholder")}
-                onChange={(value) => handlerSelectSearchBy(value)}
-                onClear={() => handlerSelectSearchBy("")}
-                allowClear={false}
-              >
-                {ItemsSearchByOptions(tOpt).map((opt) => (
-                  <Select.Option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Col>
-            <Col flex="auto">
-              <Input.Search
-                loading={false}
-                style={{ width: "100%", minWidth: "18rem" }}
-                placeholder={t("table.search.placeholder")}
-                onSearch={(search?: string) =>
-                  setListOptions((prevState: any) => ({
-                    ...prevState,
-                    search: search || undefined,
-                    searchBy: search ? searchBy : undefined,
-                    page: 1,
-                  }))
-                }
-                onClear={() =>
-                  setListOptions((prevState: any) => ({
-                    ...prevState,
-                    search: null,
-                    searchBy: undefined,
-                  }))
-                }
-              />
-            </Col>
-          </Row>
+          isMobile ? (
+            <MobileTableHeader
+              title={t("itemsTable.title")}
+              selectId="dn-items-search-by-mobile"
+              searchFilterLabel={t("table.button.searchFilter")}
+              placeholder={t("table.search.placeholder")}
+              searchBy={searchBy}
+              searchByOptions={ItemsSearchByOptions(tOpt)}
+              currentSearch={(listOptions as any).search}
+              onSelectSearchBy={handlerSelectSearchBy}
+              onSearch={(search?: string) =>
+                setListOptions((prevState: any) => ({
+                  ...prevState,
+                  search: search || undefined,
+                  searchBy: search ? searchBy : undefined,
+                  page: 1,
+                }))
+              }
+              action={{
+                label: t("packaging.button"),
+                icon: <SelectOutlined />,
+                disabled: !selectedRows.length,
+                loading: submitting,
+                onClick: openPackaging,
+              }}
+            />
+          ) : (
+            <Row align="middle" gutter={[8, 4]}>
+              <Col flex="0 0 14rem">
+                <Select
+                  style={{ width: "100%", minWidth: "14rem" }}
+                  id="dn-items-search-by"
+                  defaultValue={INIT_SEARCH_BY}
+                  placeholder={t("table.search.placeholder")}
+                  onChange={(value) => handlerSelectSearchBy(value)}
+                  onClear={() => handlerSelectSearchBy("")}
+                  allowClear={false}
+                >
+                  {ItemsSearchByOptions(tOpt).map((opt) => (
+                    <Select.Option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Col>
+              <Col flex="auto">
+                <Input.Search
+                  loading={false}
+                  style={{ width: "100%", minWidth: "18rem" }}
+                  placeholder={t("table.search.placeholder")}
+                  onSearch={(search?: string) =>
+                    setListOptions((prevState: any) => ({
+                      ...prevState,
+                      search: search || undefined,
+                      searchBy: search ? searchBy : undefined,
+                      page: 1,
+                    }))
+                  }
+                  onClear={() =>
+                    setListOptions((prevState: any) => ({
+                      ...prevState,
+                      search: null,
+                      searchBy: undefined,
+                    }))
+                  }
+                />
+              </Col>
+            </Row>
+          )
         }
       />
       <PackagingFormModal

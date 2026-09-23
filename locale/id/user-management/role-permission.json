@@ -24,6 +24,7 @@
     ]
   },
   "searchBar": {
+    "searchFilter": "Cari & Filter",
     "placeholder": "Cari",
     "dropdownOption": {
       "title": "Menu",

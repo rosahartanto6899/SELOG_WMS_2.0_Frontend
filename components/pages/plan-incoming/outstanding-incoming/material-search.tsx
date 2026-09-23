@@ -14,12 +14,14 @@ interface Props {
 
 /** Search by + keyword — pola table Outstanding Incoming, dipakai QI & Barcode Labeling. */
 const MaterialSearch = (props: Props) => {
-  const { id, searchBy, onSearchBy, placeholder, onSearchValue, options } = props;
+  const { id, searchBy, onSearchBy, placeholder, onSearchValue, options } =
+    props;
   return (
-    <Row align="middle" gutter={[8, 4]}>
-      <Col flex="0 0 12rem">
+    <Row align="middle" gutter={[8, 8]}>
+      {/* xs=24: stack di mobile — minWidth fix bikin overflow di layar sempit */}
+      <Col xs={24} md={8} lg={6}>
         <Select
-          style={{ width: "100%", minWidth: "12rem" }}
+          style={{ width: "100%" }}
           id={`${id}-search-by`}
           value={searchBy}
           onChange={onSearchBy}
@@ -31,10 +33,10 @@ const MaterialSearch = (props: Props) => {
           ))}
         </Select>
       </Col>
-      <Col flex="auto">
+      <Col xs={24} md={16} lg={18}>
         <Input.Search
           loading={false}
-          style={{ width: "100%", minWidth: "16rem" }}
+          style={{ width: "100%" }}
           placeholder={placeholder}
           allowClear
           onSearch={(v?: string) => onSearchValue(v ?? "")}

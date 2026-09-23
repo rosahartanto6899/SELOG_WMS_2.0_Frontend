@@ -7,11 +7,13 @@ import Select from "@sera-components/select";
 import Table from "@sera-components/table";
 import OutstandingOutgoingApi from "@sera-libraries/api/outstanding-outgoing";
 import { BaseType } from "@sera-types/base.type";
+import { useIsMobileView } from "@sera-utils/hooks/useIsMobileView";
 import { Col, Empty, message, Modal, Row } from "antd";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import MobileTableHeader from "./mobile-table-header";
 import {
   PackagingColumns,
   PackagingSearchByOptions,
@@ -44,6 +46,7 @@ export const PackagingTab = ({
     keyPrefix: "planOutgoing.outstandingOutgoing.table.options",
   });
   const INIT_SEARCH_BY = "packagingNo";
+  const isMobile = useIsMobileView();
   const columns = PackagingColumns();
   const [rows, setRows] = useState<any[] | null>(null);
   const [total, setTotal] = useState(0);
@@ -160,17 +163,19 @@ export const PackagingTab = ({
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
       <Table
-        title={t("packagingTable.title")}
+        title={isMobile ? undefined : t("packagingTable.title")}
         actions={
-          <Button
-            type="primary"
-            icon={<CheckOutlined />}
-            disabled={!selectedIds.length}
-            loading={loading}
-            onClick={doReadyToShip}
-          >
-            {t("shipment.button")}
-          </Button>
+          isMobile ? null : (
+            <Button
+              type="primary"
+              icon={<CheckOutlined />}
+              disabled={!selectedIds.length}
+              loading={loading}
+              onClick={doReadyToShip}
+            >
+              {t("shipment.button")}
+            </Button>
+          )
         }
         columns={[
           {
@@ -215,47 +220,75 @@ export const PackagingTab = ({
         onSelectedRowsChange={(keys) => setSelectedIds(keys as string[])}
         isCustomSearch
         customSearch={
-          <Row align="middle" gutter={[8, 4]}>
-            <Col flex="0 0 14rem">
-              <Select
-                style={{ width: "100%", minWidth: "14rem" }}
-                id="packaging-search-by"
-                defaultValue={INIT_SEARCH_BY}
-                placeholder={t("table.search.placeholder")}
-                onChange={(value) => handlerSelectSearchBy(value)}
-                onClear={() => handlerSelectSearchBy("")}
-                allowClear={false}
-              >
-                {PackagingSearchByOptions(tOpt).map((opt) => (
-                  <Select.Option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Col>
-            <Col flex="auto">
-              <Input.Search
-                loading={false}
-                style={{ width: "100%", minWidth: "18rem" }}
-                placeholder={t("table.search.placeholder")}
-                onSearch={(search?: string) =>
-                  setListOptions((prevState: any) => ({
-                    ...prevState,
-                    search: search || undefined,
-                    searchBy: search ? searchBy : undefined,
-                    page: 1,
-                  }))
-                }
-                onClear={() =>
-                  setListOptions((prevState: any) => ({
-                    ...prevState,
-                    search: null,
-                    searchBy: undefined,
-                  }))
-                }
-              />
-            </Col>
-          </Row>
+          isMobile ? (
+            <MobileTableHeader
+              title={t("packagingTable.title")}
+              selectId="packaging-search-by-mobile"
+              searchFilterLabel={t("table.button.searchFilter")}
+              placeholder={t("table.search.placeholder")}
+              searchBy={searchBy}
+              searchByOptions={PackagingSearchByOptions(tOpt)}
+              currentSearch={(listOptions as any).search}
+              onSelectSearchBy={handlerSelectSearchBy}
+              onSearch={(search?: string) =>
+                setListOptions((prevState: any) => ({
+                  ...prevState,
+                  search: search || undefined,
+                  searchBy: search ? searchBy : undefined,
+                  page: 1,
+                }))
+              }
+              action={{
+                label: t("shipment.button"),
+                icon: <CheckOutlined />,
+                disabled: !selectedIds.length,
+                loading: loading,
+                onClick: doReadyToShip,
+              }}
+            />
+          ) : (
+            <Row align="middle" gutter={[8, 4]}>
+              <Col flex="0 0 14rem">
+                <Select
+                  style={{ width: "100%", minWidth: "14rem" }}
+                  id="packaging-search-by"
+                  defaultValue={INIT_SEARCH_BY}
+                  placeholder={t("table.search.placeholder")}
+                  onChange={(value) => handlerSelectSearchBy(value)}
+                  onClear={() => handlerSelectSearchBy("")}
+                  allowClear={false}
+                >
+                  {PackagingSearchByOptions(tOpt).map((opt) => (
+                    <Select.Option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Col>
+              <Col flex="auto">
+                <Input.Search
+                  loading={false}
+                  style={{ width: "100%", minWidth: "18rem" }}
+                  placeholder={t("table.search.placeholder")}
+                  onSearch={(search?: string) =>
+                    setListOptions((prevState: any) => ({
+                      ...prevState,
+                      search: search || undefined,
+                      searchBy: search ? searchBy : undefined,
+                      page: 1,
+                    }))
+                  }
+                  onClear={() =>
+                    setListOptions((prevState: any) => ({
+                      ...prevState,
+                      search: null,
+                      searchBy: undefined,
+                    }))
+                  }
+                />
+              </Col>
+            </Row>
+          )
         }
       />
       <PoByPackagingModal packagingNo={poNo} onClose={() => setPoNo(null)} />
@@ -278,6 +311,7 @@ export const ShipmentTab = ({
   });
   const { data: session } = useSession() as any;
   const INIT_SEARCH_BY = "shipmentNo";
+  const isMobile = useIsMobileView();
   const columns = ShipmentColumns();
   const [rows, setRows] = useState<any[] | null>(null);
   const [total, setTotal] = useState(0);
@@ -472,7 +506,7 @@ export const ShipmentTab = ({
   return (
     <>
       <Table
-        title={t("shipmentTable.title")}
+        title={isMobile ? undefined : t("shipmentTable.title")}
         columns={[
           {
             title: "No",
@@ -523,47 +557,68 @@ export const ShipmentTab = ({
         onTableChange={onTableChange}
         isCustomSearch
         customSearch={
-          <Row align="middle" gutter={[8, 4]}>
-            <Col flex="0 0 14rem">
-              <Select
-                style={{ width: "100%", minWidth: "14rem" }}
-                id="shipment-search-by"
-                defaultValue={INIT_SEARCH_BY}
-                placeholder={t("table.search.placeholder")}
-                onChange={(value) => handlerSelectSearchBy(value)}
-                onClear={() => handlerSelectSearchBy("")}
-                allowClear={false}
-              >
-                {ShipmentSearchByOptions(tOpt).map((opt) => (
-                  <Select.Option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Col>
-            <Col flex="auto">
-              <Input.Search
-                loading={false}
-                style={{ width: "100%", minWidth: "18rem" }}
-                placeholder={t("table.search.placeholder")}
-                onSearch={(search?: string) =>
-                  setListOptions((prevState: any) => ({
-                    ...prevState,
-                    search: search || undefined,
-                    searchBy: search ? searchBy : undefined,
-                    page: 1,
-                  }))
-                }
-                onClear={() =>
-                  setListOptions((prevState: any) => ({
-                    ...prevState,
-                    search: null,
-                    searchBy: undefined,
-                  }))
-                }
-              />
-            </Col>
-          </Row>
+          isMobile ? (
+            <MobileTableHeader
+              title={t("shipmentTable.title")}
+              selectId="shipment-search-by-mobile"
+              searchFilterLabel={t("table.button.searchFilter")}
+              placeholder={t("table.search.placeholder")}
+              searchBy={searchBy}
+              searchByOptions={ShipmentSearchByOptions(tOpt)}
+              currentSearch={(listOptions as any).search}
+              onSelectSearchBy={handlerSelectSearchBy}
+              onSearch={(search?: string) =>
+                setListOptions((prevState: any) => ({
+                  ...prevState,
+                  search: search || undefined,
+                  searchBy: search ? searchBy : undefined,
+                  page: 1,
+                }))
+              }
+            />
+          ) : (
+            <Row align="middle" gutter={[8, 4]}>
+              <Col flex="0 0 14rem">
+                <Select
+                  style={{ width: "100%", minWidth: "14rem" }}
+                  id="shipment-search-by"
+                  defaultValue={INIT_SEARCH_BY}
+                  placeholder={t("table.search.placeholder")}
+                  onChange={(value) => handlerSelectSearchBy(value)}
+                  onClear={() => handlerSelectSearchBy("")}
+                  allowClear={false}
+                >
+                  {ShipmentSearchByOptions(tOpt).map((opt) => (
+                    <Select.Option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Col>
+              <Col flex="auto">
+                <Input.Search
+                  loading={false}
+                  style={{ width: "100%", minWidth: "18rem" }}
+                  placeholder={t("table.search.placeholder")}
+                  onSearch={(search?: string) =>
+                    setListOptions((prevState: any) => ({
+                      ...prevState,
+                      search: search || undefined,
+                      searchBy: search ? searchBy : undefined,
+                      page: 1,
+                    }))
+                  }
+                  onClear={() =>
+                    setListOptions((prevState: any) => ({
+                      ...prevState,
+                      search: null,
+                      searchBy: undefined,
+                    }))
+                  }
+                />
+              </Col>
+            </Row>
+          )
         }
       />
       <PackagingByShipmentModal

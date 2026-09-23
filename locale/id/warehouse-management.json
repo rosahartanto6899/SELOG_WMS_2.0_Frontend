@@ -47,6 +47,7 @@
   "table": {
     "title": "List of Warehouses",
     "searchPlaceholder": "Cari",
+    "searchFilter": "Cari & Filter",
     "columns": {
       "no": "No",
       "code": "Warehouse Code",

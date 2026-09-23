@@ -50,7 +50,8 @@
       "notInternal": {
         "placeholder": "Select User Category"
       }
-    }
+    },
+    "searchFilter": "Search & Filter"
   },
   "modal": {
     "delete": {

@@ -6,6 +6,7 @@
       "title": "Zone List",
       "selectWarehouse": "Select warehouse",
       "searchPlaceholder": "Search zone",
+      "searchFilter": "Search & Filter",
       "columns": {
         "code": "Zone Code",
         "name": "Zone Name",
@@ -73,6 +74,7 @@
       "title": "Location List",
       "selectWarehouse": "Select warehouse",
       "searchPlaceholder": "Search location",
+      "searchFilter": "Search & Filter",
       "columns": {
         "code": "Location Code",
         "name": "Location Name",
@@ -165,6 +167,7 @@
     "table": {
       "title": "Material List",
       "searchPlaceholder": "Search material",
+      "searchFilter": "Search & Filter",
       "columns": {
         "code": "Material Code",
         "name": "Material Name",
@@ -296,6 +299,7 @@
       "title": "Material Mapping List",
       "selectWarehouse": "Select warehouse",
       "searchPlaceholder": "Search mapping",
+      "searchFilter": "Search & Filter",
       "columns": {
         "materialCode": "Material Code",
         "materialName": "Material Name",
