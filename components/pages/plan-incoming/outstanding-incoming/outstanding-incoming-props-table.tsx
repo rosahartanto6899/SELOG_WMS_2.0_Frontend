@@ -17,11 +17,9 @@ import { INCOMING_STATUS_COLOR } from "@sera-utils/constants/incoming-status-col
 import { ROUTE } from "@sera-utils/constants/routes";
 import FormatUtils from "@sera-utils/format";
 import useCheckPermission from "@sera-utils/hooks/useCheckPermission";
-import { Dropdown, Grid, MenuProps, Space, Tag, Tooltip } from "antd";
+import { Dropdown, Grid, MenuProps, Space } from "antd";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
-
-import styles from "./outstanding-incoming.module.scss";
 
 export interface RowActionHandlers {
   onHold: (row: OutstandingIncomingRow) => void;
@@ -74,9 +72,10 @@ export const SearchByOptions = () => {
 
 /** Warna indikator legacy: green = seimbang, blue = partialQty>0, red = unbalanced tanpa partial */
 const INDICATOR_COLORS: Record<string, string> = {
-  green: "#52c41a",
-  blue: "#1677ff",
-  red: "#f5222d",
+  green: "#10b981",
+  blue: "#0284c7",
+  red: "#ef4444",
+  yellow: "#f59e0b",
 };
 
 export const Columns = (handlers: RowActionHandlers) => {
@@ -113,25 +112,28 @@ export const Columns = (handlers: RowActionHandlers) => {
       // NOTE: jangan set truncate — Table override render truncate memaksa plain text,
       // menimpa render custom (dot indikator + StatusTag + HOLD)
       fixed: leftFixed,
-      width: 190,
-      render: (value: string, record: OutstandingIncomingRow) => (
-        <Space size={4} wrap={false}>
-          <Tooltip title={t(`indicator.${record.indicator ?? "green"}`)}>
-            <span
-              className={styles["indicator-dot"]}
-              style={
-                { "--c": INDICATOR_COLORS[record.indicator ?? "green"] } as any
-              }
-            />
-          </Tooltip>
+      width: 200,
+      render: (value: string, record: OutstandingIncomingRow) => {
+        const ind = (record.indicator ?? "green").toLowerCase();
+        const tag = (
           <StatusTag
             value={value ?? "-"}
             fallback="default"
             color={INCOMING_STATUS_COLOR[value]}
+            indicatorColor={INDICATOR_COLORS[ind] ?? "#10b981"}
+            indicatorTooltip={t(`indicator.${ind}`)}
           />
-          {record.isHold ? <Tag color="warning">HOLD</Tag> : null}
-        </Space>
-      ),
+        );
+
+        if (!record.isHold) return tag;
+
+        return (
+          <Space size={6} wrap={false}>
+            {tag}
+            <StatusTag value="HOLD" color="warning" />
+          </Space>
+        );
+      },
     },
     {
       title: t("column.deliveryNoteNo"),

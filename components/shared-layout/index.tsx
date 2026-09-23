@@ -45,7 +45,7 @@ const SharedLayout = (props: SharedLibrariesProps) => {
   const { /* showNotificationHandler, */ children } = props;
   const { xs, lg } = useBreakpoint();
   const router = useRouter();
-  const { pathname } = router;
+  const { pathname, asPath } = router;
   // const { data } = useSession() as CustomUseSession;
   const { data, update } = useSession() as any;
   const isInternal = data?.detail?.data?.user.isInternal ?? false;
@@ -65,6 +65,13 @@ const SharedLayout = (props: SharedLibrariesProps) => {
       httpService.setDefaultLang(router.locale);
     }
   }, [router.locale]);
+
+  // cache accessMenus ditimpa (permission berubah) → bangun ulang sidebar
+  useEffect(() => {
+    const handler = () => setSidebar([]);
+    window.addEventListener("accessMenus-updated", handler);
+    return () => window.removeEventListener("accessMenus-updated", handler);
+  }, []);
 
   if (!menus) {
     setTimeout(() => {
@@ -111,6 +118,7 @@ const SharedLayout = (props: SharedLibrariesProps) => {
           // not sourced from _c.menuIcon (DB) so sub-menus stay visually
           // consistent regardless of what's configured per-menu.
           icon: <SubMenuDotIcon />,
+          rawLink: _c.menuLink,
           path: pathIsServer(window.location.pathname, "", _c.menuLink),
           pathname: [_c.menuLink],
         }));
@@ -126,9 +134,33 @@ const SharedLayout = (props: SharedLibrariesProps) => {
             </Link>
           ),
           key: menu.id,
+          rawLink: child.length ? undefined : menuLink,
           icon: (
-            <span style={{ color: "#0050b3" }}>
-              <DynamicIcon type={menu.menuIcon} />
+            <span
+              className="sidebar-menu-icon"
+              style={{
+                boxSizing: "border-box",
+                display: "block",
+                flexShrink: 0,
+                height: "3rem",
+                minHeight: "3rem",
+                minWidth: "3rem",
+                position: "relative",
+                width: "3rem",
+              }}
+            >
+              <DynamicIcon
+                type={menu.menuIcon}
+                style={{
+                  display: "block",
+                  height: "1.6rem",
+                  left: "50%",
+                  position: "absolute",
+                  top: "50%",
+                  transform: "translate(-50%, -50%)",
+                  width: "1.6rem",
+                }}
+              />
             </span>
           ),
           path: pathIsServer(window.location.pathname, "", menuLink),
@@ -393,35 +425,74 @@ const SharedLayout = (props: SharedLibrariesProps) => {
   };
 
   useEffect(() => {
-    const activeMenu = {
-      parentKey: [] as string[],
-      menuKey: [] as string[],
+    let bestMatch: {
+      score: number;
+      parentKey?: string;
+      menuKey: string;
+    } | null = null;
+
+    const currentAsPath = (asPath || "").split("?")[0].split("#")[0];
+    const currentRoute = pathname || "";
+
+    const checkLinkScore = (link?: string) => {
+      if (!link) return -1;
+      const normalizedLink = link.trim();
+      if (!normalizedLink) return -1;
+
+      // Exact match against asPath or pathname
+      if (normalizedLink === currentAsPath || normalizedLink === currentRoute) {
+        return 10000 + normalizedLink.length;
+      }
+
+      // Root "/" only matches exact root
+      if (normalizedLink === "/") return -1;
+
+      // Prefix match for nested/detail/create routes (e.g. /plan-incoming/actual-incoming/123)
+      if (
+        currentAsPath.startsWith(`${normalizedLink}/`) ||
+        currentRoute.startsWith(`${normalizedLink}/`)
+      ) {
+        return normalizedLink.length;
+      }
+
+      return -1;
     };
 
     sidebar.forEach((menuItem: any) => {
-      if (
-        menuItem.pathname &&
-        menuItem.pathname.length > 0 &&
-        menuItem.pathname.includes(pathname)
-      ) {
-        activeMenu.menuKey = [menuItem.key];
-      } else if (menuItem.children && menuItem.children.length > 0) {
-        menuItem.children.forEach((menuChildrenItem: any) => {
-          if (
-            menuChildrenItem.pathname &&
-            menuChildrenItem.pathname.length > 0 &&
-            menuChildrenItem.pathname.includes(pathname)
-          ) {
-            activeMenu.parentKey = [menuItem.key];
-            activeMenu.menuKey = [menuChildrenItem.key];
+      if (menuItem.children && menuItem.children.length > 0) {
+        menuItem.children.forEach((childItem: any) => {
+          const childLink = childItem.rawLink || childItem.pathname?.[0];
+          const score = checkLinkScore(childLink);
+          if (score > 0 && (!bestMatch || score > bestMatch.score)) {
+            bestMatch = {
+              score,
+              parentKey: menuItem.key,
+              menuKey: childItem.key,
+            };
           }
         });
+      } else {
+        const itemLink = menuItem.rawLink || menuItem.pathname?.[0];
+        const score = checkLinkScore(itemLink);
+        if (score > 0 && (!bestMatch || score > bestMatch.score)) {
+          bestMatch = {
+            score,
+            menuKey: menuItem.key,
+          };
+        }
       }
     });
 
-    setSelectedParentKeys(activeMenu.parentKey);
-    setSelectedKeys(activeMenu.menuKey);
-  }, [pathname, sidebar]);
+    if (bestMatch) {
+      const match = bestMatch as {
+        score: number;
+        parentKey?: string;
+        menuKey: string;
+      };
+      setSelectedParentKeys(match.parentKey ? [match.parentKey] : []);
+      setSelectedKeys([match.menuKey]);
+    }
+  }, [pathname, asPath, sidebar]);
 
   const selectedCustomerName = tenantOptions.find(
     (tenant) => tenant.id === data?.user?.customerId,

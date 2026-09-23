@@ -30,7 +30,9 @@
         "export": "Ekspor"
       },
       "date": {
-        "range": "Rentang Tanggal"
+        "range": "Rentang Tanggal",
+        "start": "Tanggal Mulai",
+        "end": "Tanggal Akhir"
       },
       "warning": {
         "required": "Tanggal Mulai dan Tanggal Akhir wajib diisi",
@@ -70,7 +72,9 @@
         "export": "Ekspor"
       },
       "date": {
-        "range": "Rentang Tanggal"
+        "range": "Rentang Tanggal",
+        "start": "Tanggal Mulai",
+        "end": "Tanggal Akhir"
       },
       "warning": {
         "required": "Tanggal Mulai dan Tanggal Akhir wajib diisi",

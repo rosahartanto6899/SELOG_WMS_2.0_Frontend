@@ -13,11 +13,9 @@ import { OutstandingOutgoingListRow } from "@sera-types/outstanding-outgoing.typ
 import { ROUTE } from "@sera-utils/constants/routes";
 import FormatUtils from "@sera-utils/format";
 import useCheckPermission from "@sera-utils/hooks/useCheckPermission";
-import { Col, Dropdown, Grid, MenuProps, Row, Space, Tooltip } from "antd";
+import { Col, Dropdown, Grid, MenuProps, Row, Space } from "antd";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
-
-import styles from "./outstanding-outgoing.module.scss";
 
 /** Handler aksi baris — parity pola RowActionHandlers incoming */
 export interface RowActionHandlers {
@@ -123,19 +121,12 @@ export const DnListColumns = (handlers?: RowActionHandlers) => {
       fixed: leftFixed,
       width: 170,
       render: (value: string, record: any) => (
-        <Space size={4} wrap={false}>
-          <Tooltip title={t(`indicator.${record.indicator ?? "NO"}`)}>
-            <span
-              className={styles["indicator-dot"]}
-              style={
-                {
-                  "--c": INDICATOR_COLORS[record.indicator ?? "NO"],
-                } as any
-              }
-            />
-          </Tooltip>
-          <StatusTag value={value ?? "-"} fallback="default" />
-        </Space>
+        <StatusTag
+          value={value ?? "-"}
+          fallback="default"
+          indicatorColor={INDICATOR_COLORS[record.indicator ?? "NO"]}
+          indicatorTooltip={t(`indicator.${record.indicator ?? "NO"}`)}
+        />
       ),
     },
     {

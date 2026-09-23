@@ -283,6 +283,7 @@ const IncomingReportInitialPage = () => {
               rangeKey="poDate"
               rangeValue={dateRange}
               onRangeChange={onRangeChange}
+              rangePlaceholders={[t("table.date.start"), t("table.date.end")]}
               menu={{
                 ariaLabel: t("table.button.export"),
                 items: [

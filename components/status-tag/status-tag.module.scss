@@ -1,31 +1,161 @@
 .status-tag {
-  font-size: 13px;
-  font-weight: 500 !important;
+  align-items: center;
+  border-radius: 20px !important;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 4%);
+  display: inline-flex !important;
+  font-size: 11.5px;
+  font-weight: 600 !important;
+  gap: 6px;
+  letter-spacing: 0.025em;
+  line-height: 1.5 !important;
   margin: 0;
+  padding: 2.5px 10px !important;
   text-transform: uppercase;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  vertical-align: middle;
   width: max-content;
+
+  &:hover {
+    filter: brightness(0.96);
+    transform: translateY(-0.5px);
+  }
+
+  // Modern soft-glow badges for Ant Design tag types & incoming color palette
+  &:global(.ant-tag-success),
+  &:global(.ant-tag-green) {
+    background: #ecfdf5 !important;
+    border-color: #a7f3d0 !important;
+    color: #047857 !important;
+  }
+
+  &:global(.ant-tag-error),
+  &:global(.ant-tag-red) {
+    background: #fef2f2 !important;
+    border-color: #fecaca !important;
+    color: #b91c1c !important;
+  }
+
+  &:global(.ant-tag-warning),
+  &:global(.ant-tag-gold) {
+    background: #fffbeb !important;
+    border-color: #fde68a !important;
+    color: #b45309 !important;
+  }
+
+  &:global(.ant-tag-processing),
+  &:global(.ant-tag-blue) {
+    background: #eff6ff !important;
+    border-color: #bfdbfe !important;
+    color: #1d4ed8 !important;
+  }
+
+  &:global(.ant-tag-cyan) {
+    background: #ecfeff !important;
+    border-color: #a5f3fc !important;
+    color: #0e7490 !important;
+  }
+
+  &:global(.ant-tag-purple) {
+    background: #faf5ff !important;
+    border-color: #e9d5ff !important;
+    color: #7e22ce !important;
+  }
+
+  &:global(.ant-tag-orange) {
+    background: #fff7ed !important;
+    border-color: #fed7aa !important;
+    color: #c2410c !important;
+  }
+
+  &:global(.ant-tag-magenta) {
+    background: #fdf2f8 !important;
+    border-color: #fbcfe8 !important;
+    color: #be185d !important;
+  }
+
+  &:global(.ant-tag-default) {
+    background: #f8fafc !important;
+    border-color: #e2e8f0 !important;
+    color: #475569 !important;
+  }
+}
+
+.tag-inner {
+  align-items: center;
+  display: inline-flex;
+  gap: 6px;
+  line-height: 1;
+}
+
+.tag-text {
+  display: inline-block;
+  line-height: 1.4;
+}
+
+/* Embedded Glowing LED Indicator Light */
+.tag-indicator-dot {
+  animation: indicator-pulse 2.2s ease-in-out infinite;
+  background: var(--dot-c, #52c41a);
+  border-radius: 50%;
+  box-shadow:
+    inset 0 0 2px rgb(255 255 255 / 60%),
+    0 0 5px 1px color-mix(in srgb, var(--dot-c, #52c41a) 80%, transparent),
+    0 0 10px 2px color-mix(in srgb, var(--dot-c, #52c41a) 40%, transparent);
+  display: inline-block;
+  flex-shrink: 0;
+  height: 7px;
+  transition: transform 0.2s ease;
+  width: 7px;
+}
+
+@keyframes indicator-pulse {
+  0%,
+  100% {
+    box-shadow:
+      inset 0 0 2px rgb(255 255 255 / 60%),
+      0 0 5px 1px color-mix(in srgb, var(--dot-c, #52c41a) 80%, transparent),
+      0 0 10px 2px color-mix(in srgb, var(--dot-c, #52c41a) 40%, transparent);
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    box-shadow:
+      inset 0 0 2px rgb(255 255 255 / 40%),
+      0 0 3px 0 color-mix(in srgb, var(--dot-c, #52c41a) 60%, transparent),
+      0 0 6px 1px color-mix(in srgb, var(--dot-c, #52c41a) 25%, transparent);
+    opacity: 0.85;
+    transform: scale(0.9);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tag-indicator-dot {
+    animation: none;
+  }
 }
 
 .full-width {
+  justify-content: center;
   text-align: center;
   width: 100%;
 }
 
 .grey-tag {
-  background-color: #f0f0f0 !important;
-  border-color: #b3b3b3 !important;
-  color: #666 !important;
+  background-color: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+  color: #475569 !important;
 }
 
 .white-tag {
   background-color: #fff !important;
-  border-color: #b3b3b3 !important;
-  color: #1a1a1a !important;
+  border-color: #cbd5e1 !important;
+  color: #1e293b !important;
 }
 
 .dashed-tag {
   background-color: #fff !important;
-  border-color: #b3b3b3 !important;
+  border-color: #cbd5e1 !important;
   border-style: dashed !important;
-  color: #1a1a1a !important;
+  color: #1e293b !important;
 }

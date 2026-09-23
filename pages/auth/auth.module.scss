@@ -1,6 +1,36 @@
 @use "@sera-assets/sass/mixins" as *;
 @import "@sera-assets/sass/variables";
 
+@keyframes fade-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes expand-width {
+  from {
+    width: 0;
+  }
+  to {
+    width: 4rem;
+  }
+}
+
 .auth-container {
   display: flex;
   flex-direction: column;
@@ -20,11 +50,64 @@
       .image-overlay {
         background: linear-gradient(
           180deg,
-          rgb(10 21 38 / 10%) 0%,
-          rgb(10 21 38 / 45%) 100%
+          rgb(5 12 28 / 5%) 0%,
+          rgb(5 12 28 / 35%) 100%
         );
         inset: 0;
         position: absolute;
+        z-index: 1;
+      }
+
+      .hero-text {
+        animation: fade-in 0.6s ease both;
+        bottom: 3rem;
+        left: 3rem;
+        position: absolute;
+        right: 3rem;
+        z-index: 2;
+
+        .hero-badge {
+          animation: fade-slide-up 0.5s ease 0.1s both;
+          background: linear-gradient(135deg, #2563eb 0%, #0e7490 100%);
+          border-radius: 6px;
+          color: #fff;
+          display: inline-block;
+          font-family: Inter, "Segoe UI", sans-serif;
+          font-size: 0.75rem;
+          font-weight: 700;
+          letter-spacing: 0.18em;
+          margin-bottom: 1rem;
+          padding: 0.35rem 0.9rem;
+          text-transform: uppercase;
+        }
+
+        .hero-headline {
+          animation: fade-slide-up 0.6s ease 0.2s both;
+          color: #fff;
+          font-family: Inter, "Segoe UI", sans-serif;
+          font-size: clamp(1.5rem, 2.4vw, 2.6rem);
+          font-weight: 700;
+          letter-spacing: -0.01em;
+          line-height: 1.22;
+          margin: 0 0 1.25rem;
+          text-shadow: 0 2px 18px rgb(0 0 0 / 45%);
+
+          .hero-accent {
+            background: linear-gradient(90deg, #60a5fa, #38bdf8);
+            background-clip: text;
+            background-clip: text;
+            color: transparent;
+          }
+        }
+
+        .hero-divider {
+          animation: expand-width 0.7s cubic-bezier(0.4, 0, 0.2, 1) 0.5s both;
+          background: linear-gradient(90deg, #2563eb, #38bdf8);
+          border-radius: 2px;
+          height: 3px;
+          overflow: hidden;
+          width: 4rem;
+        }
       }
     }
 

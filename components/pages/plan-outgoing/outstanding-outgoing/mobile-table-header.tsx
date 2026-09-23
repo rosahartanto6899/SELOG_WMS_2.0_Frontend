@@ -4,6 +4,7 @@ import Button from "@sera-components/button";
 import Select from "@sera-components/select";
 import { Drawer, Dropdown, Input as AntdInput, Space } from "antd";
 import { DatePicker } from "antd";
+import dayjs from "dayjs";
 import React, { useState } from "react";
 
 interface Props {
@@ -32,10 +33,11 @@ interface Props {
     onClick: ({ key }: { key: string }) => void;
   };
   /** searchBy dengan nilai range tanggal (bukan teks) — mis. "poDate"
-   *  di report incoming/outgoing */
+   *  di report incoming/outgoing; placeholder per input [start, end] */
   rangeKey?: string;
   rangeValue?: [any, any];
   onRangeChange?: (values: any) => void;
+  rangePlaceholders?: [string, string];
   /** searchBy dengan nilai pilihan tetap (bukan teks bebas) — mis.
    *  "isInternal" di user management: Internal/External */
   enumKey?: string;
@@ -60,20 +62,36 @@ const MobileTableHeader = ({
   rangeKey,
   rangeValue,
   onRangeChange,
+  rangePlaceholders,
   enumKey,
   enumOptions,
 }: Props) => {
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState("");
+  const [draftRange, setDraftRange] = useState<[any, any]>([null, null]);
 
   const apply = () => {
-    onSearch(draft || undefined);
+    // range: apply via tombol Search (draft ditahan sampai user submit);
+    // validasi (wajib isi, urutan, max 31 hari) tetap di halaman
+    if (searchBy === rangeKey && onRangeChange) {
+      if (draftRange[0] && draftRange[1]) onRangeChange(draftRange);
+    } else {
+      onSearch(draft || undefined);
+    }
     setOpen(false);
   };
 
   const reset = () => {
     setDraft("");
     onSearch(undefined);
+    // range: reset → kembali ke default today (parity halaman)
+    if (searchBy === rangeKey && onRangeChange) {
+      const today = dayjs();
+      onRangeChange([today, today]);
+      setDraftRange([today, today]);
+    } else {
+      setDraftRange([null, null]);
+    }
     setOpen(false);
   };
 
@@ -124,6 +142,7 @@ const MobileTableHeader = ({
         icon={<SearchOutlined />}
         onClick={() => {
           setDraft(currentSearch ?? "");
+          setDraftRange([rangeValue?.[0] ?? null, rangeValue?.[1] ?? null]);
           setOpen(true);
         }}
       >
@@ -194,13 +213,27 @@ const MobileTableHeader = ({
             ))}
           </Select>
           {searchBy === rangeKey && onRangeChange ? (
-            // range tanggal — langsung apply saat dipilih (parity desktop)
-            <DatePicker.RangePicker
-              style={{ width: "100%" }}
-              value={rangeValue}
-              allowEmpty={[false, false]}
-              onChange={onRangeChange}
-            />
+            // dua DatePicker bertumpuk — popup RangePicker (2 bulan
+            // berdampingan) melebihi lebar layar ponsel; popup tunggal muat.
+            // Validasi (wajib isi, urutan, max 31 hari) tetap di halaman.
+            <Space direction="vertical" size={12} style={{ width: "100%" }}>
+              <DatePicker
+                style={{ width: "100%" }}
+                inputReadOnly
+                placement="topLeft"
+                placeholder={rangePlaceholders?.[0] ?? "Start Date"}
+                value={draftRange[0]}
+                onChange={(d) => setDraftRange([d, draftRange[1]])}
+              />
+              <DatePicker
+                style={{ width: "100%" }}
+                inputReadOnly
+                placement="topLeft"
+                placeholder={rangePlaceholders?.[1] ?? "End Date"}
+                value={draftRange[1]}
+                onChange={(d) => setDraftRange([draftRange[0], d])}
+              />
+            </Space>
           ) : searchBy === enumKey && enumOptions ? (
             // nilai tetap (enum) — langsung apply saat dipilih
             <Select

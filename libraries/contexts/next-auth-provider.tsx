@@ -49,28 +49,25 @@ const NextAuthProvider = (props: NextAuthProviderProps) => {
       setIsInstallSession(false);
 
       if (typeof window !== "undefined") {
-        const accessMenusOnLocalStorage = PermissionUtils().getAccessMenus();
-
-        if (!accessMenusOnLocalStorage) {
-          const fetchMasterMenu = async () => {
-            const { user } = session.detail.data;
-            const accessMenus = await UserApi().retrieveMenuAccessByUser(
-              session?.detail?.data?.accessToken,
-            );
-            const accessMenusFix = {
-              ...accessMenus.data,
-              user_id: user.id,
-              role_id: user.role,
-            };
-            const encryptedAccessMenus = encryptData(accessMenusFix);
-
-            localStorage.setItem(
-              "accessMenus",
-              encryptedAccessMenus.toString(),
-            );
+        // selalu refresh — cache lama bikin submenu yang baru di-hide
+        // (isRead off di Role Permission) tetap muncul di sidebar
+        const fetchMasterMenu = async () => {
+          const { user } = session.detail.data;
+          const accessMenus = await UserApi().retrieveMenuAccessByUser(
+            session?.detail?.data?.accessToken,
+          );
+          const accessMenusFix = {
+            ...accessMenus.data,
+            user_id: user.id,
+            role_id: user.role,
           };
-          fetchMasterMenu();
-        }
+          const encryptedAccessMenus = encryptData(accessMenusFix);
+
+          localStorage.setItem("accessMenus", encryptedAccessMenus.toString());
+          // beri tanda ke layout: cache berubah → sidebar dibangun ulang
+          window.dispatchEvent(new Event("accessMenus-updated"));
+        };
+        fetchMasterMenu();
       }
     }
   }, [session]);

@@ -30,7 +30,9 @@
         "export": "Export"
       },
       "date": {
-        "range": "Date Range"
+        "range": "Date Range",
+        "start": "Start Date",
+        "end": "End Date"
       },
       "warning": {
         "required": "Start Date and End Date are required",
@@ -70,7 +72,9 @@
         "export": "Export"
       },
       "date": {
-        "range": "Date Range"
+        "range": "Date Range",
+        "start": "Start Date",
+        "end": "End Date"
       },
       "warning": {
         "required": "Start Date and End Date are required",
