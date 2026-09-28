@@ -6,6 +6,7 @@ import Button from "@sera-components/button";
 import { DeleteOutlined, EditOutlined, Plus } from "@sera-components/icons";
 import Input from "@sera-components/input";
 import Select from "@sera-components/select";
+import Skeleton from "@sera-components/skeleton";
 import Table from "@sera-components/table";
 import CustomerApi from "@sera-libraries/api/customer";
 import MaterialApi from "@sera-libraries/api/material";
@@ -325,6 +326,8 @@ const MaterialTable = (props: Props) => {
   return (
     <>
       <Flex vertical gap={24}>
+        {/* skeleton saat data belum tersedia (pindah page / fetch awal) */}
+        {!dataSource && <Skeleton.Table title={t("table.title")} />}
         {dataSource && (
           <Table
             dataSource={dataSource}
