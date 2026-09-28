@@ -416,8 +416,12 @@ const Layout = (props: LayoutProps) => {
 
               <Dropdown
                 className={styles["navbar-dropdown"]}
-                menu={{ items: headerMenu }}
-                trigger={["click", "hover"]}
+                menu={{
+                  items: headerMenu,
+                  // submenu (Switch Profile) buka saat klik, bukan hover
+                  triggerSubMenuAction: "click",
+                }}
+                trigger={["click"]}
               >
                 <Link
                   id="user"

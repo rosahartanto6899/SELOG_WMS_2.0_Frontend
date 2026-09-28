@@ -351,6 +351,10 @@ const Table: React.FC<TableProps> = (props: TableProps) => {
                   : undefined
             }
             scroll={scroll}
+            // tanpa kolom fixed (di-strip di mobile), rc-table memakai
+            // table-layout auto → width kolom jadi saran dan kolom sempit
+            // (createdAt/actions) tergencet; paksa fixed saat ada scroll.x
+            tableLayout={scroll?.x ? "fixed" : undefined}
             onChange={onTableChange}
             expandable={expandProps || { defaultExpandAllRows }}
             bordered={bordered}

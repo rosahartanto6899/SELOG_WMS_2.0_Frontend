@@ -33,10 +33,12 @@
   },
   "header": {
     "menu": {
-      "witchRole": "Switch Role",
+      "switchProfile": "Ganti Profil",
       "logout": "Logout",
-      "witchCustomer": "Ganti Customer",
-      "switchWarehouse": "Ganti Warehouse"
+      "customer": "Customer",
+      "role": "Role",
+      "warehouse": "Warehouse",
+      "change": "Ubah"
     }
   },
   "notification": {

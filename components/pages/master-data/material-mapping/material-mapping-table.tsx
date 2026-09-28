@@ -2,6 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import Input from "@sera-components/input";
 import Select from "@sera-components/select";
+import Skeleton from "@sera-components/skeleton";
 import Table from "@sera-components/table";
 import { materialLocationMappingActions } from "@sera-redux";
 import { BaseType } from "@sera-types/base.type";
@@ -114,6 +115,8 @@ const MaterialMappingTable = (props: Props) => {
   return (
     <>
       <Flex vertical gap={24}>
+        {/* skeleton saat data belum tersedia (pindah page / fetch awal) */}
+        {!dataSource && <Skeleton.Table title={t("table.title")} />}
         {dataSource &&
           (isMobile ? (
             // mobile: tabel tetap ada, kolom dipadatkan (No + code +
