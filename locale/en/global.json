@@ -33,10 +33,12 @@
   },
   "header": {
     "menu": {
-      "witchRole": "Switch Role",
+      "switchProfile": "Switch Profile",
       "logout": "Logout",
-      "witchCustomer": "Switch Customer",
-      "switchWarehouse": "Switch Warehouse"
+      "customer": "Customer",
+      "role": "Role",
+      "warehouse": "Warehouse",
+      "change": "Change"
     }
   },
   "notification": {

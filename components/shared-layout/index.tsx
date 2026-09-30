@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   // GlobalOutlined,
-  HomeOutlined,
   LoadingOutlined,
-  SyncOutlined,
   UserOutlined,
+  UserSwitchOutlined,
 } from "@ant-design/icons";
 import LogoutOutlined from "@ant-design/icons/LogoutOutlined";
 import Typography from "@sera-components/typography";
@@ -15,7 +14,7 @@ import { decryptData } from "@sera-utils/encryptor";
 import PermissionUtils from "@sera-utils/permission-utils";
 import SharedUtils from "@sera-utils/shared-utils";
 import Utils from "@sera-utils/utils";
-import { Flex, Grid, MenuProps, Space, Spin } from "antd";
+import { Button, Drawer, Flex, Grid, Select, Space, Spin } from "antd";
 import { ItemType } from "antd/es/menu/interface";
 import _ from "lodash";
 import dynamic from "next/dynamic";
@@ -186,21 +185,18 @@ const SharedLayout = (props: SharedLibrariesProps) => {
     window.location.replace(authUrl);
   };
 
-  const handleSwitchRole: MenuProps["onClick"] = async (e) => {
+  const updateSession = async (sessionData: any) => {
     try {
-      const res: any = await SharedUtils().switchRole(e.key);
       await update({
-        ...res.data.data,
+        ...sessionData,
         detail: {
           data: {
-            ...res.data.data,
+            ...sessionData,
           },
         },
       });
     } catch (error) {
       console.error("Update session error", error);
-    } finally {
-      router.push("/");
     }
   };
 
@@ -233,26 +229,32 @@ const SharedLayout = (props: SharedLibrariesProps) => {
       .catch(() => undefined);
   }, [data?.user?.customers]);
 
-  const handleSwitchWarehouse: MenuProps["onClick"] = async (e) => {
-    try {
-      const res: any = await SharedUtils().switchWarehouse(e.key);
-      await update({
-        ...res.data.data,
-        detail: {
-          data: {
-            ...res.data.data,
-          },
-        },
-      });
-    } catch (error) {
-      console.error("Update session error", error);
-    } finally {
-      router.push("/");
-    }
-  };
+  // ===== Switch Profile (customer + role + warehouse dalam satu panel) =====
+  const [profileCustomerId, setProfileCustomerId] = useState<string>();
+  const [profileRoleId, setProfileRoleId] = useState<string>();
+  const [profileWarehouseId, setProfileWarehouseId] = useState<string>();
+  const [switching, setSwitching] = useState<boolean>(false);
+  const [profileDrawerOpen, setProfileDrawerOpen] = useState<boolean>(false);
 
-  // Switch warehouse — opsi = warehouse customer aktif yang juga masuk
-  // akses role (session.warehouses, code-based) + id dari dropdown
+  // sinkronkan pilihan panel dari session aktif
+  useEffect(() => {
+    setProfileCustomerId(data?.user?.customerId ?? undefined);
+    setProfileRoleId(
+      data?.user?.roles?.find((r: any) => r.name === data?.user?.roleName)?.id,
+    );
+    setProfileWarehouseId(data?.user?.warehouseId ?? undefined);
+  }, [
+    data?.user?.customerId,
+    data?.user?.roleName,
+    data?.user?.warehouseId,
+    data?.user?.roles,
+  ]);
+
+  const activeRoleId = data?.user?.roles?.find(
+    (r: any) => r.name === data?.user?.roleName,
+  )?.id;
+
+  // warehouse yang diizinkan role aktif (session.warehouses, code-based)
   const sessionWarehouses: Array<{
     warehouseCode: string;
     warehouseName: string | null;
@@ -260,47 +262,154 @@ const SharedLayout = (props: SharedLibrariesProps) => {
   const accessibleCodes = new Set(
     sessionWarehouses.map((w) => w.warehouseCode),
   );
-  const warehouseMenu = warehouseDropdown
+
+  // ponytail: session.warehouses hanya mencakup customer+role AKTIF —
+  // filter ketat hanya valid untuk kombinasi aktif; kombinasi lain tampilkan
+  // semua warehouse customer terpilih, backend memvalidasi saat switch
+  const profileWarehouseOptions = warehouseDropdown
     .filter(
       (w: any) =>
-        w.customer?.id === data?.user?.customerId &&
-        accessibleCodes.has(w.code),
+        w.customer?.id === (profileCustomerId ?? data?.user?.customerId),
     )
-    .map((w: any) => ({
-      label: w.name,
-      key: w.id,
-      onClick: handleSwitchWarehouse,
-    }));
+    .filter((w: any) =>
+      profileCustomerId === data?.user?.customerId &&
+      profileRoleId === activeRoleId
+        ? accessibleCodes.has(w.code)
+        : true,
+    )
+    .map((w: any) => ({ label: w.name, value: w.id }));
 
-  const handleSwitchCustomer: MenuProps["onClick"] = async (e) => {
+  // Terapkan berurutan customer → role → warehouse; tiap switch
+  // mengembalikan session baru sebagai dasar perbandingan berikutnya.
+  const handleSwitchProfile = async () => {
+    setSwitching(true);
     try {
-      const res: any = await SharedUtils().switchCustomer(e.key);
-      await update({
-        ...res.data.data,
-        detail: {
-          data: {
-            ...res.data.data,
-          },
-        },
-      });
+      let user = data?.user;
+      if (profileCustomerId && profileCustomerId !== user?.customerId) {
+        const res: any = await SharedUtils().switchCustomer(profileCustomerId);
+        await updateSession(res.data.data);
+        user = res.data.data.user;
+      }
+      if (
+        profileRoleId &&
+        profileRoleId !==
+          user?.roles?.find((r: any) => r.name === user?.roleName)?.id &&
+        user?.roles?.some((r: any) => r.id === profileRoleId)
+      ) {
+        const res: any = await SharedUtils().switchRole(profileRoleId);
+        await updateSession(res.data.data);
+        user = res.data.data.user;
+      }
+      if (profileWarehouseId && profileWarehouseId !== user?.warehouseId) {
+        const res: any =
+          await SharedUtils().switchWarehouse(profileWarehouseId);
+        await updateSession(res.data.data);
+      }
     } catch (error) {
-      console.error("Update session error", error);
+      console.error("Switch profile error", error);
     } finally {
+      setSwitching(false);
+      setProfileDrawerOpen(false);
       router.push("/");
     }
   };
 
-  const tenantMenu = tenantOptions.map((tenant) => ({
-    label: tenant.name,
-    key: tenant.id,
-    onClick: handleSwitchCustomer,
-  }));
+  // Item disabled → klik di dalam panel tidak menutup dropdown (menu tetap tertahan)
+  // tombol Change aktif hanya jika semua field terisi dan ada perubahan
+  // dari session aktif (field yang tidak dirender tidak diwajibkan)
+  const profileIncomplete =
+    (tenantOptions.length > 0 && !profileCustomerId) ||
+    !profileRoleId ||
+    (profileWarehouseOptions.length > 0 && !profileWarehouseId);
+  const profileUnchanged =
+    (!tenantOptions.length || profileCustomerId === data?.user?.customerId) &&
+    profileRoleId === activeRoleId &&
+    (!profileWarehouseOptions.length ||
+      profileWarehouseId === data?.user?.warehouseId);
 
-  const roleMenu = data?.user?.roles?.map((role: any) => ({
-    label: role.name,
-    key: role.id,
-    onClick: handleSwitchRole,
-  }));
+  const profilePanel = (
+    <Flex vertical gap={12} style={{ width: "100%" }}>
+      {tenantOptions.length > 0 && (
+        <Flex vertical gap={4}>
+          <Typography.Text variant="muted" fontSize={12}>
+            {t("global.header.menu.customer")}
+          </Typography.Text>
+          <Select
+            style={{ width: "100%" }}
+            placeholder={t("global.header.menu.customer")}
+            getPopupContainer={(node) => node.parentElement}
+            value={profileCustomerId}
+            options={tenantOptions.map((o) => ({
+              label: o.name,
+              value: o.id,
+            }))}
+            onChange={(v) => {
+              setProfileCustomerId(v);
+              setProfileWarehouseId(undefined);
+            }}
+          />
+        </Flex>
+      )}
+      <Flex vertical gap={4}>
+        <Typography.Text variant="muted" fontSize={12}>
+          {t("global.header.menu.role")}
+        </Typography.Text>
+        <Select
+          style={{ width: "100%" }}
+          placeholder={t("global.header.menu.role")}
+          getPopupContainer={(node) => node.parentElement}
+          value={profileRoleId}
+          options={(data?.user?.roles ?? []).map((r: any) => ({
+            label: r.name,
+            value: r.id,
+          }))}
+          onChange={(v) => {
+            setProfileRoleId(v);
+            setProfileWarehouseId(undefined);
+          }}
+        />
+      </Flex>
+      {profileWarehouseOptions.length > 0 && (
+        <Flex vertical gap={4}>
+          <Typography.Text variant="muted" fontSize={12}>
+            {t("global.header.menu.warehouse")}
+          </Typography.Text>
+          <Select
+            style={{ width: "100%" }}
+            placeholder={t("global.header.menu.warehouse")}
+            getPopupContainer={(node) => node.parentElement}
+            value={profileWarehouseId}
+            options={profileWarehouseOptions}
+            onChange={setProfileWarehouseId}
+          />
+        </Flex>
+      )}
+      <Button
+        type="primary"
+        block
+        loading={switching}
+        disabled={switching || profileIncomplete || profileUnchanged}
+        onClick={() => handleSwitchProfile().catch(console.error)}
+      >
+        {t("global.header.menu.change")}
+      </Button>
+    </Flex>
+  );
+
+  // desktop: panel sebagai submenu popup (klik di dalam tidak menutup dropdown)
+  const switchProfileChildren: ItemType[] = [
+    {
+      key: "profile-panel",
+      disabled: true,
+      style: {
+        cursor: "auto",
+        color: "rgba(0, 0, 0, 0.88)",
+        padding: 12,
+        width: 288,
+      },
+      label: profilePanel,
+    },
+  ];
 
   const headerMenu: ItemType[] = [
     ...(xs
@@ -326,36 +435,28 @@ const SharedLayout = (props: SharedLibrariesProps) => {
         ]
       : []),
 
-    ...(tenantMenu.length
+    // mobile: buka bottom drawer; desktop: submenu panel di kiri item
+    ...(xs
       ? [
           {
-            key: "switch-customer",
+            key: "switch-profile",
             label: (
-              <Space size={14}>{t("global.header.menu.witchCustomer")}</Space>
+              <Space size={14}>{t("global.header.menu.switchProfile")}</Space>
             ),
-            children: tenantMenu,
-            icon: <UserOutlined />,
+            icon: <UserSwitchOutlined />,
+            onClick: () => setProfileDrawerOpen(true),
           },
         ]
-      : []),
-    {
-      key: "switch-role",
-      label: <Space size={14}>{t("global.header.menu.witchRole")}</Space>,
-      children: roleMenu,
-      icon: <SyncOutlined />,
-    },
-    ...(warehouseMenu.length
-      ? [
+      : [
           {
-            key: "switch-warehouse",
+            key: "switch-profile",
             label: (
-              <Space size={14}>{t("global.header.menu.switchWarehouse")}</Space>
+              <Space size={14}>{t("global.header.menu.switchProfile")}</Space>
             ),
-            children: warehouseMenu,
-            icon: <HomeOutlined />,
+            icon: <UserSwitchOutlined />,
+            children: switchProfileChildren,
           },
-        ]
-      : []),
+        ]),
     {
       key: "logout",
       label: (
@@ -510,6 +611,22 @@ const SharedLayout = (props: SharedLibrariesProps) => {
       // onNotificationClick={showNotificationHandler}
     >
       {children}
+      {/* mobile: form switch profile sebagai bottom sheet */}
+      <Drawer
+        placement="bottom"
+        height="auto"
+        open={profileDrawerOpen}
+        onClose={() => setProfileDrawerOpen(false)}
+        title={t("global.header.menu.switchProfile")}
+        styles={{
+          content: {
+            borderTopLeftRadius: 12,
+            borderTopRightRadius: 12,
+          },
+        }}
+      >
+        {profilePanel}
+      </Drawer>
     </Layout>
   );
 };
