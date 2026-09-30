@@ -1,13 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Typography from "@sera-components/typography";
-import logoImage from "@sera-public/images/logo.svg";
 import { API_STATUS_CODE } from "@sera-utils/constants/response-api";
 import { encryptData } from "@sera-utils/encryptor";
 import LocalStorageUtils from "@sera-utils/local-storage";
 import Utils from "@sera-utils/utils";
 import { Alert, Button, Col, Divider, Form, Input, Row } from "antd";
 import moment from "moment";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { getCsrfToken, signIn } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -148,18 +146,20 @@ const LoginForm = () => {
   return (
     <main className={styles["form-container"]}>
       <section className={styles["body-wrapper"]}>
-        <Row justify="center">
-          <div className={styles["logo-wrapper"]}>
-            <Image
-              src={logoImage}
-              alt="Sera Logo"
-              sizes="165px"
-              fill
-              priority
-              style={{ objectFit: "contain" }}
-            />
-          </div>
-        </Row>
+        <div className={styles["welcome-heading"]}>
+          <span className={styles["welcome-eyebrow"]}>Welcome to,</span>
+          <span className={styles["welcome-badge"]}>WMS 2.0</span>
+          <h1 className={styles["welcome-title"]}>
+            <span className={styles["welcome-subtitle"]}>
+              Faster scanning, smarter tracking,
+            </span>
+            <br />
+            <span className={styles["welcome-accent"]}>
+              One connected warehouse.
+            </span>
+          </h1>
+          <div className={styles["welcome-divider"]} />
+        </div>
 
         {errorMessage && (
           <Row justify="center" gutter={[8, 8]}>

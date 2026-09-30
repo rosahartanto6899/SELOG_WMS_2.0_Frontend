@@ -1,6 +1,39 @@
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes expand-width {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 3rem;
+  }
+}
+
 .welcome {
   align-items: center;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   min-height: 60vh;
   width: 100%;
@@ -11,4 +44,54 @@
   max-width: 1400px;
   position: relative;
   width: 100%;
+}
+
+.hero-text {
+  animation: fade-in 0.6s ease both;
+  margin-top: 1.5rem;
+  max-width: 1400px;
+  text-align: left;
+  width: 100%;
+}
+
+.hero-badge {
+  animation: fade-slide-up 0.5s ease 0.1s both;
+  background: linear-gradient(135deg, #2563eb 0%, #0e7490 100%);
+  border-radius: 6px;
+  box-shadow: 0 4px 14px rgb(37 99 235 / 25%);
+  color: #fff;
+  display: inline-block;
+  font-family: Inter, "Segoe UI", sans-serif;
+  font-size: clamp(0.6rem, 0.9vw, 0.9rem);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  margin-bottom: 0.6rem;
+  padding: 0.32rem 0.85rem;
+  text-transform: uppercase;
+}
+
+.hero-headline {
+  animation: fade-slide-up 0.6s ease 0.2s both;
+  color: #0f2072;
+  font-family: Inter, "Segoe UI", sans-serif;
+  font-size: clamp(0.95rem, 1.7vw, 1.9rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.24;
+  margin: 0 0 0.85rem;
+}
+
+.hero-accent {
+  background: linear-gradient(90deg, #2563eb, #0e7490);
+  background-clip: text;
+  color: transparent;
+}
+
+.hero-divider {
+  animation: expand-width 0.7s cubic-bezier(0.4, 0, 0.2, 1) 0.5s both;
+  background: linear-gradient(90deg, #2563eb, #38bdf8);
+  border-radius: 2px;
+  height: 3px;
+  overflow: hidden;
+  width: 3rem;
 }

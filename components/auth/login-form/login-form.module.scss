@@ -1,6 +1,28 @@
 @use "@sera-assets/sass/mixins" as *;
 @import "@sera-assets/sass/variables";
 
+@keyframes fade-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes expand-width {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 4rem;
+  }
+}
+
 .form-container {
   display: flex;
   flex-direction: column;
@@ -22,11 +44,66 @@
     width: 100%;
     z-index: 1;
 
-    .logo-wrapper {
-      height: 64px;
-      margin-bottom: 0.75rem;
-      position: relative;
-      width: 165px;
+    .welcome-heading {
+      animation: fade-slide-up 0.5s ease 0.05s both;
+      margin-bottom: 0.5rem;
+      width: 100%;
+
+      .welcome-eyebrow {
+        color: $text-body;
+        display: block;
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+      }
+
+      .welcome-badge {
+        background: linear-gradient(135deg, #2563eb 0%, #0e7490 100%);
+        border-radius: 8px;
+        box-shadow: 0 4px 14px rgb(37 99 235 / 25%);
+        color: #fff;
+        display: inline-block;
+        font-size: 1rem;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        margin-bottom: 1.1rem;
+        padding: 0.45rem 1.1rem;
+        text-transform: uppercase;
+      }
+
+      .welcome-title {
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        margin: 0 0 1rem;
+      }
+
+      .welcome-subtitle {
+        color: #000;
+        display: inline-block;
+        font-size: 1.3rem;
+        font-style: italic;
+        line-height: 1.35;
+      }
+
+      .welcome-accent {
+        background: linear-gradient(90deg, #2563eb, #0e7490);
+        background-clip: text;
+        color: transparent;
+        display: inline-block;
+        font-size: 1.6rem;
+        line-height: 1.28;
+        margin-top: 0.35rem;
+      }
+
+      .welcome-divider {
+        animation: expand-width 0.7s cubic-bezier(0.4, 0, 0.2, 1) 0.4s both;
+        background: linear-gradient(90deg, #0d9488, #2563eb, #06b6d4);
+        border-radius: 2px;
+        height: 4px;
+        margin-top: 0.75rem;
+        overflow: hidden;
+        width: 4rem;
+      }
     }
 
     :global(.ant-form-item-label) > label {

@@ -15,7 +15,7 @@ import { decryptData } from "@sera-utils/encryptor";
 import PermissionUtils from "@sera-utils/permission-utils";
 import SharedUtils from "@sera-utils/shared-utils";
 import Utils from "@sera-utils/utils";
-import { Flex, Grid, MenuProps, Space, Spin, Tooltip } from "antd";
+import { Flex, Grid, MenuProps, Space, Spin } from "antd";
 import { ItemType } from "antd/es/menu/interface";
 import _ from "lodash";
 import dynamic from "next/dynamic";
@@ -43,7 +43,7 @@ const SharedLayout = (props: SharedLibrariesProps) => {
   const { t } = useTranslation();
 
   const { /* showNotificationHandler, */ children } = props;
-  const { xs, lg } = useBreakpoint();
+  const { xs } = useBreakpoint();
   const router = useRouter();
   const { pathname, asPath } = router;
   // const { data } = useSession() as CustomUseSession;
@@ -103,15 +103,13 @@ const SharedLayout = (props: SharedLibrariesProps) => {
         );
         const submenu = child.map((_c: any) => ({
           label: (
-            <Tooltip title={lg ? _c.menuName : undefined} placement="right">
-              <Link
-                id={`link-level2-${Utils().titleToKebabCase(_c.menuName)}`}
-                href={_c.menuLink}
-                passHref
-              >
-                {_c.menuName}
-              </Link>
-            </Tooltip>
+            <Link
+              id={`link-level2-${Utils().titleToKebabCase(_c.menuName)}`}
+              href={_c.menuLink}
+              passHref
+            >
+              {_c.menuName}
+            </Link>
           ),
           key: _c.id,
           // Uniform, hardcoded icon for all sub-menu items — intentionally
