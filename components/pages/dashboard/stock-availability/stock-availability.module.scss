@@ -1,7 +1,10 @@
-.row-negative td {
+.row-negative td,
+.row-negative td[class*="ant-table-cell-fix"] {
   background-color: #fff1f0;
 }
 
-.row-zero td {
-  background-color: #fafafa;
+/* parity legacy: SOH 0 → kuning */
+.row-zero td,
+.row-zero td[class*="ant-table-cell-fix"] {
+  background-color: #fffbe6;
 }

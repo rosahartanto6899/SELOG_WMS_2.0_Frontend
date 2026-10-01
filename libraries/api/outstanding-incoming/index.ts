@@ -13,6 +13,7 @@ import {
   OutstandingIncomingTotals,
   StockAvailabilityResult,
 } from "@sera-types/outstanding-incoming.type";
+import type { AxiosRequestConfig } from "axios";
 
 /**
  * API untuk Outstanding Incoming (SELOG_WMS_2.0_ServiceIncoming §2 spec).
@@ -182,9 +183,9 @@ const OutstandingIncomingApi = () => {
     return httpService.get(`${base}/${id}/locations`).then((resp) => resp);
   }
 
-  function binning(id: string, actualQty: number) {
+  function binning(id: string, actualQty: number, config?: AxiosRequestConfig) {
     return httpService
-      .post(`${base}/details/${id}/binning`, { actualQty })
+      .post(`${base}/details/${id}/binning`, { actualQty }, config)
       .then((r) => r);
   }
 

@@ -6,6 +6,7 @@ import {
   OutstandingOutgoingListPayload,
 } from "@sera-types/outstanding-outgoing.type";
 import { PlanQtyRow } from "@sera-types/stock-availability.type";
+import type { AxiosRequestConfig } from "axios";
 
 /**
  * API untuk Outstanding Outgoing (SELOG_WMS_2.0_ServiceOutgoing §contracts 003).
@@ -169,13 +170,18 @@ const OutstandingOutgoingApi = () => {
   // ===== Picking (spec 004 Fase 4) =====
 
   /** A7 — realisasi picking satu detail (SET pickingQty=actualQty; 0/null→POQty) */
-  function submitPicking(payload: {
-    detailId: string;
-    actualQty?: number;
-    materialBarcode?: string;
-    locationBarcode?: string;
-  }) {
-    return httpService.post(`${base}/picking`, payload).then((resp) => resp);
+  function submitPicking(
+    payload: {
+      detailId: string;
+      actualQty?: number;
+      materialBarcode?: string;
+      locationBarcode?: string;
+    },
+    config?: AxiosRequestConfig,
+  ) {
+    return httpService
+      .post(`${base}/picking`, payload, config)
+      .then((resp) => resp);
   }
 
   /** Q15 — data cetak picking slip */

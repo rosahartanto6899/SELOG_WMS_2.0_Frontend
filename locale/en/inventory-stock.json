@@ -42,6 +42,21 @@
     "delete": "Delete",
     "confirmDelete": "Delete this material?",
     "confirmDeleteHint": "Material {code} will be removed from the upload list.",
-    "deleted": "Deleted"
+    "deleted": "Deleted",
+    "stop": {
+      "label": "Stop Transaction",
+      "on": "STOP",
+      "off": "ACTIVE",
+      "confirmStopTitle": "Stop warehouse transactions?",
+      "confirmStopHint": "All users will be unable to run binning and picking processes in warehouse {{name}} until re-enabled.",
+      "confirmResumeTitle": "Re-enable warehouse transactions?",
+      "confirmResumeHint": "Binning and picking processes in warehouse {{name}} will be re-opened for all users.",
+      "confirmOk": "Yes, continue",
+      "cancel": "Cancel",
+      "stopped": "Warehouse transactions stopped",
+      "resumed": "Warehouse transactions re-enabled",
+      "failed": "Failed to update warehouse transaction status",
+      "stoppedBanner": "Warehouse transactions stopped — binning & picking processes are blocked for all users."
+    }
   }
 }

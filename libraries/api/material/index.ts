@@ -37,6 +37,16 @@ const MaterialApi = () => {
       .then((resp) => resp);
   }
 
+  async function retrieveMaterialByBarcode(payload: { barcode: string }) {
+    return httpService
+      .get(
+        `${apiUrl.master}/materials/by-barcode/${encodeURIComponent(
+          payload.barcode,
+        )}`,
+      )
+      .then((resp) => resp);
+  }
+
   async function retrieveUomDropdown() {
     return httpService
       .get(`${apiUrl.master}/materials/uom-dropdown`)
@@ -95,6 +105,7 @@ const MaterialApi = () => {
     retrieveDropdownMaterials,
     retrieveMaterialDetail,
     retrieveAvailableBarcodes,
+    retrieveMaterialByBarcode,
     retrieveUomDropdown,
     createMaterial,
     updateMaterial,

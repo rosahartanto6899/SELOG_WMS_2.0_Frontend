@@ -42,6 +42,21 @@
     "delete": "Hapus",
     "confirmDelete": "Hapus material ini?",
     "confirmDeleteHint": "Material {code} akan dihapus dari daftar upload.",
-    "deleted": "Terhapus"
+    "deleted": "Terhapus",
+    "stop": {
+      "label": "Stop Transaction",
+      "on": "STOP",
+      "off": "AKTIF",
+      "confirmStopTitle": "Hentikan transaksi warehouse?",
+      "confirmStopHint": "Semua user tidak akan bisa melakukan proses binning dan picking di warehouse {{name}} sampai diaktifkan kembali.",
+      "confirmResumeTitle": "Aktifkan kembali transaksi warehouse?",
+      "confirmResumeHint": "Proses binning dan picking di warehouse {{name}} akan dibuka kembali untuk semua user.",
+      "confirmOk": "Ya, lanjutkan",
+      "cancel": "Batal",
+      "stopped": "Transaksi warehouse dihentikan",
+      "resumed": "Transaksi warehouse diaktifkan kembali",
+      "failed": "Gagal mengubah status transaksi warehouse",
+      "stoppedBanner": "Transaksi warehouse dihentikan — proses binning & picking diblokir untuk semua user."
+    }
   }
 }

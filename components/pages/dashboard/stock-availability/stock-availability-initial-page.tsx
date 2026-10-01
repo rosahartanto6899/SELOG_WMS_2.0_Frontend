@@ -5,6 +5,7 @@ import {
   DownloadOutlined,
   FileExcelOutlined,
   ReloadOutlined,
+  ScanOutlined,
 } from "@ant-design/icons";
 import Button from "@sera-components/button";
 import Card from "@sera-components/card";
@@ -28,6 +29,7 @@ import { useTranslation } from "react-i18next";
 import * as XLSX from "xlsx-js-style";
 
 import MobileTableHeader from "../../plan-outgoing/outstanding-outgoing/mobile-table-header";
+import ScanMaterialModal from "./scan-material-modal";
 import styles from "./stock-availability.module.scss";
 import { Columns, SearchByOptions } from "./stock-availability-props-table";
 
@@ -174,6 +176,7 @@ const StockAvailabilityInitialPage = () => {
   const [searchBy, setSearchBy] = useState(
     (cached?.searchBy as string) ?? INIT_SEARCH_BY,
   );
+  const [scanOpen, setScanOpen] = useState(false);
   const [listOptions, setListOptions] = useState<
     BaseType & { [key: string]: any }
   >(() =>
@@ -206,6 +209,15 @@ const StockAvailabilityInitialPage = () => {
         warehouseCode: warehouseCode || undefined,
       }),
     );
+
+  const onScanResolved = (materialCode: string) => {
+    setScanOpen(false);
+    router.push(
+      `${ROUTE.DASHBOARD_STOCK_AVAILABILITY}/${encodeURIComponent(
+        materialCode,
+      )}`,
+    );
+  };
 
   useEffect(() => {
     if (!session) return;
@@ -317,6 +329,12 @@ const StockAvailabilityInitialPage = () => {
                     ariaLabel: t("table.button.export"),
                     items: [
                       {
+                        key: "scan",
+                        icon: <ScanOutlined />,
+                        label: t("table.button.scan"),
+                      },
+                      { type: "divider" },
+                      {
                         key: "xlsx",
                         icon: <FileExcelOutlined />,
                         label: "Excel (.xlsx)",
@@ -324,6 +342,10 @@ const StockAvailabilityInitialPage = () => {
                       { key: "csv", label: "CSV (.csv)" },
                     ],
                     onClick: ({ key }) => {
+                      if (key === "scan") {
+                        setScanOpen(true);
+                        return;
+                      }
                       const subtitle = `${t("table.lastUpdated")}: ${
                         options?.lastUpdated
                           ? new Date(options.lastUpdated).toLocaleString()
@@ -385,33 +407,41 @@ const StockAvailabilityInitialPage = () => {
             }
             actions={
               isMobile ? null : (
-                <Dropdown
-                  menu={{
-                    items: [
-                      {
-                        key: "xlsx",
-                        icon: <FileExcelOutlined />,
-                        label: "Excel (.xlsx)",
-                      },
-                      { key: "csv", label: "CSV (.csv)" },
-                    ],
-                    onClick: ({ key }) => {
-                      const subtitle = `${t("table.lastUpdated")}: ${
-                        options?.lastUpdated
-                          ? new Date(options.lastUpdated).toLocaleString()
-                          : "-"
-                      }${customerCode ? ` | ${customerCode}` : ""}${
-                        warehouseCode ? ` | ${warehouseCode}` : ""
-                      }`;
-                      if (key === "xlsx") exportExcel(data, t, subtitle);
-                      else exportCsv(data, t);
-                    },
-                  }}
-                >
-                  <Button icon={<DownloadOutlined />}>
-                    {t("table.button.export")}
+                <Space wrap>
+                  <Button
+                    icon={<ScanOutlined />}
+                    onClick={() => setScanOpen(true)}
+                  >
+                    {t("table.button.scan")}
                   </Button>
-                </Dropdown>
+                  <Dropdown
+                    menu={{
+                      items: [
+                        {
+                          key: "xlsx",
+                          icon: <FileExcelOutlined />,
+                          label: "Excel (.xlsx)",
+                        },
+                        { key: "csv", label: "CSV (.csv)" },
+                      ],
+                      onClick: ({ key }) => {
+                        const subtitle = `${t("table.lastUpdated")}: ${
+                          options?.lastUpdated
+                            ? new Date(options.lastUpdated).toLocaleString()
+                            : "-"
+                        }${customerCode ? ` | ${customerCode}` : ""}${
+                          warehouseCode ? ` | ${warehouseCode}` : ""
+                        }`;
+                        if (key === "xlsx") exportExcel(data, t, subtitle);
+                        else exportCsv(data, t);
+                      },
+                    }}
+                  >
+                    <Button icon={<DownloadOutlined />}>
+                      {t("table.button.export")}
+                    </Button>
+                  </Dropdown>
+                </Space>
               )
             }
             // parity legacy createdRow: qtySOH < 0 → merah, 0 → abu-abu
@@ -425,6 +455,11 @@ const StockAvailabilityInitialPage = () => {
           />
         </Card>
       </div>
+      <ScanMaterialModal
+        open={scanOpen}
+        onClose={() => setScanOpen(false)}
+        onResolved={onScanResolved}
+      />
     </>
   );
 };

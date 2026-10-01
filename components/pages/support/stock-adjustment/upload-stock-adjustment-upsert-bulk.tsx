@@ -26,6 +26,7 @@ import {
   Select,
   Space,
   Spin,
+  Switch,
   Tag,
   Typography,
 } from "antd";
@@ -84,6 +85,7 @@ function UploadStockAdjustmentUpsertBulk(props: any) {
   const [warehouse, setWarehouse] = useState<{
     code: string;
     name: string;
+    stopTransaction?: boolean;
   } | null>(null);
   // Guards the "No active warehouse" message below from flashing red on
   // mount — session/API lookup is async, so `warehouse` briefly reads null
@@ -103,11 +105,52 @@ function UploadStockAdjustmentUpsertBulk(props: any) {
       .retrieveWarehouseDetail({ id: warehouseId })
       .then((resp: any) => {
         const d = resp?.data?.data;
-        setWarehouse(d?.code ? { code: d.code, name: d.name ?? "" } : null);
+        setWarehouse(
+          d?.code
+            ? {
+                code: d.code,
+                name: d.name ?? "",
+                stopTransaction: !!d.stopTransaction,
+              }
+            : null,
+        );
       })
       .catch(() => setWarehouse(null))
       .finally(() => setIsWarehouseLoading(false));
   }, [session?.user?.warehouseId, sessionStatus]);
+
+  // Toggle stop transaction warehouse aktif — true = semua user diblokir
+  // dari binning & picking (guard backend ServiceIncoming/ServiceOutgoing)
+  const [toggling, setToggling] = useState(false);
+  const onStopTransactionChange = (checked: boolean) => {
+    Modal.confirm({
+      title: checked
+        ? t("stop.confirmStopTitle")
+        : t("stop.confirmResumeTitle"),
+      content: checked
+        ? t("stop.confirmStopHint", { name: warehouse?.name || "-" })
+        : t("stop.confirmResumeHint", { name: warehouse?.name || "-" }),
+      okText: t("stop.confirmOk"),
+      cancelText: t("stop.cancel"),
+      okButtonProps: checked ? { danger: true } : undefined,
+      onOk: async () => {
+        setToggling(true);
+        try {
+          await WmsWarehouseApi().updateWarehouse({
+            id: session?.user?.warehouseId,
+            items: { stopTransaction: checked },
+          });
+          setWarehouse((w) => (w ? { ...w, stopTransaction: checked } : w));
+          message.success(checked ? t("stop.stopped") : t("stop.resumed"));
+        } catch {
+          // error toast sudah ditampilkan global interceptor (handleComponentBaseError)
+          // — jangan toast lagi di sini (double)
+        } finally {
+          setToggling(false);
+        }
+      },
+    });
+  };
 
   // Hapus baris — popup parity outstanding-incoming (Modal.confirm danger).
   // Baris = data lokal (belum/sudah submit); cellErrors di-remap karena
@@ -493,6 +536,20 @@ function UploadStockAdjustmentUpsertBulk(props: any) {
                   {t("noActiveWarehouse")}
                 </Typography.Text>
               )}
+              {warehouse && (
+                <Space align="center" size={8}>
+                  <Typography.Text type="secondary">
+                    {t("stop.label")}
+                  </Typography.Text>
+                  <Switch
+                    checked={!!warehouse.stopTransaction}
+                    loading={toggling}
+                    checkedChildren={t("stop.on")}
+                    unCheckedChildren={t("stop.off")}
+                    onChange={onStopTransactionChange}
+                  />
+                </Space>
+              )}
               <Button
                 icon={<CloudDownloadOutlined />}
                 loading={isLoading}
@@ -510,6 +567,10 @@ function UploadStockAdjustmentUpsertBulk(props: any) {
           </Col>
         </Row>
       </Card>
+
+      {warehouse?.stopTransaction && (
+        <Alert type="warning" showIcon message={t("stop.stoppedBanner")} />
+      )}
 
       <Card>
         <Space direction="vertical" size={8} style={{ width: "100%" }}>

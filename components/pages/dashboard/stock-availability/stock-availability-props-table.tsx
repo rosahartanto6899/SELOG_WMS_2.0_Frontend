@@ -5,7 +5,7 @@ import Button from "@sera-components/button";
 import { StockAvailabilityRow } from "@sera-types/stock-availability.type";
 import { ROUTE } from "@sera-utils/constants/routes";
 import useCheckPermission from "@sera-utils/hooks/useCheckPermission";
-import { Grid, Space, Tag } from "antd";
+import { Grid, Space } from "antd";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
@@ -85,12 +85,6 @@ export const Columns = ({ onViewDetail }: ColumnsProps) => {
       key: "qtySOH",
       align: "center" as const,
       width: 140,
-      // parity legacy: 0 → tag netral, < 0 → merah (baris hold/negatif)
-      render: (value: number) => (
-        <Tag color={value < 0 ? "red" : value === 0 ? "default" : "green"}>
-          {value}
-        </Tag>
-      ),
     },
     {
       title: t("column.action"),
