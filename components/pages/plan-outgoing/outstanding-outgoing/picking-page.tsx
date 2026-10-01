@@ -181,8 +181,8 @@ const PickingPage = () => {
       message.success(`${d.materialCode}: ${t("success")}`);
       focusNextMaterial(d.id);
       return true;
-    } catch (e: any) {
-      message.error(e?.response?.data?.message ?? t("failed"));
+    } catch {
+      // error toast sudah ditampilkan global interceptor — jangan double
       return false;
     } finally {
       setBusyId(null);
@@ -234,7 +234,7 @@ const PickingPage = () => {
     setAllLoading(true);
     const key = "picking-all";
     let ok = 0;
-    const failed: string[] = [];
+    const failed: Array<{ code: string; msg: string }> = [];
     for (const d of items) {
       message.open({
         key,
@@ -243,26 +243,38 @@ const PickingPage = () => {
       });
       setBusyId(d.id);
       try {
-        await OutstandingOutgoingApi().submitPicking({
-          detailId: d.id,
-          actualQty: d.poQty ?? 0,
-          materialBarcode: d.materialBarcode ?? undefined,
-          locationBarcode: d.materialLocationBarcode ?? undefined,
-        });
+        // error per-item tidak ditoast interceptor — cukup ringkasan di bawah
+        await OutstandingOutgoingApi().submitPicking(
+          {
+            detailId: d.id,
+            actualQty: d.poQty ?? 0,
+            materialBarcode: d.materialBarcode ?? undefined,
+            locationBarcode: d.materialLocationBarcode ?? undefined,
+          },
+          { skipGlobalError: true },
+        );
         setDoneIds((prev) => new Set(prev).add(d.id));
         ok++;
       } catch (e: any) {
-        failed.push(
-          `${d.materialCode}: ${e?.response?.data?.message ?? t("failed")}`,
-        );
+        // http-service reject dengan objek response → pesan di e.data.message
+        failed.push({
+          code: d.materialCode,
+          msg: e?.data?.message ?? e?.message ?? t("failed"),
+        });
       }
     }
     setBusyId(null);
+    // alasan identik (mis. warehouse di-stop) → cukup sekali, jangan per material
+    const uniqueMsgs = [...new Set(failed.map((f) => f.msg))];
+    const failedDetail =
+      uniqueMsgs.length === 1
+        ? uniqueMsgs[0]
+        : failed.map((f) => `${f.code}: ${f.msg}`).join("; ");
     message.open({
       key,
       type: failed.length ? "warning" : "success",
       content: failed.length
-        ? `${t("allDone", { count: ok })}. ${t("allFailed")}: ${failed.join("; ")}`
+        ? `${t("allDone", { count: ok })}. ${t("allFailed")}: ${failedDetail}`
         : t("allDone", { count: ok }),
       duration: failed.length ? 10 : 3,
     });

@@ -44,6 +44,8 @@ const WmsWarehouseApi = () => {
       name?: string;
       address?: string;
       phone?: string;
+      /** true = blokir binning & picking semua user (toggle Stock Adjustment) */
+      stopTransaction?: boolean;
     };
   }) {
     return httpService

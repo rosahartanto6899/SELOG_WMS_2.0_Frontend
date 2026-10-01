@@ -10,6 +10,8 @@ const UploadIncomingAhmApi = () => {
     return httpService
       .get(`${apiUrl.incoming}/upload-incoming-ahm/template`, {
         responseType: "blob",
+        // override timeout 5s default — generate xlsx di BE bisa lebih lama
+        timeout: 30000,
       })
       .then((resp) => resp);
   }

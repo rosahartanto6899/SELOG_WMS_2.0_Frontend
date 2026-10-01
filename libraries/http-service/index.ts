@@ -14,19 +14,31 @@ import { ErrorMessageHandler } from "../error";
  *
  */
 const baseURL: string = decryptData(process.env.API_BASE_URL);
+
+declare module "axios" {
+  export interface AxiosRequestConfig {
+    /** true = caller menangani error sendiri (mis. ringkasan binning-all);
+     *  interceptor TIDAK menampilkan toast global */
+    skipGlobalError?: boolean;
+  }
+}
 // const ocpApimKey: string = decryptData(process.env.OCP_APIM_KEY);
 const xApiKey: string = decryptData(process.env.X_API_KEY);
 
 const HttpService = (url = baseURL) => {
   const retryDelay = 1000;
   const maxRetry = 3;
-  let retryCount = maxRetry;
+  const requestTimeout = 5000;
+  const retryJitter = 250;
+  const retryableStatuses = [429, 502, 503, 504];
+  const idempotentMethods = ["get", "head"];
   const errorHandler = ErrorMessageHandler();
   const isServer = typeof window === "undefined";
   let isLoggingOut = false;
   // instantiate axios
   const _instance: AxiosInstance = axios.create({
     baseURL: url,
+    timeout: requestTimeout,
   });
 
   // _instance.defaults.headers.common["ocp-apim-subscription-key"] = ocpApimKey;
@@ -52,19 +64,66 @@ const HttpService = (url = baseURL) => {
   }
 
   /**
-   * Private method which handles retry mechanism
+   * Private method which decides whether an error is a transient failure
+   * that is safe to retry: only idempotent methods (GET/HEAD) and only
+   * network error, request timeout (ECONNABORTED), or HTTP 429/502/503/504.
+   * Mutations (POST/PUT/PATCH/DELETE) are never retried to avoid duplicate
+   * operations.
    *
-   * @param   { number }    milliseconds    Contains the delay to execute the request again
+   * @param   { any }       error    Contains axios error object
+   * @returns { boolean }   True when the request may be retried
+   */
+  function isRetryableError(error: any): boolean {
+    const config = error?.config;
+    if (!config) return false;
+
+    const method = String(config.method ?? "").toLowerCase();
+    if (!idempotentMethods.includes(method)) return false;
+
+    if (error.code === "ECONNABORTED") return true; // request timeout
+
+    const status = error.status ?? error.response?.status ?? null;
+    // null status = network error (no response received)
+    return status === null || retryableStatuses.includes(status);
+  }
+
+  /**
+   * Private method which computes the retry delay. Honors the server's
+   * Retry-After header when present, otherwise uses exponential backoff
+   * (1s → 2s → 4s) plus random jitter to avoid synchronized retry storms.
+   *
+   * @param   { any }      error     Contains axios error object
+   * @param   { number }   attempt   Current retry attempt (1-based)
+   * @returns { number }   Delay in milliseconds before the next attempt
+   */
+  function getRetryDelay(error: any, attempt: number): number {
+    const retryAfter = error?.response?.headers?.["retry-after"];
+    const seconds = Number(retryAfter);
+    // ponytail: numeric Retry-After only; HTTP-date form falls back to backoff
+    if (retryAfter !== undefined && !Number.isNaN(seconds)) {
+      return seconds * 1000;
+    }
+    return retryDelay * 2 ** (attempt - 1) + Math.random() * retryJitter;
+  }
+
+  /**
+   * Private method which handles retry mechanism. Delay follows Retry-After
+   * when provided by the server, otherwise exponential backoff with jitter
+   * (1s → 2s → 4s, max 3 retries). The retry counter lives on error.config
+   * so the budget is per-request, not shared between concurrent requests.
+   *
    * @param   { Object }    error    Contains error object
    * @returns { Object } Promise either resolve or rejected
    */
-  function retryRequest(milliseconds: number, error: any): object {
+  function retryRequest(error: any): Promise<any> {
+    const config = error.config;
+    config.__retryCount = (config.__retryCount ?? 0) + 1;
+
     return new Promise((resolve, reject) => {
-      if (retryCount - 1 > 0) {
-        setTimeout(() => resolve(_instance(error.config)), milliseconds);
-        retryCount -= 1;
+      if (config.__retryCount <= maxRetry) {
+        const delay = getRetryDelay(error, config.__retryCount);
+        setTimeout(() => resolve(_instance(config)), delay);
       } else {
-        retryCount = maxRetry;
         // response bisa undefined (network error) — fallback ke error axios
         if (!isServer)
           errorHandler.handleComponentBaseError(error.response ?? error);
@@ -74,7 +133,9 @@ const HttpService = (url = baseURL) => {
   }
 
   /**
-   * Private method which handles error response and implement retry mechanism for 429 (cosmos rate limit) error
+   * Private method which handles error response and implement retry
+   * mechanism for transient failures (429 cosmos rate limit, 502/503/504,
+   * network error, timeout) on idempotent requests only
    *
    * @param   { Object }    error    Contains the error object
    * @returns { Object } Promise either resolve or rejected
@@ -82,8 +143,8 @@ const HttpService = (url = baseURL) => {
   function handleResponse(error: any): object {
     const status = error.status ?? error.response?.status ?? null;
 
-    if (status === 429) {
-      return retryRequest(retryDelay, error);
+    if (isRetryableError(error)) {
+      return retryRequest(error);
     }
 
     if (status === 401 && !isLoggingOut) {
@@ -119,7 +180,7 @@ const HttpService = (url = baseURL) => {
       return Promise.reject(error.response);
     }
 
-    if (!isServer && status !== 401) {
+    if (!isServer && status !== 401 && !error?.config?.skipGlobalError) {
       // response bisa undefined (network error) — fallback ke error axios
       errorHandler.handleComponentBaseError(error.response ?? error);
     }

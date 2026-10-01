@@ -33,7 +33,23 @@
       "button": {
         "refresh": "Refresh",
         "export": "Ekspor",
+        "scan": "Scan",
         "view": "Lihat Detail"
+      },
+      "scan": {
+        "title": "Scan Barcode Material",
+        "cameraHint": "Arahkan barcode material ke kamera, hasil scan otomatis membuka detail.",
+        "uploadMode": "Upload Gambar",
+        "cameraMode": "Kembali ke Kamera",
+        "detecting": "Mendeteksi barcode...",
+        "resolving": "Mencari material...",
+        "noBarcodeInImage": "Barcode tidak terdeteksi di gambar",
+        "cameraInsecure": "kamera butuh HTTPS atau localhost",
+        "cameraDenied": "izin kamera ditolak, izinkan di browser",
+        "cameraNotFound": "kamera tidak ditemukan",
+        "cameraBusy": "kamera sedang dipakai proses lain",
+        "notFound": "Material tidak ditemukan untuk barcode {{barcode}}",
+        "failed": "Gagal resolve barcode"
       }
     },
     "detail": {

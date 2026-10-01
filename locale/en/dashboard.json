@@ -33,7 +33,23 @@
       "button": {
         "refresh": "Refresh",
         "export": "Export",
+        "scan": "Scan",
         "view": "View Detail"
+      },
+      "scan": {
+        "title": "Scan Material Barcode",
+        "cameraHint": "Point the material barcode at the camera, scan result opens the detail automatically.",
+        "uploadMode": "Upload Image",
+        "cameraMode": "Back to Camera",
+        "detecting": "Detecting barcode...",
+        "resolving": "Finding material...",
+        "noBarcodeInImage": "No barcode detected in the image",
+        "cameraInsecure": "camera requires HTTPS or localhost",
+        "cameraDenied": "camera permission denied, allow it in the browser",
+        "cameraNotFound": "no camera found",
+        "cameraBusy": "camera is being used by another process",
+        "notFound": "No material found for barcode {{barcode}}",
+        "failed": "Failed to resolve barcode"
       }
     },
     "detail": {
